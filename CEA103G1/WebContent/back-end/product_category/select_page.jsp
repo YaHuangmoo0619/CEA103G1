@@ -66,7 +66,7 @@
        <b>選擇商品分類編號:</b>
        <select size="1" name="prod_cat_no">
          <c:forEach var="product_categoryVO" items="${product_categorySvc.all}" > 
-          <option value="${product_categoryVO.prod_cat_no}">${product_categoryVO.prod_cat_no}
+          <option value="${product_categoryVO.prod_cat_no}">
          </c:forEach>   
        </select>
        <input type="hidden" name="action" value="getOne_For_Display">
@@ -76,10 +76,10 @@
   
   <li>
      <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_category/product_category.do" >
-       <b>選擇商品分類名稱:</b>
+       <b>選擇商品分類:</b>
        <select size="1" name="prod_cat_no">
          <c:forEach var="product_categoryVO" items="${product_categorySvc.all}" > 
-          <option value="${product_categoryVO.prod_cat_no}">${product_categoryVO.prod_cat_name}
+          <option value="${product_categoryVO.prod_cat_no}">${product_categoryVO.prod_cat_no}.${product_categoryVO.prod_cat_name}
          </c:forEach>   
        </select>
        <input type="hidden" name="action" value="getOne_For_Display">
