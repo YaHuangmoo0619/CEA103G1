@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.employee.model.EmployeeVO;
 import com.function.model.FunctionService;
 import com.function.model.FunctionVO;
 
@@ -168,7 +169,7 @@ public class FunctionServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("functionVO", functionVO); // 資料庫update成功後,正確的的functionVO物件,存入req
-				String url = "/back-end/function/listOneFunction.jsp";
+				String url = "/back-end/function/listAllFunction.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneFunction.jsp
 				successView.forward(req, res);
 
@@ -215,6 +216,9 @@ public class FunctionServlet extends HttpServlet {
 				functionVO = functionSvc.addFunction(fx_name);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
+				List<FunctionVO> functionVONew = functionSvc.getAll();
+				Integer fx_no = functionVONew.get(functionVONew.size() - 1).getFx_no();
+				req.setAttribute("fx_no", fx_no);
 				String url = "/back-end/function/listAllFunction.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllfunction.jsp
 				successView.forward(req, res);				

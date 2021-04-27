@@ -10,6 +10,9 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
 <title>公告列表修改 - update_announcement_input.jsp</title>
 
 <style>
@@ -101,6 +104,17 @@
 		</td>
 	</tr>
 	<tr>
+		<td>發文日期:</td>
+		<td>
+		<c:if test="${announcementVO == null || announcementVO.an_skd_date == null}">
+			<input name="an_skd_date" id="announce_date" type="text" placeholder="2014-06-19">
+		</c:if>
+		<c:if test="${announcementVO != null && announcementVO.an_skd_date != null}">
+			<input name="an_skd_date" id="announce_date" type="text" value="${announcementVO.an_skd_date}">
+		</c:if>
+		</td>
+	</tr>
+	<tr>
 		<td>選擇照片:</td>
 		<td>
 		<img src="<%=request.getContextPath()%>/announcement/GetPhoto?an_no=${announcementVO.an_no}" style="width:200px" class="img">
@@ -111,12 +125,7 @@
 
 </table>
 <br>
-<% 
-long millis = System.currentTimeMillis();
-java.sql.Date an_skd_date = new java.sql.Date(millis);
-pageContext.setAttribute("an_skd_date",an_skd_date);
-%>
-<input type="hidden" name="an_skd_date" value="${an_skd_date}"/>
+
 <input type="hidden" name="an_no" value="<%=announcementVO.getAn_no()%>">
 <input type="hidden" name="action" value="update">
 <input type="submit" value="送出修改"></FORM>
@@ -138,7 +147,7 @@ myFile.addEventListener('change',function(e){
 				img.setAttribute('class', 'img');
 				img.style.width='200px';
 				img.src = result;
-				input[0].previousElementSibling.before(img);
+				input[input.length-4].previousElementSibling.before(img);
 			});
 			reader.readAsDataURL(files[i]);
 			imgs[0].remove();
@@ -146,6 +155,18 @@ myFile.addEventListener('change',function(e){
 			alert('請上傳圖檔');
 		}
 	}
+});
+
+
+<!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
+$.datetimepicker.setLocale('zh');
+$(function(){
+	 $('#announce_date').datetimepicker({
+	  format:'Y-m-d',
+	  minDate:'-1970/01/01',
+	  timepicker:false
+	 });
+
 });
 </script>
 </body>

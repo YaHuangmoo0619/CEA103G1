@@ -87,7 +87,7 @@ request.setAttribute("lastAn_no", lastAn_no);
    
   <li>
      <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/announcement/announcement.do" >
-       <b>選擇更新日期:</b>
+       <b>選擇公告日期:</b>
        <select size="1" name="an_skd_date">
        <% 
 			AnnouncementService announcementSvc2 = new AnnouncementService();

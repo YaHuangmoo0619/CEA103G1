@@ -44,6 +44,7 @@ public class EmployeeServlet extends HttpServlet {
 		req.setCharacterEncoding("Big5");
 		String action = req.getParameter("action");
 		String change = req.getParameter("change");
+		String sendingEmail = req.getParameter("sendingEmail");
 		
 
 		if ("getName_For_Display".equals(action)) { // 來自select_page.jsp的請求
@@ -54,6 +55,17 @@ public class EmployeeServlet extends HttpServlet {
    
 			try {
 				String name = req.getParameter("name");
+				if (name.equals("0")) {
+					errorMsgs.add("請選擇網站管理員姓名");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/employee/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
 				EmployeeService employeeSvc = new EmployeeService();
 				List<EmployeeVO> employeeVO_name = employeeSvc.getNameEmp_no(name);
 				if (employeeVO_name.isEmpty()) {
@@ -86,6 +98,17 @@ public class EmployeeServlet extends HttpServlet {
    
 			try {
 				Integer fx_no = new Integer(req.getParameter("fx_no"));
+				if (fx_no == 0) {
+					errorMsgs.add("請選擇權限名稱");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/employee/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
 				EmployeeService employeeSvc = new EmployeeService();
 				List<EmployeeVO> employeeVO_fx_no = employeeSvc.getFunctionEmp_no(fx_no);
 				if (employeeVO_fx_no.isEmpty()) {
@@ -122,6 +145,16 @@ public class EmployeeServlet extends HttpServlet {
 				String str = req.getParameter("emp_no");
 				if (str == null || (str.trim()).length() == 0) {
 					errorMsgs.add("請輸入網站管理員編號");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/employee/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				if (str.equals("0")) {
+					errorMsgs.add("請選擇網站管理員編號");
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
@@ -204,9 +237,7 @@ public class EmployeeServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
-		
-		
-		
+				
 		
 		if ("update".equals(action) || "密碼更新".equals(change)) { // 來自update_employee_input.jsp的請求
 			
@@ -230,6 +261,7 @@ public class EmployeeServlet extends HttpServlet {
 				
 				String pwdOrigin = "pwd";
 				if("密碼更新".equals(change)) {
+					req.setAttribute("sendingEmail", "toSend");
 					String pwdNew = genAuthCode();
 					req.setAttribute("code", pwdNew);
 					pwdOrigin = pwdNew;
@@ -285,24 +317,26 @@ public class EmployeeServlet extends HttpServlet {
 					return; //程式中斷
 				}
 				
-				//密碼寄出至輸入的email
-				String to = email;
-			    String subject = "密碼通知";
-			    String messageText = name + ", 您好, 您的帳號為 "+acc+"。 您更新的密碼為 " + pwdOrigin + "。 請謹記此密碼。\n" +" (已經啟用)";
-			    String result = sendMail(to, subject, messageText);
-			    if(result.equals("fail")) {
-			    	errorMsgs.add("EMAIL發送失敗，請聯繫工程師處理");
-			    }			    
-			    
-			    // Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) { // 含有輸入格式錯誤的employeeVO物件,也存入req
-					req.setAttribute("employeeVO", employeeVO);
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/employee/addEmployee.jsp");
-					failureView.forward(req, res);
-					return;
-				}
-				
+				if(("sendingEmail").equals(sendingEmail)) {
+					//密碼寄出至輸入的email
+					String to = email;
+					String subject = "密碼通知";
+					String messageText = name + ", 您好, 您的帳號為 "+acc+"。 您更新的密碼為 " + pwdOrigin + "。 請謹記此密碼。\n" +" (已經啟用)";
+					String result = sendMail(to, subject, messageText);
+					if(result.equals("fail")) {
+					    errorMsgs.add("EMAIL發送失敗，請聯繫工程師處理");
+					}			    
+					    
+					// Send the use back to the form, if there were errors
+					if (!errorMsgs.isEmpty()) { // 含有輸入格式錯誤的employeeVO物件,也存入req
+						req.setAttribute("employeeVO", employeeVO);
+						RequestDispatcher failureView = req
+								.getRequestDispatcher("/back-end/employee/addEmployee.jsp");
+						failureView.forward(req, res);
+						return;
+					}
+			}
+	
 				/***************************2.開始修改資料*****************************************/
 				EmployeeService employeeSvc = new EmployeeService();
 				employeeVO = employeeSvc.updateEmployee(emp_no, acc, pwd, name, email, emp_stat);
@@ -310,7 +344,7 @@ public class EmployeeServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("employeeVO", employeeVO); // 資料庫update成功後,正確的的employeeVO物件,存入req
-				String url = "/back-end/employee/listOneEmployee.jsp";
+				String url = "/back-end/employee/listAllEmployee.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmployee.jsp
 				successView.forward(req, res);
 
@@ -408,6 +442,9 @@ public class EmployeeServlet extends HttpServlet {
 				employeeVO = employeeSvc.addEmployee(acc, pwd, name, email);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
+				List<EmployeeVO> employeeVONew = employeeSvc.getAll();
+				Integer emp_no = employeeVONew.get(employeeVONew.size() - 1).getEmp_no();
+				req.setAttribute("emp_no", emp_no);
 				String url = "/back-end/employee/listAllEmployee.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmployee.jsp
 				successView.forward(req, res);				

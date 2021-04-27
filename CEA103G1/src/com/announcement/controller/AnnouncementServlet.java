@@ -2,7 +2,6 @@ package com.announcement.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
@@ -206,9 +205,13 @@ public class AnnouncementServlet extends HttpServlet {
 				if(an_cont == null || an_cont.trim().isEmpty()) {
 					errorMsgs.add("請撰寫內文");
 				}
-				SimpleDateFormat dsf = new SimpleDateFormat("yyyy-MM-dd");
-				java.util.Date dateU = dsf.parse(req.getParameter("an_skd_date"));
-				java.sql.Date an_skd_date = new java.sql.Date(dateU.getTime());
+				String dateS = req.getParameter("an_skd_date");
+				java.sql.Date an_skd_date = null;
+				if(dateS == null || dateS.trim().isEmpty()) {
+					errorMsgs.add("請選擇公告日期");
+				}else {
+					an_skd_date = java.sql.Date.valueOf(dateS);
+				}
 				Part pic = req.getPart("an_pic");
 				InputStream in = pic.getInputStream();
 				byte[] an_pic = new byte[in.available()];
@@ -221,7 +224,6 @@ public class AnnouncementServlet extends HttpServlet {
 				announcementVO.setAn_skd_date(an_skd_date);
 				byte[] an_pic_database = new byte[0];
 				if(an_pic.length == 0) {
-					System.out.println("in");
 					AnnouncementService announcementSvc = new AnnouncementService();
 					AnnouncementVO announcementVOPic = announcementSvc.getOneAnnouncement(an_no);
 					an_pic_database = announcementVOPic.getAn_pic();
@@ -249,7 +251,7 @@ public class AnnouncementServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("announcementVO", announcementVO); // 資料庫update成功後,正確的的announcementVO物件,存入req
-				String url = "/back-end/announcement/listOneAnnouncement.jsp";
+				String url = "/back-end/announcement/listAllAnnouncement.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneAnnouncement.jsp
 				successView.forward(req, res);
 
@@ -281,9 +283,14 @@ public class AnnouncementServlet extends HttpServlet {
 				if(an_cont == null || an_cont.trim().isEmpty()) {
 					errorMsgs.add("請撰寫內文");
 				}
-				SimpleDateFormat dsf = new SimpleDateFormat("yyyy-MM-dd");
-				java.util.Date dateU = dsf.parse(req.getParameter("an_skd_date"));
-				java.sql.Date an_skd_date = new java.sql.Date(dateU.getTime());
+				String dateS = req.getParameter("an_skd_date");
+				java.sql.Date an_skd_date = null;
+				if(dateS == null || dateS.trim().isEmpty()) {
+					errorMsgs.add("請選擇公告日期");
+				}else {
+					an_skd_date = java.sql.Date.valueOf(dateS);
+				}
+				
 				Part pic = req.getPart("an_pic");
 				InputStream in = pic.getInputStream();
 				byte[] an_pic = new byte[in.available()];
@@ -312,6 +319,9 @@ public class AnnouncementServlet extends HttpServlet {
 				announcementVO = announcementSvc.addAnnouncement(emp_no, an_cont, an_skd_date, an_pic);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
+				List<AnnouncementVO> announcementVONew = announcementSvc.getAll();
+				Integer an_no = announcementVONew.get(0).getAn_no();
+				req.setAttribute("an_no", an_no);
 				String url = "/back-end/announcement/listAllAnnouncement.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllAnnouncement.jsp
 				successView.forward(req, res);				

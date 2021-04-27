@@ -11,6 +11,20 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
+
+<style>
+  .xdsoft_datetimepicker .xdsoft_datepicker {
+           width:  300px;   /* width:  300px; */
+  }
+  .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+           height: 151px;   /* height:  151px; */
+  }
+</style>
+
+
 <title>公告列表新增 - addAnnouncement.jsp</title>
 
 <style>
@@ -140,6 +154,17 @@ ${announcementVO.an_cont.trim()}
 		</td>
 	</tr>
 	<tr>
+		<td>發文日期:</td>
+		<td>
+		<c:if test="${announcementVO == null || announcementVO.an_skd_date == null}">
+			<input name="an_skd_date" id="announce_date" type="text" placeholder="2014-06-19">
+		</c:if>
+		<c:if test="${announcementVO != null && announcementVO.an_skd_date != null}">
+			<input name="an_skd_date" id="announce_date" type="text" value="${announcementVO.an_skd_date}">
+		</c:if>
+		</td>
+	</tr>
+	<tr>
 		<td>選擇照片:</td>
 		<td>
 		<img src="" class="img">
@@ -150,15 +175,9 @@ ${announcementVO.an_cont.trim()}
 		<input type="file" name="an_pic" id="myFile">
 		</td>
 	</tr>
-
 </table>
 <br>
-<% 
-long millis = System.currentTimeMillis();
-java.sql.Date an_skd_date = new java.sql.Date(millis);
-pageContext.setAttribute("an_skd_date",an_skd_date);
-%>
-<input type="hidden" name="an_skd_date" value="${an_skd_date}"/>
+
 <input type="hidden" name="action" value="insert">
 <input type="submit" value="送出新增">
 </FORM>
@@ -179,7 +198,7 @@ myFile.addEventListener('change',function(e){
 				img.style.width='200px';
 				img.src = result;
 				console.log(result);
-				input[0].previousElementSibling.before(img);
+				input[input.length-3].previousElementSibling.before(img);
 			});
 			reader.readAsDataURL(files[i]);
 			imgs[0].remove();
@@ -187,6 +206,17 @@ myFile.addEventListener('change',function(e){
 			alert('請上傳圖檔');
 		}
 	}
+});
+
+<!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
+$.datetimepicker.setLocale('zh');
+$(function(){
+	 $('#announce_date').datetimepicker({
+	  format:'Y-m-d',
+	  minDate:'-1970/01/01',
+	  timepicker:false
+	 });
+
 });
 </script>
 </body>

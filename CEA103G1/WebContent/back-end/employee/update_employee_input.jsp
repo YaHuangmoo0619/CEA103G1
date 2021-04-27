@@ -131,10 +131,10 @@
 		<td>密碼更新:</td>
 		<td>
 			<c:if test="${code == null}">
-		 		<input type="TEXT" name="pwd" value="${employeeVO.pwd}">
+		 		<input type="TEXT" name="pwd" value="${employeeVO.pwd}" readOnly>
 		 	</c:if>
 		 	<c:if test="${code != null}">
-		 		<input type="TEXT" name="pwd" value="${code}">
+		 		<input type="TEXT" name="pwd" value="${code}" readOnly>
 		 	</c:if>
 		</td>	 
 	</tr>
@@ -143,6 +143,7 @@
 <input type="hidden" name="emp_no" value="<%=employeeVO.getEmp_no()%>">
 <input type="hidden" name="pwd" value="<%=employeeVO.getPwd()%>">
 <input type="hidden" name="action" value="update">
+<input type="hidden" name="sendingEmail" value="${sendingEmail==null ? '' : 'sendingEmail'}">
 <input type="submit" name="change" value="密碼更新">
 <input type="submit" value="送出修改"></FORM>
 

@@ -41,7 +41,6 @@ request.setAttribute("lastEmp_no", lastEmp_no);
 
 </head>
 <body bgcolor='white'>
-
 <table id="table-1">
    <tr><td><h3>Employee: Home</h3><img src="<%=request.getContextPath()%>/images/logo.png" width="50" height="50" border="0"><h4>( MVC )</h4></td></tr>
 </table>
@@ -64,7 +63,7 @@ request.setAttribute("lastEmp_no", lastEmp_no);
 	<li>
 	    <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/employee/employee.do" >
 	        <b>輸入網站管理員編號 (如90002):</b>
-	        <input type="text" name="emp_no" placeholder="9002至${lastEmp_no}間的數字">
+	        <input type="text" name="emp_no" placeholder="90002至${lastEmp_no}間的數字">
 	        <input type="hidden" name="action" value="getOne_For_Display">
 	        <input type="submit" value="送出">
 	    </FORM>
@@ -75,7 +74,7 @@ request.setAttribute("lastEmp_no", lastEmp_no);
 	<li>
      <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/employee/employee.do" >
        <b>選擇網站管理員編號:</b>
-       <select size="1" name="name">
+       <select size="1" name="emp_no">
        			<option value= 0>--請選擇--
          <c:forEach var="employeeVO" items="${employeeSvc.all}" > 
          	<c:if test="${employeeVO.emp_no != 90001}">

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="Big5">
+<link rel="icon" href="campionLogoIcon.png" type="image/png">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	crossorigin="anonymous">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+<title>Campion_front</title>
+<style>
+/* * { 
+	border: solid 1px black; 
+ }*/
+html, body {
+	margin: 0;
+	padding: 0;
+	/*background-color: #4e5452;*/
+	background-color: #4e5452;
+	color: #80c344;
+}
+
+section {
+	text-align: center;
+}
+
+div.fixedTop {
+	background-color: #eee;
+	position: relative;
+	z-index: 10;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100%;
+	text-align: center;
+}
+
+img.logo {
+	width: 150px;
+	margin: 10px;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+form.form-inline {
+	display: inline;
+	border: none;
+}
+
+img.searchIcon {
+	display: none;
+}
+
+img.cart {
+	width: 30px;
+	margin: 10px;
+}
+
+img.cart:hover {
+	cursor: pointer;
+}
+
+img.menu {
+	width: 40px;
+	margin: 10px;
+	display: none;
+}
+
+img.menu:hover {
+	cursor: pointer;
+}
+
+img.person {
+	width: 40px;
+	margin: 10px;
+}
+
+img.person:hover {
+	cursor: pointer;
+}
+
+img.backToTop {
+	width: 40px;
+	position: fixed;
+	left: 90%;
+	bottom: 5%;
+	background-color: #80c344;
+	border-radius: 50%;
+	z-index: 10;
+	display: none;
+}
+
+section.jumbotron {
+	border-radius: 0px;
+	background-image: url("topphoto.jpg");
+	background-position: center;
+	background-size: cover;
+	height: 570px;
+}
+
+div.slogan h1 {
+	color: #fff;
+	font-size: 3em;
+	font-weight: 999;
+	margin: 0px auto;
+	margin-top: 30px;
+}
+
+div.header {
+	color: #fff;
+	font-size: 1.1em;
+	font-weight: 777;
+	margin-top: 200px;
+	opacity: 0.5;
+	margin-top: 200px;
+}
+
+div.header:hover {
+	opacity: 1;
+}
+
+form {
+	border: solid 1px #fff;
+	padding: 15px;
+}
+
+div.where {
+	display: inline;
+}
+
+div.photo {
+	width: 200px;
+	height: 100px;
+	margin: 20px auto;
+	background-color: #eee;
+	overflow: hidden;
+}
+
+img {
+	width: 100%;
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+
+div.row {
+	margin-top: 30px;
+}
+
+div.more {
+	/*color: #7DD181;*/
+	margin-top: 0px;
+	padding-bottom: 20px;
+	display: inline;
+}
+
+div.article {
+	width: 100%;
+	margin: 0px auto;
+	text-align: left;
+	background-color: #eee;
+	border-radius: 5px;
+	padding: 10px 50px 20px 50px;
+}
+
+h5 {
+	padding-top: 10px;
+}
+
+p {
+	margin: 0px;
+}
+
+section.articles {
+	padding-bottom: 20px;
+}
+
+section.products {
+	background-color: #fff;
+	padding-bottom: 20px;
+}
+
+section.footer {
+	background-color: #4B7F52;
+	color: #80c344;
+	height: 100px;
+	padding-top: 10px;
+}
+
+@media screen and (max-width: 575px) {
+	container {
+		width: 100%;
+	}
+	div.fixedTop {
+		background-color: #eee;
+		position: relative;
+		z-index: 10;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		text-align: center;
+	}
+	form.form-inline {
+		display: none;
+	}
+	form.secSearch {
+		display: none;
+	}
+	img.searchIcon {
+		display: inline;
+		width: 30px;
+		margin: 0px;
+	}
+	img.searchIcon:hover {
+		cursor: pointer;
+	}
+	div.btn-group {
+		display: none;
+	}
+	img.menu {
+		width: 30px;
+		margin: 10px;
+		display: inline-block;
+	}
+	div.sec {
+		display: none;
+		background-color: #eee;
+	}
+	div.where {
+		display: block;
+		padding: 5px 100px;
+		text-align: left;
+	}
+	div.slogan h1 {
+		color: #fff;
+		font-size: 2em;
+		font-weight: 999;
+		margin: 50px auto;
+	}
+	div.photo {
+		width: 200px;
+		height: 100px;
+		margin: 20px auto;
+		background-color: #eee;
+		overflow: hidden;
+	}
+	div.row {
+		margin-top: 0px;
+	}
+	div.article {
+		width: 90%;
+		margin: 20px auto;
+		text-align: left;
+		background-color: #eee;
+		border-radius: 5px;
+		padding: 10px 50px 20px 50px;
+	}
+	div.more {
+		display: inline;
+	}
+	section.footer {
+		background-color: #4B7F52;
+		color: #80c344;
+		height: 100px;
+		padding-top: 30px;
+	}
+}
+
+@media ( min-width : 576px) and (max-width: 767px) {
+	container {
+		width: 540px;
+		margin: 0px auto;
+	}
+	div.fixedTop {
+		background-color: #eee;
+		position: relative;
+		z-index: 10;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		text-align: center;
+	}
+	form.form-inline {
+		display: none;
+	}
+	form.secSearch {
+		display: none;
+	}
+	img.searchIcon {
+		display: inline;
+		width: 30px;
+		margin: 0px;
+	}
+	img.searchIcon:hover {
+		cursor: pointer;
+	}
+	div.btn-group {
+		display: none;
+	}
+	img.menu {
+		width: 30px;
+		margin: 10px;
+		display: inline-block;
+	}
+	div.sec {
+		display: none;
+		background-color: #eee;
+	}
+	div.where {
+		display: block;
+		padding: 5px 130px;
+		text-align: left;
+	}
+}
+
+@media ( min-width : 768px) and (max-width: 991px) {
+	container {
+		width: 720px;
+		margin: 0px auto;
+	}
+	div.fixedTop {
+		background-color: #eee;
+		position: relative;
+		z-index: 10;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		text-align: center;
+	}
+	form.form-inline {
+		display: none;
+	}
+	form.secSearch {
+		display: none;
+	}
+	img.searchIcon {
+		display: inline;
+		width: 30px;
+		margin: 0px;
+	}
+	img.searchIcon:hover {
+		cursor: pointer;
+	}
+	div.btn-group {
+		display: none;
+	}
+	img.menu {
+		width: 30px;
+		margin: 10px;
+		display: inline-block;
+	}
+	div.sec {
+		display: none;
+		background-color: #eee;
+	}
+	div.where {
+		display: block;
+		padding: 5px 220px;
+		text-align: left;
+	}
+	div.photo {
+		width: 300px;
+		height: 150px;
+		margin: 20px auto;
+		background-color: #eee;
+		overflow: hidden;
+	}
+}
+
+@media ( min-width : 992px) and (max-width: 1199px) {
+	container {
+		width: 960px;
+		margin: 0px auto;
+	}
+	div.menuForButton {
+		display: none;
+	}
+	div.forSearch {
+		display: none;
+	}
+	div.photo {
+		width: 400px;
+		height: 200px;
+		margin: 20px auto;
+		background-color: #eee;
+		overflow: hidden;
+	}
+}
+
+@media ( min-width : 1200px) {
+	container {
+		width: 1140px;
+		margin: 0px auto;
+	}
+	div.menuForButton {
+		display: none;
+	}
+	div.forSearch {
+		display: none;
+	}
+	div.photo {
+		width: 400px;
+		height: 200px;
+		margin: 20px auto;
+		background-color: #eee;
+		overflow: hidden;
+	}
+}
+</style>
+</head>
+
+<body>
+	<div class="fixedTop">
+		<a href="#"> <img src="campionLogoLong.png" class="logo">
+		</a>
+		<form class="form-inline my-2 my-lg-0">
+			<input class="form-control mr-sm-2" type="search"
+				placeholder="營位/商品/文章" aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
+		</form>
+		<img src="search-circle-outline.svg" class="searchIcon"
+			onclick="showSearch()">
+		<div class="btn-group" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-secondary">營區</button>
+			<button type="button" class="btn btn-secondary">商城</button>
+			<button type="button" class="btn btn-secondary">論壇</button>
+		</div>
+		<img src="cart-outline.svg" class="cart">
+		<div class="btn-group" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-outline-secondary">營主</button>
+			<button type="button" class="btn btn-outline-secondary">註冊</button>
+			<button type="button" class="btn btn-outline-secondary">登入</button>
+			<button type="button" class="btn btn-outline-secondary">FAQ</button>
+			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
+		</div>
+		<img src="menu-outline.svg" class="menu" onclick="showMenu()"> <img
+			src="person-circle-outline.svg" class="person">
+
+	</div>
+	<div class="forSearch">
+		<form class="form-inline secSearch my-2 my-lg-0">
+			<input class="form-control mr-sm-2" type="search"
+				placeholder="營位/商品/文章" aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
+		</form>
+	</div>
+	<div class="menuForButton">
+		<div class="btn-group sec" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-secondary">營區</button>
+			<button type="button" class="btn btn-secondary">商城</button>
+			<button type="button" class="btn btn-secondary">論壇</button>
+		</div>
+		<div class="btn-group sec" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-outline-secondary">營主</button>
+			<button type="button" class="btn btn-outline-secondary">註冊</button>
+			<button type="button" class="btn btn-outline-secondary">登入</button>
+			<button type="button" class="btn btn-outline-secondary">FAQ</button>
+			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
+		</div>
+	</div>
+	<div class="backToTop">
+		<a href="#"><img src="arrow-up-circle-outline.svg"
+			class="backToTop"></a>
+	</div>
+	<section class="jumbotron">
+		<div class="container">
+			<div class="row slogan">
+				<h1>開啟一段新的旅程吧！</h1>
+			</div>
+			<div class="row header">
+				<div class="col-sm">
+					<form class="search">
+						<div class="where">
+							縣市:<select id="county" name="county"></select>
+						</div>
+						<div class="where">
+							縣市:<input type="type" name="county" size="8">
+						</div>
+						<div class="where">
+							入住日期:<input name="startdate" id="f_date1" type="text" size="8">
+						</div>
+						<div class="where">
+							退房日期:<input name="enddate" id="f_date2" type="text" size="8">
+						</div>
+						<div class="where">
+							人數:<input name="people" type="text" maxlength="4" size="4">
+						</div>
+						<div class="where">
+							<input type="submit" value="搜尋">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="campsites">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+				<div class="col-sm-4">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1465418138967-67a3d24f8085?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGNhbXBzaXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+				<div class="col-sm-4">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1593093735059-eaf60625e6e2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzZ8fGNhbXBzaXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+				<div class="col-sm-4">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+				<div class="col-sm-4">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1593093735059-eaf60625e6e2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzZ8fGNhbXBzaXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<a href=""><div class="more">One column to 更多營區</div></a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="products">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1444012104069-996724bf4a0a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=632&q=80"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+				<div class="col-sm-3">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1609168867437-3f09a1f04b8a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDN8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=600&q=60"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+				<div class="col-sm-3">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1474376962954-d8a681cc53b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=634&q=80"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+				<div class="col-sm-3">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1520963959303-a5cc3bdf9260?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=701&q=80"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1444012104069-996724bf4a0a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=632&q=80"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+				<div class="col-sm-3">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1503469519549-4415016d57a3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+				<div class="col-sm-3">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1474376962954-d8a681cc53b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=634&q=80"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+				<div class="col-sm-3">
+					<a href=""><img
+						src="https://images.unsplash.com/photo-1605620622858-ea62b0a2059c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=600&q=60"></a>
+					<a class="text" href="">One of three columns</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<a href=""><div class="more">One column to 更多商品</div></a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="articles">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm">
+					<a href=""><div class="article">
+							<h5>Title標題標題</h5>
+							<p>One column內文部分內容，可能可以放100字...</p>
+							<p>> 看更多</p>
+						</div></a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<a href=""><div class="article">
+							<h5>Title標題標題</h5>
+							<p>One column內文部分內容，可能可以放100字...</p>
+							<p>> 看更多</p>
+						</div></a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<a href=""><div class="article">
+							<h5>Title標題標題</h5>
+							<p>One column內文部分內容，可能可以放100字...</p>
+							<p>> 看更多</p>
+						</div></a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<a href=""><div class="more">One column to 更多文章</div></a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm">Copyright2020-2021,Campion Group or its
+					Affiliates.</div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		let countMenu = 0;
+		function showMenu() {
+			countMenu++;
+			if (countMenu % 2 == 1) {
+				let secArray = document.getElementsByClassName("sec");
+				for (let i = 0; i < secArray.length; i++) {
+					secArray[i].style.display = "flex";
+				}
+			} else {
+				let secArray = document.getElementsByClassName("sec");
+				for (let i = 0; i < secArray.length; i++) {
+					secArray[i].style.display = "none";
+				}
+			}
+		}
+
+		let countSearch = 0;
+		function showSearch() {
+			countSearch++;
+			if (countSearch % 2 == 1) {
+				let formArray = document.getElementsByClassName("secSearch");
+				for (let i = 0; i < formArray.length; i++) {
+					formArray[i].style.display = "flex";
+				}
+			} else {
+				let formArray = document.getElementsByClassName("secSearch");
+				for (let i = 0; i < formArray.length; i++) {
+					formArray[i].style.display = "none";
+				}
+			}
+		}
+
+		let backToTop = document.getElementsByClassName("backToTop");
+		$(window).scroll(function(e) {
+			console.log(e);
+			if ($(window).scrollTop() <= 1) {
+				backToTop[1].style.display = "none";
+			}else{
+				backToTop[1].style.display = "block";
+			}
+		});
+	</script>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

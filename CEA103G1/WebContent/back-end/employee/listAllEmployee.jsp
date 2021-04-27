@@ -50,6 +50,27 @@
     padding: 5px;
     text-align: center;
   } 
+   div{
+  	width: 200px;
+  	padding: 10px;
+  	border: 1px solid #ccc;
+  	box-sizing: border-sizing;
+  	margin-left: 300px;
+  	background-color: #eee;
+  	text-align: center;
+  }
+  a{
+  	text-decoration: none;
+  }
+ div:hover{
+  	background-color: #98FB98;
+  	cursor: pointer;
+  	border: 1px solid #98FB98;
+  }
+  #back:hover{
+ 	background-color: #98FB98;
+  	cursor: pointer;
+  } 
 </style>
 
 </head>
@@ -71,20 +92,26 @@
 		</c:forEach>
 	</ul>
 </c:if>
-
+<div><a href="#focus" style="text-decoration:none;">查看當筆新增或修改的資料</a><a id="first" style="text-decoration:none;"></a></div>
 <table>
 	<tr>
 		<th style="width:50px">編號</th>
-		<th style="width:150px">姓名</th>
+		<th style="width:130px">姓名</th>
 		<th style="width:100px">帳號</th>
 		<th style="width:100px">密碼</th>
 		<th style="width:100px">EMAIL</th>
-		<th style="width:100px">在職狀況</th>	
+		<th style="width:80px">在職狀況</th>	
 	</tr>
 	<c:forEach var="employeeVO" items="${list}" >
-		<tr>
+		<tr ${(employeeVO.emp_no==param.emp_no || employeeVO.emp_no==emp_no) ? 'bgcolor=#98FB98 name=pos' : '' } >
 			<c:if test="${employeeVO.emp_no != 90001}">
-			<td>${employeeVO.emp_no}</td>
+				<c:if test="${employeeVO.emp_no==param.emp_no || employeeVO.emp_no==emp_no}">
+					<td>${employeeVO.emp_no}<a id="focus"></a></td>
+				</c:if>
+				<c:if test="${employeeVO.emp_no!=param.emp_no && employeeVO.emp_no!=emp_no}">
+					<td>${employeeVO.emp_no}</td>
+				</c:if>
+
 			<td>${employeeVO.name}</td>
 			<td>${employeeVO.acc}</td>
 			<c:set var="pwd" value="${employeeVO.pwd}"/>
@@ -100,18 +127,22 @@
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/employee/employee.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="修改">
 			     <input type="hidden" name="emp_no"  value="${employeeVO.emp_no}">
+			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
 			</td>
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/employee/employee.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="刪除">
 			     <input type="hidden" name="emp_no"  value="${employeeVO.emp_no}">
+			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 			     <input type="hidden" name="action" value="delete"></FORM>
 			</td>
+			<td id="back" style="width: 80px;"><a href="#first" style="font-size: 0.5em;">回到第一筆</a></td>
 			</c:if>			
 		</tr>
 	</c:forEach>
 </table>
+
 
 </body>
 </html>

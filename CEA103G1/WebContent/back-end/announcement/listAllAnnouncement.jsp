@@ -71,15 +71,29 @@
 	padding: 30px;
 	margin: 75px;
   }
-  a{
-  	text-decoration: underline;
+  #focusButton{
+  	width:230px;
+  	margin-left: 250px;
+  	padding: 10px;
+  	border: 1px solid #ccc;
+  	text-align: center;
+  }
+  #focusButton:hover{
+  	background-color: #98FB98;
+  	cursor: pointer;
+  }
+  a:hover{
+  	text-decoration: none;
+  }
+  #back:hover{
+ 	background-color: #98FB98;
+  	cursor: pointer;
   }
 </style>
 
 </head>
 <body bgcolor='white'>
-
-<table id="table-1">
+<table id="table-1">	
 	<tr><td>
 		 <h3>所有公告列表 - listAllAnnouncement.jsp</h3>
 		 <h4><a href="<%=request.getContextPath()%>/back-end/announcement/select_page.jsp"><img src="<%=request.getContextPath()%>/images/logo.png" width="50" height="50" border="0"><br>回首頁</a></h4>
@@ -95,20 +109,25 @@
 		</c:forEach>
 	</ul>
 </c:if>
-
+<div id="focusButton"><a href="#focus">查看當筆新增或修改的資料</a><a id="first"></a></div>
 <table>
 	<tr>
 		<th style="width:50px">編號</th>
-		<th style="width:100px">發文者</th>
-		<th style="width:200px">部分發文內容</th>
-		<th style="width:100px">更新日期</th>
+		<th style="width:80px">發文者</th>
+		<th style="width:170px">部分發文內容</th>
+		<th style="width:100px">公告日期</th>
 		<th style="width:200px">照片</th>
 	
 	</tr>
 	<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService" />
 	<c:forEach var="announcementVO" items="${list}" >	
-		<tr>
-			<td>${announcementVO.an_no}</td>
+		<tr ${(announcementVO.an_no==param.an_no || announcementVO.an_no==an_no) ? 'bgcolor=#98FB98' : '' }>
+				<c:if test="${announcementVO.an_no==param.an_no || announcementVO.an_no==an_no}">
+					<td id="focus">${announcementVO.an_no}<a  style="display: none;"></a></td>
+				</c:if>
+				<c:if test="${announcementVO.an_no!=param.an_no && announcementVO.an_no!=an_no}">
+					<td>${announcementVO.an_no}</td>
+				</c:if>
 			<td>${employeeSvc.getOneEmployee(announcementVO.emp_no).name}</td>
 			<c:set var="an_cont" value="${announcementVO.an_cont}"/>
 			<td class="cont" >
@@ -130,6 +149,7 @@
 			     <input type="hidden" name="an_no"  value="${announcementVO.an_no}">
 			     <input type="hidden" name="action" value="delete"></FORM>
 			</td>
+			<td id="back" style="width: 80px;"><a href="#first" style="font-size: 0.5em;">回到第一筆</a></td>
 		</tr>
 		<div class="modal" tabindex="-1" role="dialog" id="Modal${announcementVO.an_no}">
 		     <div class="modal-dialog" role="document"> 
