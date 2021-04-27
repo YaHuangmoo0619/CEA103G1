@@ -53,5 +53,13 @@ public class AuthorityService {
 	public List<AuthorityVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public List<AuthorityVO> findByFx_no(Integer fx_no) {
+		return dao.findByFx_no(fx_no);
+	}
+	
+	public List<AuthorityVO> findByEmp_no(Integer emp_no){
+		return dao.findByEmp_no(emp_no);
+	}
 
 }
