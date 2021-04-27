@@ -1,5 +1,5 @@
 package com.article.model;
 
-public class test {
+public class test2 {
 
 }
