@@ -8,6 +8,7 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
 	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 	crossorigin="anonymous">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
 <title>Campion_front</title>
 <style>
 /* * { 
@@ -25,10 +26,19 @@ section {
 	text-align: center;
 }
 
+div.fixedTop {
+	background-color: #eee;
+	position: relative;
+	z-index: 10;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100%;
+	text-align: center;
+}
+
 img.logo {
-	width: 100px;
+	width: 150px;
 	margin: 10px;
-	margin-left: 100px;
 }
 
 a {
@@ -76,6 +86,17 @@ img.person:hover {
 	cursor: pointer;
 }
 
+img.backToTop {
+	width: 40px;
+	position: fixed;
+	left: 90%;
+	bottom: 5%;
+	background-color: #80c344;
+	border-radius: 50%;
+	z-index: 10;
+	display: none;
+}
+
 section.jumbotron {
 	border-radius: 0px;
 	background-image: url("topphoto.jpg");
@@ -89,6 +110,7 @@ div.slogan h1 {
 	font-size: 3em;
 	font-weight: 999;
 	margin: 0px auto;
+	margin-top: 30px;
 }
 
 div.header {
@@ -175,6 +197,15 @@ section.footer {
 	container {
 		width: 100%;
 	}
+	div.fixedTop {
+		background-color: #eee;
+		position: relative;
+		z-index: 10;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		text-align: center;
+	}
 	form.form-inline {
 		display: none;
 	}
@@ -246,6 +277,15 @@ section.footer {
 		width: 540px;
 		margin: 0px auto;
 	}
+	div.fixedTop {
+		background-color: #eee;
+		position: relative;
+		z-index: 10;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		text-align: center;
+	}
 	form.form-inline {
 		display: none;
 	}
@@ -283,6 +323,15 @@ section.footer {
 	container {
 		width: 720px;
 		margin: 0px auto;
+	}
+	div.fixedTop {
+		background-color: #eee;
+		position: relative;
+		z-index: 10;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		text-align: center;
 	}
 	form.form-inline {
 		display: none;
@@ -367,8 +416,9 @@ section.footer {
 </head>
 
 <body>
-	<div style="background-color: #eee;">
-		<img src="campionLogoLong.png" class="logo">
+	<div class="fixedTop">
+		<a href="#"> <img src="campionLogoLong.png" class="logo">
+		</a>
 		<form class="form-inline my-2 my-lg-0">
 			<input class="form-control mr-sm-2" type="search"
 				placeholder="營位/商品/文章" aria-label="Search">
@@ -383,6 +433,7 @@ section.footer {
 		</div>
 		<img src="cart-outline.svg" class="cart">
 		<div class="btn-group" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-outline-secondary">營主</button>
 			<button type="button" class="btn btn-outline-secondary">註冊</button>
 			<button type="button" class="btn btn-outline-secondary">登入</button>
 			<button type="button" class="btn btn-outline-secondary">FAQ</button>
@@ -406,11 +457,16 @@ section.footer {
 			<button type="button" class="btn btn-secondary">論壇</button>
 		</div>
 		<div class="btn-group sec" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-outline-secondary">營主</button>
 			<button type="button" class="btn btn-outline-secondary">註冊</button>
 			<button type="button" class="btn btn-outline-secondary">登入</button>
 			<button type="button" class="btn btn-outline-secondary">FAQ</button>
 			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
 		</div>
+	</div>
+	<div class="backToTop">
+		<a href="#"><img src="arrow-up-circle-outline.svg"
+			class="backToTop"></a>
 	</div>
 	<section class="jumbotron">
 		<div class="container">
@@ -619,6 +675,16 @@ section.footer {
 				}
 			}
 		}
+
+		let backToTop = document.getElementsByClassName("backToTop");
+		$(window).scroll(function(e) {
+			console.log(e);
+			if ($(window).scrollTop() <= 1) {
+				backToTop[1].style.display = "none";
+			}else{
+				backToTop[1].style.display = "block";
+			}
+		});
 	</script>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
