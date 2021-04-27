@@ -286,6 +286,7 @@ public class CampServlet extends HttpServlet {
                 System.out.println(camp_name);
 				String campInfo = req.getParameter("campInfo");
 				System.out.println(campInfo);
+				System.out.println(campInfo);
 				String note = req.getParameter("note");
 				System.out.println(note);
 				String values[] = req.getParameterValues("wireless");
@@ -328,14 +329,15 @@ public class CampServlet extends HttpServlet {
 				} else if (!district.trim().matches(districtReg)) { // 絤策タ玥(砏)ボΑ(regular-expression)
 					errorMsgs.add("秏马カ跋: 琌いゅ");
 				}
+				System.out.println(district);
 				String address = req.getParameter("address");
 				String addressReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
-				if (address == null || address.trim().length() == 0) {
-					errorMsgs.add(": 叫づフ");
-				} else if (!address.trim().matches(addressReg)) { // 絤策タ玥(砏)ボΑ(regular-expression)
-					errorMsgs.add(": 琌いゅ计");
-				}
-
+				if (address == null) {
+					errorMsgs.add(": 叫づフ");}
+//				} else if (!address.trim().matches(addressReg)) { // 絤策タ玥(砏)ボΑ(regular-expression)
+//					errorMsgs.add(": 琌いゅ计");
+//				}
+				System.out.println(address);
 				CampVO campVO = new CampVO();
 				campVO.setCamp_name(camp_name);
 				campVO.setCampInfo(campInfo);
@@ -386,7 +388,7 @@ public class CampServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
-		if ("delete".equals(action)) { // ㄓlistAllEmp.jsp
+		if ("delete".equals(action)) { // ㄓupdateEmp.jsp
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to

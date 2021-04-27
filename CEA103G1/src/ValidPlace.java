@@ -1,10 +1,13 @@
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.LinkedHashSet;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,23 +20,28 @@ import com.district.model.*;
 import com.place.model.*;
 import com.place_order.model.*;
 import com.place_order_details.model.*;
+import com.google.gson.Gson;
 
 public class ValidPlace extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-//		res.setContentType("application/json");
-//		PrintWriter out = res.getWriter();
+		res.setContentType("application/json;charset=UTF-8");
+		req.setCharacterEncoding("UTF-8");
+		PrintWriter out = res.getWriter();
+		Gson gson = new Gson();
 
 		java.sql.Date startdate = java.sql.Date.valueOf(req.getParameter("startdate").trim());
 		java.sql.Date enddate = java.sql.Date.valueOf(req.getParameter("enddate").trim());
-		String county = req.getParameter("county");
-		Integer people = new Integer(req.getParameter("people"));
-		if (people == null) {
+		String county = req.getParameter("county").trim();
+		Integer people;
+		try {
+			people = new Integer(req.getParameter("people"));
+		} catch (NumberFormatException e) {
 			people = 1;
 		}
 
 		Place_Order_DetailsService place_order_detailsSvc = new Place_Order_DetailsService();
 		List<Place_Order_DetailsVO> place_order_detailslist = place_order_detailsSvc.getAll();// 把所有訂單明細取出來
-		TreeSet<Integer> plc_no_set = new TreeSet();// new一個放已被下訂之營位編號的set
+		LinkedHashSet<Integer> plc_no_set = new LinkedHashSet();// new一個放已被下訂之營位編號的set
 
 		for (Place_Order_DetailsVO place_order_detailsVO : place_order_detailslist) {
 			plc_no_set.add(place_order_detailsVO.getPlc_no());// 把所有訂單明細的營位編號放進set並排序且不重複
@@ -42,28 +50,38 @@ public class ValidPlace extends HttpServlet {
 		PlaceService placeSvc = new PlaceService();
 		List<PlaceVO> placelist = placeSvc.getAll();// 把所有營位取出來
 
-		for (PlaceVO placeVO : placelist) {
+		for (int i = 0; i < placelist.size(); i++) {
 			for (Integer plc_no : plc_no_set) {
-				if (placeVO.getPlc_no() == plc_no) {// 把已下訂之營位移除
-					placelist.remove(placeVO);
+				if (placelist.get(i).getPlc_no() == plc_no) {// 把已下訂之營位移除
+					placelist.remove(placelist.get(i));
+					if (!(i == 0)) {
+						i--;
+					}
+					if(placelist.size() == 0) {
+						break;
+					}
 				}
+			}
+			if(placelist.size() == 0) {
+				break;
 			}
 		}
 
 		Place_OrderService place_orderSvc = new Place_OrderService();
-		List<Place_OrderVO> place_orderlist = new ArrayList();
-		Set<Integer> plc_ord_no_set = new TreeSet();
-
+		List<Place_OrderVO> place_orderlist;
+		Set<Integer> plc_ord_no_set = new LinkedHashSet();
 		for (Integer plc_no : plc_no_set) {
-
+			place_orderlist = new ArrayList<Place_OrderVO>();
 			Boolean flag = true;// 立個旗子
 
 			plc_ord_no_set = place_order_detailsSvc.getOnePlace_Order_Details2(plc_no);// 把一個營位的所有訂單編號放進set
 			for (Integer plc_ord_no : plc_ord_no_set) {
 				place_orderlist.add(place_orderSvc.getOnePlace_Order(plc_ord_no));
 			}
-			for (Place_OrderVO place_orderVO : place_orderlist) {// 比對一筆訂單，入住日在checkout日之後或退房日在checkin日之前
-				if (startdate.after(place_orderVO.getCkout_date()) || enddate.before(place_orderVO.getCkin_date())) {
+			for (Place_OrderVO place_orderVO : place_orderlist) {// 比對一筆訂單，入住日在訂單checkout日之後或退房日在訂單checkin日之前
+				if (startdate.after(place_orderVO.getCkout_date()) || startdate.equals(place_orderVO.getCkout_date())
+						|| enddate.before(place_orderVO.getCkin_date())
+						|| enddate.equals(place_orderVO.getCkin_date())) {
 					flag = true;
 				} else {
 					flag = false;// 日期不符合，旗子翻反面
@@ -85,19 +103,25 @@ public class ValidPlace extends HttpServlet {
 				}
 			}
 			if (count < people) {// 如果統計人數小於輸入人數則將該營區所有營位移除
-				for (PlaceVO placeVO : placelist) {
-					if (placeVO.getCamp_no() == camp_no) {
-						placelist.remove(placeVO);
+				for (int j = 0; i < placelist.size(); j++) {
+					if (placelist.get(j).getCamp_no() == camp_no) {
+						placelist.remove(placelist.get(j));
+						if (!(j == 0)) {
+							j--;
+						}
 					}
 				}
-				i--;// 第i位也會跟著被移除，所以要把i維持原來數字
+				if (!(i == 0)) {
+					i--;
+				} // 第i位也會跟著被移除，所以要把i維持原來數字
 			}
 		}
 
+		CampService campSvc = new CampService();
+		List<CampVO> camplist = campSvc.getAll();
+
 		if (!county.equals("不拘")) { // 如果有選擇縣市
 
-			CampService campSvc = new CampService();
-			List<CampVO> camplist = campSvc.getAll();
 			DistrictService distSvc = new DistrictService();
 			List<DistrictVO> distlist = distSvc.getAll();
 
@@ -105,11 +129,10 @@ public class ValidPlace extends HttpServlet {
 			List<Integer> camp_no_list = new ArrayList();
 
 			for (DistrictVO districtVO : distlist) { // 把該縣市所有行政區編號放進行政區編號list
-				if (districtVO.getCty().equals("county")) {
+				if (districtVO.getCty().equals(county)) {
 					dist_no_list.add(districtVO.getDist_no());
 				}
 			}
-
 			for (CampVO campVO : camplist) {// 把屬於該縣市的營區的編號放進營區編號list
 				for (Integer dist_no : dist_no_list) {
 					if (campVO.getCamp_no() == dist_no) {
@@ -117,29 +140,43 @@ public class ValidPlace extends HttpServlet {
 					}
 				}
 			}
-
-			for (PlaceVO placeVO : placelist) {
-
+			for (int i = 0; i < placelist.size(); i++) {
 				Boolean flag = false;// 立個旗子
-
 				for (Integer camp_no : camp_no_list) {
-					if (placeVO.getCamp_no() == camp_no) {
+					if (placelist.get(i).getCamp_no() == camp_no) {
 						flag = true;// 符合營區編號的營位，旗子翻正面
 					}
 				}
 				if (!flag) {// 迴圈跑完旗子仍為反面則移除該營位
-					placelist.remove(placeVO);
+					placelist.remove(placelist.get(i));
+					if (placelist.size() == 0) {
+						break;
+					}
+					;
+					i--;
+
 				}
 			}
 
 		}
-		for (PlaceVO placeVO : placelist) {// 測試用
-			System.out.println(placeVO.getPlc_name() + " " + placeVO.getCamp_no());
-//			 JSONObject jsonObject = JSONObject.fromObject(placeVO);
-		}
 		
-//		JSONArray jsonArray = JSONArray.fromObject(placelist);
-//		out.println();
-		req.setAttribute("placelist", placelist);
+		Set<Integer> campno = new HashSet();
+
+		for (PlaceVO placeVO : placelist) {
+			System.out.println(placeVO.getPlc_name());
+			campno.add(placeVO.getCamp_no());
+		}
+        
+		camplist = new ArrayList<CampVO>();
+		for (Integer camp_no : campno) {
+			CampVO campVO = new CampVO();
+			campVO.setCamp_no(camp_no);
+			campVO.setCamp_name(campSvc.getOneCamp(camp_no).getCamp_name());
+			campVO.setAddress(campSvc.getOneCamp(camp_no).getAddress());
+			camplist.add(campVO);
+		}
+
+		String jsonObject = gson.toJson(camplist);
+		out.println(jsonObject);
 	}
 }
