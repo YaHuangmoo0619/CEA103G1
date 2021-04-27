@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=BIG5">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css"
+	href="datetimepicker/jquery.datetimepicker.css" />
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="datetimepicker/jquery.datetimepicker.full.js"></script>
+</head>
+<body>
+	<FORM method="get" action="http://localhost:8081/CEA103G1/ValidPlace.do">
+<!-- 		縣市:<select id="county" name="county"></select> -->
+		縣市:<input type="type" name="county">
+		入住日期:<input name="startdate" id="f_date1" type="text"> 
+		退房日期:<input name="enddate" id="f_date2" type="text" readonly="true">
+		人數:<input name="people" type="text">
+		<!-- 			<select id="show"></select> -->
+		<input type="submit" value="搜尋">
+	</FORM>
+	<script type="text/javascript">
+		$.datetimepicker.setLocale('zh'); // kr ko ja en
+		var default1 = new Date();
+		default1.setTime(default1.getTime()+24*60*60*1000); 
+		$('#f_date1').datetimepicker({
+			theme : '', //theme: 'dark',
+			timepicker : false, //timepicker: false,
+			step : 1, //step: 60 (這是timepicker的預設間隔60分鐘)
+			format : 'Y-m-d',
+			value : default1,
+			//disabledDates:    ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+			//startDate:	        '2017/07/10',  // 起始日
+// 			minDate : '-1970-01-01', // 去除今日(不含)之前
+		//maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+		});
+        var default2 = new Date();
+        default2.setTime(default2.getTime()+2*24*60*60*1000); 
+		$.datetimepicker.setLocale('zh'); // kr ko ja en
+		$('#f_date2').datetimepicker({
+			theme : '', //theme: 'dark',
+			timepicker : false, //timepicker: false,
+			step : 1, //step: 60 (這是timepicker的預設間隔60分鐘)
+			format : 'Y-m-d',
+			value : default2,
+			//disabledDates:    ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+			//startDate:	        '2017/07/10',  // 起始日
+// 			minDate : '-1970-01-01', // 去除今日(不含)之前
+		//maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+		});
+		Date.prototype.format = function (fmt) {
+			  var o = {
+			    "M+": this.getMonth() + 1, //月份
+			    "d+": this.getDate(), //日
+			    "h+": this.getHours(), //小時
+			    "m+": this.getMinutes(), //分
+			    "s+": this.getSeconds(), //秒
+			    "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+			    "S": this.getMilliseconds() //毫秒
+			  };
+			  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+			  for (var k in o)
+			  if (new RegExp("(" +  k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" +  o[k]).substr(("" + o[k]).length)));
+			  return fmt;
+			}
+		$('#f_date1').blur(function() {
+			var date1 = new Date(Date.parse($('#f_date1').val()));
+			var date2 = new Date(Date.parse($('#f_date2').val()));
+			if(date1 >= date2){
+			var enddate = new Date(Date.parse($('#f_date1').val()) + 86400000);
+			var enddatefmt = enddate.format("yyyy-MM-dd");
+			$('#f_date2').val(enddatefmt);
+			$('#f_date2').prop("readonly",false);}
+		})
+		$('#f_date2').blur(function() {
+			var date1 = new Date(Date.parse($('#f_date1').val()));
+			var date2 = new Date(Date.parse($('#f_date2').val()));
+			if(date1 >= date2){
+			var startdate = new Date(Date.parse($('#f_date2').val()) - 86400000);
+			var startdatefmt = startdate.format("yyyy-MM-dd");
+			$('#f_date1').val(startdatefmt);}
+		})
+		//以下為某一天之後的日期無法選擇
+		var somedate = new Date();
+		somedate.setMonth(somedate.getMonth() + 3);
+		console.log(somedate.getMonth());
+		$('#f_date1').datetimepicker(
+						{
+							beforeShowDay : function(date) {
+								if (date.getYear() > somedate.getYear()
+										|| (date.getYear() == somedate
+												.getYear() && date.getMonth() > somedate
+												.getMonth())
+										|| (date.getYear() == somedate
+												.getYear()
+												&& date.getMonth() == somedate
+														.getMonth() && date
+												.getDate() > somedate.getDate())) {
+									return [ false, "" ]
+								}
+								return [ true, "" ];
+							}
+						});
+		$('#f_date2').datetimepicker(
+						{
+							beforeShowDay : function(date) {
+								if (date.getYear() > somedate.getYear()
+										|| (date.getYear() == somedate
+												.getYear() && date.getMonth() > somedate
+												.getMonth())
+										|| (date.getYear() == somedate
+												.getYear()
+												&& date.getMonth() == somedate
+														.getMonth() && date
+												.getDate() > somedate.getDate())) {
+									return [ false, "" ]
+								}
+								return [ true, "" ];
+							}
+						});
+        //以下為某一天之前的日期無法選擇
+             var somedate1 = new Date($('#f_date1').val());
+             $('#f_date1').datetimepicker({
+                 beforeShowDay: function(date) {
+               	  if (  date.getYear() <  somedate1.getYear() || 
+        		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+        		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+                     ) {
+                          return [false, ""]
+                     }
+                     return [true, ""];
+             }});
+             somedate1 = new Date($('#f_date2').val());
+             $('#f_date2').datetimepicker({
+                 beforeShowDay: function(date) {
+               	  if (  date.getYear() <  somedate1.getYear() || 
+        		           (date.getYear() == somedate1.getYear() && date.getMonth() <  somedate1.getMonth()) || 
+        		           (date.getYear() == somedate1.getYear() && date.getMonth() == somedate1.getMonth() && date.getDate() < somedate1.getDate())
+                     ) {
+                          return [false, ""]
+                     }
+                     return [true, ""];
+             }});
+             
+             $.ajax({
+     			url : "http://localhost:8081/CEA103G1/Taiwan.do",
+     			type : "GET",
+     			success : function(data) {
+     				showNames(data);
+     			}
+     		});
+
+     		function showNames(data) {
+     			$("#show").html("");
+    			for (i in data) {
+//     				console.log(i);
+    				var opt = $("<option>").val(i).text(i);
+    				$("#show").append(opt);
+    			}
+//      			console.log(data);
+//      			data.split(",");
+
+//      			var b = JSON.stringify(data)
+//      			var a = JSON.parse(data);
+//      			console.log("----------------------a-------------------------");
+//      			console.log(a);
+
+//      			alert(data);
+//      			for(i in data){
+//      				console.log(data[i]);
+//      			}
+     		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=BIG5">
+<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+	<!-- <form id="form1" onsubmit="return false" action="##" method="post"> -->
+	<FORM method="get" id="form1" onsubmit="return false"
+		accept-charset="big5">
+		<!-- 		縣市:<select id="county" name="county"></select> -->
+		縣市:<input type="type" name="county"> 入住日期:<input
+			name="startdate" id="f_date1" type="text"> 退房日期:<input
+			name="enddate" id="f_date2" type="text"> 人數:<input
+			name="people" type="text"> <input type="button" id="idForm"
+			value="搜尋" onclick="sub()">
+	</FORM>
+	<hr>
+	<br>
+	<script>
+		function sub() {
+			$('div').remove();
+			$('hr').remove();
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "http://localhost:8081/CEA103G1/ValidPlace.do",
+				data : $('#form1').serialize(), // serializes the form's elements.
+				success : function(data) {
+					showNames(data);
+				}
+			});
+		}// avoid to execute the actual submit of the form.
+
+		function showNames(data) {
+			var a = JSON.stringify(data);
+			console.log(a);
+			for (i in data) {
+				let html;
+				if (i) {
+					if(!(document.getElementById(`${data[i].camp_no}`))) {						
+					html = `<div class="place" id="${data[i].camp_no}" align="center">
+					<h3>${data[i].camp_name}</h3><p>營位名稱:${data[i].plc_name} 營位平日價格:${data[i].pc_wkdy} 營位假日價格:${data[i].pc_wknd}</p></div><hr>`;
+					} else {
+						html = `<p>營位名稱:${data[i].plc_name} 營位平日價格:${data[i].pc_wkdy} 營位假日價格:${data[i].pc_wknd}</p>`;
+						$(`#${data[i].camp_no}`).append(html);
+						continue;
+					}
+				} else {
+					html = "<center>所有營位皆已滿</center>";
+				}
+				$('br').after(html);
+			}
+		}
+	</script>
+</body>
+</html>
