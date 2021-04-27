@@ -84,6 +84,10 @@
 		    <c:if test="${article_replyVO.getRep_stat() == 1}">不顯示</c:if>
 	   </td>
    </tr>
+      <tr>
+		<td>留言讚數</td>
+		<td><%=article_replyVO.getLikes()%></td>
+  </tr>
 </table>
 
 </body>

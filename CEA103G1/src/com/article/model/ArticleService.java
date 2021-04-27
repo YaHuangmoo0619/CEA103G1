@@ -12,7 +12,7 @@ public class ArticleService {
 		dao = new ArticleDAO(); 
 	}
 
-	public ArticleVO addArticle(Integer bd_cl_no, Integer mbr_no,Timestamp art_rel_time, String art_title, String art_cont,Integer likes, Integer art_stat) {
+	public ArticleVO addArticle(Integer bd_cl_no, Integer mbr_no,Timestamp art_rel_time, String art_title, String art_cont,Integer likes, Integer art_stat,Integer replies) {
 
 		ArticleVO articleVO = new ArticleVO();
 	
@@ -24,12 +24,13 @@ public class ArticleService {
 		articleVO.setArt_cont(art_cont);
 		articleVO.setLikes(likes);
 		articleVO.setArt_stat(art_stat);
+		articleVO.setReplies(replies);
 		dao.insert(articleVO);
 
 		return articleVO;
 	}
 
-	public ArticleVO updateArticle(Integer art_no,Integer bd_cl_no, Integer mbr_no,Timestamp art_rel_time, String art_title, String art_cont,Integer likes, Integer art_stat) {
+	public ArticleVO updateArticle(Integer art_no,Integer bd_cl_no, Integer mbr_no,Timestamp art_rel_time, String art_title, String art_cont,Integer likes, Integer art_stat,Integer replies) {
 
 		ArticleVO articleVO = new ArticleVO();
 
@@ -41,26 +42,96 @@ public class ArticleService {
 		articleVO.setArt_cont(art_cont);
 		articleVO.setLikes(likes);
 		articleVO.setArt_stat(art_stat);
+		articleVO.setReplies(replies);
 		dao.update(articleVO);
 
 		return articleVO;
 	}
+	
+	
+	public ArticleVO plus_like(Integer art_no) {
+
+		ArticleVO articleVO = new ArticleVO();
+
+		articleVO.setArt_no(art_no);
+		dao.plus_like(articleVO);
+
+		return articleVO;
+	}
+	
+	
+	
+	public ArticleVO minus_like(Integer art_no) {
+
+		ArticleVO articleVO = new ArticleVO();
+
+		articleVO.setArt_no(art_no);
+		dao.minus_like(articleVO);
+
+		return articleVO;
+	}
+	
+	
+	
+	public ArticleVO plus_reply(Integer art_no) {
+
+		ArticleVO articleVO = new ArticleVO();
+
+		articleVO.setArt_no(art_no);
+		dao.plus_reply(articleVO);
+
+		return articleVO;
+	}
+	
+	
+	
+	public ArticleVO minus_reply(Integer art_no) {
+
+		ArticleVO articleVO = new ArticleVO();
+
+		articleVO.setArt_no(art_no);
+		dao.minus_reply(articleVO);
+
+		return articleVO;
+	}
+	
+	
+	
 
 	public void deleteArticle(Integer art_no) {
 		dao.delete(art_no);
+	}
+	
+	public ArticleVO hide(Integer art_no) {
+
+		ArticleVO articleVO = new ArticleVO();
+
+		articleVO.setArt_no(art_no);
+		dao.hide(articleVO);
+
+		return articleVO;
 	}
 
 	public ArticleVO getOneArticle(Integer art_no) {
 		return dao.findByPrimaryKey(art_no);
 	}
 
-	public List<ArticleVO> getAll() {
-		return dao.getAll();
+	public List<ArticleVO> getAll_Front() {
+		return dao.getAll_Front();
 	}
 	
-	public List<ArticleVO> getByBoard_Class(Integer bd_cl_no){
-		return dao.findByBd_cl_no(bd_cl_no);
+	public List<ArticleVO> getAll_Back() {
+		return dao.getAll_Back();
 	}
+	
+	public List<ArticleVO> getByBoard_Class_Front(Integer bd_cl_no){
+		return dao.findByBd_cl_no_front(bd_cl_no);
+	}
+	
+	public List<ArticleVO> getByBoard_Class_Back(Integer bd_cl_no){
+		return dao.findByBd_cl_no_front(bd_cl_no);
+	}
+	
 }
 
 

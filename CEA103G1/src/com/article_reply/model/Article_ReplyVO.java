@@ -10,19 +10,21 @@ public class Article_ReplyVO implements Serializable{
 	private String 	rep_cont;
 	private Timestamp  rep_time;
 	private Integer rep_stat;
+	private Integer likes;
 	
 	public Article_ReplyVO() {
 		super();
 	}
 
 	public Article_ReplyVO(Integer art_rep_no, Integer art_no, Integer mbr_no, String rep_cont, Timestamp rep_time,
-			Integer rep_stat) {
+			Integer rep_stat,Integer likes) {
 		this.art_rep_no = art_rep_no;
 		this.art_no = art_no;
 		this.mbr_no = mbr_no;
 		this.rep_cont = rep_cont;
 		this.rep_time = rep_time;
 		this.rep_stat = rep_stat;
+		this.likes = likes;
 	}
 
 	public Integer getArt_rep_no() {
@@ -71,6 +73,14 @@ public class Article_ReplyVO implements Serializable{
 
 	public void setRep_stat(Integer rep_stat) {
 		this.rep_stat = rep_stat;
+	}
+
+	public Integer getLikes() {
+		return likes;
+	}
+
+	public void setLikes(Integer likes) {
+		this.likes = likes;
 	}
 	
 	

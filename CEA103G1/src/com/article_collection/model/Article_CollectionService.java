@@ -24,15 +24,15 @@ private Article_CollectionDAO_Interface dao;
 		dao.delete(mbr_no,art_no);
 	}
 
-	public List<Article_CollectionVO> getAll() {
-		return dao.getAll();
+//	public List<Article_CollectionVO> getAll() {
+//		return dao.getAll();
+//	}
+	
+	public List<Article_CollectionVO> findbymbr_no(Integer mbr_no) {
+		return dao.findByMbr_no(mbr_no);
 	}
 	
-	public void findbymbr_no(Integer mbr_no) {
-		dao.findByMbr_no(mbr_no);
-	}
-	
-	public void findbyart_no(Integer art_no) {
-		dao.findByArt_no(art_no);
+	public List<Article_CollectionVO> findbyart_no(Integer art_no) {
+		return dao.findByArt_no(art_no);
 	}
 }

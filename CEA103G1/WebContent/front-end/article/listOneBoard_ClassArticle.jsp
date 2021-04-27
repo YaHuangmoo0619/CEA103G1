@@ -5,9 +5,11 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.article.model.*"%>
 
+
+<%int bd_cl_no = Integer.parseInt(request.getParameter("bd_cl_no")); %>
 <%
 	ArticleService articleSvc = new ArticleService();
-	List<ArticleVO> list = articleSvc.getAll_Back();
+	List<ArticleVO> list = articleSvc.getByBoard_Class_Front(bd_cl_no);
 	pageContext.setAttribute("list", list);
 %>
 
@@ -21,7 +23,7 @@
 
 <html>
 <head>
-<title>列出所有文章</title>
+<title>單一看板所有文章_前台</title>
 
 <style>
 table#table-1 {
@@ -74,7 +76,7 @@ a:hover {
 	<table id="table-1">
 		<tr>
 			<td>
-				<h3>列出所有文章</h3>
+				<h3>單一看板所有文章_前台</h3>
 				<h4>
 					<a href="/CEA103G1/back-end/article/select_page.jsp"><img src="/CEA103G1/images/Campion.png"
 						width="100" height="100" border="0"></a>
@@ -93,7 +95,7 @@ a:hover {
 		</ul>
 	</c:if>
 
-		<table>
+	<table>
 		<tr>
 			<th>文章編號</th>
 			<th>看板</th>

@@ -10,7 +10,7 @@
 
 <html>
 <head>
-<title>文章資料 - listOneArticle.jsp 後台</title>
+<title>文章資料 - listOneArticle.jsp 前台</title>
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
 <style>
   table#table-1 {
@@ -99,7 +99,7 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>文章資料 - ListOneArticle.jsp 後台</h3>
+		 <h3>文章資料 - ListOneArticle.jsp 前台</h3>
 		 <h4><a href="/CEA103G1/back-end/article/select_page.jsp"><img src="/CEA103G1/images/Campion.png"
 						width="100" height="100" border="0"></a></h4>
 	</td></tr>
@@ -159,7 +159,7 @@
 						style="margin-bottom: 0px;">
 						<input type="submit" value="刪除"> <input type="hidden"
 							name="art_no" value="${articleVO.art_no}"> <input
-							type="hidden" name="action" value="delete">
+							type="hidden" name="action" value="hide">
 					</FORM>
 				</td> 
    </tr>
@@ -196,7 +196,7 @@
 <button id=rep>新增文章留言</button>
 <button id=get>顯示文章留言</button>
 
-
+			<p><%=request.getServletPath()%></p>
 
 	<script>   
   	$("#rep").click(function(){
@@ -211,7 +211,7 @@
 	
  	$("#get").click(function(){
 		$.ajax({
-			url:"/CEA103G1/back-end/article_reply/listOneArticle_Replies.jsp?art_no=<%=articleVO.getArt_no()%>",
+			url:"/CEA103G1/front-end/article_reply/listOneArticle_Replies.jsp?art_no=<%=articleVO.getArt_no()%>&requestURL=<%=request.getServletPath()%>",
 			type: "GET",
 			success: function(data){
 				$("#demo").html(data);

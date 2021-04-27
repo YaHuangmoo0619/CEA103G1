@@ -10,8 +10,6 @@ import javax.servlet.http.*;
 
 import com.article.model.ArticleService;
 import com.article.model.ArticleVO;
-import com.article_reply.model.Article_ReplyService;
-import com.article_reply.model.Article_ReplyVO;
 
 
 @WebServlet("/article/article.do")
@@ -98,71 +96,116 @@ public class ArticleServlet extends HttpServlet {
 		
 		
 		
-		if ("getOneArticle_ByBoard_Clss_For_Display".equals(action)) { // 來自select_page.jsp的請求，列出單一文章的所有留言
+		if ("getOneArticle_ByBoard_Clss_For_Display".equals(action)) { // 來自front-end listAllArticle.jsp的請求  
 
-			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
-			req.setAttribute("errorMsgs", errorMsgs);
-
-			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-				String str = req.getParameter("bd_cl_no");
-				if (str == null || (str.trim()).length() == 0) {
-					errorMsgs.add("請輸入文章編號");
-				}
-				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/article/select_page.jsp");
-					failureView.forward(req, res);
-					return;//程式中斷
-				}
-				
-
-				Integer bd_cl_no = null;
-				try {
-					bd_cl_no = new Integer(str);
-				} catch (Exception e) {
-					errorMsgs.add("文章編號格式不正確");
-				}
-				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/article/select_page.jsp");
-					failureView.forward(req, res);
-					return;//程式中斷
-				}
+				String str = req.getParameter("bd_cl_no"); //不用錯誤驗證 因為是直接跳轉 不是由使用者輸入
+				Integer bd_cl_no = new Integer(str);
+				System.out.println(bd_cl_no);
 				
 				/***************************2.開始查詢資料*****************************************/
 				ArticleService articleSvc = new ArticleService();
-				List<ArticleVO> articleVO = articleSvc.getByBoard_Class(bd_cl_no);
-				if (articleVO == null) {
-					errorMsgs.add("查無資料");
-				}
-				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/article/select_page.jsp");
-					failureView.forward(req, res);
-					return;//程式中斷
-				}
+				List<ArticleVO> articleVO = articleSvc.getByBoard_Class_Front(bd_cl_no);
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("articleVO", articleVO); // 資料庫取出的article_replyVO物件,存入req
-				String url = "/back-end/article/listOneBoard_ClassArticle.jsp";
+				req.setAttribute("articleVO", articleVO); // 資料庫取出的articleVO物件,存入req
+				String url = "/front-end/article/listOneBoard_ClassArticle.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneBoard_ClassArticle.jsp
 				successView.forward(req, res);
 
-				/***************************其他可能的錯誤處理*************************************/
-			} catch (Exception e) {
-				errorMsgs.add("無法取得資料:" + e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/article/select_page.jsp");
-				failureView.forward(req, res);
-			}
-		}		
+		}
 		
+		
+		
+		if ("getOneArticle_ByBoard_Clss_For_Display".equals(action)) { // 來自back-end listAllArticle.jsp的請求  
+
+			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+			String str = req.getParameter("bd_cl_no"); //不用錯誤驗證 因為是直接跳轉 不是由使用者輸入
+			Integer bd_cl_no = new Integer(str);
+			System.out.println(bd_cl_no);
+			
+			/***************************2.開始查詢資料*****************************************/
+			ArticleService articleSvc = new ArticleService();
+			List<ArticleVO> articleVO = articleSvc.getByBoard_Class_Back(bd_cl_no);
+			
+			/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+			req.setAttribute("articleVO", articleVO); // 資料庫取出的articleVO物件,存入req
+			String url = "/back-end/article/listOneBoard_ClassArticle.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneBoard_ClassArticle.jsp
+			successView.forward(req, res);
+
+	}
+		
+		
+		
+		
+		
+		
+		
+//		if ("getOneArticle_ByBoard_Clss_For_Display".equals(action)) { // 來自back-end listAllArticle.jsp的請求
+//
+//			List<String> errorMsgs = new LinkedList<String>();
+//			// Store this set in the request scope, in case we need to
+//			// send the ErrorPage view.
+//			req.setAttribute("errorMsgs", errorMsgs);
+//
+//			try {
+//				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+//				String str = req.getParameter("bd_cl_no");
+//				if (str == null || (str.trim()).length() == 0) {
+//					errorMsgs.add("請輸入看板編號");
+//				}
+//				// Send the use back to the form, if there were errors
+//				if (!errorMsgs.isEmpty()) {
+//					RequestDispatcher failureView = req
+//							.getRequestDispatcher("/back-end/article/select_page.jsp");
+//					failureView.forward(req, res);
+//					return;//程式中斷
+//				}
+//				
+//
+//				Integer bd_cl_no = null;
+//				try {
+//					bd_cl_no = new Integer(str);
+//				} catch (Exception e) {
+//					errorMsgs.add("看板編號格式不正確");
+//				}
+//				// Send the use back to the form, if there were errors
+//				if (!errorMsgs.isEmpty()) {
+//					RequestDispatcher failureView = req
+//							.getRequestDispatcher("/back-end/article/select_page.jsp");
+//					failureView.forward(req, res);
+//					return;//程式中斷
+//				}
+//				
+//				/***************************2.開始查詢資料*****************************************/
+//				ArticleService articleSvc = new ArticleService();
+//				List<ArticleVO> articleVO = articleSvc.getByBoard_Class(bd_cl_no);
+//				if (articleVO == null) {
+//					errorMsgs.add("查無資料");
+//				}
+//				// Send the use back to the form, if there were errors
+//				if (!errorMsgs.isEmpty()) {
+//					RequestDispatcher failureView = req
+//							.getRequestDispatcher("/back-end/article/select_page.jsp");
+//					failureView.forward(req, res);
+//					return;//程式中斷
+//				}
+//				
+//				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+//				req.setAttribute("articleVO", articleVO); // 資料庫取出的article_replyVO物件,存入req
+//				String url = "/back-end/article/listOneBoard_ClassArticle.jsp";
+//				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneBoard_ClassArticle.jsp
+//				successView.forward(req, res);
+//
+//				/***************************其他可能的錯誤處理*************************************/
+//			} catch (Exception e) {
+//				errorMsgs.add("無法取得資料:" + e.getMessage());
+//				RequestDispatcher failureView = req
+//						.getRequestDispatcher("/back-end/article/select_page.jsp");
+//				failureView.forward(req, res);
+//			}
+//		}	
 		
 		
 		
@@ -208,20 +251,10 @@ public class ArticleServlet extends HttpServlet {
 		
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-//				Integer art_no = new Integer(req.getParameter("art_no").trim());
-//				Integer bd_cl_no = new Integer(req.getParameter("bd_cl_no").trim());
-//				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
-				
-				
+			
 				Integer art_no = new Integer(req.getParameter("art_no").trim());
 				System.out.println(art_no);
-//				Integer art_no = null;
-//				try {
-//					art_no = new Integer(req.getParameter("art_no").trim());
-//				} catch (NumberFormatException e) {
-//					art_no = 1;
-//					errorMsgs.add("請填數字.");
-//				}
+
 				
 				
 				Integer bd_cl_no = null;
@@ -288,6 +321,9 @@ public class ArticleServlet extends HttpServlet {
 				} 
 				
 				System.out.println(art_stat);
+				
+				Integer replies = null;
+				replies = new Integer(req.getParameter("replies").trim());
 								
 				ArticleVO articleVO = new ArticleVO();
 				articleVO.setArt_no(art_no);
@@ -298,6 +334,7 @@ public class ArticleServlet extends HttpServlet {
 				articleVO.setArt_cont(art_cont);
 				articleVO.setLikes(likes);
 				articleVO.setArt_stat(art_stat);
+				articleVO.setReplies(replies);
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
@@ -310,7 +347,7 @@ public class ArticleServlet extends HttpServlet {
 				
 				/***************************2.開始修改資料*****************************************/
 				ArticleService articleSvc = new ArticleService();
-				articleVO = articleSvc.updateArticle(art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat);
+				articleVO = articleSvc.updateArticle(art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies);
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("articleVO", articleVO); // 資料庫update成功後,正確的的articleVO物件,存入req
@@ -327,6 +364,37 @@ public class ArticleServlet extends HttpServlet {
 			}
 		}
 
+		
+		
+		if ("plus_like".equals(action)) { // 來自liesOneArticle.jsp的請求 幫這篇文章讚數+1
+
+				/***************************1.接收請求參數**********************/		
+				Integer art_no = new Integer(req.getParameter("art_no").trim());					
+				ArticleVO articleVO = new ArticleVO();
+				articleVO.setArt_no(art_no);	
+				/***************************2.開始修改資料*****************************************/
+				ArticleService articleSvc = new ArticleService();
+				articleVO = articleSvc.plus_like(art_no);
+
+		}
+		
+		
+		
+		if ("minus_like".equals(action)) { // 來自liesOneArticle.jsp的請求 幫這篇文章讚數+1		
+			    
+			    /***************************1.接收請求參數**********************/
+				Integer art_no = new Integer(req.getParameter("art_no").trim());						
+				ArticleVO articleVO = new ArticleVO();
+				articleVO.setArt_no(art_no);
+	            /***************************2.開始修改資料*****************************************/
+				ArticleService articleSvc = new ArticleService();
+				articleVO = articleSvc.plus_like(art_no);
+
+		}
+		
+		
+		
+		
 		
         if ("insert".equals(action)) { // 來自addArticle.jsp的請求  
 			
@@ -392,6 +460,14 @@ public class ArticleServlet extends HttpServlet {
 				}
 				
 
+				Integer replies = null;
+				try {
+					replies = new Integer(req.getParameter("replies").trim());
+				} catch (NumberFormatException e) {
+					replies = 0;
+					errorMsgs.add("留言數請填數字.");
+				}
+				
 				ArticleVO articleVO = new ArticleVO();
 				articleVO.setBd_cl_no(bd_cl_no);
 				articleVO.setMbr_no(mbr_no);
@@ -400,6 +476,7 @@ public class ArticleServlet extends HttpServlet {
 				articleVO.setArt_cont(art_cont);
 				articleVO.setLikes(likes);
 				articleVO.setArt_stat(art_stat);
+				articleVO.setReplies(replies);
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
@@ -412,7 +489,7 @@ public class ArticleServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				ArticleService articleSvc = new ArticleService();
-				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no,art_rel_time,art_title,art_cont, likes,art_stat);
+				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no,art_rel_time,art_title,art_cont, likes,art_stat,replies);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/back-end/article/listAllArticle.jsp";
@@ -430,7 +507,7 @@ public class ArticleServlet extends HttpServlet {
 		
 		
 		if ("delete".equals(action)) { // 來自listAllArticle.jsp
-
+			
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -459,8 +536,44 @@ public class ArticleServlet extends HttpServlet {
 		}
 		
 		
+
 		
-		if ("getOne_From".equals(action)) {
+		if ("hide".equals(action)) { // 來自前台，並不是真的刪除，而是將文章狀態設為不顯示
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+	
+			try {
+				/***************************1.接收請求參數***************************************/
+				Integer art_no = new Integer(req.getParameter("art_no").trim());
+				ArticleVO articleVO = new ArticleVO();
+				articleVO.setArt_no(art_no);
+				System.out.println("1我已來到此處artno為"+art_no);
+				/***************************2.開始隱藏資料***************************************/
+				ArticleService articleSvc = new ArticleService();
+				System.out.println("2我已來到此處artno為"+art_no);
+				articleSvc.hide(art_no);
+				System.out.println("3我已來到此處artno為"+art_no);
+				/***************************3.隱藏完成,準備轉交(Send the Success view)***********/			
+				System.out.println("4我已來到此處artno為"+art_no);
+				String url = "/front-end/article/listAllArticle.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
+				successView.forward(req, res);
+				
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add("隱藏資料失敗:"+e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/article/listAllArticle.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		
+		
+		if ("getOne_From".equals(action)) { //列出某文章
 
 			try {
 				// Retrieve form parameters.
@@ -473,7 +586,7 @@ public class ArticleServlet extends HttpServlet {
 
 				// 取出的articleVO送給listOneEmp.jsp
 				RequestDispatcher successView = req
-						.getRequestDispatcher("/back-end/article/listOneArticle.jsp");
+						.getRequestDispatcher("/front-end/article/listOneArticle.jsp");
 				successView.forward(req, res);
 				return;
 

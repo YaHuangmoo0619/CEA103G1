@@ -17,13 +17,13 @@ public class TestDAO extends HttpServlet{
 			dao.insert(new Article_CollectionVO(10001,6));
 			//dao.update(Article_CollectionVO);
 			res.setContentType("text/html; charset=UTF-8");
-			List<Article_CollectionVO> list = dao.getAll();
+//			List<Article_CollectionVO> list = dao.getAll();
 			try {
 				PrintWriter out = res.getWriter();
 				out.println("<HTML>");
 				out.println("<HEAD><TITLE>Hello World</TITLE></HEAD>");
 				out.println("<BODY>");
-				out.println("<BIG>Success</BIG>"+list.get(3).getArt_no());
+//				out.println("<BIG>Success</BIG>"+list.get(3).getArt_no());
 				out.println("</BODY></HTML>");
 			} catch (IOException e) {
 				e.printStackTrace();
