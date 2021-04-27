@@ -16,6 +16,7 @@ public class PlaceDAO implements PlaceDAO_interface {
 		}
 	}
 	private static final String GET_ONE_STMT = "SELECT * FROM place where plc_no = ?";
+	private static final String GET_BY_CAMP = "SELECT * FROM place where camp_no = ?";
 	private static final String GET_ALL_STMT = "SELECT * FROM place order by plc_no";
 	private static final String INSERT_STMT = "INSERT INTO campsite (cso_no,dist_no,camp_name,campsite_Status,campInfo,note,config,review_Status,height,wireless,pet,facility,operate_Date,park,address,longtitude,latitude,total_Star,total_Comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE campsite set camp_name=?,campsite_Status=?,campInfo=?,note=?,config=?,review_Status=?,height=?,wireless=?,pet=?,facility=?,operate_Date=?,park=?,address=?,longtitude=?,latitude=?,total_Star=?,total_Comment=? where campno = ?";
@@ -73,6 +74,62 @@ public class PlaceDAO implements PlaceDAO_interface {
 		return placeVO;
 	}
 
+	public List<PlaceVO> findByCampno(Integer camp_no) {
+		List<PlaceVO> list = new ArrayList<PlaceVO>();
+		PlaceVO placeVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_BY_CAMP);
+			pstmt.setInt(1, camp_no);
+			rs = pstmt.executeQuery();
+
+			
+			while (rs.next()) {
+				placeVO = new PlaceVO();
+				placeVO.setPlc_no(rs.getInt("plc_no"));
+				placeVO.setCamp_no(rs.getInt("camp_no"));
+				placeVO.setPlc_name(rs.getString("plc_name"));
+				placeVO.setPpl(rs.getInt("ppl"));
+				placeVO.setMax_ppl(rs.getInt("max_ppl"));
+				placeVO.setPc_wkdy(rs.getInt("pc_wkdy"));
+				placeVO.setPc_wknd(rs.getInt("pc_wknd"));
+				placeVO.setOpen_stat(rs.getInt("open_stat"));
+				placeVO.setPlc_stat(rs.getInt("plc_stat"));
+				list.add(placeVO);
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
 	public List<PlaceVO> getAll() {
 		List<PlaceVO> list = new ArrayList<PlaceVO>();
 		PlaceVO placeVO = null;

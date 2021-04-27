@@ -53,4 +53,8 @@ public class PlaceService {
 	public List<PlaceVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public List<PlaceVO> getByCamp(Integer camp_no){
+		return dao.findByCampno(camp_no);
+	}
 }

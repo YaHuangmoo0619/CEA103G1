@@ -12,7 +12,6 @@ public class PlaceVO implements Serializable{
     private Integer pc_wknd;
     private Integer open_stat;
     private Integer plc_stat;
-    private String camp_name;
 	public PlaceVO() {
 		super();
 	}
@@ -82,11 +81,5 @@ public class PlaceVO implements Serializable{
 	}
 	public void setPlc_stat(Integer plc_stat) {
 		this.plc_stat = plc_stat;
-	}
-	public String getCamp_name() {
-		return camp_name;
-	}
-	public void setCamp_name(String camp_name) {
-		this.camp_name = camp_name;
 	}
 }
