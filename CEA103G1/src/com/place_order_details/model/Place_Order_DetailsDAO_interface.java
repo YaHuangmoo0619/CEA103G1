@@ -7,6 +7,7 @@ import java.util.Set;
 
 public interface Place_Order_DetailsDAO_interface {
 	public void insert(Place_Order_DetailsVO place_order_detailsVO);
+	public void insert2(Place_Order_DetailsVO place_order_detailsVO, java.sql.Connection con);
 
 	public void update(Place_Order_DetailsVO place_order_detailsVO);
 

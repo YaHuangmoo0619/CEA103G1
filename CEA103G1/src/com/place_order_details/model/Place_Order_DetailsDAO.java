@@ -20,14 +20,14 @@ public class Place_Order_DetailsDAO implements Place_Order_DetailsDAO_interface 
 	private static final String GET_ONE_PLC_NO = "SELECT * FROM place_order_details where plc_ord_no = ?";
 	private static final String GET_ONE_PLC_ORD = "SELECT plc_ord_no FROM place_order_details where plc_no = ?";
 	private static final String GET_ALL_STMT = "SELECT * FROM place_order_details order by plc_ord_no";
-	private static final String INSERT_STMT = "INSERT INTO campsite (cso_no,dist_no,camp_name,campsite_Status,campInfo,note,config,review_Status,height,wireless,pet,facility,operate_Date,park,address,longtitude,latitude,total_Star,total_Comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String UPDATE = "UPDATE campsite set camp_name=?,campsite_Status=?,campInfo=?,note=?,config=?,review_Status=?,height=?,wireless=?,pet=?,facility=?,operate_Date=?,park=?,address=?,longtitude=?,latitude=?,total_Star=?,total_Comment=? where campno = ?";
+	private static final String INSERT_STMT = "INSERT INTO PLACE_ORDER_DETAILS (plc_ord_no,plc_no) VALUES (?, ?)";
+	private static final String UPDATE = "UPDATE campsite set plc_no=? where plc_ord_no = ?";
 	private static final String DELETE = "DELETE FROM campsite where camp_no = ?";
 
 	public List<Place_Order_DetailsVO> findByPlaceOrder(Integer plc_ord_no) {
 		List<Place_Order_DetailsVO> list = new ArrayList<Place_Order_DetailsVO>();
 		Place_Order_DetailsVO place_order_detailsVO = null;
-		
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -70,11 +70,11 @@ public class Place_Order_DetailsDAO implements Place_Order_DetailsDAO_interface 
 		}
 		return list;
 	}
-	
+
 	public Set<Integer> findByPlace(Integer plc_no) {
 		Set<Integer> list = new TreeSet<Integer>();
 		Place_Order_DetailsVO place_order_detailsVO = null;
-		
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -83,7 +83,7 @@ public class Place_Order_DetailsDAO implements Place_Order_DetailsDAO_interface 
 			pstmt = con.prepareStatement(GET_ONE_PLC_ORD);
 			pstmt.setInt(1, plc_no);
 			rs = pstmt.executeQuery();
-			
+
 			while (rs.next()) {
 				Integer plc_ord_no = new Integer(rs.getInt("plc_ord_no"));
 				list.add(plc_ord_no);
@@ -181,8 +181,7 @@ public class Place_Order_DetailsDAO implements Place_Order_DetailsDAO_interface 
 
 			// Handle any SQL errors
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
+			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {
 			if (pstmt != null) {
@@ -197,6 +196,47 @@ public class Place_Order_DetailsDAO implements Place_Order_DetailsDAO_interface 
 					con.close();
 				} catch (Exception e) {
 					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
+
+	public void insert2(Place_Order_DetailsVO place_order_detailsVO, Connection con) {
+		PreparedStatement pstmt = null;
+
+		try {
+
+			pstmt = con.prepareStatement(INSERT_STMT);
+
+			pstmt.setInt(1, place_order_detailsVO.getPlc_ord_no());
+			pstmt.setInt(2, place_order_detailsVO.getPlc_no());
+
+			Statement stmt = con.createStatement();
+//stmt.executeUpdate("set auto_increment_offset=7001;"); //自增主鍵-初始值
+			stmt.executeUpdate("set auto_increment_increment=1;"); // 自增主鍵-遞增
+			pstmt.executeUpdate();
+
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-emp");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. " + excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
 				}
 			}
 		}
@@ -218,8 +258,7 @@ public class Place_Order_DetailsDAO implements Place_Order_DetailsDAO_interface 
 			pstmt.executeUpdate();
 
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
+			throw new RuntimeException("A database error occured. " + se.getMessage());
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -237,7 +276,6 @@ public class Place_Order_DetailsDAO implements Place_Order_DetailsDAO_interface 
 			}
 		}
 	}
-
 
 //	public void delete(Integer plc_ord_no, Integer plc_no) {
 //		Connection con = null;
@@ -277,12 +315,12 @@ public class Place_Order_DetailsDAO implements Place_Order_DetailsDAO_interface 
 	@Override
 	public void deletePlace_Order(Integer plc_ord_no) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deletePlace(Integer plc_no) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

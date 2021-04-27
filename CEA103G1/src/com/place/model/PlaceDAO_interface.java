@@ -14,4 +14,6 @@ public interface PlaceDAO_interface {
 	public PlaceVO findByPrimaryKey(Integer plc_no);
 
 	public List<PlaceVO> getAll();
+
+	public List<PlaceVO> findByCampno(Integer camp_no);
 }
