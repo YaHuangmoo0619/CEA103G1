@@ -114,58 +114,58 @@ public class Article_CollectionDAO implements Article_CollectionDAO_Interface{
 		}
 	}
 	
-	@Override
-	public List<Article_CollectionVO> getAll() {
-		List<Article_CollectionVO> list = new ArrayList<Article_CollectionVO>();
-		Article_CollectionVO Article_CollectionVO = null;
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ALL_STMT);
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				Article_CollectionVO = new Article_CollectionVO();
-				Article_CollectionVO.setMbr_no(rs.getInt("mbr_no"));
-				Article_CollectionVO.setArt_no(rs.getInt("art_no"));
-				list.add(Article_CollectionVO); // Store the row in the list
-			}
-
-			// Handle any driver errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-		return list;
-	}
+//	@Override
+//	public List<Article_CollectionVO> getAll() {
+//		List<Article_CollectionVO> list = new ArrayList<Article_CollectionVO>();
+//		Article_CollectionVO Article_CollectionVO = null;
+//
+//		Connection con = null;
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//
+//		try {
+//
+//			con = ds.getConnection();
+//			pstmt = con.prepareStatement(GET_ALL_STMT);
+//			rs = pstmt.executeQuery();
+//
+//			while (rs.next()) {
+//				Article_CollectionVO = new Article_CollectionVO();
+//				Article_CollectionVO.setMbr_no(rs.getInt("mbr_no"));
+//				Article_CollectionVO.setArt_no(rs.getInt("art_no"));
+//				list.add(Article_CollectionVO); // Store the row in the list
+//			}
+//
+//			// Handle any driver errors
+//		} catch (SQLException se) {
+//			throw new RuntimeException("A database error occured. "
+//					+ se.getMessage());
+//			// Clean up JDBC resources
+//		} finally {
+//			if (rs != null) {
+//				try {
+//					rs.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (pstmt != null) {
+//				try {
+//					pstmt.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (Exception e) {
+//					e.printStackTrace(System.err);
+//				}
+//			}
+//		}
+//		return list;
+//	}
 	@Override
 	public List<Article_CollectionVO> findByMbr_no(Integer mbr_no) {
 		List<Article_CollectionVO> list = new ArrayList<Article_CollectionVO>();

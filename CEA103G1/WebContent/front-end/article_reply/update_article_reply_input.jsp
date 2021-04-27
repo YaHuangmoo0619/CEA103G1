@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>文章留言資料修改 - update_article_reply_input.jsp</title>
+<title>文章留言資料修改 - update_article_reply_input.jsp 前台</title>
 
 <style>
   table#table-1 {
@@ -58,7 +58,7 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>文章留言資料修改 - update_article_reply_input.jsp</h3>
+		 <h3>文章留言資料修改 - update_article_reply_input.jsp 前台</h3>
  <h4><a href="/CEA103G1/back-end/article_reply/select_page.jsp"><img src="/CEA103G1/images/Campion.png"
 						width="100" height="100" border="0"></a></h4>
 	</td></tr>
@@ -78,14 +78,7 @@
 
 <FORM METHOD="post" ACTION="/CEA103G1/article_reply/article_reply.do" name="form1">
 <table>
-	<tr>
-		<td>文章留言編號:<font color=red></font></td>
-		<td><%=article_replyVO.getArt_rep_no()%></td>
-	</tr>
-	<tr>
-		<td>文章編號:</td>
-		<td><%=article_replyVO.getArt_no()%></td>
-	</tr>
+
 	
 	<tr>
 		<td>會員編號:</td>
@@ -101,28 +94,23 @@
 		<td>留言內容:</td>
 		<td><input type="TEXT" name="rep_cont" size="45" value="<%=article_replyVO.getRep_cont()%>" /></td>	
 	</tr>
-	   
-	<tr>
-		<td>留言狀態:</td>
-		<td><input type="TEXT" name="rep_stat" size="45" value="<%=article_replyVO.getRep_stat()%>" /></td>
-	</tr>
 
-	<tr>
-		<td>留言讚數:</td>
-		<td><%=article_replyVO.getLikes()%></td>
-	</tr>
 
 </table>
 <br>
 
-
+<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>"> <!--接收原送出修改的來源網頁路徑後,再送給Controller準備轉交之用-->
 <input type="hidden" name="art_rep_no" value="<%=article_replyVO.getArt_rep_no()%>">
 <input type="hidden" name="art_no" value="<%=article_replyVO.getArt_no()%>">
 <input type="hidden" name="mbr_no" value="<%=article_replyVO.getMbr_no()%>">
 <input type="hidden" name="rep_time" value="<%=article_replyVO.getRep_time()%>">
 <input type="hidden" name="likes" value="<%=article_replyVO.getLikes()%>">
+<input type="hidden" name="rep_stat" value="<%=article_replyVO.getRep_stat()%>">
 <input type="hidden" name="action" value="update">
 <input type="submit" value="送出修改"></FORM>
+
+<br>送出修改的來源網頁路徑:<br><b>
+   <font color=blue>request.getParameter("requestURL"):</font> <%=request.getParameter("requestURL")%><br>
 </body>
 
 </html>

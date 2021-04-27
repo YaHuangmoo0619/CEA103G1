@@ -24,13 +24,13 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 		}
 	}
 
-	private static final String INSERT_STMT = "INSERT INTO ARTICLE_REPLY (art_no,mbr_no,rep_cont,rep_time,rep_stat) VALUES (?,?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT art_rep_no,art_no,mbr_no,rep_cont,rep_time,rep_stat FROM ARTICLE_REPLY order by art_rep_no";
-	private static final String GET_ALL_REPLY_IN_ONE_ARTICLE_STMT = "Select art_rep_no,art_no,mbr_no,rep_cont,rep_time,rep_stat FROM ARTICLE_REPLY WHERE art_no = ?";
-	private static final String GET_ONE_STMT = "SELECT art_rep_no,art_no,mbr_no,rep_cont,rep_time,rep_stat FROM ARTICLE_REPLY where art_rep_no = ?";
+	private static final String INSERT_STMT = "INSERT INTO ARTICLE_REPLY (art_no,mbr_no,rep_cont,rep_time,rep_stat,likes) VALUES (?,?, ?, ?, ?,?)";
+	private static final String GET_ALL_STMT = "SELECT art_rep_no,art_no,mbr_no,rep_cont,rep_time,rep_stat,likes FROM ARTICLE_REPLY order by art_rep_no";
+	private static final String GET_ALL_REPLY_IN_ONE_ARTICLE_STMT = "Select art_rep_no,art_no,mbr_no,rep_cont,rep_time,rep_stat,likes FROM ARTICLE_REPLY WHERE art_no = ?";
+	private static final String GET_ONE_STMT = "SELECT art_rep_no,art_no,mbr_no,rep_cont,rep_time,rep_stat,likes FROM ARTICLE_REPLY where art_rep_no = ?";
 	private static final String DELETE = "DELETE FROM ARTICLE_REPLY where art_rep_no = ?";
-	private static final String UPDATE = "UPDATE ARTICLE_REPLY set art_no=?, mbr_no=? ,rep_cont=? ,rep_time=? ,rep_stat=? where art_rep_no = ?";
-
+	private static final String UPDATE = "UPDATE ARTICLE_REPLY set art_no=?, mbr_no=? ,rep_cont=? ,rep_time=? ,rep_stat=? ,likes=? where art_rep_no = ?";
+	private static final String HIDE = "UPDATE ARTICLE_REPLY set rep_stat = 1 where art_rep_no=?";
 	@Override
 	public void insert(Article_ReplyVO article_ReplyVO) {
 		Connection con = null;
@@ -46,7 +46,7 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 			pstmt.setString(3, article_ReplyVO.getRep_cont());
 			pstmt.setTimestamp(4, article_ReplyVO.getRep_time());
 			pstmt.setInt(5, article_ReplyVO.getRep_stat());
-
+			pstmt.setInt(6, article_ReplyVO.getLikes());
 			pstmt.executeUpdate();
 
 			// Handle any SQL errors
@@ -88,7 +88,8 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 			pstmt.setString(3, article_ReplyVO.getRep_cont());
 			pstmt.setTimestamp(4, article_ReplyVO.getRep_time());
 			pstmt.setInt(5, article_ReplyVO.getRep_stat());
-			pstmt.setInt(6, article_ReplyVO.getArt_rep_no());
+			pstmt.setInt(6, article_ReplyVO.getLikes());
+			pstmt.setInt(7, article_ReplyVO.getArt_rep_no());
 			pstmt.executeUpdate();
 
 			// Handle any driver errors
@@ -177,6 +178,7 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 				article_ReplyVO.setRep_cont(rs.getString("rep_cont"));
 				article_ReplyVO.setRep_time(rs.getTimestamp("rep_time"));
 				article_ReplyVO.setRep_stat(rs.getInt("rep_stat"));
+				article_ReplyVO.setLikes(rs.getInt("likes"));
 			}
 
 			// Handle any driver errors
@@ -234,6 +236,7 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 				article_ReplyVO.setRep_cont(rs.getString("rep_cont"));
 				article_ReplyVO.setRep_time(rs.getTimestamp("rep_time"));
 				article_ReplyVO.setRep_stat(rs.getInt("rep_stat"));
+				article_ReplyVO.setLikes(rs.getInt("likes"));
 				list.add(article_ReplyVO); // Store the row in the list
 			}
 
@@ -273,26 +276,21 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 	@Override
 	public List<Article_ReplyVO> findByArt_no(Integer art_no) {
 		List<Article_ReplyVO> list = new ArrayList<Article_ReplyVO>();
-		System.out.println("artno in DAO 1 :" + art_no);
 		Article_ReplyVO article_replyVO = null;
-		System.out.println("artno in DAO 2 :" + art_no);
 		Connection con = null;
-		System.out.println("artno in DAO 3 :" + art_no);
 		PreparedStatement pstmt = null;
-		System.out.println("artno in DAO 4 :" + art_no);
 		ResultSet rs = null;
-		System.out.println("artno in DAO 5 :" + art_no);
 
 		try {
-			System.out.println("artno in DAO 6 :" + art_no);
+
 			con = ds.getConnection();
-			System.out.println("artno in DAO 7 :" + art_no);
+
 			pstmt = con.prepareStatement(GET_ALL_REPLY_IN_ONE_ARTICLE_STMT);
-			System.out.println("artno in DAO 8 :" + art_no);
+
 			pstmt.setInt(1, art_no);
-			System.out.println("artno in DAO 9 :" + art_no);
+
 			rs = pstmt.executeQuery();
-			System.out.println("artno in DAO 10 :" + art_no);
+
 
 
 			while (rs.next()) {
@@ -303,6 +301,7 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 				article_replyVO.setRep_cont(rs.getString("rep_cont"));
 				article_replyVO.setRep_time(rs.getTimestamp("rep_time"));
 				article_replyVO.setRep_stat(rs.getInt("rep_stat"));
+				article_replyVO.setLikes(rs.getInt("likes"));
 				list.add(article_replyVO);
 			}
 			// Handle any driver errors
@@ -335,6 +334,44 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 		}
 		//System.out.println("artno in DAO 7 :" + art_no);
 		return list;
+	}
+
+	@Override
+	public void hide(Article_ReplyVO article_ReplyVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(HIDE);
+
+			pstmt.setInt(1, article_ReplyVO.getArt_rep_no());
+			pstmt.executeUpdate();
+			
+			
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		
 	}
 
 	

@@ -16,6 +16,7 @@ public class ArticleVO implements Serializable {
 	private String art_cont;
 	private Integer likes;
 	private Integer art_stat;
+	private Integer replies;
 	
 	
 	public ArticleVO() {
@@ -23,7 +24,7 @@ public class ArticleVO implements Serializable {
 	}
 
 	
-	public ArticleVO(Integer art_no,Integer bd_cl_no,Integer mbr_no,Timestamp art_rel_time,String art_title,String art_cont,Integer likes,Integer art_stat) {
+	public ArticleVO(Integer art_no,Integer bd_cl_no,Integer mbr_no,Timestamp art_rel_time,String art_title,String art_cont,Integer likes,Integer art_stat,Integer replies) {
 		super();
 		this.art_no=art_no;
 		this.bd_cl_no=bd_cl_no;
@@ -33,9 +34,10 @@ public class ArticleVO implements Serializable {
 		this.art_cont=art_cont;
 		this.likes=likes;
 		this.art_stat=art_stat;
+		this.replies=replies;
 		}
 	
-	public ArticleVO(Integer bd_cl_no,Integer mbr_no,Timestamp art_rel_time,String art_title,String art_cont,Integer likes,Integer art_stat) {
+	public ArticleVO(Integer bd_cl_no,Integer mbr_no,Timestamp art_rel_time,String art_title,String art_cont,Integer likes,Integer art_stat,Integer replies) {
 		super();
 		this.bd_cl_no=bd_cl_no;
 		this.mbr_no=mbr_no;
@@ -44,6 +46,7 @@ public class ArticleVO implements Serializable {
 		this.art_cont=art_cont;
 		this.likes=likes;
 		this.art_stat=art_stat;
+		this.replies=replies;
 		}
 	
 	
@@ -124,6 +127,16 @@ public class ArticleVO implements Serializable {
 
 	public void setArt_stat(Integer art_stat) {
 		this.art_stat = art_stat;
+	}
+
+
+	public Integer getReplies() {
+		return replies;
+	}
+
+
+	public void setReplies(Integer replies) {
+		this.replies = replies;
 	}
 	}
 

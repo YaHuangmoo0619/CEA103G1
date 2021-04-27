@@ -101,6 +101,7 @@ a:hover {
 			<th>留言內容</th>
 			<th>發表時間</th>
 			<th>留言狀態</th>
+			<th>留言讚數</th>
 			<th>修改</th>
 			<th>刪除</th>
 		</tr>
@@ -116,6 +117,7 @@ a:hover {
 				<td><fmt:formatDate value="${article_replyVO.rep_time}" pattern="MM月dd日  HH:mm"/></td>
 				<td><c:if test="${article_replyVO.getRep_stat() == 0}">顯示</c:if> <c:if
 						test="${article_replyVO.getRep_stat() == 1}">不顯示</c:if></td>
+				<td>${article_replyVO.likes}</td>		
 				<td>
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/article_reply/article_reply.do"
