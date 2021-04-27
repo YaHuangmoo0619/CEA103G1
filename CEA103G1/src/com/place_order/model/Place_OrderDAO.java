@@ -3,9 +3,12 @@ package com.place_order.model;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.Date;
 import javax.naming.*;
 import javax.sql.DataSource;
+
+import com.place_order_details.model.Place_Order_DetailsDAO;
+import com.place_order_details.model.Place_Order_DetailsVO;
 
 public class Place_OrderDAO implements Place_OrderDAO_interface {
 	private static DataSource ds = null;
@@ -20,7 +23,7 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT * FROM PLACE_ORDER where PLC_ORD_NO = ?";
 	private static final String GET_BYCAMP_STMT = "SELECT PLC_ORD_NO FROM PLACE_ORDER where CAMP_NO = ?";
 	private static final String GET_ALL_STMT = "SELECT * FROM PLACE_ORDER order by PLC_ORD_NO";
-	private static final String INSERT_STMT = "INSERT INTO PLACE_ORDER (mbr_no,camp_no,plc_ord_time,ckin_date,ckout_date,plc_amt,plc_ord_sum,ex_ppl,pay_meth,pay_stat,used_pt,ckin_stat,receipt,rmk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO PLACE_ORDER (mbr_no,camp_no,ckin_date,ckout_date,plc_amt,plc_ord_sum,ex_ppl,pay_meth,pay_stat,used_pt,receipt,rmk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE PLACE_ORDER set ckin_date=?,ckout_date=?,plc_amt=?,plc_ord_sum=?,ex_ppl=?,pay_meth=?,pay_stat=?,used_pt=?,ckin_stat=?,receipt=?,rmk=? where PLC_ORD_NO = ?";
 	private static final String DELETE = "DELETE FROM PLACE_ORDER where PLC_ORD_NO = ?";
 
@@ -85,7 +88,7 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 	public List<Place_OrderVO> findByCamp(Integer camp_no) {
 		List<Place_OrderVO> list = new ArrayList<Place_OrderVO>();
 		Place_OrderVO place_orderVO = null;
-		
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -204,34 +207,70 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 	}
 
 	@Override
-	public void insert(Place_OrderVO place_orderVO) {
+	public void insert(Place_OrderVO place_orderVO, List<Place_Order_DetailsVO> list) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-
+			// 1●設定於 pstm.executeUpdate()之前
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(INSERT_STMT);
+			con.setAutoCommit(false);
 
+			// 先新增部門
+			String cols[] = { "PLC_ORD_NO" };
+			pstmt = con.prepareStatement(INSERT_STMT, cols);
 			pstmt.setInt(1, place_orderVO.getMbr_no());
 			pstmt.setInt(2, place_orderVO.getCamp_no());
-			pstmt.setTimestamp(3, place_orderVO.getPlc_ord_time());
-			pstmt.setDate(4, place_orderVO.getCkin_date());
-			pstmt.setDate(5, place_orderVO.getCkout_date());
-			pstmt.setInt(6, place_orderVO.getPlc_amt());
-			pstmt.setInt(7, place_orderVO.getPlc_ord_sum());
-			pstmt.setInt(8, place_orderVO.getEx_ppl());
-			pstmt.setInt(9, place_orderVO.getPay_meth());
-			pstmt.setInt(10, place_orderVO.getPay_stat());
-			pstmt.setInt(11, place_orderVO.getUsed_pt());
-			pstmt.setInt(12, place_orderVO.getCkin_stat());
-			pstmt.setInt(13, place_orderVO.getReceipt());
-			pstmt.setString(14, place_orderVO.getRmk());
-
+			pstmt.setDate(3, place_orderVO.getCkin_date());
+			pstmt.setDate(4, place_orderVO.getCkout_date());
+			pstmt.setInt(5, place_orderVO.getPlc_amt());
+			pstmt.setInt(6, place_orderVO.getPlc_ord_sum());
+			pstmt.setInt(7, place_orderVO.getEx_ppl());
+			pstmt.setInt(8, place_orderVO.getPay_meth());
+			pstmt.setInt(9, place_orderVO.getPay_stat());
+			pstmt.setInt(10, place_orderVO.getUsed_pt());
+			pstmt.setInt(11, place_orderVO.getReceipt());
+			pstmt.setString(12, place_orderVO.getRmk());
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("set auto_increment_offset=1;"); // 自增主鍵-初始值
+			stmt.executeUpdate("set auto_increment_increment=1;"); // 自增主鍵-遞增
 			pstmt.executeUpdate();
+			// 掘取對應的自增主鍵值
+			String next_plc_ord_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+			if (rs.next()) {
+				next_plc_ord_no = rs.getString(1);
+//				System.out.println("自增主鍵值= " + next_deptno + "(剛新增成功的部門編號)");
+			} else {
+//				System.out.println("未取得自增主鍵值");
+			}
+			rs.close();
+			// 再同時新增員工
+			Place_Order_DetailsDAO dao = new Place_Order_DetailsDAO();
+//			System.out.println("list.size()-A=" + list.size());
+			for (Place_Order_DetailsVO aDetail : list) {
+				aDetail.setPlc_ord_no(new Integer(next_plc_ord_no));
+				dao.insert2(aDetail, con);
+			}
 
-			// Handle any SQL errors
+			// 2●設定於 pstm.executeUpdate()之後
+			con.commit();
+			con.setAutoCommit(true);
+//			System.out.println("list.size()-B=" + list.size());
+//			System.out.println("新增部門編號" + next_plc_ord_no + "時,共有員工" + list.size() + "人同時被新增");
+
+			// Handle any driver errors
 		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-dept");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. " + excep.getMessage());
+				}
+			}
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {

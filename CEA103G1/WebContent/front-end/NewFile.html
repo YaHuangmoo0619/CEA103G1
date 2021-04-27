@@ -2,55 +2,82 @@
 <html>
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=BIG5">
-<title>Insert title here</title>
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+<title>搜尋營區</title>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>
-	<!-- <form id="form1" onsubmit="return false" action="##" method="post"> -->
-	<FORM method="get" id="form1" onsubmit="return false"
+	<!-- <form id="condition" onsubmit="return false" action="##" method="post"> -->
+	<FORM method="get" id="condition" onsubmit="return false"
 		accept-charset="big5">
 		<!-- 		縣市:<select id="county" name="county"></select> -->
 		縣市:<input type="type" name="county"> 入住日期:<input
-			name="startdate" id="f_date1" type="text"> 退房日期:<input
-			name="enddate" id="f_date2" type="text"> 人數:<input
-			name="people" type="text"> <input type="button" id="idForm"
-			value="搜尋" onclick="sub()">
+			name="startdate" id="startdate" type="text"> 退房日期:<input
+			name="enddate" id="enddate" type="text"> 人數:<input
+			name="people" id="people" type="number"><input type="hidden"
+			name="action" value="search"><input type="button" id="idForm"
+			value="搜尋">
+	</FORM>
+	<FORM id="feature"></FORM>
+	<FORM id="budget">
+		<input type="radio" name="budget" value="1000">1000<input
+			type="radio" name="budget" value="1500">1500<input type="radio"
+			name="budget" value="2000">2000<input type="radio" name="budget"
+			value="2500">2500<input type="radio" name="budget" value="3000">3000<input
+			type="radio" name="budget" value="3500">3500
 	</FORM>
 	<hr>
 	<br>
 	<script>
-		function sub() {
+		$.ajax({
+			type : "GET",
+			dataType : "json",
+			url : "http://localhost:8081/CEA103G1/campsite/CampInfo.do?action=getall",
+			success : function(data) {
+				showAll(data);
+			}
+		});
+	    $("#idForm").click(function(){
 			$('div').remove();
 			$('hr').remove();
 			$.ajax({
 				type : "GET",
+				cache : "false",
 				dataType : "json",
 				url : "http://localhost:8081/CEA103G1/ValidPlace.do",
-				data : $('#form1').serialize(), // serializes the form's elements.
+				data : $('#condition').serialize(), // serializes the form's elements.
 				success : function(data) {
 					showNames(data);
 				}
 			});
-		}// avoid to execute the actual submit of the form.
-
+		});// avoid to execute the actual submit of the form.
+		function showAll(data) {
+			var a = JSON.stringify(data);
+			console.log(a);
+			for (i in data) {
+				let html;	
+				var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
+				html = `<a id="${data[i].camp_no}" style="text-decoration:none;"><div>${data[i].camp_name}
+				<p>營區名稱:${data[i].camp_name} 地址:${data[i].address}</p></div></a><hr>`;
+				$('br').after(html);
+				$(`#${data[i].camp_no}`).attr("href",href);
+				$(`#${data[i].camp_no}`).attr("target","_blank");
+			}
+		}
 		function showNames(data) {
 			var a = JSON.stringify(data);
 			console.log(a);
 			for (i in data) {
 				let html;
-				if (i) {
-					if(!(document.getElementById(`${data[i].camp_no}`))) {						
-					html = `<div class="place" id="${data[i].camp_no}" align="center">
-					<h3>${data[i].camp_name}</h3><p>營位名稱:${data[i].plc_name} 營位平日價格:${data[i].pc_wkdy} 營位假日價格:${data[i].pc_wknd}</p></div><hr>`;
-					} else {
-						html = `<p>營位名稱:${data[i].plc_name} 營位平日價格:${data[i].pc_wkdy} 營位假日價格:${data[i].pc_wknd}</p>`;
-						$(`#${data[i].camp_no}`).append(html);
-						continue;
-					}
+				if (i) {	
+					var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&startdate=` + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val();
+					html = `<a id="${data[i].camp_no}" style="text-decoration:none;"><div>${data[i].camp_name}
+					<p>營區名稱:${data[i].camp_name} 地址:${data[i].address}</p></div></a><hr>`;	
 				} else {
-					html = "<center>所有營位皆已滿</center>";
+					html = "<center>所有營區皆已滿</center>";
 				}
 				$('br').after(html);
+				$(`#${data[i].camp_no}`).attr("href",href);
+				$(`#${data[i].camp_no}`).attr("target","_blank");
 			}
 		}
 	</script>

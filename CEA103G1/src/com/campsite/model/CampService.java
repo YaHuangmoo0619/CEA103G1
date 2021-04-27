@@ -13,7 +13,7 @@ public class CampService {
 
 	public CampVO addCamp(Integer cso_no, Integer dist_no, String camp_name, String campInfo, String note,
 			byte[] config, String height, String wireless, Integer pet, String facility, Integer operate_Date,
-			String park, String address, Double longitude, Double latitude) {
+			String park, String address, Double latitude, Double longitude) {
 
 		CampVO campVO = new CampVO();
 		campVO.setCso_no(cso_no);
@@ -38,7 +38,7 @@ public class CampService {
 
 	public CampVO updateCamp(Integer dist_no, String camp_name, String campInfo, String note,
 			byte[] config, String height, String wireless, Integer pet, String facility, Integer operate_Date,
-			String park, String address, Double longitude, Double latitude, Integer camp_no) {
+			String park, String address, Double latitude, Double longitude, Integer camp_no) {
 
 		CampVO campVO = new CampVO();
 		
