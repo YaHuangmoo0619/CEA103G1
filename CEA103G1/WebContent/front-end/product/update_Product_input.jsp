@@ -1,15 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.product_category.model.*"%>
+<%@ page import="com.product.model.*"%>
 
 <%
-  Product_categoryVO product_categoryVO = (Product_categoryVO) request.getAttribute("product_categoryVO");
+  ProductVO productVO = (ProductVO) request.getAttribute("productVO");
 %>
 
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>商品分類資料新增 - addProduct_category.jsp</title>
+<title>商品修改 - update_Product_input.jsp</title>
 
 <style>
   table#table-1 {
@@ -48,14 +48,13 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>商品分類新增 - addProduct_category.jsp</h3></td><td>
-		 <h4><a href="${pageContext.request.contextPath}/back-end/product_category/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0"></a></h4>
+		 <h3>商品修改 - update_Product_input.jsp</h3>
+		 <h4><a href="${pageContext.request.contextPath}/front-end/product/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0">	</a></h4>
 	</td></tr>
 </table>
 
-<h3>資料新增:</h3>
+<h3>資料修改:</h3>
 
-<%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
 	<font style="color:red">請修正以下錯誤:</font>
 	<ul>
@@ -65,18 +64,22 @@
 	</ul>
 </c:if>
 
-<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_category/product_category.do" name="form1">
+<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" name="form1">
 <table>
 	<tr>
-		<td>商品分類名稱:</td>
-		<td><input type="TEXT" name="prod_cat_name" size="45" 
-			 value="<%= (product_categoryVO==null)? "" : product_categoryVO.getProd_cat_name()%>" /></td>
+		<td>商品編號:<font color=red><b>*</b></font></td>
+		<td><%=productVO.getProd_no()%></td>
+	</tr>
+	<tr>
+		<td>商品名稱:</td>
+		<td><input type="TEXT" name="ename" size="45" value="<%=productVO.getProd_name()%>" /></td>
 	</tr>
 
 </table>
 <br>
-<input type="hidden" name="action" value="insert">
-<input type="submit" value="送出新增"></FORM>
+<input type="hidden" name="action" value="update">
+<input type="hidden" name="prod_no" value="<%=productVO.getProd_no()%>">
+<input type="submit" value="送出修改"></FORM>
 </body>
 
 </html>

@@ -97,7 +97,7 @@ public class Product_categoryServlet extends HttpServlet {
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("product_categoryVO", product_categoryVO);        
-				String url = "/back-end/product_category/update_product_category_input.jsp";
+				String url = "/back-end/product_category/update_Product_category_input.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
@@ -135,7 +135,7 @@ public class Product_categoryServlet extends HttpServlet {
 				
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("product_categoryVO", product_categoryVO); 
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product_category/update_product_category_input.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product_category/update_Product_category_input.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -153,7 +153,7 @@ public class Product_categoryServlet extends HttpServlet {
 				/***************************其他可能的錯誤處理*************************************/
 			} catch (Exception e) {
 				errorMsgs.add("修改資料失敗:"+e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product_category/update_product_category_input.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product_category/update_Product_category_input.jsp");
 				failureView.forward(req, res);
 			}
 		}

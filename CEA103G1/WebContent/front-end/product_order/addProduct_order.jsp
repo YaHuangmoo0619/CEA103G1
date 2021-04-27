@@ -1,15 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.product_category.model.*"%>
+<%@ page import="com.product_order.model.*"%>
 
 <%
-  Product_categoryVO product_categoryVO = (Product_categoryVO) request.getAttribute("product_categoryVO");
+  Product_orderVO product_orderVO = (Product_orderVO) request.getAttribute("product_orderVO");
 %>
 
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>商品分類資料新增 - addProduct_category.jsp</title>
+<title>商品訂單新增 - addProduct_order.jsp</title>
 
 <style>
   table#table-1 {
@@ -48,8 +48,8 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>商品分類新增 - addProduct_category.jsp</h3></td><td>
-		 <h4><a href="${pageContext.request.contextPath}/back-end/product_category/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0"></a></h4>
+		 <h3>商品訂單新增 - addProduct_order.jsp</h3></td><td>
+		 <h4><a href="${pageContext.request.contextPath}/front-end/product_order/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0"></a></h4>
 	</td></tr>
 </table>
 
@@ -65,12 +65,12 @@
 	</ul>
 </c:if>
 
-<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_category/product_category.do" name="form1">
+<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" name="form1">
 <table>
 	<tr>
-		<td>商品分類名稱:</td>
-		<td><input type="TEXT" name="prod_cat_name" size="45" 
-			 value="<%= (product_categoryVO==null)? "" : product_categoryVO.getProd_cat_name()%>" /></td>
+		<td>會員編號:</td>
+		<td><input type="TEXT" name="mbr_no" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
 	</tr>
 
 </table>
