@@ -17,13 +17,13 @@ request.setAttribute("lastFx_no", lastFx_no);
 
 <style>
   table#table-1 {
-	width: 430px;
+	width: 450px;
 	background-color: #FFF;
 	margin-top: 5px;
 	margin-bottom: 10px;
     border: 3px ridge Gray;
     height: 80px;
-    text-align: left;
+    text-align: center;
   }
   table#table-1 h4 {
     color: red;
