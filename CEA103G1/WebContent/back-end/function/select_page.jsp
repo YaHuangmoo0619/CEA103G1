@@ -17,7 +17,7 @@ request.setAttribute("lastFx_no", lastFx_no);
 
 <style>
   table#table-1 {
-	width: 450px;
+	width: 430px;
 	background-color: #FFF;
 	margin-top: 5px;
 	margin-bottom: 10px;

@@ -130,6 +130,9 @@ th, td {
 
 <script>
 $('#art_cont').summernote({
+    placeholder: '½Ð¿é¤J¤å¦r',
+    tabsize: 2,
+    height: 100,
 	  toolbar: [
 		    // [groupName, [list of button]]
 		    ['style', ['bold', 'italic', 'underline']],
