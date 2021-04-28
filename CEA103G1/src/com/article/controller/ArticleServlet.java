@@ -228,7 +228,7 @@ public class ArticleServlet extends HttpServlet {
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("articleVO", articleVO);         // 資料庫取出的articleVO物件,存入req
-				String url = "/back-end/article/update_article_input.jsp";
+				String url = "/front-end/article/update_article_input.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_article_input.jsp
 				successView.forward(req, res);
 
@@ -236,7 +236,7 @@ public class ArticleServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/article/listAllArticle.jsp");
+						.getRequestDispatcher("/front-end/article/listAllArticle.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -396,7 +396,7 @@ public class ArticleServlet extends HttpServlet {
 		
 		
 		
-        if ("insert".equals(action)) { // 來自addArticle.jsp的請求  
+        if ("insert".equals(action)) { // 來自前端addArticle.jsp的請求  
 			
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -430,44 +430,25 @@ public class ArticleServlet extends HttpServlet {
 					errorMsgs.add("文章標題: 長度必須在2到30之間");
 	            }
 				
+				
 	
 				Timestamp art_rel_time = new Timestamp(System.currentTimeMillis());
 				
 				String art_cont = req.getParameter("art_cont");
-				String art_contReg = "^.{10,1000000}$";
-				
+//				String art_contReg = "^.{10,1000000}$";
+				System.out.println(art_cont);
 				if (art_cont == null || art_cont.trim().length() == 0) {
 					errorMsgs.add("文章內容: 請勿空白");
 				} 
-				else if(!art_cont.trim().matches(art_contReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("文章內容: 必須在10到10000個字之間");
-	            }
+//				else if(!art_cont.trim().matches(art_contReg)) { //以下練習正則(規)表示式(regular-expression)
+//					errorMsgs.add("文章內容: 必須在10到10000個字之間");
+//	            }
 				
-				Integer likes = null;
-				try {
-					likes = new Integer(req.getParameter("likes").trim());
-				} catch (NumberFormatException e) {
-					likes = 0;
-					errorMsgs.add("讚數請填數字.");
-				}
-				
-				Integer art_stat = null;
-				try {
-					art_stat = new Integer(req.getParameter("art_stat").trim());
-				} catch (NumberFormatException e) {
-					art_stat = 0;
-					errorMsgs.add("文章狀態請填數字0 or 1.");
-				}
+				Integer likes = 0;
+				Integer art_stat = 0;		
+				Integer replies = 0;
 				
 
-				Integer replies = null;
-				try {
-					replies = new Integer(req.getParameter("replies").trim());
-				} catch (NumberFormatException e) {
-					replies = 0;
-					errorMsgs.add("留言數請填數字.");
-				}
-				
 				ArticleVO articleVO = new ArticleVO();
 				articleVO.setBd_cl_no(bd_cl_no);
 				articleVO.setMbr_no(mbr_no);
@@ -492,7 +473,7 @@ public class ArticleServlet extends HttpServlet {
 				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no,art_rel_time,art_title,art_cont, likes,art_stat,replies);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/back-end/article/listAllArticle.jsp";
+				String url = "/front-end/article/listAllArticle.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllArticle.jsp
 				successView.forward(req, res);				
 				
@@ -500,7 +481,7 @@ public class ArticleServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/article/addArticle.jsp");
+						.getRequestDispatcher("/front-end/article/addArticle.jsp");
 				failureView.forward(req, res);
 			}
 		}
