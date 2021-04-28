@@ -3,6 +3,7 @@ package com.campsite.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
@@ -81,9 +82,23 @@ public class CampInfo extends HttpServlet {
 		} else {
 			String action = req.getParameter("action");
 			if ("getall".equals(action)) {
+				PlaceService placeSvc = new PlaceService();
 				List<CampVO> camplist = campSvc.getAll();
 				for(CampVO campVO : camplist) {
 					list.add(campVO);
+				}
+				for(Object campVO : list) {
+					List<Integer> low_pc = new ArrayList();
+					List<PlaceVO> plclist = placeSvc.getByCamp(((CampVO)campVO).getCamp_no());
+					if(plclist.size() == 0) {// ¼È®É
+						break;
+					}
+					for(PlaceVO placeVO : plclist) {
+						low_pc.add(placeVO.getPc_wkdy());
+					}
+					Collections.sort(low_pc); 
+					System.out.println(low_pc);
+					((CampVO)campVO).setLow_pc(low_pc.get(0));
 				}
 			} else if ("getone".equals(action)) {
 				Integer camp_no = new Integer(req.getParameter("camp_no"));

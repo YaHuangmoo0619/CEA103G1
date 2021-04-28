@@ -317,9 +317,9 @@ tr:nth-child(even) {
 			src="/CEA103G1/person-circle-outline.svg" class="person">
 
 	</div>
-	<h1 id="title"></h1>
+	<div><h1 id="title"></h1>
 	<label><ion-icon id="fav" name="bookmark-outline"></ion-icon> <ion-icon
-			name="bookmark" style="display:none;"></ion-icon></label>
+			name="bookmark" style="display:none;"></ion-icon></label></div>
 	<div id="addrblock">
 		<p id="address"></p>
 		<p id="location"></p>
@@ -415,6 +415,18 @@ tr:nth-child(even) {
 	<div id="noteblock">
 		<p id="note"></p>
 	</div>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS3FFLkorvfSYZ9kblu3kplAs2a1H8dO8"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+		crossorigin="anonymous"></script>
 	<script>
 		const url = window.location.href;
 		const splitUrl = url.split('?');
@@ -431,8 +443,8 @@ tr:nth-child(even) {
 			sessionStorage.setItem("people", people[1]);
 			sessionStorage.setItem("startdate", startdate[1]);
 			sessionStorage.setItem("enddate", enddate[1]);
-			const src = "/CEA103G1/camp/campconfig.do?camp_no=" + camp[1];
-			$('#config').attr("src", src);
+// 			const src = "/CEA103G1/camp/campconfig.do?camp_no=" + camp[1];
+// 			$('#config').attr("src", src);
 			$.ajax({
 				type : "GET",
 				dataType : "json",
@@ -447,7 +459,7 @@ tr:nth-child(even) {
 		}else{
 			const src = "/CEA103G1/camp/campconfig.do?" + query;
 			const eachQuery = query.split('&');
-			$('#config').attr("src", src);
+// 			$('#config').attr("src", src);
 			$('#restart').attr("value", "¬d¸ßÀç¦ì");
 			$('#restart').attr("id", "search");
 			$.ajax({
@@ -716,20 +728,5 @@ tr:nth-child(even) {
 			}
 		}
 	</script>
-
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS3FFLkorvfSYZ9kblu3kplAs2a1H8dO8"
-		async defer></script>
 </body>
 </html>
