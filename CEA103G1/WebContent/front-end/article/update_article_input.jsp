@@ -20,48 +20,12 @@
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
+<title>修改文章 - updateArticle.jsp前台</title>
 
-<style>
-  table {
-	width: 450px;
-	background-color: white;
-	margin-top: 1px;
-	margin-bottom: 1px;
-  }
-  table, th, td {
-    border: 0px solid #CCCCFF;
-  }
-  th, td {
-    padding: 1px;
-  }
-  div{
-  width:1000px;
-  height:500px;
-  border:3px;
-  margin:0px auto;
-  }
-  
-
-</style>
 
 </head>
 <body bgcolor='white'>
+
 
 <table id="table-1">
 	<tr><td>
@@ -85,26 +49,6 @@
 
 <FORM METHOD="post" ACTION="/CEA103G1/article/article.do" name="form1">
 <table>
-	<tr>
-		<td>文章編號:<font color=red></font></td>
-		<td><%=articleVO.getArt_no()%></td>
-	</tr>
-	<tr>
-		<td>發文作者:</td>
-		<td><input type="TEXT" name="mbr_no" size="45"	value="<%=articleVO.getMbr_no()%>" /></td>
-	</tr>
-	
-				<jsp:useBean id="bd_clSvc" scope="page"
-				class="com.board_class.model.Board_ClassService" />
-			<tr>
-				<td>發文看板:<font color=red></font></td>
-				<td><select size="1" name="bd_cl_no">
-						<c:forEach var="board_classVO" items="${bd_clSvc.all}">
-							<option value="${board_classVO.bd_cl_no}"
-								${(articleVO.bd_cl_no==board_classVO.bd_cl_no)? 'selected':'' }>${board_classVO.bd_name}
-						</c:forEach>
-				</select></td>
-			</tr>
 
 
 	<tr>
@@ -115,44 +59,44 @@
 		<td>文章標題:</td>
 		<td><input type="TEXT" name="art_title" size="45"	value="<%=articleVO.getArt_title()%>" /></td>
 	</tr>
-<!-- 	<tr> -->
-<!-- 		<td>文章內容:</td> -->
-<%-- 		<td><input type="TEXT" name="art_cont" size="45" value="<%=articleVO.getArt_cont()%>" /></td> --%>
-		
-<!-- 	</tr> -->
+
 	
 			<tr>
 				<td>文章內容:</td>
-				<td><textarea id="art_cont" name="art_cont"></textarea></td>
+				<td><textarea id="art_cont" name="art_cont"><%=articleVO.getArt_cont()%></textarea></td>
 			</tr>
 	
-	   
-	<tr>
-		<td>讚數:</td>
-		<td><input type="TEXT" name="likes" size="45" value="<%=articleVO.getLikes()%>" /></td>
-	</tr>
-	<tr>
-		<td>文章狀態:</td>
-		<td><input type="TEXT" name="art_stat" size="45" value="<%=articleVO.getArt_stat()%>" /></td>
-	</tr>
+
 
 
 
 </table>
 <br>
 
+<input type="hidden" name="mbr_no" size="45" value="<%=articleVO.getLikes()%>" />
+<input type="hidden" name="bd_cl_no" size="45" value="<%=articleVO.getLikes()%>" />
+<input type="hidden" name="likes" size="45" value="<%=articleVO.getLikes()%>" />
+<input type="hidden" name="art_stat" size="45" value="<%=articleVO.getArt_stat()%>" />
 <input type="hidden" name="art_rel_time" value="<%=articleVO.getArt_rel_time()%>">
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="art_no" value="<%=articleVO.getArt_no()%>">
 <input type="submit" value="送出修改"></FORM>
 
 
-<div id="summernote"></div>
+<!-- <div id="summernote"></div> -->
     <script>
-      $('#summernote').summernote({
-        placeholder: 'Hello Bootstrap 4',
+      $('#art_cont').summernote({
+        placeholder: '請輸入文字',
         tabsize: 2,
-        height: 100
+        height: 100,
+  	    toolbar: [
+		    // [groupName, [list of button]]
+		    ['style', ['bold', 'italic', 'underline']],
+		    ['fontsize', ['fontsize']],
+		    ['color', ['color']],
+		    ['para', ['paragraph']],
+		    ['insert', ['link', 'picture']],
+		  ]
       });
     </script>
 
