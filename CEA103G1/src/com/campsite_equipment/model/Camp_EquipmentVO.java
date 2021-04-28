@@ -1,4 +1,4 @@
-package com.camp_equipment.model;
+package com.campsite_equipment.model;
 
 import java.io.Serializable;
 

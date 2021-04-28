@@ -4,29 +4,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=BIG5">
 <title>搜尋營區</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 </head>
 <body>
-	<!-- <form id="condition" onsubmit="return false" action="##" method="post"> -->
-	<FORM method="get" id="condition" onsubmit="return false"
-		accept-charset="big5">
-		<!-- 		縣市:<select id="county" name="county"></select> -->
-		縣市:<input type="type" name="county"> 入住日期:<input
-			name="startdate" id="startdate" type="text"> 退房日期:<input
-			name="enddate" id="enddate" type="text"> 人數:<input
-			name="people" id="people" type="number"><input type="hidden"
-			name="action" value="search"><input type="button" id="idForm"
-			value="搜尋">
-	</FORM>
-	<FORM id="feature"></FORM>
-	<FORM id="budget">
-		<input type="radio" name="budget" value="1000">1000<input
-			type="radio" name="budget" value="1500">1500<input type="radio"
-			name="budget" value="2000">2000<input type="radio" name="budget"
-			value="2500">2500<input type="radio" name="budget" value="3000">3000<input
-			type="radio" name="budget" value="3500">3500
-	</FORM>
-	<hr>
-	<br>
+	<div class="container" id="form">
+	  <div class="row">
+			<div class="col-sm-3">	
+				<FORM method="get" id="condition" onsubmit="return false"
+					accept-charset="big5">
+					<!-- 		縣市:<select id="county" name="county"></select> -->
+					縣市:<input type="type" name="county"> 入住日期:<input
+						name="startdate" id="startdate" type="text"> 退房日期:<input
+						name="enddate" id="enddate" type="text"> 人數:<input
+						name="people" id="people" type="number"><input type="hidden"
+						name="action" value="search"><input type="button" id="idForm"
+						value="搜尋">
+				</FORM>
+				<FORM id="feature"></FORM>
+				<FORM id="budget">
+					<input type="radio" name="budget" value="1000">1000<input
+						type="radio" name="budget" value="1500">1500<input type="radio"
+						name="budget" value="2000">2000<input type="radio" name="budget"
+						value="2500">2500<input type="radio" name="budget" value="3000">3000<input
+						type="radio" name="budget" value="3500">3500
+				</FORM>
+			</div>
+		</div>
+		<hr>
+	</div>
 	<script>
 		$.ajax({
 			type : "GET",
@@ -37,8 +42,7 @@
 			}
 		});
 	    $("#idForm").click(function(){
-			$('div').remove();
-			$('hr').remove();
+			$('#form').nextAll().remove();
 			$.ajax({
 				type : "GET",
 				cache : "false",
@@ -56,9 +60,9 @@
 			for (i in data) {
 				let html;	
 				var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
-				html = `<a id="${data[i].camp_no}" style="text-decoration:none;"><div>${data[i].camp_name}
-				<p>營區名稱:${data[i].camp_name} 地址:${data[i].address}</p></div></a><hr>`;
-				$('br').after(html);
+				html = `<div><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
+					</a><ion-icon id="fav" name="bookmark-outline"></ion-icon><p>地址:${data[i].address}</p><p>最低價:${data[i].low_pc}</p></div><hr>`;
+				$('#form').after(html);
 				$(`#${data[i].camp_no}`).attr("href",href);
 				$(`#${data[i].camp_no}`).attr("target","_blank");
 			}
@@ -70,12 +74,12 @@
 				let html;
 				if (i) {	
 					var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&startdate=` + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val();
-					html = `<a id="${data[i].camp_no}" style="text-decoration:none;"><div>${data[i].camp_name}
-					<p>營區名稱:${data[i].camp_name} 地址:${data[i].address}</p></div></a><hr>`;	
+					html = `<div><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
+						</a><ion-icon id="fav" name="bookmark-outline"></ion-icon><p>地址:${data[i].address}</p><p>最低價:${data[i].low_pc}</p></div><hr>`;
 				} else {
 					html = "<center>所有營區皆已滿</center>";
 				}
-				$('br').after(html);
+				$('#form').after(html);
 				$(`#${data[i].camp_no}`).attr("href",href);
 				$(`#${data[i].camp_no}`).attr("target","_blank");
 			}
