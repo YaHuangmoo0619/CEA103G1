@@ -98,7 +98,7 @@ section.jumbotron {
 	background-image: url("topphoto.jpg");
 	background-position: center;
 	background-size: cover;
-	height: 570px;
+	height: 600px;
 }
 
 div.slogan h1 {
@@ -154,6 +154,7 @@ div.more {
 	margin-top: 0px;
 	padding-bottom: 20px;
 	display: inline;
+	font-size: 1.5em;
 }
 
 div.article {
@@ -365,6 +366,7 @@ section.footer {
 				placeholder="營位/商品/文章" aria-label="Search">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
 		</form>
+		<img src="cart-outline.svg"	class="cart">
 		<img src="search-circle-outline.svg" id="searchIcon"
 			class="searchIcon">
 		<div class="btn-group" role="group" aria-label="Basic example">
@@ -418,30 +420,32 @@ section.footer {
 			<div class="row header">
 				<div class="col-sm">
 					<form class="search">
-						<div class="where">
-							<label for="county1"></label> 縣市:<select id="county1"
-								name="county"></select>
+					<div class="row">
+						<div class="where col-sm">
+							<label for="county1"> 縣　　市: <select id="county1"
+								name="county"><option>中壢區</option></select></label>
 						</div>
-						<div class="where">
-							<label for="county2"></label> 縣市:<input type="type" id="county2"
-								name="county" size="8">
-						</div>
-						<div class="where">
-							<label for="f_date1"></label> 入住日期:<input name="startdate"
-								id="f_date1" type="text" size="8">
-						</div>
-
-						<div class="where">
-							<label for="f_date2"></label> 退房日期:<input name="enddate"
-								id="f_date2" type="text" size="8">
+						<div class="where col-sm">
+							<label for="county2"> 縣　　市: <input type="type" id="county2"
+								name="county" size="8"></label>
+						</div><br>
+						<div class="where col-sm">
+							<label for="f_date1"> 入住日期: <input name="startdate"
+								id="f_date1" type="text" size="8"></label>
 						</div>
 
-						<div class="where">
-							<label for></label> 人數:<input name="people" id="people"
-								type="text" maxlength="4" size="4">
+						<div class="where col-sm">
+							<label for="f_date2"> 退房日期: <input name="enddate"
+								id="f_date2" type="text" size="8"></label>
 						</div>
-						<div class="where">
+
+						<div class="where col-sm">
+							<label for="people"> 人　　數: <input name="people" id="people"
+								type="text" maxlength="4" size="4"></label>
+						</div>
+						<div class="where col-sm" style="padding-top: 15px;">
 							<input type="submit" value="搜尋">
+						</div>
 						</div>
 					</form>
 				</div>
