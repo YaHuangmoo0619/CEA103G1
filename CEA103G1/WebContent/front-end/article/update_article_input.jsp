@@ -11,8 +11,14 @@
 
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>文章資料修改 - update_article_input.jsp</title>
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<!-- include summernote css/js -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
 <style>
   table#table-1 {
@@ -59,7 +65,7 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>文章資料修改 - update_article_input.jsp</h3>
+		 <h3>文章資料修改 - update_article_input.jsp 前台</h3>
  <h4><a href="/CEA103G1/back-end/article/select_page.jsp"><img src="/CEA103G1/images/Campion.png"
 						width="100" height="100" border="0"></a></h4>
 	</td></tr>
@@ -103,20 +109,23 @@
 
 	<tr>
 		<td>發表時間:</td>
-<%-- 		<td><%=articleVO.getArt_rel_time()%></td> --%>
 		<td><fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm"/></td>
 	</tr>
 	<tr>
 		<td>文章標題:</td>
 		<td><input type="TEXT" name="art_title" size="45"	value="<%=articleVO.getArt_title()%>" /></td>
 	</tr>
-	<tr>
-		<td>文章內容:</td>
-		<td><input type="TEXT" name="art_cont" size="45" value="<%=articleVO.getArt_cont()%>" /></td>
-<%-- 		<td><textarea col="43" rows="5"><%=articleVO.getArt_cont()%></textarea></td> --%>
+<!-- 	<tr> -->
+<!-- 		<td>文章內容:</td> -->
+<%-- 		<td><input type="TEXT" name="art_cont" size="45" value="<%=articleVO.getArt_cont()%>" /></td> --%>
 		
-		
-	</tr>
+<!-- 	</tr> -->
+	
+			<tr>
+				<td>文章內容:</td>
+				<td><textarea id="art_cont" name="art_cont"></textarea></td>
+			</tr>
+	
 	   
 	<tr>
 		<td>讚數:</td>
@@ -136,6 +145,18 @@
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="art_no" value="<%=articleVO.getArt_no()%>">
 <input type="submit" value="送出修改"></FORM>
+
+
+<div id="summernote"></div>
+    <script>
+      $('#summernote').summernote({
+        placeholder: 'Hello Bootstrap 4',
+        tabsize: 2,
+        height: 100
+      });
+    </script>
+
+
 </body>
 
 </html>

@@ -11,7 +11,18 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<!-- include summernote css/js -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
 <title>新增文章 - addArticle.jsp</title>
+
+
 
 <style>
 table#table-1 {
@@ -103,29 +114,32 @@ th, td {
 			</tr>
 			<tr>
 				<td>文章內容:</td>
-				<td><input type="TEXT" name="art_cont" size="45" 
-				value="<%= (articleVO==null)? "" : articleVO.getArt_cont()%>"/></td>
+				<td><textarea id="art_cont" name="art_cont"></textarea></td>
 			</tr>
 
-			<tr>
-				<td>讚數:</td>
-				<td><input type="TEXT" name="likes" size="45" 
-				value="<%= (articleVO==null)? "" : articleVO.getLikes()%>"/></td>
-			</tr>
 
-			<tr>
-				<td>文章狀態:</td>
-<!-- 				<td><input type="TEXT" name="art_stat" size="45"  -->
-<%-- 				value="<%= (articleVO==null)? "" : articleVO.getArt_stat()%>"/></td> --%>
-				<td>
-				<label>顯示<input type="radio" name="art_stat" value="0"/></label>
-				<label>不顯示<input type="radio" name="art_stat" value="1"/></label>
-				</td>
-
-			</tr>
 		</table>
 		<br> <input type="hidden" name="action" value="insert"> <input
 			type="submit" value="送出新增">
 	</FORM>
+
+	
+<!-- <div data-gramm="false" role="textbox" data-slate-editor="true" data-slate-node="value" contenteditable="true" style="outline: none; white-space: pre-wrap; overflow-wrap: break-word; flex: 1 1 0%;"><p data-slate-node="element"><span data-slate-node="text"><span data-slate-leaf="true"><span data-slate-zero-width="n" data-slate-length="0">&#xFEFF;<br></span></span></span></p>INPUT</div>	 -->
+	
+
+
+<script>
+$('#art_cont').summernote({
+	  toolbar: [
+		    // [groupName, [list of button]]
+		    ['style', ['bold', 'italic', 'underline']],
+		    ['fontsize', ['fontsize']],
+		    ['color', ['color']],
+		    ['para', ['paragraph']],
+		    ['insert', ['link', 'picture']],
+		  ]
+});
+</script>
+
 </body>
 </html>

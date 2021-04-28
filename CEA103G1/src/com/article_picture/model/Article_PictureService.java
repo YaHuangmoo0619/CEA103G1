@@ -42,7 +42,7 @@ public class Article_PictureService {
 		dao.delete(art_pic_no);
 	}
 
-	public Article_PictureVO getOneArticle_Report(Integer art_pic_no) {
+	public Article_PictureVO getOneArticle_Picture(Integer art_pic_no) {
 		return dao.findByPrimaryKey(art_pic_no);
 	}
 

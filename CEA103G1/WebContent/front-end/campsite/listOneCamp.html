@@ -10,6 +10,7 @@
 	crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+
 <style>
 html, body {
 	margin: 0;
@@ -431,8 +432,8 @@ tr:nth-child(even) {
 			sessionStorage.setItem("people", people[1]);
 			sessionStorage.setItem("startdate", startdate[1]);
 			sessionStorage.setItem("enddate", enddate[1]);
-			const src = "/CEA103G1/camp/campconfig.do?camp_no=" + camp[1];
-			$('#config').attr("src", src);
+// 			const src = "/CEA103G1/camp/campconfig.do?camp_no=" + camp[1];
+// 			$('#config').attr("src", src);
 			$.ajax({
 				type : "GET",
 				dataType : "json",
@@ -447,7 +448,7 @@ tr:nth-child(even) {
 		}else{
 			const src = "/CEA103G1/camp/campconfig.do?" + query;
 			const eachQuery = query.split('&');
-			$('#config').attr("src", src);
+// 			$('#config').attr("src", src);
 			$('#restart').attr("value", "¬d¸ßÀç¦ì");
 			$('#restart').attr("id", "search");
 			$.ajax({
@@ -716,7 +717,7 @@ tr:nth-child(even) {
 			}
 		}
 	</script>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS3FFLkorvfSYZ9kblu3kplAs2a1H8dO8"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 		crossorigin="anonymous"></script>
@@ -728,8 +729,6 @@ tr:nth-child(even) {
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
 		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
 		crossorigin="anonymous"></script>
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS3FFLkorvfSYZ9kblu3kplAs2a1H8dO8"
-		async defer></script>
+
 </body>
 </html>

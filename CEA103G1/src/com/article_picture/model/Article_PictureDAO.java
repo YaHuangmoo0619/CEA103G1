@@ -40,7 +40,7 @@ public class Article_PictureDAO implements Article_PictureDAO_Interface {
 		private static final String GET_BY_ART_NO = 
 			"SELECT art_pic_no,art_no,art_pic FROM ARTICLE_PICTURE where art_no = ?";	
 	@Override
-	public void insert(Article_PictureVO Article_PictureVO) {
+	public void insert(Article_PictureVO article_pictureVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -50,14 +50,8 @@ public class Article_PictureDAO implements Article_PictureDAO_Interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, Article_PictureVO.getArt_no());
-			byte[] pic = null;
-			try {
-				pic = getPictureByteArray("items/FC_Barcelona.png");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			pstmt.setBytes(2, pic);
+			pstmt.setInt(1, article_pictureVO.getArt_no());
+			pstmt.setBytes(2, article_pictureVO.getArt_pic());
 
 			pstmt.executeUpdate();
 
@@ -86,7 +80,7 @@ public class Article_PictureDAO implements Article_PictureDAO_Interface {
 	}
 
 	@Override
-	public void update(Article_PictureVO Article_PictureVO) {
+	public void update(Article_PictureVO article_pictureVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -96,16 +90,12 @@ public class Article_PictureDAO implements Article_PictureDAO_Interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setInt(1, Article_PictureVO.getArt_pic_no());
-			pstmt.setInt(2, Article_PictureVO.getArt_no());
-			byte[] pic = null;
-			try {
-				pic = getPictureByteArray("items/FC_Barcelona.png");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			pstmt.setBytes(3, pic);
-
+			
+			
+			pstmt.setInt(1, article_pictureVO.getArt_no());
+			pstmt.setBytes(1, article_pictureVO.getArt_pic());
+			pstmt.setInt(3, article_pictureVO.getArt_pic_no());
+			
 			pstmt.executeUpdate();
 
 			// Handle any driver errors
@@ -174,7 +164,7 @@ public class Article_PictureDAO implements Article_PictureDAO_Interface {
 	@Override
 	public Article_PictureVO findByPrimaryKey(Integer art_pic_no) {
 
-		Article_PictureVO Article_PictureVO = null;
+		Article_PictureVO article_pictureVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -190,23 +180,10 @@ public class Article_PictureDAO implements Article_PictureDAO_Interface {
 
 			while (rs.next()) {
 
-				Article_PictureVO = new Article_PictureVO();
-				Article_PictureVO.setArt_pic_no(rs.getInt("art_pic_no"));
-				Article_PictureVO.setArt_no(rs.getInt("art_no"));
-				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("art_pic"));
-				byte[] buf = new byte[4 * 1024]; // 4K buffer
-				try {
-					while ((in.read(buf)) != -1) {
-						Article_PictureVO.setArt_pic(buf);;
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				try {
-					in.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				article_pictureVO = new Article_PictureVO();
+				article_pictureVO.setArt_pic_no(rs.getInt("art_pic_no"));
+				article_pictureVO.setArt_no(rs.getInt("art_no"));
+				article_pictureVO.setArt_pic(rs.getBytes("art_pic"));
 			}
 
 			// Handle any driver errors
@@ -237,13 +214,13 @@ public class Article_PictureDAO implements Article_PictureDAO_Interface {
 				}
 			}
 		}
-		return Article_PictureVO;
+		return article_pictureVO;
 	}
 
 	@Override
 	public List<Article_PictureVO> getAll() {
 		List<Article_PictureVO> list = new ArrayList<Article_PictureVO>();
-		Article_PictureVO Article_PictureVO = null;
+		Article_PictureVO article_pictureVO = null;
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -258,24 +235,11 @@ public class Article_PictureDAO implements Article_PictureDAO_Interface {
 
 			while (rs.next()) {
 
-				Article_PictureVO = new Article_PictureVO();
-				Article_PictureVO.setArt_pic_no(rs.getInt("art_pic_no"));
-				Article_PictureVO.setArt_no(rs.getInt("art_no"));
-				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("art_pic"));
-				byte[] buf = new byte[4 * 1024]; // 4K buffer
-				try {
-					while ((in.read(buf)) != -1) {
-						Article_PictureVO.setArt_pic(buf);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				try {
-					in.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				list.add(Article_PictureVO);
+				article_pictureVO = new Article_PictureVO();
+				article_pictureVO.setArt_pic_no(rs.getInt("art_pic_no"));
+				article_pictureVO.setArt_no(rs.getInt("art_no"));
+				article_pictureVO.setArt_pic(rs.getBytes("art_pic"));
+				list.add(article_pictureVO);
 			}
 
 			// Handle any driver errors
@@ -309,13 +273,7 @@ public class Article_PictureDAO implements Article_PictureDAO_Interface {
 		return list;
 	}
 
-	public static byte[] getPictureByteArray(String path) throws IOException {
-		FileInputStream fis = new FileInputStream(path);
-		byte[] buffer = new byte[fis.available()];
-		fis.read(buffer);
-		fis.close();
-		return buffer;
-	}
+
 
 	@Override
 	public List<Article_PictureVO> findByArt_no(Integer art_no) {
