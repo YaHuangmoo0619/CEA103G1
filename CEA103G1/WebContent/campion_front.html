@@ -379,8 +379,8 @@ section.footer {
 			<button type="button" class="btn btn-outline-secondary">FAQ</button>
 			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
 		</div>
-		<img src="menu-outline.svg" id="menu" class="menu"> <a href="nnn"> <img
-			src="person-circle-outline.svg" class="person"></a>
+		<img src="menu-outline.svg" id="menu" class="menu"> <a
+			href="nnn"> <img src="person-circle-outline.svg" class="person"></a>
 
 	</div>
 
@@ -419,19 +419,26 @@ section.footer {
 				<div class="col-sm">
 					<form class="search">
 						<div class="where">
-							縣市:<select id="county" name="county"></select>
+							<label for="county1"></label> 縣市:<select id="county1"
+								name="county"></select>
 						</div>
 						<div class="where">
-							縣市:<input type="type" name="county" size="8">
+							<label for="county2"></label> 縣市:<input type="type" id="county2"
+								name="county" size="8">
 						</div>
 						<div class="where">
-							入住日期:<input name="startdate" id="f_date1" type="text" size="8">
+							<label for="f_date1"></label> 入住日期:<input name="startdate"
+								id="f_date1" type="text" size="8">
 						</div>
+
 						<div class="where">
-							退房日期:<input name="enddate" id="f_date2" type="text" size="8">
+							<label for="f_date2"></label> 退房日期:<input name="enddate"
+								id="f_date2" type="text" size="8">
 						</div>
+
 						<div class="where">
-							人數:<input name="people" type="text" maxlength="4" size="4">
+							<label for></label> 人數:<input name="people" id="people"
+								type="text" maxlength="4" size="4">
 						</div>
 						<div class="where">
 							<input type="submit" value="搜尋">
