@@ -147,7 +147,7 @@ div {
 			</c:forEach>
 		</div>
 		<table id="camp_plc">
-			<tr>
+			<tr id="title">
 				<th>犁嘿</th>
 				<th>计秖</th>
 				<th>计</th>
@@ -155,7 +155,7 @@ div {
 				<th>キら基</th>
 				<th>安ら基</th>
 			</tr>
-			<tr id="forcopy" style="display:none">
+			<tr>
 				<td><input type="text"></td>
 				<td><input type="number" pattern="number"></td>
 				<td><input type="number" pattern="number"></td>
@@ -163,29 +163,23 @@ div {
 				<td><input type="number" pattern="number"></td>
 				<td><input type="number" pattern="number"></td>
 			</tr>
-			<tr>
-				<td><input name="plc1" type="text"></td>
-				<td><input name="plc1" type="number" pattern="number"></td>
-				<td><input name="plc1" type="number" pattern="number"></td>
-				<td><input name="plc1" type="number" pattern="number"></td>
-				<td><input name="plc1" type="number" pattern="number"></td>
-				<td><input name="plc1" type="number" pattern="number"></td>
-			</tr>
 		</table>
 
 		<br> <input type="hidden" name="action" value="insert"> <input
-			type="submit" value="癳穝糤">
+			type="button" id="send" value="癳穝糤">
 	</FORM>
-		<% session.setAttribute("total_plc", 1); %>
-
 	<script>
 		$("#camp_plc").keydown(function(e) {
-			if (e.which == 13) {
-				var name = <%=session.getAttribute("total_plc")%>
-				$("#forcopy").css("display","block");
-				$("#forcopy").children("input").attr("name",name);
-				$("#forcopy").clone().appendTo("#camp_plc");
+			if (e.which == 13) {				
+				$("#title").next().clone().find('input').val("").end().appendTo(this)
 			}
+		});
+		$("#send").click(function() {
+			let index = 0;
+			$("#title").nextAll().each(function(i, dom) {
+				$(dom).find('input').attr("name", "plc"+index);
+				index++;
+			});
 		});
 	</script>
 </body>
