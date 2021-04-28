@@ -22,7 +22,8 @@ request.setAttribute("lastFx_no", lastFx_no);
 	margin-top: 5px;
 	margin-bottom: 10px;
     border: 3px ridge Gray;
-
+    height: 80px;
+    text-align: right;
   }
   table#table-1 h4 {
     color: red;
