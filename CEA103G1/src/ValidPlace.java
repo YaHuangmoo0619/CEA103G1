@@ -2,9 +2,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.LinkedHashSet;
 
 import javax.servlet.annotation.WebServlet;
@@ -175,7 +177,16 @@ public class ValidPlace extends HttpServlet {
 			campVO.setAddress(campSvc.getOneCamp(camp_no).getAddress());
 			camplist.add(campVO);
 		}
-
+		
+		for(CampVO campVO : camplist) {
+			List<Integer> low_pc = new ArrayList();
+			List<PlaceVO> plclist = placeSvc.getByCamp(campVO.getCamp_no());
+			for(PlaceVO placeVO : plclist) {
+				low_pc.add(placeVO.getPc_wkdy());
+			}
+			Collections.sort(low_pc); 
+			campVO.setLow_pc(low_pc.get(0));
+		}
 		String jsonObject = gson.toJson(camplist);
 		out.println(jsonObject);
 	}

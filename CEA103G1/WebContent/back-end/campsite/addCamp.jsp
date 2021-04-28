@@ -1,9 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.campsite.model.*"%>
+<%@ page import="com.feature_list.model.*"%>
+<%@ page import="java.util.*"%>
+<%@ page import="java.io.*"%>
 
 <%
 	CampVO campVO = (CampVO) request.getAttribute("campVO");
+	Feature_ListService feature_listSvc = new Feature_ListService();
+	List<Feature_ListVO> list = feature_listSvc.getAll();
+	pageContext.setAttribute("list", list);
 %>
 <%-- <%=campVO == null%> --%>
 <!DOCTYPE html>
@@ -11,6 +17,7 @@
 <head>
 <meta charset="BIG5">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <style>
 img {
 	width: 150px;
@@ -50,7 +57,7 @@ div {
 		</ul>
 	</c:if>
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/camp/camp.do"
-		name="form1" enctype="multipart/form-data">
+		name="form1" enctype="multipart/form-data" onsubmit="return false;">
 		<table>
 			<tr>
 				<td>營主編號:</td>
@@ -74,7 +81,9 @@ div {
 			</tr>
 			<tr>
 				<td>配置圖:</td>
-				<td><input type="file" name="config"><input type="hidden" name="image" value="<%=(campVO == null) ? "無" : campVO.getConfig()%>"></td>
+				<td><input type="file" name="config"><input
+					type="hidden" name="image"
+					value="<%=(campVO == null) ? "無" : campVO.getConfig()%>"></td>
 			</tr>
 			<tr>
 				<td>無線通訊:</td>
@@ -130,8 +139,49 @@ div {
 			</tr>
 
 		</table>
+		<div>
+			<c:forEach var="feature_listVO" items="${list}">
+				<p>
+					<input type="checkbox" name="feature_list"
+						value="${feature_listVO.camp_fl_no}">${feature_listVO.camp_fl_name}</p>
+			</c:forEach>
+		</div>
+		<table id="camp_plc">
+			<tr>
+				<th>營位名稱</th>
+				<th>數量</th>
+				<th>人數</th>
+				<th>人數上限</th>
+				<th>平日價格</th>
+				<th>假日價格</th>
+			</tr>
+			<tr id="forcopy">
+				<td><input type="text"></td>
+				<td><input type="number" pattern="number"></td>
+				<td><input type="number" pattern="number"></td>
+				<td><input type="number" pattern="number"></td>
+				<td><input type="number" pattern="number"></td>
+				<td><input type="number" pattern="number"></td>
+			</tr>
+			<tr>
+				<td><input name="plc1" type="text"></td>
+				<td><input name="plc1" type="number" pattern="number"></td>
+				<td><input name="plc1" type="number" pattern="number"></td>
+				<td><input name="plc1" type="number" pattern="number"></td>
+				<td><input name="plc1" type="number" pattern="number"></td>
+				<td><input name="plc1" type="number" pattern="number"></td>
+			</tr>
+		</table>
+
 		<br> <input type="hidden" name="action" value="insert"> <input
 			type="submit" value="送出新增">
 	</FORM>
+	<script>
+		$("#camp_plc").keydown(function(e) {
+			if (e.which == 13) {
+				$("#forcopy").clone().appendTo("#camp_plc");
+			}
+		});
+	</script>
 </body>
 </html>

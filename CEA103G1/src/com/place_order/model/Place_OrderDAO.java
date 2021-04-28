@@ -240,14 +240,12 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if (rs.next()) {
 				next_plc_ord_no = rs.getString(1);
-//				System.out.println("自增主鍵值= " + next_deptno + "(剛新增成功的部門編號)");
 			} else {
-//				System.out.println("未取得自增主鍵值");
+				System.out.println("未取得自增主鍵值");
 			}
 			rs.close();
 			// 再同時新增員工
 			Place_Order_DetailsDAO dao = new Place_Order_DetailsDAO();
-//			System.out.println("list.size()-A=" + list.size());
 			for (Place_Order_DetailsVO aDetail : list) {
 				aDetail.setPlc_ord_no(new Integer(next_plc_ord_no));
 				dao.insert2(aDetail, con);
@@ -256,8 +254,6 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();
 			con.setAutoCommit(true);
-//			System.out.println("list.size()-B=" + list.size());
-//			System.out.println("新增部門編號" + next_plc_ord_no + "時,共有員工" + list.size() + "人同時被新增");
 
 			// Handle any driver errors
 		} catch (SQLException se) {

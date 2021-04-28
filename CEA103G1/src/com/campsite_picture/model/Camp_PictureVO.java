@@ -1,4 +1,4 @@
-package com.camp_picture.model;
+package com.campsite_picture.model;
 
 import java.io.Serializable;
 import java.sql.*;
@@ -6,12 +6,12 @@ import java.sql.*;
 public class Camp_PictureVO implements Serializable{
     private Integer camp_pic_no;
     private Integer camp_no;
-    private Blob camp_pic;
+    private String camp_pic;
     private Timestamp camp_pic_time;
 	public Camp_PictureVO() {
 		super();
 	}
-	public Camp_PictureVO(Integer camp_pic_no, Integer camp_no, Blob camp_pic, Timestamp camp_pic_time) {
+	public Camp_PictureVO(Integer camp_pic_no, Integer camp_no, String camp_pic, Timestamp camp_pic_time) {
 		super();
 		this.camp_pic_no = camp_pic_no;
 		this.camp_no = camp_no;
@@ -30,10 +30,10 @@ public class Camp_PictureVO implements Serializable{
 	public void setCamp_no(Integer camp_no) {
 		this.camp_no = camp_no;
 	}
-	public Blob getCamp_pic() {
+	public String getCamp_pic() {
 		return camp_pic;
 	}
-	public void setCamp_pic(Blob camp_pic) {
+	public void setCamp_pic(String camp_pic) {
 		this.camp_pic = camp_pic;
 	}
 	public Timestamp getCamp_pic_time() {

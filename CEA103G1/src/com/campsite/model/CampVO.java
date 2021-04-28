@@ -27,6 +27,8 @@ public class CampVO implements Serializable {
 	private Double longitude;
 	private Integer total_Stars;
 	private Integer total_Cmnt;
+	private Integer top_pc;
+	private Integer low_pc;
 
 	public CampVO() {
 		super();
@@ -233,5 +235,21 @@ public class CampVO implements Serializable {
 
 	public void setDistrict(String district) {
 		this.district = district;
+	}
+
+	public Integer getTop_pc() {
+		return top_pc;
+	}
+
+	public void setTop_pc(Integer top_pc) {
+		this.top_pc = top_pc;
+	}
+
+	public Integer getLow_pc() {
+		return low_pc;
+	}
+
+	public void setLow_pc(Integer low_pc) {
+		this.low_pc = low_pc;
 	}
 }
