@@ -73,13 +73,15 @@
 </table>
 <br>
 
-<input type="hidden" name="mbr_no" size="45" value="<%=articleVO.getLikes()%>" />
-<input type="hidden" name="bd_cl_no" size="45" value="<%=articleVO.getLikes()%>" />
+
+<input type="hidden" name="art_no" value="<%=articleVO.getArt_no()%>">
+<input type="hidden" name="mbr_no" size="45" value="<%=articleVO.getMbr_no()%>" />
+<input type="hidden" name="bd_cl_no" size="45" value="<%=articleVO.getBd_cl_no()%>" />
 <input type="hidden" name="likes" size="45" value="<%=articleVO.getLikes()%>" />
 <input type="hidden" name="art_stat" size="45" value="<%=articleVO.getArt_stat()%>" />
 <input type="hidden" name="art_rel_time" value="<%=articleVO.getArt_rel_time()%>">
+<input type="hidden" name="replies" value="<%=articleVO.getReplies()%>">
 <input type="hidden" name="action" value="update">
-<input type="hidden" name="art_no" value="<%=articleVO.getArt_no()%>">
 <input type="submit" value="°e¥X­×§ï"></FORM>
 
 

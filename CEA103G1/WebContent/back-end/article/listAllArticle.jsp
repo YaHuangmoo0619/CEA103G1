@@ -71,6 +71,8 @@ a:hover {
 </head>
 <body bgcolor='white'>
 
+
+
 	<table id="table-1">
 		<tr>
 			<td>
@@ -148,6 +150,8 @@ a:hover {
 		</c:forEach>
 	</table>
 	<%@ include file="page2.file"%>
+	
+
 
 </body>
 </html>

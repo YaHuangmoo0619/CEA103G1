@@ -65,7 +65,7 @@
      <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article/article.do" >
        <b>選擇文章編號:</b>
        <select size="1" name="art_no">
-         <c:forEach var="articleVO" items="${articleSvc.all}" > 
+         <c:forEach var="articleVO" items="${articleSvc.all_Back}" > 
           <option value="${articleVO.art_no}">${articleVO.art_no}
          </c:forEach>   
        </select>
@@ -78,7 +78,7 @@
      <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article/article.do" >
        <b>選擇文章標題:</b>
        <select size="1" name="art_no">
-         <c:forEach var="articleVO" items="${articleSvc.all}" > 
+         <c:forEach var="articleVO" items="${articleSvc.all_Back}" > 
           <option value="${articleVO.art_no}">${articleVO.art_title}
          </c:forEach>   
        </select>

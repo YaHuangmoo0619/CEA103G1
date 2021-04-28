@@ -8,6 +8,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import com.article.model.ArticleDAO;
 import com.article.model.ArticleService;
 import com.article.model.ArticleVO;
 
@@ -253,33 +254,23 @@ public class ArticleServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 			
 				Integer art_no = new Integer(req.getParameter("art_no").trim());
-				System.out.println(art_no);
+				System.out.println("art_no:"+art_no);
 
 				
 				
-				Integer bd_cl_no = null;
-				try {
-					bd_cl_no = new Integer(req.getParameter("bd_cl_no").trim());
-					System.out.println(bd_cl_no);
-				} catch (NumberFormatException e) {
-					bd_cl_no = 1;
-					errorMsgs.add("看板編號請填數字.");
-				} 
+
+
+				Integer bd_cl_no = new Integer(req.getParameter("bd_cl_no").trim());
+					System.out.println("bd_cl_no"+bd_cl_no);
+
 				
-				Integer mbr_no = null;
-				try {
-					mbr_no = new Integer(req.getParameter("mbr_no").trim());
-					System.out.println(mbr_no);
-				} catch (NumberFormatException e) {
-					mbr_no = 10001;
-					errorMsgs.add("會員編號請填數字.");
-				} 
+				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
+				System.out.println("mbr_no:"+mbr_no);
 				
 				
 				Timestamp art_rel_time = new Timestamp(System.currentTimeMillis());
-				System.out.println(req.getParameter("art_rel_time"));
 				art_rel_time = Timestamp.valueOf(req.getParameter("art_rel_time"));
-				System.out.println(art_rel_time);
+				System.out.println("art_rel_time:"+art_rel_time);
 
 				
 				String art_title = req.getParameter("art_title");
@@ -293,14 +284,11 @@ public class ArticleServlet extends HttpServlet {
 				System.out.println(art_title);
 				
 				String art_cont = req.getParameter("art_cont");
-				String art_contReg = "^.{10,10000}$";
 				
 				if (art_cont == null || art_cont.trim().length() == 0) {
 					errorMsgs.add("文章內容: 請勿空白");
 				} 
-				else if(!art_cont.trim().matches(art_contReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("文章內容: 必須在10到10000個字之間");
-	            }
+
 				System.out.println(art_cont);
 				
 				Integer likes = null;
@@ -322,9 +310,10 @@ public class ArticleServlet extends HttpServlet {
 				
 				System.out.println(art_stat);
 				
-				Integer replies = null;
-				replies = new Integer(req.getParameter("replies").trim());
-								
+				Integer replies = new Integer(req.getParameter("replies").trim());
+				System.out.println(replies);
+				
+				
 				ArticleVO articleVO = new ArticleVO();
 				articleVO.setArt_no(art_no);
 				articleVO.setBd_cl_no(bd_cl_no);
@@ -340,7 +329,7 @@ public class ArticleServlet extends HttpServlet {
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("articleVO",articleVO); // 含有輸入格式錯誤的articleVO物件,也存入req
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/article/update_article_input.jsp");
+							.getRequestDispatcher("/front-end/article/update_article_input.jsp");
 					failureView.forward(req, res);
 					return; //程式中斷
 				}
@@ -351,7 +340,7 @@ public class ArticleServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("articleVO", articleVO); // 資料庫update成功後,正確的的articleVO物件,存入req
-				String url = "/back-end/article/listOneArticle.jsp";
+				String url = "/front-end/article/listOneArticle.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneArticle.jsp
 				successView.forward(req, res);
 
@@ -359,7 +348,7 @@ public class ArticleServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("修改資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/article/update_article_input.jsp");
+						.getRequestDispatcher("/front-end/article/update_article_input.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -584,18 +573,19 @@ public class ArticleServlet extends HttpServlet {
 				// Retrieve form parameters.
 				Integer art_no = new Integer(req.getParameter("art_no"));
 
-				com.article.model.ArticleDAO dao = new com.article.model.ArticleDAO();
+				ArticleDAO dao = new ArticleDAO();
 				ArticleVO articleVO = dao.findByPrimaryKey(art_no);
 
 				req.setAttribute("articleVO", articleVO); // 資料庫取出的articleVO物件,存入req
 				
 				//Bootstrap_modal
 				boolean openModal=true;
+				System.out.println(openModal);
 				req.setAttribute("openModal",openModal );
 				
 				// 取出的articleVO送給listOneEmp.jsp
 				RequestDispatcher successView = req
-						.getRequestDispatcher("/back-end/article/listOneArticle.jsp");
+						.getRequestDispatcher("/front-end/article/listOneArticle.jsp");
 				successView.forward(req, res);
 				return;
 
