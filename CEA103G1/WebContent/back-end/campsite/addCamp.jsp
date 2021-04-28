@@ -155,7 +155,7 @@ div {
 				<th>平日價格</th>
 				<th>假日價格</th>
 			</tr>
-			<tr id="forcopy">
+			<tr id="forcopy" style="display:none">
 				<td><input type="text"></td>
 				<td><input type="number" pattern="number"></td>
 				<td><input type="number" pattern="number"></td>
@@ -176,9 +176,14 @@ div {
 		<br> <input type="hidden" name="action" value="insert"> <input
 			type="submit" value="送出新增">
 	</FORM>
+		<% session.setAttribute("total_plc", 1); %>
+
 	<script>
 		$("#camp_plc").keydown(function(e) {
 			if (e.which == 13) {
+				var name = <%=session.getAttribute("total_plc")%>
+				$("#forcopy").css("display","block");
+				$("#forcopy").children("input").attr("name",name);
 				$("#forcopy").clone().appendTo("#camp_plc");
 			}
 		});
