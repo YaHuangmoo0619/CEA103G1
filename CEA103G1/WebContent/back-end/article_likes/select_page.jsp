@@ -69,10 +69,10 @@
   <jsp:useBean id="articleSvc" scope="page" class="com.article.model.ArticleService" />
    
   <li>
-     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article/article.do" >
+     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article_likes/article_likes.do" >
        <b>¿ï¾Ü¤å³¹½s¸¹:</b>
        <select size="1" name="art_no">
-         <c:forEach var="articleVO" items="${articleSvc.all}" > 
+         <c:forEach var="articleVO" items="${articleSvc.all_Front}" > 
           <option value="${articleVO.art_no}">${articleVO.art_no}
          </c:forEach>   
        </select>
