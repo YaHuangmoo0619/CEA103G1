@@ -567,7 +567,7 @@ public class ArticleServlet extends HttpServlet {
 		}
 		
 		
-		if ("getOne_From2".equals(action)) {
+		if ("getOne_From2".equals(action)) {  //回到論壇首頁的燈箱
 
 			try {
 				// Retrieve form parameters.
@@ -585,7 +585,7 @@ public class ArticleServlet extends HttpServlet {
 				
 				// 取出的articleVO送給listOneEmp.jsp
 				RequestDispatcher successView = req
-						.getRequestDispatcher("/front-end/article/listOneArticle.jsp");
+						.getRequestDispatcher("/front-end/article/listAllArticle.jsp");
 				successView.forward(req, res);
 				return;
 
@@ -594,6 +594,38 @@ public class ArticleServlet extends HttpServlet {
 				throw new ServletException(e);
 			}
 		}
+		
+		
+		
+		if ("getOne_From3".equals(action)) {  //回到論壇首頁的燈箱
+
+			try {
+				// Retrieve form parameters.
+				Integer art_no = new Integer(req.getParameter("art_no"));
+				Integer bd_cl_no = new Integer(req.getParameter("bd_cl_no"));
+				
+				ArticleDAO dao = new ArticleDAO();
+				ArticleVO articleVO = dao.findByPrimaryKey(art_no);
+
+				req.setAttribute("articleVO", articleVO); // 資料庫取出的articleVO物件,存入req
+				req.setAttribute("bd_cl_no", articleVO.getBd_cl_no());
+				//Bootstrap_modal
+				boolean openModal=true;
+				System.out.println(openModal);
+				req.setAttribute("openModal",openModal );
+				
+				// 取出的articleVO送給listOneEmp.jsp
+				RequestDispatcher successView = req
+						.getRequestDispatcher("/front-end/article/listOneBoard_ClassArticle.jsp");
+				successView.forward(req, res);
+				return;
+
+				// Handle any unusual exceptions
+			} catch (Exception e) {
+				throw new ServletException(e);
+			}
+		}
+		
 		
 	}
 }
