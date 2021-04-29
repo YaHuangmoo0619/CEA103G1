@@ -89,7 +89,7 @@ public class ProductServlet extends HttpServlet {
 			
 			try {
 				/***************************1.接收請求參數****************************************/
-				Integer prod_no = new Integer(req.getParameter("prod_no"));
+				Integer prod_no = new Integer(req.getParameter("prod_no").trim());
 				
 				/***************************2.開始查詢資料****************************************/
 				ProductService productSvc = new ProductService();
@@ -232,7 +232,7 @@ public class ProductServlet extends HttpServlet {
 	
 			try {
 				/***************************1.接收請求參數***************************************/
-				Integer prod_no = new Integer(req.getParameter("prod_no"));
+				Integer prod_no = new Integer(req.getParameter("prod_no").trim());
 				
 				/***************************2.開始刪除資料***************************************/
 				ProductService productSvc = new ProductService();

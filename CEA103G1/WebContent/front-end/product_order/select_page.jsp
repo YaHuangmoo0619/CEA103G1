@@ -24,6 +24,7 @@
     color: blue;
     display: inline;
   }
+  
 </style>
 
 </head>
