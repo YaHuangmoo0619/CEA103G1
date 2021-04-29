@@ -8,8 +8,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <link rel="icon" href="<%=request.getContextPath() %>/images/campionLogoIcon.png" type="image/png">
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>Àç®aCampion</title>
 <style>
 html, body {
