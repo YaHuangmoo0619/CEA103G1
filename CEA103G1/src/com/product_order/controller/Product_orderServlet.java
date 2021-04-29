@@ -90,7 +90,7 @@ public class Product_orderServlet extends HttpServlet {
 			
 			try {
 				/***************************1.接收請求參數****************************************/
-				Integer prod_ord_no = new Integer(req.getParameter("prod_ord_no"));
+				Integer prod_ord_no = new Integer(req.getParameter("prod_ord_no").trim());
 				
 				/***************************2.開始查詢資料****************************************/
 				Product_orderService product_orderSvc = new Product_orderService();
@@ -179,7 +179,6 @@ public class Product_orderServlet extends HttpServlet {
 
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				Integer prod_ord_no = new Integer(req.getParameter("prod_ord_no").trim());
 				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
 				Timestamp prod_ord_time = java.sql.Timestamp.valueOf(req.getParameter("prod_ord_time").trim());
 				Integer prod_ord_stat = new Integer(req.getParameter("prod_ord_stat").trim());
@@ -240,7 +239,7 @@ public class Product_orderServlet extends HttpServlet {
 	
 			try {
 				/***************************1.接收請求參數***************************************/
-				Integer prod_ord_no = new Integer(req.getParameter("prod_ord_no"));
+				Integer prod_ord_no = new Integer(req.getParameter("prod_ord_no").trim());
 				
 				/***************************2.開始刪除資料***************************************/
 				Product_orderService product_orderSvc = new Product_orderService();

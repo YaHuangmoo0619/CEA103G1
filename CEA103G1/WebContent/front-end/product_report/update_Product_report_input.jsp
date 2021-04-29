@@ -1,15 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.product_order.model.*"%>
+<%@ page import="com.product_report.model.*"%>
 
 <%
-  Product_orderVO product_orderVO = (Product_orderVO) request.getAttribute("product_orderVO");
+  Product_reportVO product_reportVO = (Product_reportVO) request.getAttribute("product_reportVO");
 %>
 
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>商品訂單修改 - update_Product_order_input.jsp</title>
+<title>商品回報修改 - update_Product_report_input.jsp</title>
 
 <style>
   table#table-1 {
@@ -48,8 +48,8 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>商品訂單修改 - update_Product_order_input.jsp</h3>
-		 <h4><a href="${pageContext.request.contextPath}/front-end/product_order/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0">	</a></h4>
+		 <h3>商品回報修改 - update_Product_report_input.jsp</h3>
+		 <h4><a href="${pageContext.request.contextPath}/front-end/product_report/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0">	</a></h4>
 	</td></tr>
 </table>
 
@@ -64,21 +64,21 @@
 	</ul>
 </c:if>
 
-<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" name="form1">
+<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_report/product_report.do" name="form1">
 <table>
 	<tr>
-		<td>商品訂單編號:<font color=red><b>*</b></font></td>
-		<td><%=product_orderVO.getProd_ord_no()%></td>
+		<td>商品回報編號:<font color=red><b>*</b></font></td>
+		<td><%=product_reportVO.getProd_rpt_no()%></td>
 	</tr>
 	<tr>
 		<td>會員編號:</td>
-		<td><input type="TEXT" name="ename" size="45" value="<%=product_orderVO.getMbr_no()%>" /></td>
+		<td><input type="TEXT" name="ename" size="45" value="<%=product_reportVO.getMbr_no()%>" /></td>
 	</tr>
 
 </table>
 <br>
 <input type="hidden" name="action" value="update">
-<input type="hidden" name="prod_ord_no" value="<%=product_orderVO.getProd_ord_no()%>">
+<input type="hidden" name="prod_rpt_no" value="<%=product_reportVO.getProd_rpt_no()%>">
 <input type="submit" value="送出修改"></FORM>
 </body>
 
