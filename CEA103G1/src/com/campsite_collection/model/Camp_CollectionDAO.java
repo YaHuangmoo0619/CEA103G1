@@ -1,11 +1,18 @@
-package com.campsite_feature.model;
+package com.campsite_collection.model;
 
-import java.sql.*;
-import java.util.*;
-import javax.naming.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
+public class Camp_CollectionDAO implements Camp_CollectionDAO_interface{
 	private static DataSource ds = null;
 	static {
 		try {
@@ -15,28 +22,28 @@ public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
 			e.printStackTrace();
 		}
 	}
-	private static final String GET_ONE_STMT = "SELECT * FROM campsite where camp_no = ?";
-	private static final String GET_ALL_STMT = "SELECT * FROM campsite order by camp_no";
-	private static final String INSERT_STMT = "INSERT INTO campsite_feature (camp_fl_no,camp_no) VALUES (?, ?)";
+	private static final String GET_ONE_STMT = "SELECT * FROM campsite where mbr_no = ?";
+	private static final String GET_ALL_STMT = "SELECT * FROM campsite order by mbr_no";
+	private static final String INSERT_STMT = "INSERT INTO campsite (cso_no,dist_no,camp_name,campsite_Status,campInfo,note,config,review_Status,height,wireless,pet,facility,operate_Date,park,address,longtitude,latitude,total_Star,total_Comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE campsite set camp_name=?,campsite_Status=?,campInfo=?,note=?,config=?,review_Status=?,height=?,wireless=?,pet=?,facility=?,operate_Date=?,park=?,address=?,longtitude=?,latitude=?,total_Star=?,total_Comment=? where campno = ?";
-	private static final String DELETE = "DELETE FROM campsite where camp_no = ?";
+	private static final String DELETE = "DELETE FROM campsite where mbr_no = ?";
 
-	public Camp_FeatureVO findByPrimaryKey(Integer camp_fl_no, Integer camp_no) {
+	public Camp_CollectionVO findByPrimaryKey(Integer camp_no, Integer mbr_no) {
 
-		Camp_FeatureVO camp_featureVO = null;
+		Camp_CollectionVO camp_collectionVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
-			pstmt.setInt(1, camp_fl_no);
+			pstmt.setInt(1, camp_no);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				camp_featureVO = new Camp_FeatureVO();
-				camp_featureVO.setCamp_fl_no(rs.getInt("camp_fl_no"));
-				camp_featureVO.setCamp_no(rs.getInt("camp_no"));
+				camp_collectionVO = new Camp_CollectionVO();
+				camp_collectionVO.setCamp_no(rs.getInt("camp_no"));
+				camp_collectionVO.setMbr_no(rs.getInt("mbr_no"));
 			}
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -63,12 +70,12 @@ public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
 				}
 			}
 		}
-		return camp_featureVO;
+		return camp_collectionVO;
 	}
 
-	public List<Camp_FeatureVO> getAll() {
-		List<Camp_FeatureVO> list = new ArrayList<Camp_FeatureVO>();
-		Camp_FeatureVO camp_featureVO = null;
+	public List<Camp_CollectionVO> getAll() {
+		List<Camp_CollectionVO> list = new ArrayList<Camp_CollectionVO>();
+		Camp_CollectionVO camp_collectionVO = null;
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -81,10 +88,10 @@ public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				camp_featureVO = new Camp_FeatureVO();
-				camp_featureVO.setCamp_fl_no(rs.getInt("camp_fl_no"));
-				camp_featureVO.setCamp_no(rs.getInt("camp_no"));
-				list.add(camp_featureVO);
+				camp_collectionVO = new Camp_CollectionVO();
+				camp_collectionVO.setCamp_no(rs.getInt("camp_no"));
+				camp_collectionVO.setMbr_no(rs.getInt("mbr_no"));
+				list.add(camp_collectionVO);
 			}
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -115,7 +122,7 @@ public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
 	}
 
 	@Override
-	public void insert(Camp_FeatureVO camp_featureVO) {
+	public void insert(Camp_CollectionVO camp_collectionVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -124,8 +131,8 @@ public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, camp_featureVO.getCamp_fl_no());
-			pstmt.setInt(2, camp_featureVO.getCamp_no());
+			pstmt.setInt(1, camp_collectionVO.getCamp_no());
+			pstmt.setInt(2, camp_collectionVO.getMbr_no());
 
 			pstmt.executeUpdate();
 
@@ -154,7 +161,7 @@ public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
 	}
 
 	@Override
-	public void update(Camp_FeatureVO camp_featureVO) {
+	public void update(Camp_CollectionVO camp_collectionVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -163,8 +170,8 @@ public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setInt(1, camp_featureVO.getCamp_fl_no());
-			pstmt.setInt(2, camp_featureVO.getCamp_no());
+			pstmt.setInt(1, camp_collectionVO.getCamp_no());
+			pstmt.setInt(2, camp_collectionVO.getMbr_no());
 			pstmt.executeUpdate();
 
 		} catch (SQLException se) {
@@ -189,7 +196,7 @@ public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
 	}
 
 	@Override
-	public void delete(Integer camp_fl_no, Integer camp_no) {
+	public void delete(Integer camp_no, Integer mbr_no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -198,8 +205,8 @@ public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(DELETE);
 
-			pstmt.setInt(1, camp_fl_no);
-			pstmt.setInt(2, camp_no);
+			pstmt.setInt(1, camp_no);
+			pstmt.setInt(2, mbr_no);
 
 			pstmt.executeUpdate();
 
@@ -222,45 +229,5 @@ public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
 				}
 			}
 		}
-	}
-@Override
-	public void insert2(Camp_FeatureVO camp_featureVO, Connection con) {
-	PreparedStatement pstmt = null;
-
-	try {
-
-		pstmt = con.prepareStatement(INSERT_STMT);
-
-		pstmt.setInt(1, camp_featureVO.getCamp_fl_no());
-		pstmt.setInt(2, camp_featureVO.getCamp_no());
-
-		Statement stmt = con.createStatement();
-//stmt.executeUpdate("set auto_increment_offset=7001;"); //自增主鍵-初始值
-		stmt.executeUpdate("set auto_increment_increment=1;"); // 自增主鍵-遞增
-		pstmt.executeUpdate();
-
-		// Handle any SQL errors
-	} catch (SQLException se) {
-		if (con != null) {
-			try {
-				// 3●設定於當有exception發生時之catch區塊內
-				System.err.print("Transaction is being ");
-				System.err.println("rolled back-由-emp");
-				con.rollback();
-			} catch (SQLException excep) {
-				throw new RuntimeException("rollback error occured. " + excep.getMessage());
-			}
-		}
-		throw new RuntimeException("A database error occured. " + se.getMessage());
-		// Clean up JDBC resources
-	} finally {
-		if (pstmt != null) {
-			try {
-				pstmt.close();
-			} catch (SQLException se) {
-				se.printStackTrace(System.err);
-			}
-		}
-	}
 	}
 }

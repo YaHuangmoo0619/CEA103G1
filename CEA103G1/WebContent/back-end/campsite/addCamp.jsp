@@ -56,8 +56,7 @@ div {
 			</c:forEach>
 		</ul>
 	</c:if>
-	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/camp/camp.do"
-		name="form1" enctype="multipart/form-data" onsubmit="return false;">
+	<FORM METHOD="post" name="form1" ACTION="<%=request.getContextPath()%>/campsite/insertcamp.do" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<td>營主編號:</td>
@@ -165,21 +164,34 @@ div {
 			</tr>
 		</table>
 
-		<br> <input type="hidden" name="action" value="insert"> <input
-			type="button" id="send" value="送出新增">
+		<br> <input id="plc_amt" type="hidden" name="plc_amt"><input
+			type="hidden" name="action" value="insert"> <input
+			type="button" id="plc" value="新增營位"><input
+			type="submit" value="送出新增">
 	</FORM>
 	<script>
-		$("#camp_plc").keydown(function(e) {
-			if (e.which == 13) {				
-				$("#title").next().clone().find('input').val("").end().appendTo(this)
-			}
-		});
-		$("#send").click(function() {
+		$("#camp_plc").keydown(
+				function(e) {
+					if (e.which == 13) {
+						$("#title").next().clone().find('input').val("").end()
+								.appendTo(this)
+					}
+				});
+		$("#plc").click(function() {
 			let index = 0;
 			$("#title").nextAll().each(function(i, dom) {
-				$(dom).find('input').attr("name", "plc"+index);
+				$(dom).find('input').attr("name", "plc" + index);
 				index++;
 			});
+			$("#plc_amt").val(index - 1);
+// 			$.ajax({
+// 				type : "POST",
+// 				url : "http://localhost:8081/CEA103G1/campsite/insertcamp.do",
+// 				data : $('#form1').serialize(),
+// 				success : function(data) {
+// 					alert("好了")
+// 				}
+// 			});
 		});
 	</script>
 </body>

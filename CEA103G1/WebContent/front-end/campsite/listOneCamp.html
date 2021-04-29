@@ -691,6 +691,8 @@ tr:nth-child(even) {
 				url : "http://localhost:8081/CEA103G1/place_order/Place_order.do",
 				data : $('#order').serialize(),
 				success : function(data) {
+					let ord = JSON.stringify(data);
+					sessionStorage.setItem("ord", ord);
 					window.location.href="http://localhost:8081/CEA103G1/front-end/place_order/listOnePlace_order.html";
 				}
 			});

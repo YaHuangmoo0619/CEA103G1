@@ -4,6 +4,9 @@ import java.sql.Blob;
 import java.sql.Date;
 import java.util.List;
 
+import com.campsite_feature.model.Camp_FeatureVO;
+import com.place.model.PlaceVO;
+
 public class CampService {
 	private CampDAO_interface dao;
 
@@ -13,7 +16,7 @@ public class CampService {
 
 	public CampVO addCamp(Integer cso_no, Integer dist_no, String camp_name, String campInfo, String note,
 			byte[] config, String height, String wireless, Integer pet, String facility, Integer operate_Date,
-			String park, String address, Double latitude, Double longitude) {
+			String park, String address, Double latitude, Double longitude, List<Camp_FeatureVO> camp_featurelist, List<PlaceVO> placelist) {
 
 		CampVO campVO = new CampVO();
 		campVO.setCso_no(cso_no);
@@ -31,8 +34,8 @@ public class CampService {
 		campVO.setAddress(address);
 		campVO.setLongitude(longitude);
 		campVO.setLatitude(latitude);
-		dao.insert(campVO);
-
+System.out.println("²Ä¤@¯¸");
+		dao.insert(campVO, camp_featurelist, placelist);
 		return campVO;
 	}
 

@@ -30,7 +30,11 @@
 				</FORM>
 			</div>
 		</div>
-		<hr>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-9" id="all"></div>
+		</div>
 	</div>
 	<script>
 		$.ajax({
@@ -42,7 +46,7 @@
 			}
 		});
 	    $("#idForm").click(function(){
-			$('#form').nextAll().remove();
+			$('#all').children().remove();
 			$.ajax({
 				type : "GET",
 				cache : "false",
@@ -62,7 +66,7 @@
 				var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
 				html = `<div><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
 					</a><ion-icon id="fav" name="bookmark-outline"></ion-icon><p>地址:${data[i].address}</p><p>最低價:${data[i].low_pc}</p></div><hr>`;
-				$('#form').after(html);
+				$('#all').append(html);
 				$(`#${data[i].camp_no}`).attr("href",href);
 				$(`#${data[i].camp_no}`).attr("target","_blank");
 			}
@@ -79,7 +83,7 @@
 				} else {
 					html = "<center>所有營區皆已滿</center>";
 				}
-				$('#form').after(html);
+				$('#all').append(html);
 				$(`#${data[i].camp_no}`).attr("href",href);
 				$(`#${data[i].camp_no}`).attr("target","_blank");
 			}
