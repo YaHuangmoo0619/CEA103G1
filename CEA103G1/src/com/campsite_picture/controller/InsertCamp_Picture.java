@@ -39,7 +39,6 @@ public class InsertCamp_Picture extends HttpServlet {
 		}
 
 	}
-
 	public String getFileNameFromPart(Part part) {
 		String header = part.getHeader("content-disposition");
 		String filename = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();

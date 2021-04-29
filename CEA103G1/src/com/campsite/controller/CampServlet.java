@@ -206,8 +206,8 @@ public class CampServlet extends HttpServlet {
 				DistrictService districtSvc = new DistrictService();
 				Integer dist_no = districtSvc.addDistrict(district, county).getDist_no();
 				CampService campSvc = new CampService();
-				campVO = campSvc.addCamp(cso_no, dist_no, camp_name, campInfo, note, config, height, wireless, pet,
-						facility, operate_date, park, address, latitude, longitude);
+//				campVO = campSvc.addCamp(cso_no, dist_no, camp_name, campInfo, note, config, height, wireless, pet,
+//						facility, operate_date, park, address, latitude, longitude);
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				String forwardurl = "/back-end/campsite/listAllCamp.jsp";

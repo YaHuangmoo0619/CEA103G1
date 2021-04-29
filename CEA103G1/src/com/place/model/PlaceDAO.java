@@ -18,7 +18,7 @@ public class PlaceDAO implements PlaceDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT * FROM place where plc_no = ?";
 	private static final String GET_BY_CAMP = "SELECT * FROM place where camp_no = ?";
 	private static final String GET_ALL_STMT = "SELECT * FROM place order by plc_no";
-	private static final String INSERT_STMT = "INSERT INTO campsite (cso_no,dist_no,camp_name,campsite_Status,campInfo,note,config,review_Status,height,wireless,pet,facility,operate_Date,park,address,longtitude,latitude,total_Star,total_Comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO place (camp_no,plc_name,ppl,max_ppl,pc_wkdy,pc_wknd) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE campsite set camp_name=?,campsite_Status=?,campInfo=?,note=?,config=?,review_Status=?,height=?,wireless=?,pet=?,facility=?,operate_Date=?,park=?,address=?,longtitude=?,latitude=?,total_Star=?,total_Comment=? where campno = ?";
 	private static final String DELETE = "DELETE FROM campsite where camp_no = ?";
 
@@ -269,6 +269,54 @@ public class PlaceDAO implements PlaceDAO_interface {
 					con.close();
 				} catch (Exception e) {
 					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	@Override
+	public void insert2(PlaceVO placeVO, Connection con) {
+		PreparedStatement pstmt = null;
+System.out.println("營位第一站");
+		try {
+
+			pstmt = con.prepareStatement(INSERT_STMT);
+
+			pstmt.setInt(1, placeVO.getCamp_no());
+System.out.println(placeVO.getCamp_no());
+			pstmt.setString(2, placeVO.getPlc_name());
+			pstmt.setInt(3, placeVO.getPpl());
+System.out.println(placeVO.getMax_ppl());
+			pstmt.setInt(4, placeVO.getMax_ppl());
+			pstmt.setInt(5, placeVO.getPc_wkdy());
+System.out.println(placeVO.getPc_wkdy());
+			pstmt.setInt(6, placeVO.getPc_wknd());
+System.out.println(placeVO.getPc_wknd());
+System.out.println("營位第二站");
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("set auto_increment_offset=1;"); //自增主鍵-初始值
+			stmt.executeUpdate("set auto_increment_increment=1;"); // 自增主鍵-遞增
+System.out.println("營位第三站");
+			pstmt.executeUpdate();
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-emp");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. " + excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
 				}
 			}
 		}

@@ -7,6 +7,13 @@ import java.util.List;
 import javax.naming.*;
 import javax.sql.DataSource;
 
+import com.campsite_feature.model.Camp_FeatureDAO;
+import com.campsite_feature.model.Camp_FeatureVO;
+import com.place.model.PlaceDAO;
+import com.place.model.PlaceVO;
+import com.place_order_details.model.Place_Order_DetailsDAO;
+import com.place_order_details.model.Place_Order_DetailsVO;
+
 public class CampDAO implements CampDAO_interface {
 	private static DataSource ds = null;
 	static {
@@ -196,55 +203,6 @@ public class CampDAO implements CampDAO_interface {
 	}
 
 	@Override
-	public void insert(CampVO campVO) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
-		try {
-
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(INSERT_STMT);
-
-			pstmt.setInt(1, campVO.getCso_no());
-			pstmt.setInt(2, campVO.getDist_no());
-			pstmt.setString(3, campVO.getCamp_name());
-			pstmt.setString(4, campVO.getCampInfo());
-			pstmt.setString(5, campVO.getNote());
-			pstmt.setBytes(6, campVO.getConfig());
-			pstmt.setString(7, campVO.getHeight());
-			pstmt.setString(8, campVO.getWireless());
-			pstmt.setInt(9, campVO.getPet());
-			pstmt.setString(10, campVO.getFacility());
-			pstmt.setInt(11, campVO.getOperate_Date());
-			pstmt.setString(12, campVO.getPark());
-			pstmt.setString(13, campVO.getAddress());
-			pstmt.setDouble(14, campVO.getLatitude());
-			pstmt.setDouble(15, campVO.getLongitude());
-			pstmt.executeUpdate();
-			// Handle any SQL errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-
-	}
-
-	@Override
 	public void update(CampVO campVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -254,6 +212,7 @@ public class CampDAO implements CampDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
+			
 			pstmt.setInt(1, campVO.getDist_no());
 			pstmt.setString(2, campVO.getCamp_name());
 			pstmt.setString(3, campVO.getCampInfo());
@@ -308,6 +267,101 @@ public class CampDAO implements CampDAO_interface {
 
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
+
+	@Override
+	public void insert(CampVO campVO, List<Camp_FeatureVO> camp_featurelist, List<PlaceVO> placelist) {
+		// TODO Auto-generated method stub
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			// 1●設定於 pstm.executeUpdate()之前
+			con = ds.getConnection();
+			con.setAutoCommit(false);
+
+			// 先新增部門
+			String cols[] = { "CAMP_NO" };
+			pstmt = con.prepareStatement(INSERT_STMT, cols);
+			pstmt.setInt(1, campVO.getCso_no());
+			pstmt.setInt(2, campVO.getDist_no());
+			pstmt.setString(3, campVO.getCamp_name());
+			pstmt.setString(4, campVO.getCampInfo());
+			pstmt.setString(5, campVO.getNote());
+			pstmt.setBytes(6, campVO.getConfig());
+			pstmt.setString(7, campVO.getHeight());
+			pstmt.setString(8, campVO.getWireless());
+			pstmt.setInt(9, campVO.getPet());
+			pstmt.setString(10, campVO.getFacility());
+			pstmt.setInt(11, campVO.getOperate_Date());
+			pstmt.setString(12, campVO.getPark());
+			pstmt.setString(13, campVO.getAddress());
+			pstmt.setDouble(14, campVO.getLatitude());
+			pstmt.setDouble(15, campVO.getLongitude());	
+//			pstmt.executeUpdate();
+			
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("set auto_increment_offset=1;"); // 自增主鍵-初始值
+			stmt.executeUpdate("set auto_increment_increment=1;"); // 自增主鍵-遞增
+			pstmt.executeUpdate();
+			// 掘取對應的自增主鍵值
+			String next_camp_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+			if (rs.next()) {
+				next_camp_no = rs.getString(1);
+			} else {
+				System.out.println("未取得自增主鍵值");
+			}
+			rs.close();
+			// 再同時新增員工
+System.out.println("第二站");	
+			PlaceDAO dao1 = new PlaceDAO();
+			for (PlaceVO aPlace : placelist) {
+				aPlace.setCamp_no(new Integer(next_camp_no));
+				dao1.insert2(aPlace, con);
+			}
+System.out.println("第三站");
+			Camp_FeatureDAO dao2 = new Camp_FeatureDAO();
+			for (Camp_FeatureVO aCamp_Feature : camp_featurelist) {
+				aCamp_Feature.setCamp_no(new Integer(next_camp_no));
+				dao2.insert2(aCamp_Feature, con);
+			}
+System.out.println("第四站");
+			// 2●設定於 pstm.executeUpdate()之後
+			con.commit();
+			con.setAutoCommit(true);
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-dept");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. " + excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
 		} finally {
 			if (pstmt != null) {
 				try {
