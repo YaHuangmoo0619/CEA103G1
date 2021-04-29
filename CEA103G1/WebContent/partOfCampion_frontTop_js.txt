@@ -1,0 +1,44 @@
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script>
+		let countMenu = 0;
+		$("#menu").click(function() {
+			countMenu++;
+			if (countMenu % 2 == 1) {
+				let secArray = document.getElementsByClassName("sec");
+				for (let i = 0; i < secArray.length; i++) {
+					secArray[i].style.display = "flex";
+				}
+			} else {
+				let secArray = document.getElementsByClassName("sec");
+				for (let i = 0; i < secArray.length; i++) {
+					secArray[i].style.display = "none";
+				}
+			}
+		});
+
+		let countSearch = 0;
+		$("#searchIcon").click(function() {
+			countSearch++;
+			if (countSearch % 2 == 1) {
+				let formArray = document.getElementsByClassName("secSearch");
+				for (let i = 0; i < formArray.length; i++) {
+					formArray[i].style.display = "flex";
+				}
+			} else {
+				let formArray = document.getElementsByClassName("secSearch");
+				for (let i = 0; i < formArray.length; i++) {
+					formArray[i].style.display = "none";
+				}
+			}
+		});
+
+		let backToTop = document.getElementsByClassName("backToTop");
+		$(window).scroll(function(e) {
+			console.log(e);
+			if ($(window).scrollTop() <= 1) {
+				backToTop[1].style.display = "none";
+			} else {
+				backToTop[1].style.display = "block";
+			}
+		});
+	</script>
