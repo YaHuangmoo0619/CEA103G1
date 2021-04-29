@@ -1,13 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=BIG5"
+    pageEncoding="BIG5"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="BIG5">
-<link rel="icon" href="campionLogoIcon.png" type="image/png">
+<link rel="icon" href="<%=request.getContextPath() %>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-	crossorigin="anonymous">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>測試頁-營家campion</title>
 <style>
 html, body {
@@ -61,8 +60,6 @@ div.footer{
 	font-size: 2em;
 	background-color: #4B7F52;
 	padding: 20px 0px 20px 0px;
-/*	position: absolute;
-	bottom: 0px;*/
 	width: 100%;
 	font-weight: 999;
 }
@@ -84,9 +81,9 @@ div.footer{
 				<div class="row">
 					<div class="col-1 name">YaHuang</div>
 					<div class="col-11">
-					<a href="http://localhost:8081/CEA103G1/back-end/announcement/select_page.jsp">announcement</a>
-					<a href="http://localhost:8081/CEA103G1/back-end/function/select_page.jsp">function</a>
-					<a href="http://localhost:8081/CEA103G1/back-end/employee/select_page.jsp">employee</a>
+					<a href="<%=request.getContextPath() %>/back-end/announcement/select_page.jsp">announcement</a>
+					<a href="<%=request.getContextPath() %>/back-end/function/select_page.jsp">function</a>
+					<a href="<%=request.getContextPath() %>/back-end/employee/select_page.jsp">employee</a>
 					</div>
 				</div>
 			</div>
@@ -94,9 +91,9 @@ div.footer{
 				<div class="row">
 					<div class="col-1 name">DuTe</div>
 					<div class="col-11">
-					<a href="http://localhost:8081/CEA103G1/back-end/feature_list/listAllFeature_list.jsp">feature_list</a>
-					<a href="http://localhost:8081/CEA103G1/back-end/campsite/listAllCamp.jsp">campsite</a>
-					<a href="http://localhost:8081/CEA103G1/back-end/place_order/listAllPlace_order.jsp">place_order</a>
+					<a href="<%=request.getContextPath() %>/back-end/feature_list/listAllFeature_list.jsp">feature_list</a>
+					<a href="<%=request.getContextPath() %>/back-end/campsite/listAllCamp.jsp">campsite</a>
+					<a href="<%=request.getContextPath() %>/back-end/place_order/listAllPlace_order.jsp">place_order</a>
 					</div>
 				</div>
 			</div>
@@ -104,7 +101,7 @@ div.footer{
 				<div class="row">
 					<div class="col-1 name">Jun</div>
 					<div class="col-11">
-					<a href="http://localhost:8081/CEA103G1/back-end/member_rank/select_page.jsp">member_rank</a>
+					<a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">member_rank</a>
 					</div>
 				</div>
 			</div>
@@ -112,12 +109,12 @@ div.footer{
 				<div class="row">
 					<div class="col-1 name">Drake</div>
 					<div class="col-11">
-					<a href="http://localhost:8081/CEA103G1/back-end/article/select_page.jsp">article</a>
-					<a href="http://localhost:8081/CEA103G1/back-end/article_likes/select_page.jsp">article_likes</a>
-					<a href="http://localhost:8081/CEA103G1/back-end/article_picture/select_page.jsp">article_picture</a>
-					<a href="http://localhost:8081/CEA103G1/back-end/article_reply/select_page.jsp">article_reply</a>
-					<a href="http://localhost:8081/CEA103G1/back-end/board_class/select_page.jsp">board_class</a>
-					<a href="http://localhost:8081/CEA103G1/back-end/follow/select_page.jsp">follow</a>
+					<a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">article</a>
+					<a href="<%=request.getContextPath() %>/back-end/article_likes/select_page.jsp">article_likes</a>
+					<a href="<%=request.getContextPath() %>/back-end/article_picture/select_page.jsp">article_picture</a>
+					<a href="<%=request.getContextPath() %>/back-end/article_reply/select_page.jsp">article_reply</a>
+					<a href="<%=request.getContextPath() %>/back-end/board_class/select_page.jsp">board_class</a>
+					<a href="<%=request.getContextPath() %>/back-end/follow/select_page.jsp">follow</a>
 					</div>
 				</div>
 			</div>
@@ -125,7 +122,7 @@ div.footer{
 				<div class="row">
 					<div class="col-1 name">TC</div>
 					<div class="col-11">
-					<a href="http://localhost:8081/CEA103G1/back-end/product_category/select_page.jsp">product_category</a>
+					<a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">product_category</a>
 					</div>
 				</div>
 			</div>
@@ -148,7 +145,7 @@ div.footer{
 				<div class="row">
 					<div class="col-1 name">DuTe</div>
 					<div class="col-11">
-					<a href="http://localhost:8081/CEA103G1/front-end/NewFile.html">NewFile.html</a>
+					<a href="<%=request.getContextPath() %>/front-end/NewFile.html">NewFile.html</a>
 					</div>
 				</div>
 			</div>
