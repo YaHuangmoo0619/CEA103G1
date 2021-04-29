@@ -1,0 +1,17 @@
+<style>
+	div.top {
+	display: flex;
+	justify-content: space-between;
+	padding: 10px 15px 10px 15px;
+	background-color: #eee;
+	width: 100%;
+}
+
+img.logo {
+	max-height: 70px;
+}
+
+img.person {
+	max-width: 5%;
+}
+</style>

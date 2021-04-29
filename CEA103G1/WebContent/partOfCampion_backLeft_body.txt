@@ -1,0 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
+
+	<div class="content">
+		<div class="row">
+			<div class="left col-3">
+				<ul>
+					<li><a
+						href="<%=request.getContextPath()%>/back-end/employee/select_page.jsp">員工管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/place_order/listAllPlace_order.jsp">營位訂購平台管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/announcement/select_page.jsp">公告管理</a></li>
+					<li><a href="">客服管理</a></li>
+					<li><a href="">即時小幫手管理</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>

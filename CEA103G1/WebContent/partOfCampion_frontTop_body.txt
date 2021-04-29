@@ -1,0 +1,56 @@
+<%@ page language="java" contentType="text/html; charset=BIG5" pageEncoding="BIG5"%>
+	<div class="fixedTop">
+		<div>
+			<a href="<%=request.getContextPath() %>/campion_front.jsp"> <img src="<%=request.getContextPath() %>/front-images/campionLogoLong.png" class="logo">
+			</a>
+			<form class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" type="search"
+					placeholder="營位/商品/文章" aria-label="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
+			</form>
+		</div>
+		<div>
+			<img src="<%=request.getContextPath() %>/front-images/cart-outline.svg" class="cart"> <img
+				src="<%=request.getContextPath() %>/front-images/search-circle-outline.svg" id="searchIcon" class="searchIcon">
+			<div class="btn-group" role="group" aria-label="Basic example">
+				<button type="button" class="btn btn-secondary">營區</button>
+				<button type="button" class="btn btn-secondary">商城</button>
+				<button type="button" class="btn btn-secondary">論壇</button>
+			</div>
+			<div class="btn-group" role="group" aria-label="Basic example">
+				<button type="button" class="btn btn-outline-secondary">營主</button>
+				<button type="button" class="btn btn-outline-secondary">註冊</button>
+				<button type="button" class="btn btn-outline-secondary">登入</button>
+				<button type="button" class="btn btn-outline-secondary">FAQ</button>
+				<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
+			</div>
+			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu"> <a
+				href="nnn"> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
+		</div>
+	</div>
+
+	<div class="forSearch">
+		<form class="form-inline secSearch my-2 my-lg-0">
+			<input class="form-control mr-sm-2" type="search"
+				placeholder="營位/商品/文章" aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
+		</form>
+	</div>
+	<div class="menuForButton">
+		<div class="btn-group sec" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-secondary">營區</button>
+			<button type="button" class="btn btn-secondary">商城</button>
+			<button type="button" class="btn btn-secondary">論壇</button>
+		</div>
+		<div class="btn-group sec" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-outline-secondary">營主</button>
+			<button type="button" class="btn btn-outline-secondary">註冊</button>
+			<button type="button" class="btn btn-outline-secondary">登入</button>
+			<button type="button" class="btn btn-outline-secondary">FAQ</button>
+			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
+		</div>
+	</div>
+	<div class="backToTop">
+		<a href="#"><img src="<%=request.getContextPath() %>/front-images/arrow-up-circle-outline.svg"
+			class="backToTop"></a>
+	</div>

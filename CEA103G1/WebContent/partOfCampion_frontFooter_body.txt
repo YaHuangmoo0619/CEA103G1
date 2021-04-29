@@ -1,0 +1,8 @@
+	<section class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm">Copyright2020-2021,Campion Group or its
+					Affiliates.</div>
+			</div>
+		</div>
+	</section>
