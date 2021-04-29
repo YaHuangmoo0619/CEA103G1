@@ -196,7 +196,7 @@
 <button id=rep>新增文章留言</button>
 <button id=get>顯示文章留言</button>
 
-			<p><%=request.getServletPath()%></p>
+
 
 	<script>   
   	$("#rep").click(function(){

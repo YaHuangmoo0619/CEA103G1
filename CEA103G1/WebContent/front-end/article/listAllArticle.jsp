@@ -24,29 +24,36 @@
 
 <jsp:useBean id="bd_clSvc" scope="page"
 	class="com.board_class.model.Board_ClassService" />
-<jsp:useBean id="bd_clDAO" scope="page" class="com.board_class.model.Board_ClassDAO" />
+<jsp:useBean id="bd_clDAO" scope="page"
+	class="com.board_class.model.Board_ClassDAO" />
+<%-- <jsp:useBean id="articleDAO" scope="page" class="com.article.model.ArticleDAO" /> --%>
 
 <html>
 <head>
 <meta charset="Big5">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>列出所有文章</title>
+
+
 <link rel="icon" href="campionLogoIcon.png" type="image/png">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<title>列出所有文章</title>
-  <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <!-- Custom styles for this template -->
-  <link href="css/simple-sidebar.css" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- Custom styles for this template -->
+<link href="css/simple-sidebar.css" rel="stylesheet">
 
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <style>
-
-
-
 html, body {
 	margin: 0;
 	padding: 0;
@@ -109,8 +116,6 @@ img.person {
 img.person:hover {
 	cursor: pointer;
 }
-
-
 
 @media screen and (max-width: 575px) {
 	container {
@@ -305,17 +310,14 @@ img.person:hover {
 	}
 }
 
-
-#sidebar-wrapper{
-	width:208px;
-	height:2195px;
-	padding:0px;
-	border:0px;
-	margin:0px;
-	position:fixed;
+#sidebar-wrapper {
+	width: 208px;
+	height: 2195px;
+	padding: 0px;
+	border: 0px;
+	margin: 0px;
+	position: fixed;
 }
-
-
 </style>
 
 </head>
@@ -344,92 +346,77 @@ img.person:hover {
 			<button type="button" class="btn btn-outline-secondary">FAQ</button>
 			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
 		</div>
-		<img src="/CEA103G1/menu-outline.svg" class="menu" onclick="showMenu()"> <img
+		<img src="/CEA103G1/menu-outline.svg" class="menu"
+			onclick="showMenu()"> <img
 			src="/CEA103G1/person-circle-outline.svg" class="person">
 
 	</div>
 
 
-    <div>
-      <div>
-      	<c:forEach var="board_classVO" items="${bd_list}">
-        <a href="<%=request.getContextPath()%>/article/article.do?bd_cl_no=${board_classVO.bd_cl_no}&action=getOneArticle_ByBoard_Clss_For_Display">${board_classVO.bd_name}</a>
-        <br>
-        	</c:forEach>
-      </div>
-    </div>
+	<div>
+		<div>
+			<c:forEach var="board_classVO" items="${bd_list}">
+				<a
+					href="<%=request.getContextPath()%>/article/article.do?bd_cl_no=${board_classVO.bd_cl_no}&action=getOneArticle_ByBoard_Clss_For_Display">${board_classVO.bd_name}</a>
+				<br>
+			</c:forEach>
+		</div>
+	</div>
 
 
 
 
-	<table>
-		<tr>
-			<th>文章編號</th>
-			<th>看板</th>
-			<th>會員編號</th>
-			<th>發表時間</th>
-			<th>文章標題</th>
-			<th>讚數</th>
 
-		</tr>
-		<%@ include file="pageforhome.file"%>
-		<c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>"
-			end="<%=pageIndex+rowsPerPage-1%>">
+	<%@ include file="pageforhome.file"%>
 
-			<tr>
-				<td>${articleVO.art_no}</td>
-			<td><c:forEach var="bd_clVO" items="${bd_clDAO.all}">
-                    <c:if test="${articleVO.bd_cl_no==bd_clVO.bd_cl_no}">
+	<c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>"
+		end="<%=pageIndex+rowsPerPage-1%>">
+<div>
+
+${articleVO.art_no}
+<c:forEach var="bd_clVO" items="${bd_clDAO.all}">
+			<c:if test="${articleVO.bd_cl_no==bd_clVO.bd_cl_no}">
 	                    ${bd_clVO.bd_name}
                     </c:if>
-                </c:forEach></td>
-                
-                
-				<td>${articleVO.mbr_no}</td>
-				<td><fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm"/></td>
-				<td><a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></td>
-
-						<td>${articleVO.likes}</td>
-
-			</tr>
 		</c:forEach>
-	</table>
+
+
+${articleVO.mbr_no}
+<fmt:formatDate value="${articleVO.art_rel_time}"
+			pattern="MM月dd日  HH:mm" />
+		<a
+			href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a>
+${articleVO.likes}
+
+</div>
+		</c:forEach>
+
 	<%@ include file="page2.file"%>
 
 
 
-<c:if test="${openModal!=null}">
+	<c:if test="${openModal!=null}">
 
-<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-				
-			<div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="modal-title" id="myModalLabel">The Bootstrap modal-header</h3>
-            </div>
-			
-			<div class="modal-body">
-<!-- =========================================以下為原listOneArticle.jsp的內容========================================== -->
-               <jsp:include page="listOneArticle.jsp" />
-<!-- =========================================以上為原listOneArticle.jsp的內容========================================== -->
+		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
+			aria-labelledby="basicModal" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-body">
+						<!-- =========================================以下為原listOneArticle.jsp的內容========================================== -->
+						<jsp:include page="listOneArticle.jsp" />
+						<!-- =========================================以上為原listOneArticle.jsp的內容========================================== -->
+					</div>
+				</div>
 			</div>
-			
-			<div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-		
 		</div>
-	</div>
-</div>
 
- </c:if>
+	</c:if>
 
 
-         <script>
-    		 $("#basicModal").modal({show: true});
-        </script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 	<script>
 		let countMenu = 0;
@@ -466,11 +453,16 @@ img.person:hover {
 	</script>
 
 
+	<script>
+		$("#basicModal").modal({
+			show : true
+		});
+	</script>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+
+	<!-- 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
+	<!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script> -->
+	<!-- 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script> -->
 </body>
 </html>

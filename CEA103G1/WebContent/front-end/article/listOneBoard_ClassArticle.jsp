@@ -24,6 +24,7 @@
 <html>
 <head>
 <title>單一看板所有文章_前台</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <style>
 table#table-1 {
@@ -78,7 +79,7 @@ a:hover {
 			<td>
 				<h3>單一看板所有文章_前台</h3>
 				<h4>
-					<a href="/CEA103G1/back-end/article/select_page.jsp"><img src="/CEA103G1/images/Campion.png"
+					<a href="/CEA103G1/front-end/article/listAllArticle.jsp"><img src="/CEA103G1/images/Campion.png"
 						width="100" height="100" border="0"></a>
 				</h4>
 			</td>
@@ -103,9 +104,7 @@ a:hover {
 			<th>發表時間</th>
 			<th>文章標題</th>
 			<th>讚數</th>
-			<th>文章狀態</th>
-			<th>修改</th>
-			<th>刪除</th>
+
 		</tr>
 		<%@ include file="pageforhome.file"%>
 		<c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>"
@@ -123,33 +122,40 @@ a:hover {
 				<td>${articleVO.mbr_no}</td>
 				<td><fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm"/></td>
 				<td><a
-					href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From">${articleVO.art_title}</a></td>
-<%-- 				<td>${fn:replace(articleVO.art_cont,vEnter,"<br>")}</td> --%>
+					href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From3&bd_cl_no=${articleVO.bd_cl_no}">${articleVO.art_title}</a></td>
+
 						<td>${articleVO.likes}</td>
-				<td><c:if test="${articleVO.getArt_stat() == 0}">顯示</c:if> <c:if
-						test="${articleVO.getArt_stat() == 1}">不顯示</c:if></td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/article/article.do"
-						style="margin-bottom: 0px;">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="art_no" value="${articleVO.art_no}"> <input
-							type="hidden" name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/article/article.do"
-						style="margin-bottom: 0px;">
-						<input type="submit" value="刪除"> <input type="hidden"
-							name="art_no" value="${articleVO.art_no}"> <input
-							type="hidden" name="action" value="delete">
-					</FORM>
-				</td>
+
 			</tr>
 		</c:forEach>
 	</table>
 	<%@ include file="page2.file"%>
+
+
+<c:if test="${openModal!=null}">
+
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">		
+			<div class="modal-body">
+<!-- =========================================以下為原listOneArticle.jsp的內容========================================== -->
+               <jsp:include page="listOneArticle.jsp" />
+<!-- =========================================以上為原listOneArticle.jsp的內容========================================== -->
+			</div>	
+		</div>
+	</div>
+</div>
+
+ </c:if>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	     <script>
+    		 $("#basicModal").modal({show: true});
+        </script>
 
 </body>
 </html>
