@@ -1,0 +1,20 @@
+diff a/CEA103G1/WebContent/front-end/campsite/listOneCamp.html b/CEA103G1/WebContent/front-end/campsite/listOneCamp.html	(rejected hunks)
+@@ -447,7 +448,7 @@
+ 		}else{
+ 			const src = "/CEA103G1/camp/campconfig.do?" + query;
+ 			const eachQuery = query.split('&');
+-			$('#config').attr("src", src);
++// 			$('#config').attr("src", src);
+ 			$('#restart').attr("value", "�d�����");
+ 			$('#restart').attr("id", "search");
+ 			$.ajax({
+@@ -728,8 +730,5 @@
+ 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+ 		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+ 		crossorigin="anonymous"></script>
+-	<script
+-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS3FFLkorvfSYZ9kblu3kplAs2a1H8dO8"
+-		async defer></script>
+ </body>
+ </html>
+\ No newline at end of file
