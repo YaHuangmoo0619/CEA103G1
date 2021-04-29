@@ -1,0 +1,9 @@
+	<div class="colorPic">
+		<div class="top">
+			<a href="<%=request.getContextPath()%>/campion_campsiteOwner.jsp"><img
+				src="<%=request.getContextPath()%>/images/campionLogoLong.png"
+				class="logo"></a> <img
+				src="<%=request.getContextPath()%>/front-images/person-circle-outline.svg"
+				class="person">
+		</div>
+	</div>

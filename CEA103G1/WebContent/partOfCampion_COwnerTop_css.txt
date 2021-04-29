@@ -1,0 +1,26 @@
+<style>
+	div.colorPic {
+		background-image:
+			url("<%=request.getContextPath()%>/front-images/topphoto.jpg");
+		background-position: center;
+		background-size: cover;
+		height: 150px;
+		padding: 20px 0px;
+	}
+	
+	div.top {
+		display: flex;
+		justify-content: space-between;
+		padding: 5px 15px 5px 15px;
+		background-color: #eee;
+		width: 100%;
+	}
+	
+	img.logo {
+		max-height: 50px;
+	}
+	
+	img.person {
+		max-width: 40px;
+	}
+</style>

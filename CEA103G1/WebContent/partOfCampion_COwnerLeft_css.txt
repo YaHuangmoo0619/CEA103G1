@@ -1,0 +1,41 @@
+<style>
+	html {
+		overflow-x: hidden;
+	}
+	
+	body {
+		overflow-x: hidden;
+		position: relative;
+	}
+	
+	a {
+		text-decoration: none;
+		color: #80c344;
+		margin: 10px;
+	}
+	
+	a:hover {
+		text-decoration: none;
+		color: #eee;
+	}
+	
+	div.left {
+		padding: 0px;
+	}
+	
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: column;
+		padding: 5px;
+		margin: 15px 15px 15px 30px;
+		font-size: 1.5em;
+		font-weight: 888;
+	}
+	
+	li {
+		list-style: none;
+		padding: 10px 0px;
+	}
+
+</style>
