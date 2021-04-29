@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=BIG5"
+    pageEncoding="BIG5"%>
 <!DOCTYPE html>
 <html lang="zh-tw">
 
@@ -5,7 +7,7 @@
 <meta charset="BIG5">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<link rel="icon" href="campionLogoIcon.png" type="image/png">
+<link rel="icon" href="<%=request.getContextPath() %>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>營家Campion</title>
@@ -359,15 +361,15 @@ section.footer {
 
 <body>
 	<div class="fixedTop">
-		<a href="#"> <img src="campionLogoLong.png" class="logo">
+		<a href="<%=request.getContextPath() %>/campion_front.jsp"> <img src="<%=request.getContextPath() %>/front-images/campionLogoLong.png" class="logo">
 		</a>
 		<form class="form-inline my-2 my-lg-0">
 			<input class="form-control mr-sm-2" type="search"
 				placeholder="營位/商品/文章" aria-label="Search">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
 		</form>
-		<img src="cart-outline.svg" class="cart"> <img
-			src="search-circle-outline.svg" id="searchIcon" class="searchIcon">
+		<img src="<%=request.getContextPath() %>/front-images/cart-outline.svg" class="cart"> <img
+			src="<%=request.getContextPath() %>/front-images/search-circle-outline.svg" id="searchIcon" class="searchIcon">
 		<div class="btn-group" role="group" aria-label="Basic example">
 			<button type="button" class="btn btn-secondary">營區</button>
 			<button type="button" class="btn btn-secondary">商城</button>
@@ -380,8 +382,8 @@ section.footer {
 			<button type="button" class="btn btn-outline-secondary">FAQ</button>
 			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
 		</div>
-		<img src="menu-outline.svg" id="menu" class="menu"> <a
-			href="nnn"> <img src="person-circle-outline.svg" class="person"></a>
+		<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu"> <a
+			href="nnn"> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
 
 	</div>
 
@@ -407,7 +409,7 @@ section.footer {
 		</div>
 	</div>
 	<div class="backToTop">
-		<a href="#"><img src="arrow-up-circle-outline.svg"
+		<a href="#"><img src="<%=request.getContextPath() %>/front-images/arrow-up-circle-outline.svg"
 			class="backToTop"></a>
 	</div>
 	<section class="jumbotron">
