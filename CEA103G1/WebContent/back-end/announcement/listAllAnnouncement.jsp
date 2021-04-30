@@ -10,6 +10,7 @@
 	List<AnnouncementVO> list = announcementSvc.getAll();
 	pageContext.setAttribute("list",list);
 %>
+<!-- 回復刪除的檔案 -->
 <!DOCTYPE html>
 <html>
 <head>
