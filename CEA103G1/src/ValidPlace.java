@@ -59,12 +59,12 @@ public class ValidPlace extends HttpServlet {
 					if (!(i == 0)) {
 						i--;
 					}
-					if(placelist.size() == 0) {
+					if (placelist.size() == 0) {
 						break;
 					}
 				}
 			}
-			if(placelist.size() == 0) {
+			if (placelist.size() == 0) {
 				break;
 			}
 		}
@@ -133,15 +133,18 @@ public class ValidPlace extends HttpServlet {
 			for (DistrictVO districtVO : distlist) { // 把該縣市所有行政區編號放進行政區編號list
 				if (districtVO.getCty().equals(county)) {
 					dist_no_list.add(districtVO.getDist_no());
+					System.out.println(dist_no_list);
 				}
 			}
 			for (CampVO campVO : camplist) {// 把屬於該縣市的營區的編號放進營區編號list
 				for (Integer dist_no : dist_no_list) {
-					if (campVO.getCamp_no() == dist_no) {
+					if (campVO.getDist_no() == dist_no) {
 						camp_no_list.add(campVO.getCamp_no());
 					}
 				}
 			}
+			System.out.println(camp_no_list);
+			
 			for (int i = 0; i < placelist.size(); i++) {
 				Boolean flag = false;// 立個旗子
 				for (Integer camp_no : camp_no_list) {
@@ -161,6 +164,10 @@ public class ValidPlace extends HttpServlet {
 			}
 
 		}
+
+		for (PlaceVO placeVO : placelist) {
+			System.out.println(placeVO.getPlc_name());
+		}
 		
 		Set<Integer> campno = new HashSet();
 
@@ -168,7 +175,7 @@ public class ValidPlace extends HttpServlet {
 			System.out.println(placeVO.getPlc_name());
 			campno.add(placeVO.getCamp_no());
 		}
-        
+
 		camplist = new ArrayList<CampVO>();
 		for (Integer camp_no : campno) {
 			CampVO campVO = new CampVO();
@@ -177,14 +184,14 @@ public class ValidPlace extends HttpServlet {
 			campVO.setAddress(campSvc.getOneCamp(camp_no).getAddress());
 			camplist.add(campVO);
 		}
-		
-		for(CampVO campVO : camplist) {
+
+		for (CampVO campVO : camplist) {
 			List<Integer> low_pc = new ArrayList();
 			List<PlaceVO> plclist = placeSvc.getByCamp(campVO.getCamp_no());
-			for(PlaceVO placeVO : plclist) {
+			for (PlaceVO placeVO : plclist) {
 				low_pc.add(placeVO.getPc_wkdy());
 			}
-			Collections.sort(low_pc); 
+			Collections.sort(low_pc);
 			campVO.setLow_pc(low_pc.get(0));
 		}
 		String jsonObject = gson.toJson(camplist);
