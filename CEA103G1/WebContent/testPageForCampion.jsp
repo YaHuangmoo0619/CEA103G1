@@ -1,12 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=BIG5"
-    pageEncoding="BIG5"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="BIG5">
 <link rel="icon" href="<%=request.getContextPath() %>/images/campionLogoIcon.png" type="image/png">
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>測試頁-營家campion</title>
 <style>
 html, body {
@@ -69,7 +67,7 @@ div.footer{
 <div class="toFrontPage">
 	--測試連結網頁--
   <a class="navbar-brand" href="campion_front.html">
-    <img src="campionLogoLong.png" width="20%">
+    <img src="<%=request.getContextPath() %>/images/campionLogoLong.png" width="20%">
   </a>
   	--測試連結網頁--
 </div>
