@@ -10,7 +10,7 @@ public class Camp_CollectionService {
 		dao = new Camp_CollectionDAO();
 	}
 
-	public Camp_CollectionVO addCamp_Collection(Integer mbr_no, Integer camp_no) {
+	public Camp_CollectionVO addCamp_Collection(Integer camp_no, Integer mbr_no) {
 
 		Camp_CollectionVO camp_collectionVO = new Camp_CollectionVO();
 		camp_collectionVO.setMbr_no(mbr_no);
@@ -20,7 +20,7 @@ public class Camp_CollectionService {
 		return camp_collectionVO;
 	}
 
-	public Camp_CollectionVO updateCamp_Collection(Integer mbr_no, Integer camp_no) {
+	public Camp_CollectionVO updateCamp_Collection(Integer camp_no, Integer mbr_no) {
 
 		Camp_CollectionVO camp_collectionVO = new Camp_CollectionVO();
 		camp_collectionVO.setMbr_no(mbr_no);
@@ -30,12 +30,12 @@ public class Camp_CollectionService {
 		return camp_collectionVO;
 	}
 
-	public void deleteCamp_Collection(Integer place_order_no) {
-		dao.delete(place_order_no);
+	public void deleteCamp_Collection(Integer camp_no, Integer mbr_no) {
+		dao.delete(camp_no, mbr_no);
 	}
 
-	public Camp_CollectionVO getOneCamp_Collection(Integer place_order_no) {
-		return dao.findByPrimaryKey(place_order_no);
+	public Camp_CollectionVO getOneCamp_Collection(Integer camp_no, Integer mbr_no) {
+		return dao.findByPrimaryKey(camp_no, mbr_no);
 	}
 
 	public List<Camp_CollectionVO> getAll() {

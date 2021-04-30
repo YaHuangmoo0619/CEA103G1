@@ -29,10 +29,6 @@ table, th, td {
 	background-color: white;
 	text-align: center;
 }
-
-div {
-	background-color: lightgreen;
-}
 </style>
 </head>
 <body>
@@ -56,7 +52,10 @@ div {
 			</c:forEach>
 		</ul>
 	</c:if>
-	<FORM METHOD="post" name="form1" ACTION="<%=request.getContextPath()%>/campsite/insertcamp.do" enctype="multipart/form-data">
+	<FORM METHOD="post" name="form1"
+		ACTION="<%=request.getContextPath()%>/campsite/insertcamp.do"
+		enctype="multipart/form-data"
+		οnkeydοwn="if(event.keyCode==13){return false;}">
 		<table>
 			<tr>
 				<td>營主編號:</td>
@@ -80,9 +79,13 @@ div {
 			</tr>
 			<tr>
 				<td>配置圖:</td>
-				<td><input type="file" name="config"><input
+				<td><input type="file" id="config" name="config"><input
 					type="hidden" name="image"
-					value="<%=(campVO == null) ? "無" : campVO.getConfig()%>"></td>
+					value="<%=(campVO == null) ? "無" : campVO.getConfig()%>">
+					<div class="container">
+  						<img id="showconfig">
+					</div>
+				</td>
 			</tr>
 			<tr>
 				<td>無線通訊:</td>
@@ -163,36 +166,64 @@ div {
 				<td><input type="number" pattern="number"></td>
 			</tr>
 		</table>
+		<input id="plc_amt" type="hidden" name="plc_amt">
+		<input type="button" id="plc" value="新增營位">
+		<input type="button" id="done" value="確定">
+		<hr>
 
-		<br> <input id="plc_amt" type="hidden" name="plc_amt"><input
-			type="hidden" name="action" value="insert"> <input
-			type="button" id="plc" value="新增營位"><input
-			type="submit" value="送出新增">
+		<input type="file" id="progressbarTWInput" name="photo" accept="image/gif, image/jpeg, image/png" multiple/ >
+   		<div id="preview_progressbarTW_imgs" style="width:100%; height: 300px; overflow:scroll;">
+      	<p>目前沒有圖片</p>
+   		</div>
+   			
+		<hr>
+		<input type="hidden" name="action" value="insert">
+		<input type="submit" value="送出新增">
 	</FORM>
 	<script>
-		$("#camp_plc").keydown(
-				function(e) {
-					if (e.which == 13) {
-						$("#title").next().clone().find('input').val("").end()
-								.appendTo(this)
-					}
-				});
-		$("#plc").click(function() {
+		$("#done").click(function() {
 			let index = 0;
 			$("#title").nextAll().each(function(i, dom) {
 				$(dom).find('input').attr("name", "plc" + index);
 				index++;
 			});
 			$("#plc_amt").val(index - 1);
-// 			$.ajax({
-// 				type : "POST",
-// 				url : "http://localhost:8081/CEA103G1/campsite/insertcamp.do",
-// 				data : $('#form1').serialize(),
-// 				success : function(data) {
-// 					alert("好了")
-// 				}
-// 			});
 		});
+		$("#plc").click(function() {
+			let index = 0;
+			$("#title").next().clone().find('input').val("").end().appendTo("#camp_plc")
+		});
+		
+		$('#config').on('change', function(e){      
+			  const file = this.files[0];	      
+			  const fr = new FileReader();
+			  fr.onload = function (e) {
+			    $('#showconfig').attr('src', e.target.result);
+			  };
+
+			  fr.readAsDataURL(file);
+			});
+		
+		$("#progressbarTWInput").change(function(){
+			  $("#preview_progressbarTW_imgs").html(""); // 清除預覽
+			  readURL(this);
+			});
+
+			function readURL(input){
+			  if (input.files && input.files.length >= 0) {
+			    for(var i = 0; i < input.files.length; i ++){
+			      var reader = new FileReader();
+			      reader.onload = function (e) {
+			        var img = $("<img width='300' height='200'>").attr('src', e.target.result);
+			        $("#preview_progressbarTW_imgs").append(img);
+			      }
+			      reader.readAsDataURL(input.files[i]);
+			    }
+			  }else{
+			     var noPictures = $("<p>目前沒有圖片</p>");
+			     $("#preview_progressbarTW_imgs").append(noPictures);
+			  }
+			}
 	</script>
 </body>
 </html>

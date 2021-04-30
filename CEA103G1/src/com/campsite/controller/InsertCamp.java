@@ -1,10 +1,12 @@
 package com.campsite.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,6 +27,8 @@ import org.jsoup.Jsoup;
 import com.campsite.model.CampService;
 import com.campsite.model.CampVO;
 import com.campsite_feature.model.Camp_FeatureVO;
+import com.campsite_picture.model.Camp_PictureService;
+import com.campsite_picture.model.Camp_PictureVO;
 import com.district.model.DistrictService;
 import com.district.model.DistrictVO;
 import com.place.model.PlaceService;
@@ -34,6 +38,9 @@ import com.place_order_details.model.Place_Order_DetailsService;
 @MultipartConfig
 @WebServlet("/campsite/insertcamp.do")
 public class InsertCamp extends HttpServlet {
+	private static final long serialVersionUID = 2L;
+	String saveDirectory = "/images";
+	
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		doPost(req, res);
 	}
@@ -120,7 +127,10 @@ System.out.println("營區名稱:" + camp_name);
 			} else if (!address.trim().matches(addressReg)) { // 以下練習正則(規)表示式(regular-expression)
 				errorMsgs.add("地址: 只能是中文、數字");
 			}
-
+			
+			List<String> fileDirectory = savePictureAtLocal(req);
+			
+			
 			CampVO campVO = new CampVO();
 			campVO.setCso_no(cso_no);
 			campVO.setCamp_name(camp_name);
@@ -220,5 +230,35 @@ System.out.println("營區名稱:" + camp_name);
 		JSONObject campsite = results.getJSONObject(0);
 		Double elevation = campsite.getDouble("elevation");
 		return elevation;
+	}
+	
+	public String getFileNameFromPart(Part part) {
+		String header = part.getHeader("content-disposition");
+		String filename = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();
+		if (filename.length() == 0) {
+			return null;
+		}
+		return filename;
+	}
+	
+	public List<String> savePictureAtLocal(HttpServletRequest req) throws IOException, ServletException{
+		List<String> fileDirectory = new ArrayList();
+		String realPath = getServletContext().getRealPath(saveDirectory);// 阿飄路徑
+		File fsaveDirectory = new File(realPath);
+
+		Camp_PictureService camp_pictureSvc = new Camp_PictureService();
+		Collection<Part> parts = req.getParts();
+		for (Part part : parts) {
+			String filename = getFileNameFromPart(part);
+			Camp_PictureVO camp_pictureVO = new Camp_PictureVO();
+			if (filename != null && part.getContentType() != null) {
+				File f = new File(fsaveDirectory, filename);
+				part.write(f.toString());
+			}
+			camp_pictureVO.setCamp_pic(req.getContextPath() + saveDirectory + filename);
+			fileDirectory.add(filename);
+		}
+		
+		return fileDirectory;		
 	}
 }
