@@ -15,7 +15,6 @@
 //import com.advertising_application.model.Advertising_applicationService;
 //import com.advertising_application.model.Advertising_applicationVO;
 //
-//
 //@WebServlet("/advertising_application/advertising_application.do")
 //@MultipartConfig(fileSizeThreshold=1024*1024, maxFileSize=5*1024*1024, maxRequestSize=5*5*1024*1024)
 //public class Advertising_applicationServlet extends HttpServlet {
