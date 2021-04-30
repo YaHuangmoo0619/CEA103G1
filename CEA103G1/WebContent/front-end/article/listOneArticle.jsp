@@ -2,11 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.article.model.*"%>
 <%@ page import="com.board_class.model.*"%>
+<%@ page import="java.util.*"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <%
   ArticleVO articleVO = (ArticleVO) request.getAttribute("articleVO"); //ArticleServlet.java(Concroller), 存入req的articleVO物件
 %>
 
+<%
+  ArrayList<String> tag_list = (ArrayList<String>) request.getAttribute("tag_list"); //ArticleServlet.java(Concroller), 存入req的articleVO物件
+%>
 
 <html>
 <head>
@@ -177,6 +182,10 @@
    
 </table>
 
+		<c:forEach var="tag_list" items="${tag_list}">
+			<div>${tag_list}</div>
+	
+			</c:forEach>
 <div>
 <div>回應  </div>
 <button id="like" onclick="add_like()"></button>

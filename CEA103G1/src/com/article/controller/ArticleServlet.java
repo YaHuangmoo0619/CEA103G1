@@ -12,6 +12,8 @@ import com.article.model.ArticleDAO;
 import com.article.model.ArticleService;
 import com.article.model.ArticleVO;
 
+import redis.clients.jedis.Jedis;
+
 
 @WebServlet("/article/article.do")
 public class ArticleServlet extends HttpServlet {
@@ -36,9 +38,12 @@ public class ArticleServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
+
+				
+				
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-				String str = req.getParameter("art_no");
-				if (str == null || (str.trim()).length() == 0) {
+				String str2 = req.getParameter("art_no");
+				if (str2 == null || (str2.trim()).length() == 0) {
 					errorMsgs.add("請輸入文章編號");
 				}
 				// Send the use back to the form, if there were errors
@@ -51,7 +56,7 @@ public class ArticleServlet extends HttpServlet {
 				
 				Integer art_no = null;
 				try {
-					art_no = new Integer(str);
+					art_no = new Integer(str2);
 				} catch (Exception e) {
 					errorMsgs.add("文章編號格式不正確");
 				}
@@ -63,7 +68,7 @@ public class ArticleServlet extends HttpServlet {
 					return;//程式中斷
 				}
 				
-				/***************************2.開始查詢資料*****************************************/
+				/***************************2.開始查詢SQL資料*****************************************/
 				ArticleService articleSvc = new ArticleService();
 				ArticleVO articleVO = articleSvc.getOneArticle(art_no);
 				if (articleVO == null) {
@@ -77,7 +82,25 @@ public class ArticleServlet extends HttpServlet {
 					return;//程式中斷
 				}
 				
+				/***************************2.開始查詢Redis標籤資料*****************************************/
+				
+				Jedis jedis = new Jedis("localhost", 6379);
+				jedis.auth("123456");
+				jedis.select(6);
+				
+				//如何把redis的key 用set裝起來
+
+				ArrayList<String> tag_list = new ArrayList<String>();
+				
+				for (String str : jedis.smembers("post:"+req.getParameter("art_no")+":tags")) {
+					tag_list.add(str);
+				}
+
+				
+				jedis.close();
+				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("tag_list", tag_list); // Redis資料庫取出的tag_list物件,存入req
 				req.setAttribute("articleVO", articleVO); // 資料庫取出的articleVO物件,存入req
 				String url = "/back-end/article/listOneArticle.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneArticle.jsp
@@ -393,6 +416,7 @@ public class ArticleServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
+
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				Integer bd_cl_no = null;
 				try {

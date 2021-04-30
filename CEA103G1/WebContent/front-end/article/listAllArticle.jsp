@@ -318,28 +318,58 @@ img.person:hover {
 	margin: 0px;
 	position: fixed;
 }
+
+/* -----------------------------以下為側欄css------------------------------ */
+#sidebar {
+  position:absolute;
+  top:60px;
+  left:0px;
+  width:208px;
+  height:100%;
+/*   background:#151719; */
+  transition:all 300ms linear;
+}
+
+
+#sidebar div.list div.item {
+  padding:15px 10px;
+  text-transform:uppercase;
+  font-size:14px;
+  font-family:微軟正黑體;
+}
+
+/* -----------------------------以下為主欄css------------------------------ */
+  div.main_content{
+  	  top:60px;
+  	  position:absolute;
+	  left:230px;
+	  padding:20px 20px 20px 20px;
+
+	  
+}
+
 </style>
 
 </head>
-<body bgcolor='white'>
+<body>
 
 
 
 	<div style="background-color: #eee;">
-		<img src="/CEA103G1/campionLogoLong.png" class="logo">
+		<img src="/CEA103G1/images/campionLogoLong.png" class="logo">
 		<form class="form-inline my-2 my-lg-0">
 			<input class="form-control mr-sm-2" type="search"
 				placeholder="營位/商品/文章" aria-label="Search">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
 		</form>
-		<img src="/CEA103G1/search-circle-outline.svg" class="searchIcon"
+		<img src="/CEA103G1/images/search-circle-outline.svg" class="searchIcon"
 			onclick="showSearch()">
 		<div class="btn-group" role="group" aria-label="Basic example">
 			<button type="button" class="btn btn-secondary">營區</button>
 			<button type="button" class="btn btn-secondary">商城</button>
 			<button type="button" class="btn btn-secondary">論壇</button>
 		</div>
-		<img src="/CEA103G1/cart-outline.svg" class="cart">
+		<img src="/CEA103G1/images/cart-outline.svg" class="cart">
 		<div class="btn-group" role="group" aria-label="Basic example">
 			<button type="button" class="btn btn-outline-secondary">註冊</button>
 			<button type="button" class="btn btn-outline-secondary">登入</button>
@@ -353,20 +383,28 @@ img.person:hover {
 	</div>
 
 
-	<div>
-		<div>
+<!-- 	<div> -->
+<!-- 		<div> -->
+<%-- 			<c:forEach var="board_classVO" items="${bd_list}"> --%>
+<!-- 				<a -->
+<%-- 					href="<%=request.getContextPath()%>/article/article.do?bd_cl_no=${board_classVO.bd_cl_no}&action=getOneArticle_ByBoard_Clss_For_Display">${board_classVO.bd_name}</a> --%>
+<!-- 				<br> -->
+<%-- 			</c:forEach> --%>
+<!-- 		</div> -->
+<!-- 	</div> -->
+
+
+
+<div id="sidebar">
+  <div class="list">
 			<c:forEach var="board_classVO" items="${bd_list}">
-				<a
-					href="<%=request.getContextPath()%>/article/article.do?bd_cl_no=${board_classVO.bd_cl_no}&action=getOneArticle_ByBoard_Clss_For_Display">${board_classVO.bd_name}</a>
-				<br>
+				<div class="item" ><a href="<%=request.getContextPath()%>/article/article.do?bd_cl_no=${board_classVO.bd_cl_no}&action=getOneArticle_ByBoard_Clss_For_Display"  style="color:white;">${board_classVO.bd_name}</a></div>
 			</c:forEach>
-		</div>
-	</div>
+  </div>
+</div>
 
 
-
-
-
+<div class=main_content>
 	<%@ include file="pageforhome.file"%>
 
 	<c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>"
@@ -412,7 +450,7 @@ ${articleVO.likes}
 
 	</c:if>
 
-
+</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script
@@ -459,6 +497,7 @@ ${articleVO.likes}
 		});
 	</script>
 
+	
 
 
 	<!-- 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
