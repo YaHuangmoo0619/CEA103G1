@@ -33,15 +33,13 @@ table, th, td {
 </head>
 <body>
 	<div>
-		<h1>營區新增</h1>
+		<h1>刊登營區</h1>
 
 		<h3>
 			<a
 				href="<%=request.getContextPath()%>/back-end/campsite/listAllCamp.jsp">回清單</a>
 		</h3>
 	</div>
-
-	<h3>資料新增:</h3>
 
 	<%-- 錯誤表列 --%>
 	<c:if test="${not empty errorMsgs}">

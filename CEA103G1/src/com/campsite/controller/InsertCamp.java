@@ -129,6 +129,12 @@ System.out.println("Àç°Ï¦WºÙ:" + camp_name);
 			}
 			
 			List<String> fileDirectory = savePictureAtLocal(req);
+			List<Camp_PictureVO> camp_picturelist = new ArrayList();
+			for(String camp_pic : fileDirectory) {
+				Camp_PictureVO camp_pictureVO = new Camp_PictureVO();
+				camp_pictureVO.setCamp_pic(camp_pic);
+				camp_picturelist.add(camp_pictureVO);
+			}
 			
 			
 			CampVO campVO = new CampVO();

@@ -17,13 +17,13 @@ public class Camp_CollectionDAO implements Camp_CollectionDAO_interface{
 	static {
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB2");
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/Campion");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
 	}
 	private static final String GET_ONE_STMT = "SELECT * FROM campsite where mbr_no = ?";
-	private static final String GET_ALL_STMT = "SELECT * FROM campsite order by mbr_no";
+	private static final String GET_ALL_STMT = "SELECT * FROM campsite_collection";
 	private static final String INSERT_STMT = "INSERT INTO campsite (cso_no,dist_no,camp_name,campsite_Status,campInfo,note,config,review_Status,height,wireless,pet,facility,operate_Date,park,address,longtitude,latitude,total_Star,total_Comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE campsite set camp_name=?,campsite_Status=?,campInfo=?,note=?,config=?,review_Status=?,height=?,wireless=?,pet=?,facility=?,operate_Date=?,park=?,address=?,longtitude=?,latitude=?,total_Star=?,total_Comment=? where campno = ?";
 	private static final String DELETE = "DELETE FROM campsite where mbr_no = ?";

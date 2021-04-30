@@ -29,6 +29,7 @@ public class CampVO implements Serializable {
 	private Integer total_Cmnt;
 	private Integer top_pc;
 	private Integer low_pc;
+	private Integer collected;
 
 	public CampVO() {
 		super();
@@ -251,5 +252,13 @@ public class CampVO implements Serializable {
 
 	public void setLow_pc(Integer low_pc) {
 		this.low_pc = low_pc;
+	}
+
+	public Integer getCollected() {
+		return collected;
+	}
+
+	public void setCollected(Integer collected) {
+		this.collected = collected;
 	}
 }

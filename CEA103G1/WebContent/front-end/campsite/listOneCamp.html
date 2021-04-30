@@ -501,6 +501,12 @@ tr:nth-child(even) {
 			note = note.replaceAll('\n', '<br>')
 			$('#campInfo').html(campInfo);
 			$('#note').html(note);
+			alert(`${data[0].collected}`);
+			if(`${data[0].collected}` == 0){
+				$("#fav").attr("name","bookmark");
+			} else {
+				$("#fav").attr("name","bookmark-outline");
+			}
 
 		}
 		$("#search").click(function(){
