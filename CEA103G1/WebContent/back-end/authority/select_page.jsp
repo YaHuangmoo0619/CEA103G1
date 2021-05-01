@@ -35,6 +35,10 @@ a.content:hover {
 form{
 	margin: 0px auto;
 }
+
+span{
+	color: #80c344;
+}
 </style>
 </head>
 <body>
@@ -57,7 +61,7 @@ form{
 				<li>
 				<form method="post" action="<%=request.getContextPath() %>/authority/authority.do">
 					<b>選擇網站管理員姓名:</b>
-					<select size="1" name="emp_no">
+					<select size="1" name="name">
 						<option value="0">--請選擇--
 						<c:forEach var="employeeVO" items="${employeeSvc.all}">
 							<c:if test="${employeeVO.emp_no != 90001}">
@@ -65,7 +69,7 @@ form{
 							</c:if>
 						</c:forEach>
 					</select>
-					<input type="submit" value="送出">${errorMsgs.name}
+					<input type="submit" value="送出">&nbsp;<span>${errorMsgs.name}</span>
 					<input type="hidden" name="action" value="getName_For_Display">	
 				</form>
 				</li>
@@ -79,7 +83,7 @@ form{
 							<option value="${functionVO.fx_no}">${functionVO.fx_name}
 						</c:forEach>
 					</select>
-					<input type="submit" value="送出">${errorMsgs.fx_no}
+					<input type="submit" value="送出">&nbsp;<span>${errorMsgs.fx_no}</span>
 					<input type="hidden" name="action" value="getFunction_For_Display">	
 				</form>
 				</li>

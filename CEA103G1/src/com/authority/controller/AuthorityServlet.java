@@ -40,13 +40,11 @@ public class AuthorityServlet extends HttpServlet {
 					errorMsgs.put("name", "請選擇網站管理員姓名");
 				}
 				if(!errorMsgs.isEmpty()) {
-					req.setAttribute("errorMsgs", errorMsgs);
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/authority/select_page.jsp");
 					failureView.forward(req, res);
 					return;
 				}
 				
-				AuthorityService authoritySvc = new AuthorityService();
 				RequestDispatcher successView = req.getRequestDispatcher("/back-end/authority/listNameAuthority.jsp");
 				successView.forward(req, res);
 			}catch(Exception e){
@@ -55,6 +53,30 @@ public class AuthorityServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 			
+		}
+		
+		if("getFunction_For_Display".equals(action)) {
+			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				String number = req.getParameter("fx_no");
+				if(number.equals("0")) {
+					errorMsgs.put("fx_no", "請選擇權限名稱");
+				}
+				if(!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/authority/select_page.jsp");
+					failureView.forward(req,res);
+					return;
+				}
+				
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/authority/listFx_noAuthority.jsp");
+				successView.forward(req, res);
+			}catch(Exception e) {
+				errorMsgs.put("Exception", e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/authority/select_page.jsp");
+				failureView.forward(req, res);
+			}	
 		}
 	}
 }
