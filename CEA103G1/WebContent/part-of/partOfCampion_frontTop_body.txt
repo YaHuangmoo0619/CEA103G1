@@ -50,7 +50,3 @@
 			<button type="button" class="btn btn-outline-secondary">Ápµ¸§Ú­Ì</button>
 		</div>
 	</div>
-	<div class="backToTop">
-		<a href="#"><img src="<%=request.getContextPath() %>/front-images/arrow-up-circle-outline.svg"
-			class="backToTop"></a>
-	</div>

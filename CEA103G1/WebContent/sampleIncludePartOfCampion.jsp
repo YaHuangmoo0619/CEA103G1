@@ -7,18 +7,20 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>營家Campion</title>
 
-<%@ include file="/partOfCampion_frontTop_css.txt"%>
-<%@ include file="/partOfCampion_frontFooter_css.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_frontFooter_css.txt"%>
 <!-- 以上是前台頁首頁尾的css -->
 
-<%@ include file="/partOfCampion_backTop_css.txt"%>
-<%@ include file="/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <!-- 以上是後台頁首及側欄的css -->
 
-<%@ include file="/partOfCampion_COwnerTop_css.txt"%>
-<%@ include file="/partOfCampion_COwnerLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <!-- 以上是營主頁首及側欄的css -->
 
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
+<!-- 以上是回到最上面的css -->
 <style>
 div.darkgray {
 	background-color: #4e5452;
@@ -59,22 +61,24 @@ p{
 </head>
 <body>
 
-	<%@ include file="/partOfCampion_frontTop_body.txt"%>
-	<%@ include file="/partOfCampion_frontFooter_body.txt"%>
+	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
+	<%@ include file="/part-of/partOfCampion_frontFooter_body.txt"%>
 	<h1>以上是前台的頁首及頁尾</h1>
 	<hr>
 	<br>
 	<br>
-	<%@ include file="/partOfCampion_backTop_body.txt"%>
-	<%@ include file="/partOfCampion_backLeft_body.txt"%>
+	<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+	<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%>
 	<h1>以上是後台的頁首及側欄</h1>
 	<hr>
 	<br>
 	<br>
-	<%@ include file="/partOfCampion_COwnerTop_body.txt"%>
-	<%@ include file="/partOfCampion_COwnerLeft_body.txt"%>
+	<%@ include file="/part-of/partOfCampion_COwnerTop_body.txt"%>
+	<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%>
 	<h1>以上是營主的頁首及側欄</h1>
 	<hr>
+	<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
+	<!-- 以上是回到最上面的body -->
 	<br>
 	<br>
 	<div class="darkgray">
@@ -117,7 +121,9 @@ p{
 	<br>
 	<br>
 	<!-- 以下是前台頁首頁尾的js -->
-	<%@ include file="/partOfCampion_frontTop_js.txt"%>
+	<%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
+	<!-- 以下是回到最上層的js -->
+	<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 
 </body>
 </html>

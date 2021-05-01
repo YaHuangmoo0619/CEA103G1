@@ -12,8 +12,9 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 <title>所有網站管理員權限列表 - listAllAuthority</title>
-<%@ include file="/partOfCampion_backTop_css.txt"%>
-<%@ include file="/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
 body{
 	background-color: #4e5452;
@@ -58,11 +59,12 @@ label.spotlight{
 
 </head>
 <body>
-<%@ include file="/partOfCampion_backTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
 	<div class="row">
 		<div class= "left col-3">
-		<%@ include file="/partOfCampion_backLeft_body.txt"%></div>
+		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
 			<h2>所有公告列表 - listAllAuthority.jsp&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/authority/select_page.jsp">回首頁</a></h2>
 			<hr>
@@ -93,5 +95,6 @@ label.spotlight{
 		</div>
 	</div>
 </div>
+<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 </body>
 </html>

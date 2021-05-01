@@ -9,8 +9,8 @@
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>Authority: Home</title>
-<%@ include file="/partOfCampion_backTop_css.txt"%>
-<%@ include file="/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <style>
 body{
 	background-color: #4e5452;
@@ -38,11 +38,11 @@ form{
 </style>
 </head>
 <body>
-<%@ include file="/partOfCampion_backTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
 <div class="container">
 	<div class="row">
 		<div class= "left col-3">
-		<%@ include file="/partOfCampion_backLeft_body.txt"%></div>
+		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
 			<h2>This is the Home page for Authority</h2>
 			<hr>
