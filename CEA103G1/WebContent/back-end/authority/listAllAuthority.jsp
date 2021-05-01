@@ -3,11 +3,6 @@
 <%@ page import="java.util.*" %>
 <%@ page import="com.authority.model.*" %>
 
-<%
-	AuthorityService authoritySvc = new AuthorityService();
-	List<AuthorityVO> list = authoritySvc.getAll();
-	pageContext.setAttribute("list",list);
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,6 +45,9 @@ th, td{
 	border: 1px solid #4e5452;
 	padding: 10px 15px;
 }
+td.function{
+	text-align: justify;	
+}
 </style>
 
 </head>
@@ -70,14 +68,18 @@ th, td{
 				</tr>
 				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
 				<jsp:useBean id="functionSvc" scope="page" class="com.function.model.FunctionService"/>
-				<c:forEach var="authorityVO" items="${list}">
+				<jsp:useBean id="authoritySvc" scope="page" class="com.authority.model.AuthorityService"/>
+				<c:forEach var="employeeVO" items="${employeeSvc.all}">
 					<tr>
-						<td>${employeeSvc.getOneEmployee(authorityVO.emp_no).name}</td>
-						<td>
-						<c:forEach var="functionVO" items="${functionSvc.getAll()}">
-						<input type="radio" ${functionSvc.getOneFunction(authorityVO.fx_no).fx_name == functionVO.fx_name ? 'checked':''}>${functionVO.fx_name}
+						<c:if test="${employeeVO.emp_no != 90001}">
+						<td>${employeeVO.name}</td>
+						<td class="function">
+						<c:forEach var="functionVO" items="${functionSvc.all}" varStatus="nextLine">
+							<input type="radio" ${authoritySvc.getOneAuthority(employeeVO.emp_no,functionVO.fx_no).fx_no == functionVO.fx_no ? 'checked':''}/>${functionVO.fx_name}
+							${nextLine.count%3 == 0 ? '<br>':''}
 						</c:forEach>
 						</td>
+						</c:if>
 					</tr>
 				</c:forEach>
 			</table>
