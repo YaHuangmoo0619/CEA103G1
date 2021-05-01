@@ -68,12 +68,12 @@
 <FORM METHOD="post" ACTION="/CEA103G1/member_rank/member_rank.do" name="form1">
 <table>
 	<tr>
-		<td>會員等級名稱:</td>
+		<td>廣告資料名稱:</td>
 		<td><input type="TEXT" name="rank_name" size="45"
 			 value="<%= (member_rankVO==null)? "露營新手" : member_rankVO.getRank_name()%>" /></td>
 	</tr>
 	<tr>
-		<td>點數回饋比例:</td>
+		<td>廣告申請時間:</td>
 		<td><input type="TEXT" name="pt_rwd_rto" size="45"
 			 value="<%= (member_rankVO==null)? "1" : member_rankVO.getPt_rwd_rto()%>" /></td>
 	</tr>

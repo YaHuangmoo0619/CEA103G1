@@ -53,7 +53,7 @@
   
   <li>
     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/member_rank/member_rank.do" >
-        <b>輸入等級編號 :</b>
+        <b>輸入廣告編號 :</b>
         <input type="text" name="rank_no">
         <input type="hidden" name="action" value="getOne_For_Display">
         <input type="submit" value="送出">
@@ -64,7 +64,7 @@
    
   <li>
      <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/member_rank/member_rank.do" >
-       <b>選擇等級編號:</b>
+       <b>選擇廣告編號:</b>
        <select size="1" name="rank_no">
          <c:forEach var="member_rankVO" items="${member_rankSvc.all}" > 
           <option value="${member_rankVO.rank_no}">${member_rankVO.rank_no}
@@ -77,7 +77,7 @@
   
   <li>
      <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/member_rank/member_rank.do" >
-       <b>選擇等級名稱:</b>
+       <b>選擇廣告名稱:</b>
        <select size="1" name="rank_no">
          <c:forEach var="member_rankVO" items="${member_rankSvc.all}" > 
           <option value="${member_rankVO.rank_no}">${member_rankVO.rank_name}
@@ -90,7 +90,7 @@
 </ul>
 
 
-<h3>會員等級管理</h3>
+<h3>廣告管理</h3>
 
 <ul>
   <li><a href='<%=request.getContextPath()%>/back-end/member_rank/addMember_rank.jsp'>Add</a> a new Member_rank.</li>

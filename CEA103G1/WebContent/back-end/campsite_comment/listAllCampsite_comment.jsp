@@ -13,7 +13,7 @@
 
 <html>
 <head>
-<title>所有會員等級資料 - listAllMember_rank.jsp</title>
+<title>所有營區評論資料 - listAllMember_rank.jsp</title>
 
 <style>
   table#table-1 {
@@ -54,7 +54,7 @@
 <h4>此頁練習採用 EL 的寫法取值:</h4>
 <table id="table-1">
 	<tr><td>
-		 <h3>所有會員等級資料 - listAllMember_rank.jsp</h3>
+		 <h3>所有營區評論資料 - listAllMember_rank.jsp</h3>
 		 <h4><a href="/CEA103G1/back-end/member_rank/select_page.jsp"><img src="/CEA103G1/images/logo.png" width="50" height="50" border="0">回首頁</a></h4>
 	</td></tr>
 </table>
@@ -71,9 +71,8 @@
 
 <table>
 	<tr>
-		<th>會員等級編號</th>
-		<th>會員等級名稱</th>
-		<th>點數回饋比例</th>
+		<th>營區評論編號</th>
+		<th>營區評論名稱</th>
 		
 	</tr>
 	

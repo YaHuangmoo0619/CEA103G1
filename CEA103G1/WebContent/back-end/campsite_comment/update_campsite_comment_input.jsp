@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>會員等級資料修改 - update_member_rank_input.jsp</title>
+<title>營區評論資料修改 - update_member_rank_input.jsp</title>
 
 <style>
   table#table-1 {
@@ -48,7 +48,7 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>會員等級資料修改 - update_member_rank_input.jsp</h3>
+		 <h3>營區評論資料修改 - update_member_rank_input.jsp</h3>
 		 <h4><a href="/CEA103G1/back-end/member_rank/select_page.jsp"><img src="/CEA103G1/images/logo.png" width="50" height="50" border="0">回首頁</a></h4>
 	</td></tr>
 </table>
@@ -68,15 +68,15 @@
 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/member_rank/member_rank.do" name="form1">
 <table>
 	<tr>
-		<td>等級編號:<font color=red><b>*</b></font></td>
+		<td>營區評論:<font color=red><b>*</b></font></td>
 		<td><%=member_rankVO.getRank_no()%></td>
 	</tr>
 	<tr>
-		<td>等級名稱:</td>
+		<td>營區評論名稱:</td>
 		<td><input type="TEXT" name="rank_name" size="45" value="<%=member_rankVO.getRank_name()%>" /></td>
 	</tr>
 	<tr>
-		<td>點數回饋:</td>
+		<td>營區評論名稱:</td>
 		<td><input type="TEXT" name="pt_rwd_rto" size="45"	value="<%=member_rankVO.getPt_rwd_rto()%>" /></td>
 	</tr>
 	
