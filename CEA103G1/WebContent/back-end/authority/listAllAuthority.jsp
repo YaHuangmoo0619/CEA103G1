@@ -48,6 +48,12 @@ th, td{
 td.function{
 	text-align: justify;	
 }
+label.spotlight{
+	background-color: #80c344;
+	padding: 2px 5px;
+	border-radius: 5px;
+	color: #fff;
+}
 </style>
 
 </head>
@@ -75,7 +81,8 @@ td.function{
 						<td>${employeeVO.name}</td>
 						<td class="function">
 						<c:forEach var="functionVO" items="${functionSvc.all}" varStatus="nextLine">
-							<input type="radio" ${authoritySvc.getOneAuthority(employeeVO.emp_no,functionVO.fx_no).fx_no == functionVO.fx_no ? 'checked':''}/>${functionVO.fx_name}
+							<input type="checkbox" name="function${nextLine.count}" ${authoritySvc.getOneAuthority(employeeVO.emp_no,functionVO.fx_no).fx_no == functionVO.fx_no ? 'checked':''} disabled/>
+							<label for="function${nextLine.count}" ${authoritySvc.getOneAuthority(employeeVO.emp_no,functionVO.fx_no).fx_no == functionVO.fx_no ? 'class=spotlight':''}>${functionVO.fx_name}</label>
 							${nextLine.count%3 == 0 ? '<br>':''}
 						</c:forEach>
 						</td>
