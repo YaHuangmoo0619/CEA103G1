@@ -8,7 +8,7 @@
 
 <html>
 <head>
-<title>會員等級資料 - listOneMember_rank.jsp</title>
+<title>營區評論檢舉資料 - listOneMember_rank.jsp</title>
 
 <style>
   table#table-1 {
@@ -56,9 +56,8 @@
 
 <table>
 	<tr>
-		<th>會員等級編號</th>
-		<th>會員等級名稱</th>
-		<th>點數回饋比例</th>
+		<th>營區評論檢舉編號</th>
+		<th>營區評論檢舉名稱</th>
 	</tr>
 	<tr>
 		<td><%=member_rankVO.getRank_no()%></td>
