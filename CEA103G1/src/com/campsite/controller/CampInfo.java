@@ -133,12 +133,10 @@ System.out.println("ด๚ธี2");
 		Camp_CollectionService collectionSvc = new Camp_CollectionService();
 		List<Camp_CollectionVO> collectionlist = collectionSvc.getAll();
 
-System.out.println(campVO.getCamp_no());
-System.out.println(member.getMbr_no());
 		for (Camp_CollectionVO camp_collectionVO : collectionlist) {
 System.out.println(camp_collectionVO.getCamp_no() + " " + camp_collectionVO.getMbr_no());
-			if (campVO.getCamp_no() == camp_collectionVO.getCamp_no()
-					&& member.getMbr_no() == camp_collectionVO.getMbr_no()) {
+			if ((int)campVO.getCamp_no() == (int)camp_collectionVO.getCamp_no()
+					&& (int)member.getMbr_no() == (int)camp_collectionVO.getMbr_no()) {
 				campVO.setCollected(0);
 				return campVO;
 			}

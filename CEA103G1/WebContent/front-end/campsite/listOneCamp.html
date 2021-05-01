@@ -286,7 +286,7 @@ tr:nth-child(even) {
 
 #map {
 	width: 300px;
-	height: 300px;
+	height: 200px;
 	margin: 10px auto;
 }
 </style>
@@ -501,7 +501,6 @@ tr:nth-child(even) {
 			note = note.replaceAll('\n', '<br>')
 			$('#campInfo').html(campInfo);
 			$('#note').html(note);
-			alert(`${data[0].collected}`);
 			if(`${data[0].collected}` == 0){
 				$("#fav").attr("name","bookmark");
 			} else {
