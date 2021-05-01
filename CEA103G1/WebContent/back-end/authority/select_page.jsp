@@ -66,7 +66,7 @@ form{
 						</c:forEach>
 					</select>
 					<input type="submit" value="送出">${errorMsgs.name}
-					<input type="hidden" name="action" value="">	
+					<input type="hidden" name="action" value="getName_For_Display">	
 				</form>
 				</li>
 				<jsp:useBean id="functionSvc" scope="page" class="com.function.model.FunctionService"/>
@@ -80,16 +80,16 @@ form{
 						</c:forEach>
 					</select>
 					<input type="submit" value="送出">${errorMsgs.fx_no}
-					<input type="hidden" name="action" value="">	
+					<input type="hidden" name="action" value="getFunction_For_Display">	
 				</form>
 				</li>
 			</ul>
-			<h3>網站管理員權限管理:</h3>
+<!-- 		<h3>網站管理員權限管理:</h3>
 			<ul>
 				<li>
 					<a class="content" href="<%=request.getContextPath()%>/authority/authority.do">add</a>
 				</li>
-			</ul>
+			</ul> -->
 		</div>
 	</div>
 </div>
