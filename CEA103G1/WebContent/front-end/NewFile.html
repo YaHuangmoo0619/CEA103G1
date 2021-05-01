@@ -8,27 +8,34 @@
 </head>
 <body>
 	<div class="container" id="form">
-	  <div class="row">
-			<div class="col-sm-3">	
+		<div class="row">
+			<div class="col-sm-3">
 				<FORM method="get" id="condition" onsubmit="return false"
 					accept-charset="big5">
 					<!-- 		縣市:<select id="county" name="county"></select> -->
 					縣市:<input type="type" name="county"> 入住日期:<input
 						name="startdate" id="startdate" type="text"> 退房日期:<input
 						name="enddate" id="enddate" type="text"> 人數:<input
-						name="people" id="people" type="number"><input type="hidden"
-						name="action" value="search"><input type="button" id="idForm"
-						value="搜尋">
+						name="people" id="people" type="number"><input
+						type="hidden" name="action" value="search"><input
+						type="button" id="idForm" value="搜尋">
 				</FORM>
 				<FORM id="feature"></FORM>
 				<FORM id="budget">
 					<input type="radio" name="budget" value="1000">1000<input
-						type="radio" name="budget" value="1500">1500<input type="radio"
-						name="budget" value="2000">2000<input type="radio" name="budget"
-						value="2500">2500<input type="radio" name="budget" value="3000">3000<input
+						type="radio" name="budget" value="1500">1500<input
+						type="radio" name="budget" value="2000">2000<input
+						type="radio" name="budget" value="2500">2500<input
+						type="radio" name="budget" value="3000">3000<input
 						type="radio" name="budget" value="3500">3500
 				</FORM>
 			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-9" id="featurelist"></div>
 		</div>
 	</div>
 	<div class="container">
@@ -37,6 +44,14 @@
 		</div>
 	</div>
 	<script>
+		$.ajax({
+			type : "GET",
+			dataType : "json",
+			url : "http://localhost:8081/CEA103G1/feature_list/featurelist.do?action=getAll",
+			success : function(data) {
+				showFeature(data);
+			}
+		});
 		$.ajax({
 			type : "GET",
 			dataType : "json",
@@ -58,6 +73,25 @@
 				}
 			});
 		});// avoid to execute the actual submit of the form.
+		
+		function showFeature(data){
+			for (i in data) {
+				let html;
+				html =`<button value="${data[i].camp_fl_no}" onclick="findWithFeature(this.value)">${data[i].camp_fl_name}</button>`;
+				$('#featurelist').append(html);
+			}
+		}
+		function findWithFeature(e) {
+			$('#all').children().remove();
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "http://localhost:8081/CEA103G1/feature_list/featurelist.do?action=getCamp&camp_fl_no=" + e,
+				success : function(data) {
+					showAll(data);
+				}
+			});
+		}
 		function showAll(data) {
 			var a = JSON.stringify(data);
 			console.log(a);

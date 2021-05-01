@@ -10,16 +10,16 @@ public class Camp_FeatureDAO implements Camp_FeatureDAO_interface {
 	static {
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB2");
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/Campion");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
 	}
-	private static final String GET_ONE_STMT = "SELECT * FROM campsite where camp_no = ?";
-	private static final String GET_ALL_STMT = "SELECT * FROM campsite order by camp_no";
+	private static final String GET_ONE_STMT = "SELECT * FROM campsite_feature where camp_no = ?";
+	private static final String GET_ALL_STMT = "SELECT * FROM campsite_feature";
 	private static final String INSERT_STMT = "INSERT INTO campsite_feature (camp_fl_no,camp_no) VALUES (?, ?)";
-	private static final String UPDATE = "UPDATE campsite set camp_name=?,campsite_Status=?,campInfo=?,note=?,config=?,review_Status=?,height=?,wireless=?,pet=?,facility=?,operate_Date=?,park=?,address=?,longtitude=?,latitude=?,total_Star=?,total_Comment=? where campno = ?";
-	private static final String DELETE = "DELETE FROM campsite where camp_no = ?";
+	private static final String UPDATE = "UPDATE campsite_feature set camp_name=?,campsite_Status=?,campInfo=?,note=?,config=?,review_Status=?,height=?,wireless=?,pet=?,facility=?,operate_Date=?,park=?,address=?,longtitude=?,latitude=?,total_Star=?,total_Comment=? where campno = ?";
+	private static final String DELETE = "DELETE FROM campsite_feature where camp_no = ?";
 
 	public Camp_FeatureVO findByPrimaryKey(Integer camp_fl_no, Integer camp_no) {
 

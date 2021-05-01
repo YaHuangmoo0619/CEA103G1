@@ -13,16 +13,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.campsite.model.*;
+import com.campsite_collection.model.Camp_CollectionService;
+import com.campsite_collection.model.Camp_CollectionVO;
 import com.district.model.*;
+import com.feature_list.model.Feature_ListService;
+import com.feature_list.model.Feature_ListVO;
 import com.place.model.*;
 import com.place_order.model.*;
 import com.place_order_details.model.*;
 import com.google.gson.Gson;
+import com.member.model.MemberVO;
 
 public class ValidPlace extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -40,7 +46,7 @@ public class ValidPlace extends HttpServlet {
 		} catch (NumberFormatException e) {
 			people = 1;
 		}
-
+		
 		Place_Order_DetailsService place_order_detailsSvc = new Place_Order_DetailsService();
 		List<Place_Order_DetailsVO> place_order_detailslist = place_order_detailsSvc.getAll();// 把所有訂單明細取出來
 		LinkedHashSet<Integer> plc_no_set = new LinkedHashSet();// new一個放已被下訂之營位編號的set
@@ -194,7 +200,37 @@ public class ValidPlace extends HttpServlet {
 			Collections.sort(low_pc);
 			campVO.setLow_pc(low_pc.get(0));
 		}
+		
+		for (CampVO campVO : camplist) {
+			campVO = seeIfCollect(req, campVO);
+		}
+		
 		String jsonObject = gson.toJson(camplist);
 		out.println(jsonObject);
+	}
+	
+	public CampVO seeIfCollect(HttpServletRequest req, CampVO campVO) {
+		HttpSession session = req.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		if(member == null) {
+			campVO.setCollected(1);
+System.out.println("測試1");
+			return campVO;
+		}
+System.out.println("測試2");
+		Camp_CollectionService collectionSvc = new Camp_CollectionService();
+		List<Camp_CollectionVO> collectionlist = collectionSvc.getAll();
+
+		for (Camp_CollectionVO camp_collectionVO : collectionlist) {
+System.out.println(camp_collectionVO.getCamp_no() + " " + camp_collectionVO.getMbr_no());
+			if ((int)campVO.getCamp_no() == (int)camp_collectionVO.getCamp_no()
+					&& (int)member.getMbr_no() == (int)camp_collectionVO.getMbr_no()) {
+				campVO.setCollected(0);
+				return campVO;
+			}
+		}
+		campVO.setCollected(1);
+		
+		return campVO;
 	}
 }
