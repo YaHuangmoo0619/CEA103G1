@@ -2,7 +2,7 @@
 
 	<div class="content">
 		<div class="row">
-			<div class="left col-3">
+			<div class="left col">
 				<ul>
 					<li><a
 						href="<%=request.getContextPath()%>/back-end/employee/select_page.jsp">員工管理</a></li>
