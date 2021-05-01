@@ -1,0 +1,16 @@
+<style>
+img.backToTop {
+	width: 40px;
+	position: fixed;
+	left: 90%;
+	bottom: 5%;
+	background-color: #80c344;
+	border-radius: 50%;
+	z-index: 10;
+	display: none;
+}
+
+div.backToTop{
+	font-size: 0px;
+}
+</style>

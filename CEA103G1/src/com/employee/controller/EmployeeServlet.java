@@ -41,7 +41,7 @@ public class EmployeeServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
 
-		req.setCharacterEncoding("Big5");
+		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		String change = req.getParameter("change");
 		String sendingEmail = req.getParameter("sendingEmail");

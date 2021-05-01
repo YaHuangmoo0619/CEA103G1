@@ -1,0 +1,12 @@
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script>
+	let backToTop = document.getElementsByClassName("backToTop");
+	$(window).scroll(function(e) {
+		console.log(e);
+		if ($(window).scrollTop() <= 1) {
+			backToTop[1].style.display = "none";
+		} else {
+			backToTop[1].style.display = "block";
+		}
+	});
+</script>
