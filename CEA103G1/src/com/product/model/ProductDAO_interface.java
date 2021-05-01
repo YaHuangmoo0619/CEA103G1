@@ -8,4 +8,5 @@ public interface ProductDAO_interface {
           public void delete(Integer prod_no);
           public ProductVO findByPrimaryKey(Integer prod_no);
           public List<ProductVO> getAll();
+          public List<ProductVO> getAll(Map<String, String[]> map); 
 }
