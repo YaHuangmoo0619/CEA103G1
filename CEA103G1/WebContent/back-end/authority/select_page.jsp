@@ -51,7 +51,7 @@ form{
 			${errorMsgs}
 			<ul>
 				<li>
-					<a class="content" href="<%=request.getContextPath() %>/authority/listAllAuthority.jsp">List</a><br>
+					<a class="content" href="<%=request.getContextPath() %>/back-end/authority/listAllAuthority.jsp">List</a><br>
 				</li>
 				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
 				<li>
