@@ -10,7 +10,7 @@
 %>
 
 <%
-  ArrayList<String> tag_list = (ArrayList<String>) request.getAttribute("tag_list"); //ArticleServlet.java(Concroller), 存入req的articleVO物件
+  Set<String> tag_list = (Set<String>) request.getAttribute("tag_list"); //ArticleServlet.java(Concroller), 存入req的articleVO物件
 %>
 
 <html>
@@ -182,10 +182,8 @@
    
 </table>
 
-		<c:forEach var="tag_list" items="${tag_list}">
-			<div>${tag_list}</div>
-	
-			</c:forEach>
+
+
 <div>
 <div>回應  </div>
 <button id="like" onclick="add_like()"></button>
@@ -198,6 +196,12 @@
 <br>
 <br>
 <br>
+
+<div>文章標籤</div>
+<c:forEach var="tag_list" items="${tag_list}">
+<%-- <div>${tag_list}</div> --%>
+<div><a href="<%=request.getContextPath()%>/article/article.do?tag=${tag_list}&action=getArticlesByTagFor_Display">${tag_list}</a></div>
+</c:forEach>
 
 
 <div id = "addrep"></div>

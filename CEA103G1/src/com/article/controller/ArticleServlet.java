@@ -27,6 +27,7 @@ public class ArticleServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		req.setCharacterEncoding("UTF-8");
+
 		String action = req.getParameter("action");
 		
 		
@@ -82,25 +83,10 @@ public class ArticleServlet extends HttpServlet {
 					return;//程式中斷
 				}
 				
-				/***************************2.開始查詢Redis標籤資料*****************************************/
-				
-				Jedis jedis = new Jedis("localhost", 6379);
-				jedis.auth("123456");
-				jedis.select(6);
-				
-				//如何把redis的key 用set裝起來
 
-				ArrayList<String> tag_list = new ArrayList<String>();
-				
-				for (String str : jedis.smembers("post:"+req.getParameter("art_no")+":tags")) {
-					tag_list.add(str);
-				}
 
-				
-				jedis.close();
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("tag_list", tag_list); // Redis資料庫取出的tag_list物件,存入req
 				req.setAttribute("articleVO", articleVO); // 資料庫取出的articleVO物件,存入req
 				String url = "/back-end/article/listOneArticle.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneArticle.jsp
@@ -159,6 +145,40 @@ public class ArticleServlet extends HttpServlet {
 			successView.forward(req, res);
 
 	}
+		
+		
+		if ("getArticlesByTagFor_Display".equals(action)) { // 來自front-end listOneTagArticles.jsp的請求  
+			System.out.println(req.getParameter("tag"));
+
+			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+			Jedis jedis = new Jedis("localhost", 6379); //初始化redis
+			jedis.auth("123456"); 
+			jedis.select(6); //選擇6號  因資料儲存在db06
+			
+			
+			/***************************2.Redis開始查詢資料*****************************************/
+			Set<String> tagged_article_list = jedis.smembers("tag:"+req.getParameter("tag")+":posts"); //將所有被標註此tag的文章編號存入一個set
+			jedis.close(); //關閉
+			System.out.println("hello");
+			/***************************3.MySQL開始查詢資料*****************************************/
+			List<ArticleVO> articleVO = new ArrayList<>(); //建一個文章list
+			ArticleService articleSvc = new ArticleService(); //建一個service
+			System.out.println("hello2");
+			for (String str : tagged_article_list) { //將所有被tag到的文章vo  放入文章list中
+				int i = Integer.parseInt(str);
+				articleVO.add(articleSvc.getOneArticle(i));
+			}
+			
+			System.out.println("hello3");
+			/***************************4.查詢完成,準備轉交(Send the Success view)*************/
+			req.setAttribute("tag", req.getParameter("tag"));
+			req.setAttribute("articleVO", articleVO); // 資料庫取出的List<ArticleVO> articleVO物件,存入req
+			String url = "/front-end/article/listOneTagArticles.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交listOneTagArticles.jsp
+			successView.forward(req, res);
+
+	}
+		
 		
 		
 		
@@ -594,6 +614,29 @@ public class ArticleServlet extends HttpServlet {
 		if ("getOne_From2".equals(action)) {  //回到論壇首頁的燈箱
 
 			try {
+				
+				
+				Jedis jedis = new Jedis("localhost", 6379);
+				jedis.auth("123456");
+				jedis.select(6);
+				
+//				System.out.println(req.getParameter("art_no"));
+//				for (String str : jedis.smembers("post:"+req.getParameter("art_no")+":tags")) {
+//					System.out.println(str);
+//				}
+				Set<String> tag_list = jedis.smembers("post:"+req.getParameter("art_no")+":tags");
+				
+				
+				jedis.close();
+				
+//
+//				    for(String element : tag_list) {
+//				        System.out.println(element);
+//				    }
+//
+				req.setAttribute("tag_list", tag_list); // Redis資料庫取出的tag_list物件,存入req
+				
+				
 				// Retrieve form parameters.
 				Integer art_no = new Integer(req.getParameter("art_no"));
 
@@ -649,6 +692,9 @@ public class ArticleServlet extends HttpServlet {
 				throw new ServletException(e);
 			}
 		}
+		
+		
+		
 		
 		
 	}

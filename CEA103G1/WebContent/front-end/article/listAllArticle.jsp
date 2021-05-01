@@ -353,7 +353,7 @@ img.person:hover {
 </head>
 <body>
 
-
+<button></button>
 
 	<div style="background-color: #eee;">
 		<img src="/CEA103G1/images/campionLogoLong.png" class="logo">
@@ -383,18 +383,6 @@ img.person:hover {
 	</div>
 
 
-<!-- 	<div> -->
-<!-- 		<div> -->
-<%-- 			<c:forEach var="board_classVO" items="${bd_list}"> --%>
-<!-- 				<a -->
-<%-- 					href="<%=request.getContextPath()%>/article/article.do?bd_cl_no=${board_classVO.bd_cl_no}&action=getOneArticle_ByBoard_Clss_For_Display">${board_classVO.bd_name}</a> --%>
-<!-- 				<br> -->
-<%-- 			</c:forEach> --%>
-<!-- 		</div> -->
-<!-- 	</div> -->
-
-
-
 <div id="sidebar">
   <div class="list">
 			<c:forEach var="board_classVO" items="${bd_list}">
@@ -422,8 +410,7 @@ ${articleVO.art_no}
 ${articleVO.mbr_no}
 <fmt:formatDate value="${articleVO.art_rel_time}"
 			pattern="MM¤ëdd¤é  HH:mm" />
-		<a
-			href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a>
+		<a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a>
 ${articleVO.likes}
 
 </div>
@@ -497,11 +484,5 @@ ${articleVO.likes}
 		});
 	</script>
 
-	
-
-
-	<!-- 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
-	<!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script> -->
-	<!-- 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script> -->
 </body>
 </html>
