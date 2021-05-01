@@ -61,5 +61,10 @@ public class ProductService {
 
 	public List<ProductVO> getAll() {
 		return dao.getAll();
+		
+//	public List<ProductVO> getAll(Map<String, String[]> map) {
+//		return dao.getAll(map);
+//	}
+	
 	}
 }

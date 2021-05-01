@@ -87,7 +87,33 @@
      </FORM>
   </li>
 </ul>
-
+<!--  
+<ul>  
+  <li>   
+    <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" name="form1">
+        <b><font color=blue>萬用複合查詢:</font></b> <br>
+        <b>輸入商品編號:</b>
+        <input type="text" name="prod_no" value=""><br>
+           
+       <b>輸入商品類別編號:</b>
+       <input type="text" name="prod_cat_no" value=""><br>
+     
+       <b>選擇部門:</b>
+       <select size="1" name="deptno" >
+          <option value="">
+         <c:forEach var="deptVO" items="${deptSvc.all}" > 
+          <option value="${deptVO.deptno}">${deptVO.dname}
+         </c:forEach>   
+       </select><br>
+           
+       <b>雇用日期:</b>
+	   <input name="hiredate" id="f_date1" type="text">
+		        
+        <input type="submit" value="送出">
+        <input type="hidden" name="action" value="listEmps_ByCompositeQuery">
+     </FORM>
+  </li>
+</ul> -->
 
 <h3>商品管理</h3>
 
