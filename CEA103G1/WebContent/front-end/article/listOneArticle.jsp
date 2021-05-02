@@ -199,7 +199,6 @@
 
 <div>¤å³¹¼ĞÅÒ</div>
 <c:forEach var="tag_list" items="${tag_list}">
-<%-- <div>${tag_list}</div> --%>
 <div><a href="<%=request.getContextPath()%>/article/article.do?tag=${tag_list}&action=getArticlesByTagFor_Display">${tag_list}</a></div>
 </c:forEach>
 
