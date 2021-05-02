@@ -78,5 +78,26 @@ public class AuthorityServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}	
 		}
+		
+		if("getOne_For_Update".equals(action)) {
+			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			req.setAttribute("errorMsgs",errorMsgs);
+			
+			try {
+//				Integer emp_no = new Integer(req.getParameter("emp_no"));
+				
+//				AuthorityService  authoritySvc = new AuthorityService();
+//				List<AuthorityVO> list = authoritySvc.findByEmp_no(emp_no);
+//				req.setAttribute("list", list);
+				
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/authority/update_authority_input.jsp");
+				successView.forward(req,res);
+				
+			}catch(Exception e) {
+				errorMsgs.put("Exception", e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/authority/listAllAuthority.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 }

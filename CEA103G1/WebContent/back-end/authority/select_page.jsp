@@ -51,8 +51,8 @@ span{
 			<h2>This is the Home page for Authority</h2>
 			<hr>
 			<h3>資料查詢:</h3>
-			<%-- 錯誤列表 map --%>
-			${errorMsgs}
+			<%-- 錯誤列表 map ${errorMsgs}--%>
+			
 			<ul>
 				<li>
 					<a class="content" href="<%=request.getContextPath() %>/back-end/authority/listAllAuthority.jsp">List</a><br>
