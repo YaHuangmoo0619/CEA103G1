@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-<title>所有網站管理員權限列表 - listAllAuthority</title>
+<title>所有網站管理員權限列表</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -37,7 +37,7 @@ a.content:hover {
 }
 
 table{
-	width: 600px;
+	width: 700px;
 	margin: 30px auto;
 	border: 1px solid #4e5452;
 }
@@ -55,6 +55,19 @@ label.spotlight{
 	border-radius: 5px;
 	color: #fff;
 }
+input.change{
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+input.change:hover{
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
 </style>
 
 </head>
@@ -66,20 +79,32 @@ label.spotlight{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>所有網站管理員權限列表 - listAllAuthority.jsp&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/authority/select_page.jsp">回首頁</a></h2>
+			<h2>所有網站管理員權限列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/authority/select_page.jsp">回首頁</a></h2>
 			<hr>
+			${errorMsgs.Exception}
 			<h3>資料列表:</h3>
 			<table>
 				<tr>
-					<th style="width:150px">網站管理員姓名</th>
+					<th style="width:50px">編號</th>
+					<th style="width:100px">姓名</th>
 					<th style="width:400px">網站管理權限</th>
+					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a
+						id="first" style="text-decoration: none;"></a></th>
 				</tr>
 				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
 				<jsp:useBean id="functionSvc" scope="page" class="com.function.model.FunctionService"/>
 				<jsp:useBean id="authoritySvc" scope="page" class="com.authority.model.AuthorityService"/>
 				<c:forEach var="employeeVO" items="${employeeSvc.all}">
-					<tr>
+					<tr ${employeeVO.emp_no == param.emp_no ? 'bgcolor=#eee':''}>
 						<c:if test="${employeeVO.emp_no != 90001}">
+							<c:if
+								test="${employeeVO.emp_no==param.emp_no}">
+								<td>${employeeVO.emp_no}<a id="focus"></a></td>
+							</c:if>
+							<c:if
+								test="${employeeVO.emp_no!=param.emp_no}">
+								<td>${employeeVO.emp_no}</td>
+							</c:if>
 						<td>${employeeVO.name}</td>
 						<td class="function">
 						<c:forEach var="functionVO" items="${functionSvc.all}" varStatus="nextLine">
@@ -87,6 +112,13 @@ label.spotlight{
 							<label for="function${nextLine.count}" ${authoritySvc.getOneAuthority(employeeVO.emp_no,functionVO.fx_no).fx_no == functionVO.fx_no ? 'class=spotlight':''}>${functionVO.fx_name}</label>
 							${nextLine.count%3 == 0 ? '<br>':''}
 						</c:forEach>
+						</td>
+						<td>
+							<form method="post" action="<%=request.getContextPath()%>/authority/authority.do">
+								<input class="change" type="submit" value="修改">
+								<input type="hidden" name="emp_no" value="${employeeVO.emp_no}">
+								<input type="hidden" name="action" value="getOne_For_Update">
+							</form>
 						</td>
 						</c:if>
 					</tr>

@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-<title>特定權限的網站管理員列表</title>
+<title>修改網站管理員權限</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -37,7 +37,7 @@ a.content:hover {
 }
 
 table{
-	width: 600px;
+	width: 700px;
 	margin: 30px auto;
 	border: 1px solid #4e5452;
 }
@@ -49,11 +49,20 @@ th, td{
 td.function{
 	text-align: justify;	
 }
-label.spotlight{
+
+input.change{
 	background-color: #80c344;
-	padding: 2px 5px;
+	color: #4e5452;
+	padding: 5px 10px;
+	margin-top: 10px;
 	border-radius: 5px;
-	color: #fff;
+	border: none;
+	font-weight: 999;
+}
+input.change:hover{
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
 }
 </style>
 
@@ -66,42 +75,46 @@ label.spotlight{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>特定權限的網站管理員列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/authority/select_page.jsp">回首頁</a></h2>
+			<h2>修改網站管理員權限&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/authority/select_page.jsp">回首頁</a></h2>
 			<hr>
-			<jsp:useBean id="functionSvc" scope="page" class="com.function.model.FunctionService"/>
-			<h3>${functionSvc.getOneFunction(param.fx_no).fx_name}權限的網站管理員列表:</h3>
+			<h3>資料列表:</h3>
 			<table>
 				<tr>
-					<th style="width:100px">編號</th>
+					<th style="width:50px">編號</th>
 					<th style="width:100px">姓名</th>
 					<th style="width:400px">網站管理權限</th>
 				</tr>
 				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
+				<jsp:useBean id="functionSvc" scope="page" class="com.function.model.FunctionService"/>
 				<jsp:useBean id="authoritySvc" scope="page" class="com.authority.model.AuthorityService"/>
-				<c:forEach var="employeeVO" items="${employeeSvc.getFunctionEmp_no(param.fx_no)}">
+				<c:forEach var="employeeVO" items="${employeeSvc.all}">
+					<c:if test="${employeeVO.emp_no == param.emp_no}">
 					<tr>
 						<td>${employeeVO.emp_no}</td>
-						<c:if test="${employeeVO.emp_no != 90001}">
 						<td>${employeeVO.name}</td>
 						<td class="function">
+						<form method='post' action='<%=request.getContextPath()%>/authority/authority.do'>
 						<c:forEach var="functionVO" items="${functionSvc.all}" varStatus="nextLine">
-							<input type="checkbox" name="function${nextLine.count}" ${authoritySvc.getOneAuthority(employeeVO.emp_no,functionVO.fx_no).fx_no == functionVO.fx_no ? 'checked':''} disabled/>
-							<label for="function${nextLine.count}" ${authoritySvc.getOneAuthority(employeeVO.emp_no,functionVO.fx_no).fx_no == functionVO.fx_no ? 'class=spotlight':''}>${functionVO.fx_name}</label>
+							<input type="checkbox" name="fx_no${functionVO.fx_no}" ${authoritySvc.getOneAuthority(employeeVO.emp_no,functionVO.fx_no).fx_no == functionVO.fx_no ? 'checked':''} value="${functionVO.fx_no}"/>
+							<label for="fx_no${functionVO.fx_no}">${functionVO.fx_name}</label>
 							${nextLine.count%3 == 0 ? '<br>':''}
 						</c:forEach>
+						
+						<input type="hidden" name="emp_no" value="${param.emp_no}">
+						<input type="hidden" name="action" value="update">
+						<br>
+						<input class="change" type="submit" value="送出修改">
+						</form>
 						</td>
-						</c:if>
 					</tr>
+					</c:if>
 				</c:forEach>
-				<c:if test="${employeeSvc.getFunctionEmp_no(param.fx_no).size() == 0}">
-					<td>暫無</td>
-					<td>暫無</td>
-					<td>暫無</td>
-				</c:if>
 			</table>
 		</div>
 	</div>
 </div>
+
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+
 </body>
 </html>

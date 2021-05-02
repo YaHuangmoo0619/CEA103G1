@@ -66,7 +66,7 @@ div.footer{
 <body>
 <div class="toFrontPage">
 	--測試連結網頁--
-  <a class="navbar-brand" href="campion_front.html">
+  <a class="navbar-brand" href="campion_front.jsp">
     <img src="<%=request.getContextPath() %>/images/campionLogoLong.png" width="20%">
   </a>
   	--測試連結網頁--
@@ -83,6 +83,7 @@ div.footer{
 					<a href="<%=request.getContextPath() %>/back-end/function/select_page.jsp">function</a>
 					<a href="<%=request.getContextPath() %>/back-end/employee/select_page.jsp">employee</a>
 					<a href="<%=request.getContextPath() %>/back-end/authority/select_page.jsp">authority</a>
+					<a href="">service_mail</a>
 					</div>
 				</div>
 			</div>
