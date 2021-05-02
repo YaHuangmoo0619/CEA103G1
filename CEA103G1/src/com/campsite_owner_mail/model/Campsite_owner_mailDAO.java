@@ -26,15 +26,15 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 	}
 
 	private static final String INSERT_STMT = 
-		"INSERT INTO campion.member_mail (mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		"INSERT INTO campion.campsite_owner_mail (send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
-		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail order by mail_no";
+		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.campsite_owner_mail order by mail_no";
 	private static final String GET_ONE_STMT = 
-		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail where mail_no = ?";
+		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.campsite_owner_mail where mail_no = ?";
 	private static final String DELETE = 
-		"DELETE FROM member_mail where mail_no = ?";
+		"DELETE FROM campion.campsite_owner_mail where mail_no = ?";
 	private static final String UPDATE = 
-		"UPDATE campion.member_mail set send_no=?, rcpt_no=?, mail_read_stat=?, mail_stat=? ,mail_cont=?, mail_time=? where mail_no = ?";
+		"UPDATE campion.campsite_owner_mail set send_no=?, rcpt_no=?, mail_read_stat=?, mail_stat=? ,mail_cont=?, mail_time=? where mail_no = ?";
 		
 	@Override
 	public void insert(Campsite_owner_mailVO campsite_owner_mailVO) {
@@ -47,13 +47,12 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, campsite_owner_mailVO.getMail_no());
-			pstmt.setInt(2, campsite_owner_mailVO.getSend_no());
-			pstmt.setInt(3, campsite_owner_mailVO.getRcpt_no());
-			pstmt.setInt(4, campsite_owner_mailVO.getMail_read_stat());
-			pstmt.setInt(5, campsite_owner_mailVO.getMail_stat());
-			pstmt.setString(6, campsite_owner_mailVO.getMail_cont());
-			pstmt.setTimestamp(7, campsite_owner_mailVO.getMail_time());
+			pstmt.setInt(1, campsite_owner_mailVO.getSend_no());
+			pstmt.setInt(2, campsite_owner_mailVO.getRcpt_no());
+			pstmt.setInt(3, campsite_owner_mailVO.getMail_read_stat());
+			pstmt.setInt(4, campsite_owner_mailVO.getMail_stat());
+			pstmt.setString(5, campsite_owner_mailVO.getMail_cont());
+			pstmt.setString(6, campsite_owner_mailVO.getMail_time());
 
 			pstmt.executeUpdate();
 
@@ -92,13 +91,13 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setInt(1, campsite_owner_mailVO.getMail_no());
-			pstmt.setInt(2, campsite_owner_mailVO.getSend_no());
-			pstmt.setInt(3, campsite_owner_mailVO.getRcpt_no());
-			pstmt.setInt(4, campsite_owner_mailVO.getMail_read_stat());
-			pstmt.setInt(5, campsite_owner_mailVO.getMail_stat());
-			pstmt.setString(6, campsite_owner_mailVO.getMail_cont());
-			pstmt.setTimestamp(7, campsite_owner_mailVO.getMail_time());
+			pstmt.setInt(7, campsite_owner_mailVO.getMail_no());
+			pstmt.setInt(1, campsite_owner_mailVO.getSend_no());
+			pstmt.setInt(2, campsite_owner_mailVO.getRcpt_no());
+			pstmt.setInt(3, campsite_owner_mailVO.getMail_read_stat());
+			pstmt.setInt(4, campsite_owner_mailVO.getMail_stat());
+			pstmt.setString(5, campsite_owner_mailVO.getMail_cont());
+			pstmt.setString(6, campsite_owner_mailVO.getMail_time());
 
 			pstmt.executeUpdate();
 
@@ -191,7 +190,7 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 				campsite_owner_mailVO.setMail_read_stat(rs.getInt("mail_read_stat"));
 				campsite_owner_mailVO.setMail_stat(rs.getInt("mail_stat"));
 				campsite_owner_mailVO.setMail_cont(rs.getString("mail_cont"));
-				campsite_owner_mailVO.setMail_time(rs.getTimestamp("mail_time"));
+				campsite_owner_mailVO.setMail_time(rs.getString("mail_time"));
 			}
 
 			// Handle any driver errors
@@ -250,7 +249,7 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 				campsite_owner_mailVO.setMail_read_stat(rs.getInt("mail_read_stat"));
 				campsite_owner_mailVO.setMail_stat(rs.getInt("mail_stat"));
 				campsite_owner_mailVO.setMail_cont(rs.getString("mail_cont"));
-				campsite_owner_mailVO.setMail_time(rs.getTimestamp("mail_time"));
+				campsite_owner_mailVO.setMail_time(rs.getString("mail_time"));
 				list.add(campsite_owner_mailVO); // Store the row in the list
 			}
 

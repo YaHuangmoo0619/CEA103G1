@@ -1,7 +1,6 @@
 package com.member_mail.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 public class Member_mailVO implements Serializable {
 
@@ -11,15 +10,14 @@ public class Member_mailVO implements Serializable {
 	private Integer mail_read_stat;
 	private Integer mail_stat;
 	private String mail_cont;
-	private Timestamp mail_time;
+	private String mail_time;
 	
 	public Member_mailVO() {
 	}
 
-	public Member_mailVO(Integer mail_no, Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat,
-			String mail_cont, Timestamp mail_time) {
+	public Member_mailVO(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat,
+			String mail_cont, String mail_time) {
 		super();
-		this.mail_no = mail_no;
 		this.send_no = send_no;
 		this.rcpt_no = rcpt_no;
 		this.mail_read_stat = mail_read_stat;
@@ -76,11 +74,11 @@ public class Member_mailVO implements Serializable {
 		this.mail_cont = mail_cont;
 	}
 
-	public Timestamp getMail_time() {
+	public String getMail_time() {
 		return mail_time;
 	}
 
-	public void setMail_time(Timestamp mail_time) {
+	public void setMail_time(String mail_time) {
 		this.mail_time = mail_time;
 	}
 	

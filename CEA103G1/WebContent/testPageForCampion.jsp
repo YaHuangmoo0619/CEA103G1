@@ -84,6 +84,8 @@ div.footer{
 					<a href="<%=request.getContextPath() %>/back-end/employee/select_page.jsp">employee</a>
 					<a href="<%=request.getContextPath() %>/back-end/authority/select_page.jsp">authority</a>
 					<a href="<%=request.getContextPath() %>/back-end/service_mail/select_page.jsp">service_mail</a>
+					<a href="<%=request.getContextPath() %>/back-end/member_mail/select_page.jsp">member_mail</a>
+					<a href="<%=request.getContextPath() %>/back-end/campsite_owner_mail/select_page.jsp">campsite_owner_mail</a>
 					</div>
 				</div>
 			</div>
