@@ -3,11 +3,44 @@
 <head>
 <meta charset="BIG5">
 <title>Insert title here</title>
+<style>
+        .demo-container {
+            width: 100%;
+            max-width: 350px;
+            margin: 50px auto;
+        }
+
+        form {
+            margin: 30px;
+        }
+        input {
+            width: 200px;
+            margin: 10px auto;
+            display: block;
+        }
+
+    </style>
 </head>
 <body oncontextmenu="return false;">
-	<p>ok吧</p>
-	<script type="text/javascript">
-		window.history.forward(1);
-	</script>
+	<div class="demo-container">
+        <div class="card-wrapper"></div>
+
+        <div class="form-container active">
+            <form action="">
+                <input placeholder="Card number" type="tel" name="number" required>
+                <input placeholder="Full name" type="text" name="name" required>
+                <input placeholder="MM/YY" type="tel" name="expiry" required>
+                <input placeholder="CVC" type="number" name="cvc" required>
+            </form>
+        </div>
+    </div>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="/../CEA103G1/creditcard/card.js"></script>
+	<script>
+        new Card({
+            form: document.querySelector('form'),
+            container: '.card-wrapper'
+        });
+    </script>
 </body>
 </html>
