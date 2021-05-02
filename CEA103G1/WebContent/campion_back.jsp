@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="zh-tw">
 
@@ -136,14 +137,17 @@ p {
 					<!-- 以下內容可以替換成自記查找出來的表格，或新增修改的畫面 -->
 						<div class="countBox">
 							<h5>用戶總數</h5>
-							<p>1582位會員</p>
-							<p>51位營主</p>
+							<!--<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>-->
+							<p>100位會員</p>
+							<!--<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>-->
+							<p>20位營主</p>
 						</div>
 					</div>
 					<div class="col">
 						<div class="countBox">
 							<h5>商品訂單</h5>
-							<p>本週共有57筆</p>
+							<jsp:useBean id="product_orderSvc" class="com.product_order.model.Product_orderService"/>
+							<p>累計共有${product_orderSvc.getAll().size()}筆</p>
 							<p>商品訂單</p>
 						</div>
 					</div>
@@ -152,14 +156,29 @@ p {
 					<div class="col">
 						<div class="countBox">
 							<h5>營位訂單</h5>
-							<p>本週共有57筆</p>
+							<jsp:useBean id="place_orderSvc" class="com.place_order.model.Place_OrderService"/>
+							<p>累計共有${place_orderSvc.getAll().size()}筆</p>
 							<p>營位訂單</p>
 						</div>
 					</div>
 					<div class="col">
 						<div class="countBox">
 							<h5>檢舉回報</h5>
-							<p>本週尚有12件</p>
+<%-- 							<jsp:useBean id="article_replay_reportSvc" class="com.article_replay_report.model.Article_Rep_ReportService"/> --%>
+<%-- 							<jsp:useBean id="article_reportSvc" class="com.article_report.model.Article_ReportService"/> --%>
+<%-- 							<jsp:useBean id="campsite_comment_reportSvc" class="com.campsite_comment_report.model.Campsite_comment_reportService"/> --%>
+<%-- 							<jsp:useBean id="campsite_reportSvc" class="com.campsite_report.model.Campsite_reportService"/> --%>
+<%-- 							<jsp:useBean id="member_reportSvc" class="com.member_report.model.Member_reportService"/> --%>
+<%-- 							<jsp:useBean id="product_comment_reportSvc" class="com.product_comment_report.model.Product_comment_reportService"/> --%>
+<%-- 							<jsp:useBean id="product_reportSvc" class="com.product_report.model.Product_reportService"/> --%>
+<%-- 							<p>目前尚有${article_replay_reportSvc.getAll().size()+ --%>
+<%-- 							article_reportSvc.getAll().size()+ --%>
+<%-- 							campsite_comment_reportSvc.getAll().size()+ --%>
+<%-- 							campsite_reportSvc.getAll().size()+ --%>
+<%-- 							member_reportSvc.getAll().size()+ --%>
+<%-- 							product_comment_reportSvc.getAll().size()+ --%>
+<%-- 							product_reportSvc.getAll().size()}件</p> --%>
+							<p>目前尚有12件</p>
 							<p>檢舉未處裡</p>
 						</div>
 					</div>
