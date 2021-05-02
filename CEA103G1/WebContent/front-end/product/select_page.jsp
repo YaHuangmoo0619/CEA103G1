@@ -87,7 +87,9 @@
      </FORM>
   </li>
 </ul>
-<!--  
+ 
+ <jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
+ 
 <ul>  
   <li>   
     <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" name="form1">
@@ -95,25 +97,22 @@
         <b>輸入商品編號:</b>
         <input type="text" name="prod_no" value=""><br>
            
-       <b>輸入商品類別編號:</b>
-       <input type="text" name="prod_cat_no" value=""><br>
+       <b>輸入商品編號:</b>
+       <input type="text" name="prod_name" value=""><br>
      
-       <b>選擇部門:</b>
-       <select size="1" name="deptno" >
+       <b>選擇商品類別編號:</b>
+       <select size="1" name="prod_cat_no" >
           <option value="">
-         <c:forEach var="deptVO" items="${deptSvc.all}" > 
-          <option value="${deptVO.deptno}">${deptVO.dname}
+         <c:forEach var="product_categoryVO" items="${product_categorySvc.all}" > 
+          <option value="${product_categoryVO.prod_cat_no}">${product_categoryVO.prod_cat_name}
          </c:forEach>   
        </select><br>
-           
-       <b>雇用日期:</b>
-	   <input name="hiredate" id="f_date1" type="text">
 		        
         <input type="submit" value="送出">
-        <input type="hidden" name="action" value="listEmps_ByCompositeQuery">
+        <input type="hidden" name="action" value="listProduct_ByCQ">
      </FORM>
   </li>
-</ul> -->
+</ul> 
 
 <h3>商品管理</h3>
 
