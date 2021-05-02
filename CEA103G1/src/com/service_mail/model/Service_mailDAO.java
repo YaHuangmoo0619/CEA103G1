@@ -27,7 +27,7 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 		}
 
 		private static final String INSERT_STMT = 
-			"INSERT INTO campion.service_mail (mail_no,emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO campion.service_mail (emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time) VALUES (?, ?, ?, ?, ?, ?)";
 		private static final String GET_ALL_STMT = 
 			"SELECT mail_no,emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time FROM campion.service_mail order by mail_no";
 		private static final String GET_ONE_STMT = 
@@ -48,13 +48,12 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, service_mailVO.getMail_no());
-			pstmt.setInt(2, service_mailVO.getEmp_no());
-			pstmt.setInt(3, service_mailVO.getMbr_no());
-			pstmt.setString(4, service_mailVO.getMail_cont());
-			pstmt.setInt(5, service_mailVO.getMail_stat());
-			pstmt.setInt(6, service_mailVO.getMail_read_stat());
-			pstmt.setTimestamp(7, service_mailVO.getMail_time());
+			pstmt.setInt(1, service_mailVO.getEmp_no());
+			pstmt.setInt(2, service_mailVO.getMbr_no());
+			pstmt.setString(3, service_mailVO.getMail_cont());
+			pstmt.setInt(4, service_mailVO.getMail_stat());
+			pstmt.setInt(5, service_mailVO.getMail_read_stat());
+			pstmt.setString(6, service_mailVO.getMail_time());
 
 			pstmt.executeUpdate();
 
@@ -93,13 +92,13 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setInt(1, service_mailVO.getMail_no());
-			pstmt.setInt(2, service_mailVO.getEmp_no());
-			pstmt.setInt(3, service_mailVO.getMbr_no());
-			pstmt.setString(4, service_mailVO.getMail_cont());
-			pstmt.setInt(5, service_mailVO.getMail_stat());
-			pstmt.setInt(6, service_mailVO.getMail_read_stat());
-			pstmt.setTimestamp(7, service_mailVO.getMail_time());
+			pstmt.setInt(7, service_mailVO.getMail_no());
+			pstmt.setInt(1, service_mailVO.getEmp_no());
+			pstmt.setInt(2, service_mailVO.getMbr_no());
+			pstmt.setString(3, service_mailVO.getMail_cont());
+			pstmt.setInt(4, service_mailVO.getMail_stat());
+			pstmt.setInt(5, service_mailVO.getMail_read_stat());
+			pstmt.setString(6, service_mailVO.getMail_time());
 
 			pstmt.executeUpdate();
 
@@ -192,7 +191,7 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 				service_mailVO.setMail_cont(rs.getString("mail_cont"));
 				service_mailVO.setMail_stat(rs.getInt("mail_stat"));
 				service_mailVO.setMail_read_stat(rs.getInt("mail_read_stat"));
-				service_mailVO.setMail_time(rs.getTimestamp("mail_time"));
+				service_mailVO.setMail_time(rs.getString("mail_time"));
 			}
 
 			// Handle any driver errors
@@ -249,7 +248,7 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 				service_mailVO.setMail_cont(rs.getString("mail_cont"));
 				service_mailVO.setMail_stat(rs.getInt("mail_stat"));
 				service_mailVO.setMail_read_stat(rs.getInt("mail_read_stat"));
-				service_mailVO.setMail_time(rs.getTimestamp("mail_time"));
+				service_mailVO.setMail_time(rs.getString("mail_time"));
 				list.add(service_mailVO); // Store the row in the list
 			}
 
