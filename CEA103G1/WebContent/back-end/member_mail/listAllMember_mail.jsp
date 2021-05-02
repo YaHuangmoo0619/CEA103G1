@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*" %>
-<%@ page import="com.service_mail.model.*" %>
+<%@ page import="com.member_mail.model.*" %>
 
 <!DOCTYPE html>
 <html>
@@ -79,7 +79,7 @@ input.change:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>所有客服信列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
+			<h2>所有客服信列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/member_mail/select_page.jsp">回首頁</a></h2>
 			<hr>
 			${errorMsgs.Exception}
 			<h3>資料列表:</h3>
@@ -95,27 +95,27 @@ input.change:hover{
 					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a
 						id="first" style="text-decoration: none;"></a></th>
 				</tr>
-				<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService"/>
-				<c:forEach var="service_mailVO" items="${service_mailSvc.all}">
-					<tr ${service_mailVO.mail_no == param.mail_no ? 'bgcolor=#eee':''}>
+				<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService"/>
+				<c:forEach var="member_mailVO" items="${member_mailSvc.all}">
+					<tr ${member_mailVO.mail_no == param.mail_no ? 'bgcolor=#eee':''}>
 						<c:if
-							test="${service_mailVO.mail_no==param.mail_no}">
-							<td>${service_mailVO.mail_no}<a id="focus"></a></td>
+							test="${member_mailVO.mail_no==param.mail_no}">
+							<td>${member_mailVO.mail_no}<a id="focus"></a></td>
 						</c:if>
 						<c:if
-							test="${service_mailVO.mail_no!=param.mail_no}">
-							<td>${service_mailVO.mail_no}</td>
+							test="${member_mailVO.mail_no!=param.mail_no}">
+							<td>${member_mailVO.mail_no}</td>
 						</c:if>
-						<td>${service_mailVO.emp_no}</td>
-						<td>${service_mailVO.mbr_no}</td>
-						<td>${service_mailVO.mail_cont}</td>
-						<td>${service_mailVO.mail_stat}</td>
-						<td>${service_mailVO.mail_read_stat}</td>
-						<td>${service_mailVO.mail_time}</td>
+						<td>${member_mailVO.send_no}</td>
+						<td>${member_mailVO.rcpt_no}</td>
+						<td>${member_mailVO.mail_cont}</td>
+						<td>${member_mailVO.mail_stat}</td>
+						<td>${member_mailVO.mail_read_stat}</td>
+						<td>${member_mailVO.mail_time}</td>
 						<td>
-							<form method="post" action="<%=request.getContextPath()%>/authority/authority.do">
+							<form method="post" action="<%=request.getContextPath()%>/member_mail/member_mail.do">
 								<input class="change" type="submit" value="修改">
-								<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}">
+								<input type="hidden" name="mail_no" value="${member_mailVO.mail_no}">
 								<input type="hidden" name="action" value="getOne_For_Update">
 							</form>
 						</td>

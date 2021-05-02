@@ -60,7 +60,7 @@ span{
 <!-- 		<h3>網站管理員權限管理:</h3>
 			<ul>
 				<li>
-					<a class="content" href="<%=request.getContextPath()%>/authority/authority.do">add</a>
+					<a class="content" href="<%=request.getContextPath()%>/service_mail/service_mail.do">add</a>
 				</li>
 			</ul> -->
 		</div>
