@@ -296,7 +296,7 @@ public class ProductDAO implements ProductDAO_interface {
 			con = ds.getConnection();
 			String finalSQL = "SELECT * FROM PRODUCT"
 		          + jdbc_CQ_Product.get_WhereCondition(map)
-		          + "order by product_no";
+		          + "order by prod_no";
 			pstmt = con.prepareStatement(finalSQL);
 			System.out.println("¡´¡´finalSQL(by DAO) = "+finalSQL);
 			rs = pstmt.executeQuery();

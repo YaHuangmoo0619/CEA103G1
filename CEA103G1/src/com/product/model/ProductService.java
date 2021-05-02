@@ -1,6 +1,7 @@
 package com.product.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class ProductService {
 
@@ -61,10 +62,11 @@ public class ProductService {
 
 	public List<ProductVO> getAll() {
 		return dao.getAll();
-		
-//	public List<ProductVO> getAll(Map<String, String[]> map) {
-//		return dao.getAll(map);
-//	}
-	
 	}
+		
+	public List<ProductVO> getAll(Map<String, String[]> map) {
+		return dao.getAll(map);
+	}
+	
 }
+
