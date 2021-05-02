@@ -81,20 +81,30 @@ input.change:hover{
 		<div class="right col-9">
 			<h2>所有網站管理員權限列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/authority/select_page.jsp">回首頁</a></h2>
 			<hr>
+			${errorMsgs.Exception}
 			<h3>資料列表:</h3>
 			<table>
 				<tr>
 					<th style="width:50px">編號</th>
 					<th style="width:100px">姓名</th>
 					<th style="width:400px">網站管理權限</th>
+					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a
+						id="first" style="text-decoration: none;"></a></th>
 				</tr>
 				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
 				<jsp:useBean id="functionSvc" scope="page" class="com.function.model.FunctionService"/>
 				<jsp:useBean id="authoritySvc" scope="page" class="com.authority.model.AuthorityService"/>
 				<c:forEach var="employeeVO" items="${employeeSvc.all}">
-					<tr>
+					<tr ${employeeVO.emp_no == param.emp_no ? 'bgcolor=#eee':''}>
 						<c:if test="${employeeVO.emp_no != 90001}">
-						<td>${employeeVO.emp_no}</td>
+							<c:if
+								test="${employeeVO.emp_no==param.emp_no}">
+								<td>${employeeVO.emp_no}<a id="focus"></a></td>
+							</c:if>
+							<c:if
+								test="${employeeVO.emp_no!=param.emp_no}">
+								<td>${employeeVO.emp_no}</td>
+							</c:if>
 						<td>${employeeVO.name}</td>
 						<td class="function">
 						<c:forEach var="functionVO" items="${functionSvc.all}" varStatus="nextLine">

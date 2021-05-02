@@ -72,13 +72,15 @@ label.spotlight{
 			<h3>${functionSvc.getOneFunction(param.fx_no).fx_name}權限的網站管理員列表:</h3>
 			<table>
 				<tr>
-					<th style="width:150px">網站管理員姓名</th>
+					<th style="width:100px">編號</th>
+					<th style="width:100px">姓名</th>
 					<th style="width:400px">網站管理權限</th>
 				</tr>
 				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
 				<jsp:useBean id="authoritySvc" scope="page" class="com.authority.model.AuthorityService"/>
 				<c:forEach var="employeeVO" items="${employeeSvc.getFunctionEmp_no(param.fx_no)}">
 					<tr>
+						<td>${employeeVO.emp_no}</td>
 						<c:if test="${employeeVO.emp_no != 90001}">
 						<td>${employeeVO.name}</td>
 						<td class="function">
@@ -91,6 +93,11 @@ label.spotlight{
 						</c:if>
 					</tr>
 				</c:forEach>
+				<c:if test="${employeeSvc.getFunctionEmp_no(param.fx_no).size() == 0}">
+					<td>暫無</td>
+					<td>暫無</td>
+					<td>暫無</td>
+				</c:if>
 			</table>
 		</div>
 	</div>

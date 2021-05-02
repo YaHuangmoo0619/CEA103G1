@@ -95,8 +95,8 @@ input.change:hover{
 						<td class="function">
 						<form method='post' action='<%=request.getContextPath()%>/authority/authority.do'>
 						<c:forEach var="functionVO" items="${functionSvc.all}" varStatus="nextLine">
-							<input type="checkbox" name="fx_no" ${authoritySvc.getOneAuthority(employeeVO.emp_no,functionVO.fx_no).fx_no == functionVO.fx_no ? 'checked':''} value="${functionVO.fx_no}"/>
-							<label for="fx_no">${functionVO.fx_name}</label>
+							<input type="checkbox" name="fx_no${functionVO.fx_no}" ${authoritySvc.getOneAuthority(employeeVO.emp_no,functionVO.fx_no).fx_no == functionVO.fx_no ? 'checked':''} value="${functionVO.fx_no}"/>
+							<label for="fx_no${functionVO.fx_no}">${functionVO.fx_name}</label>
 							${nextLine.count%3 == 0 ? '<br>':''}
 						</c:forEach>
 						

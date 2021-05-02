@@ -71,7 +71,8 @@ label.spotlight{
 			<h3>資料列表:</h3>
 			<table>
 				<tr>
-					<th style="width:150px">網站管理員姓名</th>
+					<th style="width:50px">編號</th>
+					<th style="width:100px">姓名</th>
 					<th style="width:400px">網站管理權限</th>
 				</tr>
 				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
@@ -80,6 +81,7 @@ label.spotlight{
 				<c:forEach var="employeeVO" items="${employeeSvc.all}">
 					<tr>
 						<c:if test="${employeeVO.emp_no != 90001 && employeeVO.name == param.name}">
+						<td>${employeeVO.emp_no}</td>
 						<td>${employeeVO.name}</td>
 						<td class="function">
 						<c:forEach var="functionVO" items="${functionSvc.all}" varStatus="nextLine">

@@ -2,9 +2,11 @@ package com.authority.controller;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.authority.model.AuthorityService;
 import com.authority.model.AuthorityVO;
+import com.function.model.FunctionService;
 
 @WebServlet("/authority/authority.do")
 public class AuthorityServlet extends HttpServlet {
@@ -93,6 +96,52 @@ public class AuthorityServlet extends HttpServlet {
 				RequestDispatcher successView = req.getRequestDispatcher("/back-end/authority/update_authority_input.jsp");
 				successView.forward(req,res);
 				
+			}catch(Exception e) {
+				errorMsgs.put("Exception", e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/authority/listAllAuthority.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if("update".equals(action)) {
+			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			req.setAttribute("errorMsgs",errorMsgs);
+			
+			FunctionService functionSvc = new FunctionService();
+			AuthorityService authoritySvc = new AuthorityService();
+			
+			try {
+				//取得前端的參數資料
+				Integer emp_no = new Integer(req.getParameter("emp_no"));
+				Set<Integer> fx_noSet = new LinkedHashSet<Integer>();
+				for(int i = 1; i <= functionSvc.getAll().size(); i++) {
+					if(req.getParameter("fx_no"+i) == null) {
+						continue;
+					}else {
+						fx_noSet.add(Integer.valueOf(req.getParameter("fx_no"+i)));
+					}
+				}
+					
+				//跟資料庫的資料進行比對
+				List<AuthorityVO> authorityVOlist = authoritySvc.findByEmp_no(emp_no);
+				Set<Integer> fx_noOriginSet = new LinkedHashSet<Integer>();
+				for(AuthorityVO authorityVO : authorityVOlist) {
+					fx_noOriginSet.add(authorityVO.getFx_no());
+				}
+				for(Integer fx_noOrigin : fx_noOriginSet) {
+					if(!fx_noSet.contains(fx_noOrigin)){
+						authoritySvc.deleteAuthority(emp_no, fx_noOrigin);
+					}
+				}
+				for(Integer fx_no : fx_noSet) {
+					if(!fx_noOriginSet.contains(fx_no)){
+						authoritySvc.addAuthority(emp_no, fx_no);
+					}
+				}
+				
+				//將更新結果回到listAllAuthority.jsp作呈現
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/authority/listAllAuthority.jsp");
+				successView.forward(req, res);
 			}catch(Exception e) {
 				errorMsgs.put("Exception", e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/authority/listAllAuthority.jsp");
