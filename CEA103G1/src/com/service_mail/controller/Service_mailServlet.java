@@ -33,20 +33,11 @@ public class Service_mailServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		
 		if("compositeSearch".equals(action)) {
-			System.out.println(1);
 			Map<String,String[]> map = req.getParameterMap();
-			System.out.println(2);
-			Set<String> keys = map.keySet();
-			for(String key : keys) {
-
-				System.out.println(key+map.get(key)[0]);
-			}
+			
 			Service_mailService service_mailSvc = new Service_mailService();
 			Set<Service_mailVO> service_mailVOSet = service_mailSvc.getWhereCondition(map);
-			System.out.println(3);
-			System.out.println(service_mailVOSet.size());
 			for(Service_mailVO service_mailVO : service_mailVOSet) {
-				System.out.println(4);
 				System.out.print(service_mailVO.getMail_no()+"<br>");
 				System.out.print(service_mailVO.getEmp_no()+"<br>");
 				System.out.print(service_mailVO.getMbr_no()+"<br>");
@@ -55,7 +46,6 @@ public class Service_mailServlet extends HttpServlet {
 				System.out.print(service_mailVO.getMail_read_stat()+"<br>");
 				System.out.print(service_mailVO.getMail_time()+"<br>");
 			}
-			System.out.println(5);
 		}
 	}
 }

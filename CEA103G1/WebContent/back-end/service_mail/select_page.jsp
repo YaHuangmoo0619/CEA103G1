@@ -9,8 +9,6 @@
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
-<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
 <title>Service_mail: Home</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
@@ -159,17 +157,18 @@ span{
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
 <script>
 <!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
-	$.datetimepicker.setLocale('zh');
-	$(function(){
-		 $('#mail_time').datetimepicker({
-		  format:'Y-m-d',
-		  maxDate:'+1970/01/01',
-		  timepicker:false
-		 });
-
+$.datetimepicker.setLocale('zh');
+$(function(){
+	$('#mail_time').datetimepicker({
+		format:'Y-m-d',
+		maxDate:'+1970/01/01',
+		timepicker:false
 	});
+});
 </script>
 </body>
 </html>

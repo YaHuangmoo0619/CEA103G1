@@ -7,6 +7,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -309,7 +310,7 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 			
 			//建立sql指令
 			List<String> checkfirst = new ArrayList<String>();
-			int countParameter = 0;
+			Map<Integer,String> forPstmt = new LinkedHashMap<Integer,String>();//之後連到資料庫查找用
 			//獲得所有欄位名稱
 			for(int i = 1 ; i <= rm.getColumnCount(); i++) {
 				nextColumn:
@@ -317,59 +318,46 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 				for(String key : keys) {
 					if(partOfsqlWhere.length() == 0) {
 						if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							System.out.println(key+map.get(key)[0]);
 							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
 							checkfirst.add(key);
-							countParameter++;
+							forPstmt.put(i, key);
 							break nextColumn;
 						}else if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							System.out.println(key+map.get(key)[0]);
 							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
 							checkfirst.add(key);
-							countParameter++;
+							forPstmt.put(i, key);
 							break nextColumn;
 						}else if(rm.getColumnTypeName(i) == "VARCHAR" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							System.out.println(key+map.get(key)[0]);
 							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" like ?");
 							checkfirst.add(key);
-							countParameter++;
+							forPstmt.put(i, key);
 							break nextColumn;
 						}else if(rm.getColumnTypeName(i) == "DATETIME" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							System.out.println(key+map.get(key)[0]);
 							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" like ?");
 							checkfirst.add(key);
-							countParameter++;
+							forPstmt.put(i, key);
 							break nextColumn;
 						}
 					}else {
 						if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							System.out.println(key+map.get(key)[0]);
 							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" = ?");
 							checkfirst.add(key);
-							countParameter++;
+							forPstmt.put(i, key);
 							break nextColumn;
 						}if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							System.out.println(map.get(key)[0].equals("no"));
-							System.out.println(rm.getColumnTypeName(i) == "BIT");
-							System.out.println(rm.getColumnName(i).toLowerCase().equals(key));
-							System.out.println(!checkfirst.contains(key));
-							System.out.println(map.get(key)[0] != "no");
-							System.out.println(!map.get(key)[0].isEmpty());
 							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" = ?");
 							checkfirst.add(key);
-							countParameter++;
+							forPstmt.put(i, key);
 							break nextColumn;
 						}else if(rm.getColumnTypeName(i) == "VARCHAR" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							System.out.println(key+map.get(key)[0]);
 							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" like ?");
 							checkfirst.add(key);
-							countParameter++;
+							forPstmt.put(i, key);
 							break nextColumn;
 						}else if(rm.getColumnTypeName(i) == "DATETIME" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							System.out.println(key+map.get(key)[0]);
 							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" like ?");
 							checkfirst.add(key);
-							countParameter++;
+							forPstmt.put(i, key);
 							break nextColumn;
 						}
 					}
@@ -377,37 +365,22 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 			}
 			//問號放入對應的值
 			pstmt = con.prepareStatement(partOfsqlWhere.toString());
-			System.out.println(partOfsqlWhere.toString());
-			System.out.println(countParameter);
-			List<String> check = new ArrayList<String>();
-			for(int i = 1 ; i <= countParameter; i++) {
-				System.out.println("in");
-				System.out.println(keys.size());
-				nextColumn:
-				for(String key : keys) {
-					System.out.println("in2");
-					if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-						System.out.println(key+map.get(key)[0]);
-						pstmt.setInt(i, Integer.valueOf(map.get(key)[0]));
-						check.add(key);
-						break nextColumn;
-					}else if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-						System.out.println(key+map.get(key)[0]);
-						pstmt.setInt(i, Integer.valueOf(map.get(key)[0]));
-						check.add(key);
-						break nextColumn;
-					}else if(rm.getColumnTypeName(i) == "VARCHAR" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-						System.out.println(key+map.get(key)[0]);
-						System.out.println("%"+map.get(key)[0]+"%");
-						pstmt.setString(i, "%"+map.get(key)[0]+"%");
-						check.add(key);
-						break nextColumn;
-					}else if(rm.getColumnTypeName(i) == "DATETIME" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-						System.out.println(key+map.get(key)[0]);
-						pstmt.setString(i, map.get(key)[0]+"%");
-						check.add(key);
-						break nextColumn;
-					}
+			Set<Integer> keysPstmt = forPstmt.keySet();//上一個步驟存的資料
+			
+			int index = 1;
+			for(Integer keyPstmt : keysPstmt) {
+				if(rm.getColumnTypeName(keyPstmt) == "INT") {
+					pstmt.setInt(index, Integer.valueOf(map.get(forPstmt.get(keyPstmt))[0]));
+					index++;
+				}else if(rm.getColumnTypeName(keyPstmt) == "BIT") {
+					pstmt.setInt(index, Integer.valueOf(map.get(forPstmt.get(keyPstmt))[0]));
+					index++;
+				}else if(rm.getColumnTypeName(keyPstmt) == "VARCHAR") {
+					pstmt.setString(index, "%"+map.get(forPstmt.get(keyPstmt))[0]+"%");
+					index++;
+				}else if(rm.getColumnTypeName(keyPstmt) == "DATETIME") {
+					pstmt.setString(index, map.get(forPstmt.get(keyPstmt))[0]+"%");
+					index++;
 				}
 			}
 			
