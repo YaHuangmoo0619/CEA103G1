@@ -391,7 +391,7 @@ tr:nth-child(even) {
 				</tr>
 				<tr>
 					<td>付款方式</td>
-					<td><input type="radio" name="pay_meth" value="0">信用卡<input
+					<td id="pay_meth"><input type="radio" name="pay_meth" value="0">信用卡<input
 						type="radio" name="pay_meth" value="1">匯款</td>
 				</tr>
 				<tr>
@@ -691,16 +691,29 @@ tr:nth-child(even) {
 			}
 		});
 		$("#send").click(function(){
-			$.ajax({
-				type : "POST",
-				url : "http://localhost:8081/CEA103G1/place_order/Place_order.do",
-				data : $('#order').serialize(),
-				success : function(data) {
-					let ord = JSON.stringify(data);
-					sessionStorage.setItem("ord", ord);
-					window.location.href="http://localhost:8081/CEA103G1/front-end/place_order/listOnePlace_order.html";
-				}
-			});
+			if($("input[name='pay_meth']:checked").val()==="0"){
+				$.ajax({
+					type : "POST",
+					url : "http://localhost:8081/CEA103G1/place_order/Place_order.do?action=creditcard",
+					data : $('#order').serialize(),
+					success : function(data) {
+						let ord = JSON.stringify(data);
+						sessionStorage.setItem("ord", ord);
+						window.location.href="http://localhost:8081/CEA103G1/front-end/place_order/creditCard.html";
+					}
+				});
+			} else{
+				$.ajax({
+					type : "POST",
+					url : "http://localhost:8081/CEA103G1/place_order/Place_order.do?action=transfer",
+					data : $('#order').serialize(),
+					success : function(data) {
+						let ord = JSON.stringify(data);
+						sessionStorage.setItem("ord", ord);
+						window.location.href="http://localhost:8081/CEA103G1/front-end/place_order/transfer.html";
+					}
+				});
+			}
 		});
 	</script>
 	<script>
