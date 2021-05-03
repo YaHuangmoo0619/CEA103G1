@@ -13,6 +13,7 @@
 
 
 <html>
+
 <head>
 <title>所有商品 </title>
 
@@ -131,6 +132,7 @@
 		</tr>
 	</c:forEach>
 </table>
+
 <%-- <%@ include file="page2.file" %> --%> 
 
 </body>

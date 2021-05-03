@@ -68,6 +68,7 @@
 </c:if>
 
 <table>
+
 	<tr>
 		<th>商品訂單編號</th>
 		<th>會員編號</th>
@@ -93,6 +94,7 @@
 			</td>
 		</tr>
 	</c:forEach>
+	
 </table>
 <%-- <%@ include file="page2.file" %> --%> 
 
