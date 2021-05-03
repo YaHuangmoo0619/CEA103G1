@@ -10,7 +10,7 @@ public class Campsite_owner_mailService {
 		dao = new Campsite_owner_mailDAO();
 	}
 	
-	public Campsite_owner_mailVO addCampsite_owner_mail(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, java.sql.Timestamp mail_time) {
+	public Campsite_owner_mailVO addCampsite_owner_mail(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time) {
 		
 		Campsite_owner_mailVO campsite_owner_mailVO = new Campsite_owner_mailVO();
 		
@@ -30,7 +30,7 @@ public class Campsite_owner_mailService {
 		dao.insert(campsite_owner_mailVO);
 	}
 	
-	public Campsite_owner_mailVO updateCampsite_owner_mail(Integer mail_no, Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, java.sql.Timestamp mail_time) {
+	public Campsite_owner_mailVO updateCampsite_owner_mail(Integer mail_no, Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time) {
 		
 		Campsite_owner_mailVO campsite_owner_mailVO = new Campsite_owner_mailVO();
 		

@@ -1,6 +1,8 @@
 package com.service_mail.model;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Service_mailService {
 	
@@ -10,7 +12,7 @@ public class Service_mailService {
 		dao = new Service_mailDAO();
 	}
 	
-	public Service_mailVO addService_mail(Integer emp_no, Integer mbr_no, String mail_cont, Integer mail_stat, Integer mail_read_stat, java.sql.Timestamp mail_time) {
+	public Service_mailVO addService_mail(Integer emp_no, Integer mbr_no, String mail_cont, Integer mail_stat, Integer mail_read_stat, String mail_time) {
 		
 		Service_mailVO service_mailVO = new Service_mailVO();
 		
@@ -30,7 +32,7 @@ public class Service_mailService {
 		dao.insert(service_mailVO);
 	}
 	
-	public Service_mailVO updateService_mail(Integer mail_no, Integer emp_no, Integer mbr_no, String mail_cont, Integer mail_stat, Integer mail_read_stat, java.sql.Timestamp mail_time) {
+	public Service_mailVO updateService_mail(Integer mail_no, Integer emp_no, Integer mbr_no, String mail_cont, Integer mail_stat, Integer mail_read_stat, String mail_time) {
 		
 		Service_mailVO service_mailVO = new Service_mailVO();
 		
@@ -61,6 +63,10 @@ public class Service_mailService {
 
 	public List<Service_mailVO> getAll() {
 		return dao.getAll();
+	}
+	
+	public Set<Service_mailVO> getWhereCondition(Map<String,String[]> map){
+		return dao.getWhereCondition(map);
 	}
 
 }

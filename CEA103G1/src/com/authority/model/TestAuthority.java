@@ -19,7 +19,7 @@ public class TestAuthority extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
-		res.setContentType("text/html; charset=Big5");
+		res.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = res.getWriter();
 
 		AuthorityDAO authorityDAO = new AuthorityDAO();

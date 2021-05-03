@@ -27,7 +27,7 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 	}
 
 	private static final String INSERT_STMT = 
-		"INSERT INTO campion.member_mail (mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		"INSERT INTO campion.member_mail (send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
 		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail order by mail_no";
 	private static final String GET_ONE_STMT = 
@@ -48,13 +48,12 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, member_mailVO.getMail_no());
-			pstmt.setInt(2, member_mailVO.getSend_no());
-			pstmt.setInt(3, member_mailVO.getRcpt_no());
-			pstmt.setInt(4, member_mailVO.getMail_read_stat());
-			pstmt.setInt(5, member_mailVO.getMail_stat());
-			pstmt.setString(6, member_mailVO.getMail_cont());
-			pstmt.setTimestamp(7, member_mailVO.getMail_time());
+			pstmt.setInt(1, member_mailVO.getSend_no());
+			pstmt.setInt(2, member_mailVO.getRcpt_no());
+			pstmt.setInt(3, member_mailVO.getMail_read_stat());
+			pstmt.setInt(4, member_mailVO.getMail_stat());
+			pstmt.setString(5, member_mailVO.getMail_cont());
+			pstmt.setString(6, member_mailVO.getMail_time());
 
 			pstmt.executeUpdate();
 
@@ -94,13 +93,13 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setInt(1, member_mailVO.getMail_no());
-			pstmt.setInt(2, member_mailVO.getSend_no());
-			pstmt.setInt(3, member_mailVO.getRcpt_no());
-			pstmt.setInt(4, member_mailVO.getMail_read_stat());
-			pstmt.setInt(5, member_mailVO.getMail_stat());
-			pstmt.setString(6, member_mailVO.getMail_cont());
-			pstmt.setTimestamp(7, member_mailVO.getMail_time());
+			pstmt.setInt(7, member_mailVO.getMail_no());
+			pstmt.setInt(1, member_mailVO.getSend_no());
+			pstmt.setInt(2, member_mailVO.getRcpt_no());
+			pstmt.setInt(3, member_mailVO.getMail_read_stat());
+			pstmt.setInt(4, member_mailVO.getMail_stat());
+			pstmt.setString(5, member_mailVO.getMail_cont());
+			pstmt.setString(6, member_mailVO.getMail_time());
 
 			pstmt.executeUpdate();
 
@@ -193,7 +192,7 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 				member_mailVO.setMail_read_stat(rs.getInt("mail_read_stat"));
 				member_mailVO.setMail_stat(rs.getInt("mail_stat"));
 				member_mailVO.setMail_cont(rs.getString("mail_cont"));
-				member_mailVO.setMail_time(rs.getTimestamp("mail_time"));
+				member_mailVO.setMail_time(rs.getString("mail_time"));
 			}
 
 			// Handle any driver errors
@@ -251,7 +250,7 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 				member_mailVO.setMail_read_stat(rs.getInt("mail_read_stat"));
 				member_mailVO.setMail_stat(rs.getInt("mail_stat"));
 				member_mailVO.setMail_cont(rs.getString("mail_cont"));
-				member_mailVO.setMail_time(rs.getTimestamp("mail_time"));
+				member_mailVO.setMail_time(rs.getString("mail_time"));
 				list.add(member_mailVO); // Store the row in the list
 			}
 

@@ -11,15 +11,15 @@ public class Service_mailVO implements Serializable {
 	private String mail_cont;
 	private Integer mail_stat;
 	private Integer mail_read_stat;
-	private Timestamp mail_time;
+	private String mail_time;
 	
 	public Service_mailVO() {
 	}
 
-	public Service_mailVO(Integer mail_no, Integer emp_no, Integer mbr_no, String mail_cont, Integer mail_stat,
-			Integer mail_read_stat, Timestamp mail_time) {
+	public Service_mailVO(Integer emp_no, Integer mbr_no, String mail_cont, Integer mail_stat,
+			Integer mail_read_stat, String mail_time) {
 		super();
-		this.mail_no = mail_no;
+//		this.mail_no = mail_no;
 		this.emp_no = emp_no;
 		this.mbr_no = mbr_no;
 		this.mail_cont = mail_cont;
@@ -76,11 +76,11 @@ public class Service_mailVO implements Serializable {
 		this.mail_read_stat = mail_read_stat;
 	}
 
-	public Timestamp getMail_time() {
+	public String getMail_time() {
 		return mail_time;
 	}
 
-	public void setMail_time(Timestamp mail_time) {
+	public void setMail_time(String mail_time) {
 		this.mail_time = mail_time;
 	}
 	

@@ -10,7 +10,7 @@ public class Member_mailService {
 		dao = new Member_mailDAO();
 	}
 	
-	public Member_mailVO addMember_mail(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, java.sql.Timestamp mail_time) {
+	public Member_mailVO addMember_mail(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time) {
 		
 		Member_mailVO member_mailVO = new Member_mailVO();
 		
@@ -30,7 +30,7 @@ public class Member_mailService {
 		dao.insert(member_mailVO);
 	}
 	
-	public Member_mailVO updateMember_mail(Integer mail_no, Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, java.sql.Timestamp mail_time) {
+	public Member_mailVO updateMember_mail(Integer mail_no, Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time) {
 		
 		Member_mailVO member_mailVO = new Member_mailVO();
 		

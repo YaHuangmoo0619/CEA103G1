@@ -3,9 +3,14 @@ package com.service_mail.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -27,7 +32,7 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 		}
 
 		private static final String INSERT_STMT = 
-			"INSERT INTO campion.service_mail (mail_no,emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			"INSERT INTO campion.service_mail (emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time) VALUES (?, ?, ?, ?, ?, ?)";
 		private static final String GET_ALL_STMT = 
 			"SELECT mail_no,emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time FROM campion.service_mail order by mail_no";
 		private static final String GET_ONE_STMT = 
@@ -48,13 +53,12 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, service_mailVO.getMail_no());
-			pstmt.setInt(2, service_mailVO.getEmp_no());
-			pstmt.setInt(3, service_mailVO.getMbr_no());
-			pstmt.setString(4, service_mailVO.getMail_cont());
-			pstmt.setInt(5, service_mailVO.getMail_stat());
-			pstmt.setInt(6, service_mailVO.getMail_read_stat());
-			pstmt.setTimestamp(7, service_mailVO.getMail_time());
+			pstmt.setInt(1, service_mailVO.getEmp_no());
+			pstmt.setInt(2, service_mailVO.getMbr_no());
+			pstmt.setString(3, service_mailVO.getMail_cont());
+			pstmt.setInt(4, service_mailVO.getMail_stat());
+			pstmt.setInt(5, service_mailVO.getMail_read_stat());
+			pstmt.setString(6, service_mailVO.getMail_time());
 
 			pstmt.executeUpdate();
 
@@ -93,13 +97,13 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setInt(1, service_mailVO.getMail_no());
-			pstmt.setInt(2, service_mailVO.getEmp_no());
-			pstmt.setInt(3, service_mailVO.getMbr_no());
-			pstmt.setString(4, service_mailVO.getMail_cont());
-			pstmt.setInt(5, service_mailVO.getMail_stat());
-			pstmt.setInt(6, service_mailVO.getMail_read_stat());
-			pstmt.setTimestamp(7, service_mailVO.getMail_time());
+			pstmt.setInt(7, service_mailVO.getMail_no());
+			pstmt.setInt(1, service_mailVO.getEmp_no());
+			pstmt.setInt(2, service_mailVO.getMbr_no());
+			pstmt.setString(3, service_mailVO.getMail_cont());
+			pstmt.setInt(4, service_mailVO.getMail_stat());
+			pstmt.setInt(5, service_mailVO.getMail_read_stat());
+			pstmt.setString(6, service_mailVO.getMail_time());
 
 			pstmt.executeUpdate();
 
@@ -192,7 +196,7 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 				service_mailVO.setMail_cont(rs.getString("mail_cont"));
 				service_mailVO.setMail_stat(rs.getInt("mail_stat"));
 				service_mailVO.setMail_read_stat(rs.getInt("mail_read_stat"));
-				service_mailVO.setMail_time(rs.getTimestamp("mail_time"));
+				service_mailVO.setMail_time(rs.getString("mail_time"));
 			}
 
 			// Handle any driver errors
@@ -249,7 +253,7 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 				service_mailVO.setMail_cont(rs.getString("mail_cont"));
 				service_mailVO.setMail_stat(rs.getInt("mail_stat"));
 				service_mailVO.setMail_read_stat(rs.getInt("mail_read_stat"));
-				service_mailVO.setMail_time(rs.getTimestamp("mail_time"));
+				service_mailVO.setMail_time(rs.getString("mail_time"));
 				list.add(service_mailVO); // Store the row in the list
 			}
 
@@ -284,4 +288,186 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 		return list;
 	}
 
+	public Set<Service_mailVO> getWhereCondition(Map<String,String[]> map){
+		Set<Service_mailVO> set = new LinkedHashSet<Service_mailVO>();
+		StringBuffer partOfsqlWhere = new StringBuffer();
+		Service_mailVO service_mailVO = null;
+		Set<String> keys = map.keySet();
+		
+		Connection con = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ResultSet rs_p = null;
+		try {
+			//建立連線
+			con = ds.getConnection();
+			stmt = con.createStatement();
+			//取得所有欄位名稱
+			rs = stmt.executeQuery("select * from campion.service_mail");
+			ResultSetMetaData rm = rs.getMetaData();
+			
+			//建立sql指令
+			List<String> checkfirst = new ArrayList<String>();
+			int countParameter = 0;
+			//獲得所有欄位名稱
+			for(int i = 1 ; i <= rm.getColumnCount(); i++) {
+				nextColumn:
+				//屬於特定sql型別做特定動作
+				for(String key : keys) {
+					if(partOfsqlWhere.length() == 0) {
+						if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+							System.out.println(key+map.get(key)[0]);
+							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
+							checkfirst.add(key);
+							countParameter++;
+							break nextColumn;
+						}else if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+							System.out.println(key+map.get(key)[0]);
+							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
+							checkfirst.add(key);
+							countParameter++;
+							break nextColumn;
+						}else if(rm.getColumnTypeName(i) == "VARCHAR" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+							System.out.println(key+map.get(key)[0]);
+							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" like ?");
+							checkfirst.add(key);
+							countParameter++;
+							break nextColumn;
+						}else if(rm.getColumnTypeName(i) == "DATETIME" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+							System.out.println(key+map.get(key)[0]);
+							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" like ?");
+							checkfirst.add(key);
+							countParameter++;
+							break nextColumn;
+						}
+					}else {
+						if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+							System.out.println(key+map.get(key)[0]);
+							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" = ?");
+							checkfirst.add(key);
+							countParameter++;
+							break nextColumn;
+						}if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+							System.out.println(map.get(key)[0].equals("no"));
+							System.out.println(rm.getColumnTypeName(i) == "BIT");
+							System.out.println(rm.getColumnName(i).toLowerCase().equals(key));
+							System.out.println(!checkfirst.contains(key));
+							System.out.println(map.get(key)[0] != "no");
+							System.out.println(!map.get(key)[0].isEmpty());
+							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" = ?");
+							checkfirst.add(key);
+							countParameter++;
+							break nextColumn;
+						}else if(rm.getColumnTypeName(i) == "VARCHAR" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+							System.out.println(key+map.get(key)[0]);
+							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" like ?");
+							checkfirst.add(key);
+							countParameter++;
+							break nextColumn;
+						}else if(rm.getColumnTypeName(i) == "DATETIME" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+							System.out.println(key+map.get(key)[0]);
+							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" like ?");
+							checkfirst.add(key);
+							countParameter++;
+							break nextColumn;
+						}
+					}
+				}
+			}
+			//問號放入對應的值
+			pstmt = con.prepareStatement(partOfsqlWhere.toString());
+			System.out.println(partOfsqlWhere.toString());
+			System.out.println(countParameter);
+			List<String> check = new ArrayList<String>();
+			for(int i = 1 ; i <= countParameter; i++) {
+				System.out.println("in");
+				System.out.println(keys.size());
+				nextColumn:
+				for(String key : keys) {
+					System.out.println("in2");
+					if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+						System.out.println(key+map.get(key)[0]);
+						pstmt.setInt(i, Integer.valueOf(map.get(key)[0]));
+						check.add(key);
+						break nextColumn;
+					}else if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+						System.out.println(key+map.get(key)[0]);
+						pstmt.setInt(i, Integer.valueOf(map.get(key)[0]));
+						check.add(key);
+						break nextColumn;
+					}else if(rm.getColumnTypeName(i) == "VARCHAR" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+						System.out.println(key+map.get(key)[0]);
+						System.out.println("%"+map.get(key)[0]+"%");
+						pstmt.setString(i, "%"+map.get(key)[0]+"%");
+						check.add(key);
+						break nextColumn;
+					}else if(rm.getColumnTypeName(i) == "DATETIME" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+						System.out.println(key+map.get(key)[0]);
+						pstmt.setString(i, map.get(key)[0]+"%");
+						check.add(key);
+						break nextColumn;
+					}
+				}
+			}
+			
+			rs_p = pstmt.executeQuery();
+			
+			while (rs_p.next()) {
+				service_mailVO = new Service_mailVO();
+				service_mailVO.setMail_no(rs_p.getInt("mail_no"));
+				service_mailVO.setEmp_no(rs_p.getInt("emp_no"));
+				service_mailVO.setMbr_no(rs_p.getInt("mbr_no"));
+				service_mailVO.setMail_cont(rs_p.getString("mail_cont"));
+				service_mailVO.setMail_stat(rs_p.getInt("mail_stat"));
+				service_mailVO.setMail_read_stat(rs_p.getInt("mail_read_stat"));
+				service_mailVO.setMail_time(rs_p.getString("mail_time"));
+				set.add(service_mailVO); // Store the row in the list
+			}
+			
+			
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs_p != null) {
+				try {
+					rs_p.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return set;
+	}
 }
