@@ -20,6 +20,8 @@ public interface ArticleDAO_Interface {
 
 	public ArticleVO findByPrimaryKey(Integer art_no);
 	
+	public ArticleVO findLast();
+	
 	public List<ArticleVO> findByBd_cl_no_front(Integer bd_cl_no);
 	
 	public List<ArticleVO> findByBd_cl_no_back(Integer bd_cl_no);

@@ -3,9 +3,25 @@
 <%@ page import="com.article.model.*"%>
 
 <%@ page import="java.sql.Timestamp"%>
-
+<%@ page import = "redis.clients.jedis.Jedis" %>
+<%@ page import="java.util.*"%>
 <%
 	ArticleVO articleVO = (ArticleVO) request.getAttribute("articleVO");
+%>
+
+<%
+	Jedis jedis = new Jedis("localhost", 6379);
+	jedis.auth("123456");
+	jedis.select(6); 
+	List<String> tag_list = new ArrayList<>();
+    for (String str : jedis.smembers("board:6:tags")){
+    tag_list.add(str);
+    }
+    for (String str : jedis.smembers("board:6:tags")){
+    System.out.println(str);
+    }
+    jedis.close();
+    pageContext.setAttribute("tag_list", tag_list);
 %>
 
 <html>
@@ -100,6 +116,7 @@ th, td {
 							<option value="${board_classVO.bd_cl_no}"
 								${(articleVO.bd_cl_no==board_classVO.bd_cl_no)? 'selected':'' }>${board_classVO.bd_name}
 						</c:forEach>
+
 				</select></td>
 			</tr>
 			<tr>
@@ -110,13 +127,26 @@ th, td {
 			<tr>
 				<td>文章標題:</td>
 				<td><input type="TEXT" name="art_title" size="45" 
-				value="<%= (articleVO==null)? "" : articleVO.getArt_title()%>"/></td>
+				value="<%= (articleVO==null)? "" : articleVO.getArt_title()%>" placeholder="標題"/></td>
 			</tr>
 			<tr>
 				<td>文章內容:</td>
 				<td><textarea id="art_cont" name="art_cont"></textarea></td>
 			</tr>
 
+
+
+			<tr>
+				<td>標籤:<font color=red><b>*</b></font></td>
+<!-- 				<td><select size="1" name="tags"> -->
+<td>
+						<c:forEach var="tag_list" items="${tag_list}">
+<%-- 							<option value="${tag_list}">${tag_list} --%>
+						<input type="checkbox" name="tags[]" value="${tag_list}">${tag_list}<br>
+						</c:forEach>
+</td>
+<!-- 				</select></td> -->
+			</tr>
 
 		</table>
 		<br> <input type="hidden" name="action" value="insert"> <input

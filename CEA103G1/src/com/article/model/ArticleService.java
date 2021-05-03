@@ -115,6 +115,10 @@ public class ArticleService {
 	public ArticleVO getOneArticle(Integer art_no) {
 		return dao.findByPrimaryKey(art_no);
 	}
+	
+	public ArticleVO findLast() {
+		return dao.findLast();
+	}
 
 	public List<ArticleVO> getAll_Front() {
 		return dao.getAll_Front();

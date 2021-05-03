@@ -438,6 +438,10 @@ public class ArticleServlet extends HttpServlet {
 			try {
 
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+
+				String[] values = req.getParameterValues("tags");//取得所有勾選的標籤
+				
+				
 				Integer bd_cl_no = null;
 				try {
 					bd_cl_no = new Integer(req.getParameter("bd_cl_no").trim());
@@ -469,7 +473,7 @@ public class ArticleServlet extends HttpServlet {
 				
 				String art_cont = req.getParameter("art_cont");
 //				String art_contReg = "^.{10,1000000}$";
-				System.out.println(art_cont);
+//				System.out.println(art_cont);
 				if (art_cont == null || art_cont.trim().length() == 0) {
 					errorMsgs.add("文章內容: 請勿空白");
 				} 
@@ -482,7 +486,7 @@ public class ArticleServlet extends HttpServlet {
 				Integer replies = 0;
 				
 
-				ArticleVO articleVO = new ArticleVO();
+				ArticleVO articleVO = new ArticleVO(); //要新增的文章
 				articleVO.setBd_cl_no(bd_cl_no);
 				articleVO.setMbr_no(mbr_no);
 				articleVO.setArt_rel_time(art_rel_time);
@@ -491,6 +495,8 @@ public class ArticleServlet extends HttpServlet {
 				articleVO.setLikes(likes);
 				articleVO.setArt_stat(art_stat);
 				articleVO.setReplies(replies);
+				
+				ArticleVO articleVO2 = new ArticleVO(); //查詢最後一筆文章的號碼
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
@@ -502,7 +508,23 @@ public class ArticleServlet extends HttpServlet {
 				}
 				
 				/***************************2.開始新增資料***************************************/
+
 				ArticleService articleSvc = new ArticleService();
+				articleVO2 = articleSvc.findLast();
+				Integer no = articleVO2.getArt_no()+1; //取得最後一筆文章+1  即目前所要新增文章的文章號碼
+				System.out.println("no:"+no); //印出測試
+				
+				
+				Jedis jedis = new Jedis("localhost", 6379);
+				jedis.auth("123456");
+				jedis.select(6);
+				for(String str : values) {//Redis新增開始
+				System.out.println(str); //印出測試
+				
+				jedis.sadd("post:"+no+":tags", str);
+			    }
+				jedis.close();//Redis新增結束
+				
 				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no,art_rel_time,art_title,art_cont, likes,art_stat,replies);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/

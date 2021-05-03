@@ -50,6 +50,8 @@ public class ArticleDAO implements ArticleDAO_Interface{
 			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies FROM ARTICLE where bd_cl_no = ? and art_stat = 0";
 		private static final String GET_BY_BD_CL_NO_BACK =
 				"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies FROM ARTICLE where bd_cl_no = ?";
+		private static final String GET_LAST =
+				"select art_no from campion.ARTICLE order by art_no desc limit 1";
 	@Override
 	public void insert(ArticleVO articleVO) {
 		Connection con = null;
@@ -694,6 +696,58 @@ public class ArticleDAO implements ArticleDAO_Interface{
 		}
 		
 	} //end of minus_reply
+
+	@Override
+	public ArticleVO findLast() {
+		ArticleVO articleVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_LAST);
+
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVo ¤]ºÙ¬° Domain objects
+				articleVO = new ArticleVO();
+				articleVO.setArt_no(rs.getInt("art_no"));
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return articleVO;
+	}
 	
 	
 	}
