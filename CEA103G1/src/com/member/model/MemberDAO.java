@@ -24,7 +24,7 @@ public class MemberDAO implements MemberDAO_interface {
 	private static final String INSERT_STMT = 
 		"INSERT INTO campion.member (rank_no,acc,pwd,id,name,bday,sex,mobile,mail,city,dist,add,join_time,card,pt,acc_stat,exp,sticker,rmk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
-		"SELECT mbr_no,rank_no,acc,pwd,id,name,bday,sex,mobile,mail,city,dist,add,join_time,card,pt,acc_stat,exp,sticker,rmk FROM campion.member order by mbr_no";
+		"SELECT mbr_no,rank_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,card,pt,acc_stat,exp,sticker,rmk FROM campion.member order by mbr_no";
 	private static final String GET_ONE_STMT = 
 		"SELECT * FROM campion.member where mbr_no = ?";
 	private static final String DELETE = 

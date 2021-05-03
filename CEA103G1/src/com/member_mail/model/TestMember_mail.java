@@ -3,7 +3,10 @@ package com.member_mail.model;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.member_mail.model.Member_mailDAO;
 import com.member_mail.model.Member_mailVO;
+import com.service_mail.model.Service_mailVO;
 
 
 @WebServlet("/TestMember_mail")
@@ -59,16 +63,37 @@ public class TestMember_mail extends HttpServlet {
 //		out.print(member_mailVO3.getMail_read_stat()+"<br>");
 //		out.print(member_mailVO3.getMail_time()+"<br>");
 		
-		//testGetAll
-		List<Member_mailVO> list = member_mailDAO.getAll();
-		for(Member_mailVO member_mailVO4 : list) {
-			out.print(member_mailVO4.getMail_no()+"<br>");
-			out.print(member_mailVO4.getSend_no()+"<br>");
-			out.print(member_mailVO4.getRcpt_no()+"<br>");
-			out.print(member_mailVO4.getMail_cont().replace("\n", "<br>")+"<br>");
-			out.print(member_mailVO4.getMail_stat()+"<br>");
-			out.print(member_mailVO4.getMail_read_stat()+"<br>");
-			out.print(member_mailVO4.getMail_time()+"<br>");
+//		//testGetAll
+//		List<Member_mailVO> list = member_mailDAO.getAll();
+//		for(Member_mailVO member_mailVO4 : list) {
+//			out.print(member_mailVO4.getMail_no()+"<br>");
+//			out.print(member_mailVO4.getSend_no()+"<br>");
+//			out.print(member_mailVO4.getRcpt_no()+"<br>");
+//			out.print(member_mailVO4.getMail_cont().replace("\n", "<br>")+"<br>");
+//			out.print(member_mailVO4.getMail_stat()+"<br>");
+//			out.print(member_mailVO4.getMail_read_stat()+"<br>");
+//			out.print(member_mailVO4.getMail_time()+"<br>");
+//		}
+		
+		//testGetWhereCondition
+		Map<String,String[]> map = new LinkedHashMap<String,String[]>();
+		map.put("mail_no", new String[] {"30012"});
+		map.put("send_no", new String[] {"70003"});
+		map.put("rcpt_no", new String[] {"10008"});
+		map.put("mail_time", new String[] {"2021-05-03"});
+		map.put("mail_cont", new String[] {"test2"});
+		map.put("mail_stat", new String[] {"0"});
+		map.put("mail_read_stat", new String[] {"0"});
+				
+		Set<Member_mailVO> set = member_mailDAO.getWhereCondition(map);
+		for(Member_mailVO member_mailVO5 : set) {
+			out.print(member_mailVO5.getMail_no()+"<br>");
+			out.print(member_mailVO5.getSend_no()+"<br>");
+			out.print(member_mailVO5.getRcpt_no()+"<br>");
+			out.print(member_mailVO5.getMail_cont().replace("\n", "<br>")+"<br>");
+			out.print(member_mailVO5.getMail_stat()+"<br>");
+			out.print(member_mailVO5.getMail_read_stat()+"<br>");
+			out.print(member_mailVO5.getMail_time()+"<br>");
 		}
 		
 		out.print("</BODY>");

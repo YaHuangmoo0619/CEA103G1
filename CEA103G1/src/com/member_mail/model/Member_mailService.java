@@ -1,6 +1,10 @@
 package com.member_mail.model;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.service_mail.model.Service_mailVO;
 
 public class Member_mailService {
 	
@@ -63,4 +67,7 @@ public class Member_mailService {
 		return dao.getAll();
 	}
 
+	public Set<Member_mailVO> getWhereCondition(Map<String,String[]> map){
+		return dao.getWhereCondition(map);
+	}
 }

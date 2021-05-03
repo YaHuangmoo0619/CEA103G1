@@ -1,6 +1,10 @@
 package com.campsite_owner_mail.model;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.member_mail.model.Member_mailVO;
 
 public class Campsite_owner_mailService {
 	
@@ -61,6 +65,10 @@ public class Campsite_owner_mailService {
 
 	public List<Campsite_owner_mailVO> getAll() {
 		return dao.getAll();
+	}
+	
+	public Set<Campsite_owner_mailVO> getWhereCondition(Map<String,String[]> map){
+		return dao.getWhereCondition(map);
 	}
 
 }

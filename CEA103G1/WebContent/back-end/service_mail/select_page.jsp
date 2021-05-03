@@ -41,6 +41,19 @@ form{
 span{
 	color: #80c344;
 }
+input.confirm{
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+input.confirm:hover{
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -142,7 +155,7 @@ span{
 					</select>
 					<br>
 					<input type="hidden" name="action" value="compositeSearch">
-					<input type="submit" value="送出查詢">
+					<input type="submit" value="送出查詢" class="confirm">
 				</form>
 				</li>
 			</ul>
