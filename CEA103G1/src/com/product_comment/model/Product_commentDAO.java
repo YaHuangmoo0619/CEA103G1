@@ -276,4 +276,10 @@ public class Product_commentDAO implements Product_commentDAO_interface {
 		}
 		return list;
 	}
+
+	@Override
+	public List<Product_commentVO> getTimestampProd_no(Timestamp cmnt_time) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

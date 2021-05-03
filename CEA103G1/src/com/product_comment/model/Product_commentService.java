@@ -3,6 +3,8 @@ package com.product_comment.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.product_comment.model.Product_commentVO;
+
 public class Product_commentService {
 
 	private Product_commentDAO_interface dao;
@@ -51,4 +53,10 @@ public class Product_commentService {
 	public List<Product_commentVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public List<Product_commentVO> getTimestampProd_no(Timestamp cmnt_time) {
+		return dao.getTimestampProd_no(cmnt_time);
+	}
+
+
 }
