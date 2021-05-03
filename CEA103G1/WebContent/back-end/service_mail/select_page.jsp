@@ -70,7 +70,7 @@ span{
 					
 					<label for="mail_no">信件編號:</label>
 					<select size="1" name="mail_no" id="mail_no">
-					<option value="0">--請選擇--</option>
+					<option value="no">--請選擇--</option>
 					<c:forEach var="service_mailVO" items="${service_mailSvc.all}">
 						<option value="${service_mailVO.mail_no}">${service_mailVO.mail_no}</option>
 					</c:forEach>
@@ -90,7 +90,7 @@ span{
 // 						}
 // 						request.setAttribute("emp_noList", list);
 					%>
-					<option value="0">--請選擇--</option>
+					<option value="no">--請選擇--</option>
 					<c:forEach var="employeeVO" items="${employeeSvc.all}">
 						<c:if test="${employeeVO.emp_no != 90001}">
 						<option value="${employeeVO.emp_no}">${employeeVO.emp_no}${employeeVO.name}</option>
@@ -100,7 +100,7 @@ span{
 					<br>
 <!-- 					<label for="employee_name">員工姓名:</label> -->
 <!-- 					<select size="1" name="employee_name" id="employee_name"> -->
-<!-- 					<option value="0">--請選擇--</option> -->
+<!-- 					<option value="no">--請選擇--</option> -->
 <%-- 					<c:forEach var="employeeVO" items="${employeeSvc.all}"> --%>
 <%-- 						<c:if test="${employeeVO.emp_no != 90001}"> --%>
 <%-- 						<option value="${employeeVO.emp_no}">${employeeVO.name}</option> --%>
@@ -110,7 +110,7 @@ span{
 <!-- 					<br> -->
 					<label for="mbr_no">會員編號:</label>
 					<select size="1" name="mbr_no" id="mbr_no">
-					<option value="0">--請選擇--</option>
+					<option value="no">--請選擇--</option>
 					<c:forEach var="service_mailVO" items="${service_mailSvc.all}">
 						<option value="${service_mailVO.mbr_no}">${service_mailVO.mbr_no}</option>
 					</c:forEach>
@@ -131,14 +131,14 @@ span{
 					<br>
 					<label for="mail_stat">信件狀態:</label>
 					<select size="1" name="mail_stat" id="mail_stat">
-						<option value="3">--請選擇--</option>
+						<option value="no">--請選擇--</option>
 						<option value="0">收件</option>
 						<option value="1">寄件</option>
 					</select>
 					<br>
 					<label for="mail_read_stat">信件狀態:</label>
 					<select size="1" name="mail_read_stat" id="mail_read_stat">
-						<option value="3">--請選擇--</option>
+						<option value="no">--請選擇--</option>
 						<option value="0">未讀</option>
 						<option value="1">已讀</option>
 					</select>

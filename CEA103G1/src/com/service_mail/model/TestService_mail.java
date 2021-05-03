@@ -72,13 +72,13 @@ public class TestService_mail extends HttpServlet {
 		
 		//testGetWhereCondition
 		Map<String,String[]> map = new LinkedHashMap<String,String[]>();
-		map.put("mail_no", new String[] {"80011"});
-		map.put("emp_no", new String[] {"90003"});
-		map.put("mbr_no", new String[] {"10008"});
-		map.put("mail_time", new String[] {"2021-05-03"});
-		map.put("mail_cont", new String[] {"test3"});
-		map.put("mail_stat", new String[] {"0"});
-		map.put("mail_read_stat", new String[] {"0"});
+		map.put("mail_no", new String[] {"80003"});
+		map.put("emp_no", new String[] {"0"});
+//		map.put("mbr_no", new String[] {"10008"});
+//		map.put("mail_time", new String[] {"2021-05-03"});
+//		map.put("mail_cont", new String[] {"test3"});
+//		map.put("mail_stat", new String[] {"0"});
+//		map.put("mail_read_stat", new String[] {"0"});
 		
 		Set<Service_mailVO> set = service_mailDAO.getWhereCondition(map);
 		for(Service_mailVO service_mailVO5 : set) {
