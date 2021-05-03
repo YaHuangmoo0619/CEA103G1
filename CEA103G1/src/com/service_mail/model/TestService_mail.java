@@ -3,7 +3,10 @@ package com.service_mail.model;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -55,18 +58,39 @@ public class TestService_mail extends HttpServlet {
 //		out.print(service_mailVO3.getMail_read_stat()+"<br>");
 //		out.print(service_mailVO3.getMail_time()+"<br>");
 		
-		//testGetAll
-		List<Service_mailVO> list = service_mailDAO.getAll();
-		for(Service_mailVO service_mailVO4 : list) {
-			out.print(service_mailVO4.getMail_no()+"<br>");
-			out.print(service_mailVO4.getEmp_no()+"<br>");
-			out.print(service_mailVO4.getMbr_no()+"<br>");
-			out.print(service_mailVO4.getMail_cont().replace("\n", "<br>")+"<br>");
-			out.print(service_mailVO4.getMail_stat()+"<br>");
-			out.print(service_mailVO4.getMail_read_stat()+"<br>");
-			out.print(service_mailVO4.getMail_time()+"<br>");
-		}
+//		//testGetAll
+//		List<Service_mailVO> list = service_mailDAO.getAll();
+//		for(Service_mailVO service_mailVO4 : list) {
+//			out.print(service_mailVO4.getMail_no()+"<br>");
+//			out.print(service_mailVO4.getEmp_no()+"<br>");
+//			out.print(service_mailVO4.getMbr_no()+"<br>");
+//			out.print(service_mailVO4.getMail_cont().replace("\n", "<br>")+"<br>");
+//			out.print(service_mailVO4.getMail_stat()+"<br>");
+//			out.print(service_mailVO4.getMail_read_stat()+"<br>");
+//			out.print(service_mailVO4.getMail_time()+"<br>");
+//		}
 		
+		//testGetWhereCondition
+		Map<String,String[]> map = new LinkedHashMap<String,String[]>();
+		map.put("mail_no", new String[] {"80011"});
+		map.put("emp_no", new String[] {"90003"});
+		map.put("mbr_no", new String[] {"10008"});
+		map.put("mail_time", new String[] {"2021-05-03"});
+		map.put("mail_cont", new String[] {"test3"});
+		map.put("mail_stat", new String[] {"0"});
+		map.put("mail_read_stat", new String[] {"0"});
+		
+		Set<Service_mailVO> set = service_mailDAO.getWhereCondition(map);
+		for(Service_mailVO service_mailVO5 : set) {
+			out.print(service_mailVO5.getMail_no()+"<br>");
+			out.print(service_mailVO5.getEmp_no()+"<br>");
+			out.print(service_mailVO5.getMbr_no()+"<br>");
+			out.print(service_mailVO5.getMail_cont().replace("\n", "<br>")+"<br>");
+			out.print(service_mailVO5.getMail_stat()+"<br>");
+			out.print(service_mailVO5.getMail_read_stat()+"<br>");
+			out.print(service_mailVO5.getMail_time()+"<br>");
+		}
+			
 		out.print("</BODY>");
 	}
 

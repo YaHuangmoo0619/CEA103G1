@@ -3,9 +3,14 @@ package com.service_mail.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -283,4 +288,129 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 		return list;
 	}
 
+	public Set<Service_mailVO> getWhereCondition(Map<String,String[]> map){
+		Set<Service_mailVO> set = new LinkedHashSet<Service_mailVO>();
+		StringBuffer partOfsqlWhere = new StringBuffer();
+		Service_mailVO service_mailVO = null;
+		Set<String> keys = map.keySet();
+		
+		Connection con = null;
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ResultSet rs_p = null;
+		try {
+			//建立連線
+			con = ds.getConnection();
+			stmt = con.createStatement();
+			//取得所有欄位名稱
+			rs = stmt.executeQuery("select * from campion.service_mail");
+			ResultSetMetaData rm = rs.getMetaData();
+			//建立sql指令
+			//獲得所有欄位名稱
+			for(int i = 1 ; i <= rm.getColumnCount(); i++) {
+				//屬於特定sql型別做特定動作
+				if(partOfsqlWhere.length() == 0) {
+					if(rm.getColumnTypeName(i) == "INT" || rm.getColumnTypeName(i) == "BIT") {
+						partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
+					}else if(rm.getColumnTypeName(i) == "VARCHAR") {
+						partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" like ?");
+					}else if(rm.getColumnTypeName(i) == "DATETIME") {
+						partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" like ?");
+					}
+				}else {
+					if(rm.getColumnTypeName(i) == "INT" || rm.getColumnTypeName(i) == "BIT") {
+						partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" = ?");
+					}else if(rm.getColumnTypeName(i) == "VARCHAR") {
+						partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" like ?");
+					}else if(rm.getColumnTypeName(i) == "DATETIME") {
+						partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" like ?");
+					}
+				}
+			}
+			//問號放入對應的值
+			pstmt = con.prepareStatement(partOfsqlWhere.toString());
+			List<String> check = new ArrayList<String>();
+			for(int i = 1 ; i <= rm.getColumnCount(); i++) {
+				nextColumn:
+				for(String key : keys) {
+					if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key)) {
+						pstmt.setInt(i, Integer.valueOf(map.get(key)[0]));
+						check.add(key);
+						break nextColumn;
+					}else if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key)) {
+						pstmt.setInt(i, Integer.valueOf(map.get(key)[0]));
+						check.add(key);
+						break nextColumn;
+					}else if(rm.getColumnTypeName(i) == "VARCHAR" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key)) {
+						pstmt.setString(i, "%"+map.get(key)[0]+"%");
+						check.add(key);
+						break nextColumn;
+					}else if(rm.getColumnTypeName(i) == "DATETIME" && rm.getColumnName(i).toLowerCase().equals(key) && !check.contains(key)) {
+						pstmt.setString(i, map.get(key)[0]+"%");
+						check.add(key);
+						break nextColumn;
+					}
+				}
+			}
+			
+			rs_p = pstmt.executeQuery();
+			
+			while (rs_p.next()) {
+				service_mailVO = new Service_mailVO();
+				service_mailVO.setMail_no(rs_p.getInt("mail_no"));
+				service_mailVO.setEmp_no(rs_p.getInt("emp_no"));
+				service_mailVO.setMbr_no(rs_p.getInt("mbr_no"));
+				service_mailVO.setMail_cont(rs_p.getString("mail_cont"));
+				service_mailVO.setMail_stat(rs_p.getInt("mail_stat"));
+				service_mailVO.setMail_read_stat(rs_p.getInt("mail_read_stat"));
+				service_mailVO.setMail_time(rs_p.getString("mail_time"));
+				set.add(service_mailVO); // Store the row in the list
+			}
+			
+			
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs_p != null) {
+				try {
+					rs_p.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return set;
+	}
 }
