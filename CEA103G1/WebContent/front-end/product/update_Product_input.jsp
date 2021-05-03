@@ -76,10 +76,12 @@
 	</tr>
 
 </table>
+
 <br>
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="prod_no" value="<%=productVO.getProd_no()%>">
 <input type="submit" value="°e¥X­×§ï"></FORM>
+
 </body>
 
 </html>
