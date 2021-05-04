@@ -96,6 +96,8 @@ div.footer{
 					<a href="<%=request.getContextPath() %>/back-end/feature_list/listAllFeature_list.jsp">feature_list</a>
 					<a href="<%=request.getContextPath() %>/back-end/campsite/listAllCamp.jsp">campsite</a>
 					<a href="<%=request.getContextPath() %>/back-end/place_order/listAllPlace_order.jsp">place_order</a>
+					<a href="<%=request.getContextPath() %>/back-end/place/addPlace.jsp">place</a>
+					<a href="<%=request.getContextPath() %>/back-end/place_order_details/listOnePlace_order_details.jsp">place_order_details</a>
 					</div>
 				</div>
 			</div>
@@ -104,6 +106,15 @@ div.footer{
 					<div class="col-1 name">Jun</div>
 					<div class="col-11">
 					<a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">member_rank</a>
+					<a href="<%=request.getContextPath() %>/back-end/advertising_application/select_page.jsp">advertising_application</a>
+					<a href="<%=request.getContextPath() %>/back-end/campsite_comment/select_page.jsp">campsite_comment</a>
+					<a href="<%=request.getContextPath() %>/back-end/campsite_comment_report/select_page.jsp">campsite_comment_report</a>
+					<a href="<%=request.getContextPath() %>/back-end/campsite_owner/select_page.jsp">campsite_owner</a>
+					<a href="<%=request.getContextPath() %>/back-end/campsite_report/select_page.jsp">campsite_report</a>
+					<a href="<%=request.getContextPath() %>/back-end/member/select_page.jsp">member</a>
+					<a href="<%=request.getContextPath() %>/back-end/member_report/select_page.jsp">member_report</a>
+					<a href="<%=request.getContextPath() %>/back-end/product_comment/select_page.jsp">product_comment</a>
+					<a href="<%=request.getContextPath() %>/back-end/product_comment_report/select_page.jsp">product_comment_report</a>
 					</div>
 				</div>
 			</div>
@@ -148,6 +159,8 @@ div.footer{
 					<div class="col-1 name">DuTe</div>
 					<div class="col-11">
 					<a href="<%=request.getContextPath() %>/front-end/NewFile.html">NewFile.html</a>
+					<a href="<%=request.getContextPath() %>/front-end/campsite/addCamp.html">campsite</a>
+					<a href="<%=request.getContextPath() %>/front-end/place_order/listAllPlace_list.html">place_order</a>
 					</div>
 				</div>
 			</div>
@@ -163,7 +176,8 @@ div.footer{
 				<div class="row">
 					<div class="col-1 name">Drake</div>
 					<div class="col-11">
-					
+					<a href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp">article</a>
+					<a href="<%=request.getContextPath() %>/front-end/article_reply/addArticle_reply.jsp">article_reply</a>
 					</div>
 				</div>
 			</div>
@@ -171,7 +185,10 @@ div.footer{
 				<div class="row">
 					<div class="col-1 name">TC</div>
 					<div class="col-11">
-					
+					<a href="<%=request.getContextPath() %>/front-end/product/select_page.jsp">product</a>
+					<a href="<%=request.getContextPath() %>/front-end/product_order/select_page.jsp">product_order</a>
+					<a href="<%=request.getContextPath() %>/front-end/product_order_details/select_page.jsp">product_order_details</a>
+					<a href="<%=request.getContextPath() %>/front-end/product_report/select_page.jsp">product_report</a>
 					</div>
 				</div>
 			</div>

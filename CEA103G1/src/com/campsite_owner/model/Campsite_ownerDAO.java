@@ -24,9 +24,9 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 	private static final String INSERT_STMT = 
 		"INSERT INTO campion.campsite_owner (acc,pwd,id,name,bday,sex,mobile,mail,city,dist,add,join_time,id_picf,id_picb,id_pic2f,stat,sticker,license,bank_no,bank_acc) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
-		"SELECT cso_no,acc,pwd,id,name,bday,sex,mobile,mail,city,dist,add,join_time,id_picf,id_picb,id_pic2f,stat,sticker,license,bank_no,bank_acc FROM campion.campsite_owner order by cso_no";
+		"SELECT cso_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,id_picf,id_picb,id_pic2f,stat,sticker,license,bank_no,bank_acc FROM campion.campsite_owner order by cso_no";
 	private static final String GET_ONE_STMT = 
-		"SELECT cso_no,acc,pwd,id,name,bday,sex,mobile,mail,city,dist,add,join_time,id_picf,id_picb,id_pic2f,stat,sticker,license,bank_no,bank_acc FROM campion.campsite_owner where cso_no = ?";
+		"SELECT cso_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,id_picf,id_picb,id_pic2f,stat,sticker,license,bank_no,bank_acc FROM campion.campsite_owner where cso_no = ?";
 	private static final String DELETE = 
 		"DELETE FROM campion.campsite_owner where cso_no = ?";
 	private static final String UPDATE = 

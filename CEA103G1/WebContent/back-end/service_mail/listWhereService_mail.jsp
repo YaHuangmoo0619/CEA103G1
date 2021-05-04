@@ -86,34 +86,27 @@ input.change:hover{
 			<table>
 				<tr>
 					<th style="width:50px">編號</th>
-					<th style="width:50px">寄件人</th>
-					<th style="width:50px">收件人</th>
+					<th style="width:50px">管理員</th>
+					<th style="width:50px">會員</th>
 					<th style="width:200px">內容</th>
 					<th style="width:50px">信件狀態</th>
 					<th style="width:100px">信件閱讀狀態</th>
 					<th style="width:100px">發信時間</th>
-					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a
-						id="first" style="text-decoration: none;"></a></th>
+					<th style="width:100px"></th>
 				</tr>
-				<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService"/>
-				<c:forEach var="service_mailVO" items="${service_mailSvc.all}">
-					<tr ${service_mailVO.mail_no == param.mail_no ? 'bgcolor=#eee':''}>
-						<c:if
-							test="${service_mailVO.mail_no==param.mail_no}">
-							<td>${service_mailVO.mail_no}<a id="focus"></a></td>
-						</c:if>
-						<c:if
-							test="${service_mailVO.mail_no!=param.mail_no}">
-							<td>${service_mailVO.mail_no}</td>
-						</c:if>
-						<td>${service_mailVO.emp_no}</td>
-						<td>${service_mailVO.mbr_no}</td>
+				<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
+				<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
+				<c:forEach var="service_mailVO" items="${service_mailVOSet}">
+					<tr>
+						<td>${service_mailVO.mail_no}</td>
+						<td>${service_mailVO.emp_no}${employeeSvc.getOneEmployee(service_mailVO.emp_no).name}</td>
+						<td>${service_mailVO.mbr_no}${memberSvc.getOneMember(service_mailVO.mbr_no).name}</td>
 						<td>${service_mailVO.mail_cont}</td>
 						<td>${service_mailVO.mail_stat}</td>
 						<td>${service_mailVO.mail_read_stat}</td>
 						<td>${service_mailVO.mail_time}</td>
 						<td>
-							<form method="post" action="<%=request.getContextPath()%>/service_mail/service_mail.do">
+							<form method="post" action="<%=request.getContextPath()%>/authority/authority.do">
 								<input class="change" type="submit" value="修改">
 								<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}">
 								<input type="hidden" name="action" value="getOne_For_Update">
