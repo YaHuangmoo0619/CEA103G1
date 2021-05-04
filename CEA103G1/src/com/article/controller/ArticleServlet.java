@@ -476,7 +476,8 @@ public class ArticleServlet extends HttpServlet {
 //				System.out.println(art_cont);
 				if (art_cont == null || art_cont.trim().length() == 0) {
 					errorMsgs.add("文章內容: 請勿空白");
-				} 
+				}
+				System.out.println(art_cont);
 //				else if(!art_cont.trim().matches(art_contReg)) { //以下練習正則(規)表示式(regular-expression)
 //					errorMsgs.add("文章內容: 必須在10到10000個字之間");
 //	            }
@@ -502,7 +503,7 @@ public class ArticleServlet extends HttpServlet {
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("articleVO", articleVO); // 含有輸入格式錯誤的articleVO物件,也存入req
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/article/addArticle.jsp");
+							.getRequestDispatcher("/front-end/article/addArticle.jsp");
 					failureView.forward(req, res);
 					return;
 				}

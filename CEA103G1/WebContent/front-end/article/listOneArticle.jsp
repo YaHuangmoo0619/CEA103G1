@@ -209,7 +209,7 @@
 <button id=get>顯示文章留言</button>
 
 
-
+>
 	<script>   
   	$("#rep").click(function(){
 		$.ajax({
@@ -221,7 +221,7 @@
 		});
   	});
 	
- 	$("#get").click(function(){
+//  	$("#get").click(function(){
 		$.ajax({
 			url:"/CEA103G1/front-end/article_reply/listOneArticle_Replies.jsp?art_no=<%=articleVO.getArt_no()%>&requestURL=<%=request.getServletPath()%>",
 			type: "GET",
@@ -229,7 +229,7 @@
 				$("#demo").html(data);
 			}
 		});
- 	});
+//  	});
  	
  	
  	function add_like()

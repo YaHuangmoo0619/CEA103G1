@@ -56,8 +56,6 @@
 </head>
 <body bgcolor='white'>
 
-<p><%=request.getParameter("requestURL")%></p> 
-<!-- 成功接到listOneArticle  再將此requestURL傳到article_replyServlet-->
 
 <table>
 		<tr>

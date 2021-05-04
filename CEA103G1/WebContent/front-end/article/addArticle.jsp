@@ -13,13 +13,21 @@
 	Jedis jedis = new Jedis("localhost", 6379);
 	jedis.auth("123456");
 	jedis.select(6); 
-	List<String> tag_list = new ArrayList<>();
-    for (String str : jedis.smembers("board:6:tags")){
-    tag_list.add(str);
+// 	List<String> tag_list = new ArrayList<>();
+	Map<String,Long> tag_list = new TreeMap<>();
+
+	
+	//列出每一篇標籤目前共有幾篇文章
+//     for (String str : jedis.smembers("board:6:tags")){
+//     System.out.println(jedis.scard("tag:"+str+":posts"));
+//     tag_list.add(str);
+//     }
+	
+	for (String str : jedis.smembers("board:6:tags")){
+    //System.out.println(jedis.scard("tag:"+str+":posts"));
+    tag_list.put(str,jedis.scard("tag:"+str+":posts"));
     }
-    for (String str : jedis.smembers("board:6:tags")){
-    System.out.println(str);
-    }
+
     jedis.close();
     pageContext.setAttribute("tag_list", tag_list);
 %>
@@ -36,7 +44,7 @@
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
-<title>新增文章 - addArticle.jsp</title>
+<title>新增文章 - addArticle.jsp前台</title>
 
 
 
@@ -74,6 +82,33 @@ table, th, td {
 th, td {
 	padding: 1px;
 }
+
+
+#tags_add_list{
+width:300px;
+height:54;
+padding:6px 0px 6px 8px;
+border:1px;
+border-color:black;
+display: inline-flex;
+flex-wrap: wrap;
+}
+
+#tags_add_list input{
+min-width:0px;
+}
+
+.tag_prepared_to_add{
+width:72;
+height:32;
+display:inline-block;
+border-color: coral;
+}
+
+.tag_num{
+display:inline-block;
+}
+
 </style>
 
 </head>
@@ -82,7 +117,7 @@ th, td {
 	<table id="table-1">
 		<tr>
 			<td>
-				<h3>文章資料新增 - addArticle.jsp</h3>
+				<h3>文章資料新增 - addArticle.jsp 前台</h3>
 			</td>
 			<td>
 				<h4>
@@ -131,30 +166,32 @@ th, td {
 			</tr>
 			<tr>
 				<td>文章內容:</td>
-				<td><textarea id="art_cont" name="art_cont"></textarea></td>
+				<td><textarea id="art_cont" name="art_cont"><%= (articleVO==null)? "" : articleVO.getArt_cont()%></textarea></td>
 			</tr>
 
-
-
-			<tr>
-				<td>標籤:<font color=red><b>*</b></font></td>
-<!-- 				<td><select size="1" name="tags"> -->
-<td>
-						<c:forEach var="tag_list" items="${tag_list}">
-<%-- 							<option value="${tag_list}">${tag_list} --%>
-						<input type="checkbox" name="tags[]" value="${tag_list}">${tag_list}<br>
-						</c:forEach>
-</td>
-<!-- 				</select></td> -->
-			</tr>
 
 		</table>
+		<br><br>
+						<div id="tags_add_list">  <input placeholder="根據你的文章內容搜尋相關話題" name = tags_input value=""></div><br>
+						標籤:<font color=red><b>*</b></font>
+						<%int tag_count=1; %>
+						
+						<c:forEach var="tag_list" items="${tag_list}">
+						<div class=tag_selected_parent>
+						<div class="tag_selected tag_num" id=tag<%=tag_count%>>${tag_list.key}</div>
+						<div class=tag_num>${tag_list.value}篇文章</div>
+						</div>
+						
+						
+						<div style="display:none"><div style="display:none"><%=tag_count++%></div></div>
+						</c:forEach>
+
+
 		<br> <input type="hidden" name="action" value="insert"> <input
 			type="submit" value="送出新增">
 	</FORM>
 
-	
-<!-- <div data-gramm="false" role="textbox" data-slate-editor="true" data-slate-node="value" contenteditable="true" style="outline: none; white-space: pre-wrap; overflow-wrap: break-word; flex: 1 1 0%;"><p data-slate-node="element"><span data-slate-node="text"><span data-slate-leaf="true"><span data-slate-zero-width="n" data-slate-length="0">&#xFEFF;<br></span></span></span></p>INPUT</div>	 -->
+
 	
 
 
@@ -171,6 +208,57 @@ $('#art_cont').summernote({
 		    ['para', ['paragraph']],
 		    ['insert', ['link', 'picture']],
 		  ]
+});
+
+// $(".tag_selected").click(function(){ //當標籤被點的時候，要加到預新增的標籤列表中並隱藏被點擊的標籤
+// 	var tag_text = $(this).html();
+// // 	alert("現在被點的是"+tag_text);
+// 	$("#tags_add_list").prepend("<div class=tag_prepared_to_add >"+tag_text+"</div>");
+// 	$(this).hide();
+// });
+
+
+// $("body").on("click",".tag_selected",function(){ //當標籤被點的時候，要加到預新增的標籤列表中並隱藏被點擊的標籤
+// 	var tag_text1 = $(this).html();
+// // 	alert("現在被點的是"+tag_text1);
+// 	var new_tag = $('<div style="border: solid; border-color:black" class=tag_prepared_to_add >'+tag_text1+'</div>');
+// 	$("#tags_add_list").prepend(new_tag);
+// 	$(this).hide();
+// 	$(this).next().hide();
+// });
+
+
+$("body").on("click",".tag_selected_parent",function(){ //當標籤被點的時候，要加到預新增的標籤列表中並隱藏被點擊的標籤
+	var tag_text1 = $(this).children(":first").html();
+// 	alert("現在被點的是"+tag_text1);
+	var new_tag = $('<div style="border: solid; border-color:black" class=tag_prepared_to_add display:flex>'+tag_text1+'</div>');
+	$("#tags_add_list").prepend(new_tag);
+	$(this).children(":first").hide();
+	$(this).children(":first").next().hide();
+});
+
+
+$("#tags_add_list").on("click",".tag_prepared_to_add",function(){ //當列表中的標籤被點，會被移除，並把原本隱藏的標籤再度顯示
+	var tag_text2 = $(this).html();
+	$("div:contains('" + tag_text2 + "')").show();
+	$("div:contains('" + tag_text2 + "')").next().show();
+	$(this).remove();
+ 	
+});
+
+
+// $(function(){
+// 	$("input[id*='tags_input']").bind('input porpertychange',function(){
+// 	alert("hi");
+// 	});
+// 	});
+	
+// $("#input").bind("input propertychange",function(){
+// 	alert("hi");
+// });
+
+$("input[name*='tags_input']").on("input propertychange", function() {
+	alert("hi");
 });
 </script>
 
