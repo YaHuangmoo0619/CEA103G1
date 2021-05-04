@@ -5,11 +5,18 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<p id="atm"></p>
+	<p id="atm">虛擬ATM帳戶:</p>
+	<p id="ord_time"></p>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script>
 		var ord = sessionStorage.getItem("ord");	
 		var ordjson = JSON.parse(ord);
+		var place_ord = ordjson[0];
+		var ord_time = Date.parse(`${place_ord.plc_ord_time}`);
+		var deadline = new Date(ord_time + (30*60*1000));
+		
+		var message = "請於" + deadline + "匯款完畢，逾時取消訂單";
+		$('#ord_time').append(message);
 		var atm = ordjson[1];
 		$('#atm').append(atm);
 		console.log(ordjson);

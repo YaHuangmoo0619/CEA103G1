@@ -37,7 +37,7 @@ public class Camp_PictureDAO implements Camp_PictureDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				list.add(rs.getString("cmap_pic"));
+				list.add(rs.getString("camp_pic"));
 			}
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -238,6 +238,48 @@ public class Camp_PictureDAO implements Camp_PictureDAO_interface {
 				}
 			}
 		}
+	}
+
+	public void insert2(Camp_PictureVO camp_pictureVO, Connection con) {
+		PreparedStatement pstmt = null;
+		System.out.println("照片第一站");
+				try {
+
+					pstmt = con.prepareStatement(INSERT_STMT);
+
+					pstmt.setInt(1, camp_pictureVO.getCamp_no());
+		System.out.println(camp_pictureVO.getCamp_no());
+					pstmt.setString(2, camp_pictureVO.getCamp_pic());
+		System.out.println(camp_pictureVO.getCamp_pic());
+		System.out.println("照片第二站");
+					Statement stmt = con.createStatement();
+					stmt.executeUpdate("set auto_increment_offset=1;"); //自增主鍵-初始值
+					stmt.executeUpdate("set auto_increment_increment=1;"); // 自增主鍵-遞增
+		System.out.println("照片第三站");
+					pstmt.executeUpdate();
+					// Handle any SQL errors
+				} catch (SQLException se) {
+					if (con != null) {
+						try {
+							// 3●設定於當有exception發生時之catch區塊內
+							System.err.print("Transaction is being ");
+							System.err.println("rolled back-由-emp");
+							con.rollback();
+						} catch (SQLException excep) {
+							throw new RuntimeException("rollback error occured. " + excep.getMessage());
+						}
+					}
+					throw new RuntimeException("A database error occured. " + se.getMessage());
+					// Clean up JDBC resources
+				} finally {
+					if (pstmt != null) {
+						try {
+							pstmt.close();
+						} catch (SQLException se) {
+							se.printStackTrace(System.err);
+						}
+					}
+				}
 	}
 
 	

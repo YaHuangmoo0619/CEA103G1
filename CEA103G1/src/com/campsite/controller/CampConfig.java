@@ -5,9 +5,10 @@ import java.sql.*;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
-
+@WebServlet("/camp/campconfig.do")
 public class CampConfig extends HttpServlet {
 	Connection con;
 

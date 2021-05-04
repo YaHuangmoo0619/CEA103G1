@@ -12,6 +12,7 @@
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 
 <style>
+
 html, body {
 	margin: 0;
 	padding: 0;
@@ -318,32 +319,25 @@ tr:nth-child(even) {
 			src="/CEA103G1/person-circle-outline.svg" class="person">
 
 	</div>
+	<div id="map"></div>
 	<div><h1 id="title"></h1>
-	<label><ion-icon id="fav" name="bookmark-outline"></ion-icon> <ion-icon
-			name="bookmark" style="display:none;"></ion-icon></label></div>
+	<label><ion-icon id="fav" name="bookmark-outline" size="large" style="cursor: pointer;"></ion-icon></label></div>
 	<div id="addrblock">
 		<p id="address"></p>
 		<p id="location"></p>
-		<div id="map"></div>
 	</div>
-	<img id="config">
 	<div id="information">
-		<ion-icon name="bicycle-outline"></ion-icon>
-		<p id="facility"></p>
-		<ion-icon name="paw-outline"></ion-icon>
-		<p id="pet"></p>
-		<ion-icon name="wifi-outline"></ion-icon>
-		<p id="wireless"></p>
-		<ion-icon name="car-sport-outline"></ion-icon>
-		<p id="park"></p>
-		<ion-icon name="trending-up-outline"></ion-icon>
-		<p id="height"></p>
-		<ion-icon name="calendar-number-outline"></ion-icon>
-		<p id="operate"></p>
+		<div id="facility"><ion-icon name="bicycle-outline"></ion-icon></div>
+		<div id="pet"><ion-icon name="paw-outline"></ion-icon></div>
+		<div id="wireless"><ion-icon name="wifi-outline"></ion-icon></div>
+		<div id="park"><ion-icon name="car-sport-outline"></ion-icon></div>
+		<div id="height"><ion-icon name="trending-up-outline"></ion-icon></div>
+		<div id="operate"><ion-icon name="calendar-number-outline"></ion-icon></div>
 	</div>
 	<div id="infoblock">
 		<p id="campInfo"></p>
 	</div>
+	<img id="config" width="800" height="500">
 	<FORM method="get" id="form1" onsubmit="return false"
 		accept-charset="big5">
 		入住日期:<input id="startdate" name="startdate" type="text">退房日期:<input
@@ -381,22 +375,22 @@ tr:nth-child(even) {
 				</tr>
 				<tr>
 					<td>訂金</td>
-					<td id="deposit"><input type="radio" name="deposit" value="0">全額付清<input
+					<td id="deposit"><input type="radio" name="deposit" value="0" required>全額付清<input
 						type="radio" name="deposit" value="1">先付訂金</td>
 				</tr>
 				<tr id="useornot" style="display: none;">
 					<td id="point">點數折抵</td>
-					<td><input type="radio" name="point" value="0">使用<input
+					<td><input type="radio" name="point" value="0" required>使用<input
 						type="radio" name="point" value="1" checked="checked">不使用</td>
 				</tr>
 				<tr>
 					<td>付款方式</td>
-					<td id="pay_meth"><input type="radio" name="pay_meth" value="0">信用卡<input
+					<td id="pay_meth"><input type="radio" name="pay_meth" value="0" required>信用卡<input
 						type="radio" name="pay_meth" value="1">匯款</td>
 				</tr>
 				<tr>
 					<td>發票方式</td>
-					<td><input type="radio" name="receipt" value="0">紙本發票<input
+					<td><input type="radio" name="receipt" value="0" required>紙本發票<input
 						type="radio" name="receipt" value="1">電子發票<input
 						type="radio" name="reciept" value="2">發票捐贈</td>
 				</tr>
@@ -444,8 +438,8 @@ tr:nth-child(even) {
 			sessionStorage.setItem("people", people[1]);
 			sessionStorage.setItem("startdate", startdate[1]);
 			sessionStorage.setItem("enddate", enddate[1]);
-// 			const src = "/CEA103G1/camp/campconfig.do?camp_no=" + camp[1];
-// 			$('#config').attr("src", src);
+			const src = "/CEA103G1/camp/campconfig.do?camp_no=" + camp[1];
+			$('#config').attr("src", src);
 			$.ajax({
 				type : "GET",
 				dataType : "json",
@@ -460,7 +454,7 @@ tr:nth-child(even) {
 		}else{
 			const src = "/CEA103G1/camp/campconfig.do?" + query;
 			const eachQuery = query.split('&');
-// 			$('#config').attr("src", src);
+			$('#config').attr("src", src);
 			$('#restart').attr("value", "查詢營位");
 			$('#restart').attr("id", "search");
 			$.ajax({
@@ -479,21 +473,21 @@ tr:nth-child(even) {
 			$('#title').text(`${data[0].camp_name}`);
 			$('#address').text(`地址:${data[0].address}`);
 			$('#location').text(`位置:${data[0].latitude}, ${data[0].longitude}`);
-			$('#facility').text(`設施:${data[0].facility}`);
-			$('#park').text(`停車方式:${data[0].park}`);
-			$('#wireless').text(`無線通訊:${data[0].wireless}`);
-			$('#height').text(`海拔:${data[0].height}`);
+			$('#facility').append(`設施:${data[0].facility}`);
+			$('#park').append(`停車方式:${data[0].park}`);
+			$('#wireless').append(`無線通訊:${data[0].wireless}`);
+			$('#height').append(`海拔:${data[0].height}`);
 			if ('${data[0].pet}' === 0) {
-				$('#pet').text(`寵物:不可攜帶`);
+				$('#pet').append(`寵物:不可攜帶`);
 			} else {
-				$('#pet').text(`寵物:可攜帶`);
+				$('#pet').append(`寵物:可攜帶`);
 			}
 			if ('${data[0].operate_Date}' === 0) {
-				$('#operate').text(`營業日:只有平日`);
+				$('#operate').append(`營業日:只有平日`);
 			} else if ('${data[0].operate_Date}' === 1) {
-				$('#operate').text(`營業日:只有假日`);
+				$('#operate').append(`營業日:只有假日`);
 			} else {
-				$('#operate').text(`營業日:平、假日`);
+				$('#operate').append(`營業日:平、假日`);
 			}
 			var campInfo = `${data[0].campInfo}`;
 			campInfo = campInfo.replaceAll('\n', '<br>')

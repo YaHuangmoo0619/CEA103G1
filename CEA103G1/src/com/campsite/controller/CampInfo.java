@@ -88,11 +88,11 @@ public class CampInfo extends HttpServlet {
 			if ("getall".equals(action)) {
 				PlaceService placeSvc = new PlaceService();
 				List<CampVO> camplist = campSvc.getAll();
-				
+
 				for (CampVO campVO : camplist) {
 					campVO = seeIfCollect(req, campVO);
-				}				
-				
+				}
+
 				for (CampVO campVO : camplist) {
 					list.add(campVO);
 				}
@@ -109,7 +109,7 @@ public class CampInfo extends HttpServlet {
 					System.out.println(low_pc);
 					((CampVO) campVO).setLow_pc(low_pc.get(0));
 				}
-				
+
 			} else if ("getone".equals(action)) {
 				Integer camp_no = new Integer(req.getParameter("camp_no"));
 				CampVO campVO = campSvc.getOneCamp(camp_no);
@@ -124,25 +124,25 @@ public class CampInfo extends HttpServlet {
 	public CampVO seeIfCollect(HttpServletRequest req, CampVO campVO) {
 		HttpSession session = req.getSession();
 		MemberVO member = (MemberVO) session.getAttribute("member");
-		if(member == null) {
+		if (member == null) {
 			campVO.setCollected(1);
-System.out.println("ด๚ธี1");
+
 			return campVO;
 		}
-System.out.println("ด๚ธี2");
+
 		Camp_CollectionService collectionSvc = new Camp_CollectionService();
 		List<Camp_CollectionVO> collectionlist = collectionSvc.getAll();
 
 		for (Camp_CollectionVO camp_collectionVO : collectionlist) {
-System.out.println(camp_collectionVO.getCamp_no() + " " + camp_collectionVO.getMbr_no());
-			if ((int)campVO.getCamp_no() == (int)camp_collectionVO.getCamp_no()
-					&& (int)member.getMbr_no() == (int)camp_collectionVO.getMbr_no()) {
+
+			if ((int) campVO.getCamp_no() == (int) camp_collectionVO.getCamp_no()
+					&& (int) member.getMbr_no() == (int) camp_collectionVO.getMbr_no()) {
 				campVO.setCollected(0);
 				return campVO;
 			}
 		}
 		campVO.setCollected(1);
-		
+
 		return campVO;
 	}
 }

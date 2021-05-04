@@ -9,6 +9,8 @@ import javax.sql.DataSource;
 
 import com.campsite_feature.model.Camp_FeatureDAO;
 import com.campsite_feature.model.Camp_FeatureVO;
+import com.campsite_picture.model.Camp_PictureDAO;
+import com.campsite_picture.model.Camp_PictureVO;
 import com.place.model.PlaceDAO;
 import com.place.model.PlaceVO;
 import com.place_order_details.model.Place_Order_DetailsDAO;
@@ -287,7 +289,7 @@ public class CampDAO implements CampDAO_interface {
 	}
 
 	@Override
-	public void insert(CampVO campVO, List<Camp_FeatureVO> camp_featurelist, List<PlaceVO> placelist) {
+	public void insert(CampVO campVO, List<Camp_FeatureVO> camp_featurelist, List<PlaceVO> placelist, List<Camp_PictureVO> camp_picturelist) {
 		// TODO Auto-generated method stub
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -344,6 +346,11 @@ System.out.println("第三站");
 				dao2.insert2(aCamp_Feature, con);
 			}
 System.out.println("第四站");
+			Camp_PictureDAO dao3 = new Camp_PictureDAO();
+			for (Camp_PictureVO aCamp_Picture : camp_picturelist) {
+				aCamp_Picture.setCamp_no(new Integer(next_camp_no));
+				dao3.insert2(aCamp_Picture, con);
+			}
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();
 			con.setAutoCommit(true);

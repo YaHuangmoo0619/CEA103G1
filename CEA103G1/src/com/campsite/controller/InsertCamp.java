@@ -70,11 +70,11 @@ public class InsertCamp extends HttpServlet {
 System.out.println("營主編號:" + cso_no);
 			
 			String camp_name = req.getParameter("camp_name");
-			String camp_nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
+			String camp_nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{1,10}$";
 			if (camp_name == null || camp_name.trim().length() == 0) {
 				errorMsgs.add("營區名稱: 請勿空白");
 			} else if (!camp_name.trim().matches(camp_nameReg)) { // 以下練習正則(規)表示式(regular-expression)
-				errorMsgs.add("營區名稱: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
+				errorMsgs.add("營區名稱: 只能是中、英文字母、數字和_ , 且長度必需在1到10之間");
 			}
 System.out.println("營區名稱:" + camp_name);
 			String campInfo = req.getParameter("campInfo");
@@ -128,14 +128,13 @@ System.out.println("營區名稱:" + camp_name);
 				errorMsgs.add("地址: 只能是中文、數字");
 			}
 			
-			List<String> fileDirectory = savePictureAtLocal(req);
+			List<String> fileDirectory = savePictureAtLocal(req, camp_name);
 			List<Camp_PictureVO> camp_picturelist = new ArrayList();
 			for(String camp_pic : fileDirectory) {
 				Camp_PictureVO camp_pictureVO = new Camp_PictureVO();
 				camp_pictureVO.setCamp_pic(camp_pic);
 				camp_picturelist.add(camp_pictureVO);
 			}
-			
 			
 			CampVO campVO = new CampVO();
 			campVO.setCso_no(cso_no);
@@ -194,7 +193,7 @@ System.out.println("營區名稱:" + camp_name);
 			Integer dist_no = districtSvc.addDistrict(district, county).getDist_no();
 			CampService campSvc = new CampService();
 			campVO = campSvc.addCamp(cso_no, dist_no, camp_name, campInfo, note, config, height, wireless, pet,
-					facility, operate_date, park, address, latitude, longitude, camp_featurelist, placelist);
+					facility, operate_date, park, address, latitude, longitude, camp_featurelist, placelist, camp_picturelist);
 
 			/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 			String forwardurl = "/back-end/campsite/listAllCamp.jsp";
@@ -240,28 +239,41 @@ System.out.println("營區名稱:" + camp_name);
 	
 	public String getFileNameFromPart(Part part) {
 		String header = part.getHeader("content-disposition");
-		String filename = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();
-		if (filename.length() == 0) {
+System.out.println(new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName());
+		String[] filename = (new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName()).split("\\.");
+		for(int i = 0; i < filename.length; i++) {
+System.out.println(filename[i]);
+		}
+		String extension = filename[1];
+System.out.println(extension);
+		if (extension.length() == 0) {
 			return null;
 		}
-		return filename;
+		return extension;
 	}
 	
-	public List<String> savePictureAtLocal(HttpServletRequest req) throws IOException, ServletException{
+	public List<String> savePictureAtLocal(HttpServletRequest req, String camp_name) throws IOException, ServletException{
 		List<String> fileDirectory = new ArrayList();
 		String realPath = getServletContext().getRealPath(saveDirectory);// 阿飄路徑
 		File fsaveDirectory = new File(realPath);
-
+System.out.println("好");
 		Camp_PictureService camp_pictureSvc = new Camp_PictureService();
+		int count = 1;
 		Collection<Part> parts = req.getParts();
 		for (Part part : parts) {
-			String filename = getFileNameFromPart(part);
+			if(!("photo".equals(part.getName()))) {
+				continue;
+			}
+			String extension = getFileNameFromPart(part);
+			String filename = camp_name + count + "." + extension;
+			count++;
 			Camp_PictureVO camp_pictureVO = new Camp_PictureVO();
 			if (filename != null && part.getContentType() != null) {
 				File f = new File(fsaveDirectory, filename);
 				part.write(f.toString());
 			}
 			camp_pictureVO.setCamp_pic(req.getContextPath() + saveDirectory + filename);
+			filename = req.getContextPath() + saveDirectory + "/" + filename;
 			fileDirectory.add(filename);
 		}
 		

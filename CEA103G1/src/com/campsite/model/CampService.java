@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.campsite_feature.model.Camp_FeatureVO;
+import com.campsite_picture.model.Camp_PictureVO;
 import com.place.model.PlaceVO;
 
 public class CampService {
@@ -16,7 +17,7 @@ public class CampService {
 
 	public CampVO addCamp(Integer cso_no, Integer dist_no, String camp_name, String campInfo, String note,
 			byte[] config, String height, String wireless, Integer pet, String facility, Integer operate_Date,
-			String park, String address, Double latitude, Double longitude, List<Camp_FeatureVO> camp_featurelist, List<PlaceVO> placelist) {
+			String park, String address, Double latitude, Double longitude, List<Camp_FeatureVO> camp_featurelist, List<PlaceVO> placelist, List<Camp_PictureVO> camp_picturelist) {
 
 		CampVO campVO = new CampVO();
 		campVO.setCso_no(cso_no);
@@ -35,7 +36,7 @@ public class CampService {
 		campVO.setLongitude(longitude);
 		campVO.setLatitude(latitude);
 System.out.println("²Ä¤@¯¸");
-		dao.insert(campVO, camp_featurelist, placelist);
+		dao.insert(campVO, camp_featurelist, placelist, camp_picturelist);
 		return campVO;
 	}
 

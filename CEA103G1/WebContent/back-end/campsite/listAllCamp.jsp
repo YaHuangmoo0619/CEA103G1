@@ -56,7 +56,6 @@ div {
 			<th>營業狀態</th>
 			<th>營區資訊</th>
 			<th>注意事項</th>
-			<th>配置圖</th>
 			<th>審核狀態</th>
 			<th>海拔</th>
 			<th>無線通訊</th>
@@ -85,7 +84,6 @@ div {
 				</c:if>
 				<td>${campVO.campInfo}</td>
 				<td>${campVO.note}</td>
-				<td><img src="/CEA103G1/camp/campconfig.do?camp_no=${campVO.camp_no}"></td>
 				<c:if test="${campVO.review_Status==0}">
 					<td><c:out value="待審核" /></td>
 				</c:if>
