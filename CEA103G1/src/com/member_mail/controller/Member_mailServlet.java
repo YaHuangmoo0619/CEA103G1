@@ -33,18 +33,38 @@ public class Member_mailServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		
 		if("compositeSearch".equals(action)) {
-			Map<String,String[]> map = req.getParameterMap();
+			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
+			req.setAttribute("errorMsgs", errorMsgs);
 			
-			Member_mailService member_mailSvc = new Member_mailService();
-			Set<Member_mailVO> member_mailVOSet = member_mailSvc.getWhereCondition(map);
-			for(Member_mailVO member_mailVO : member_mailVOSet) {
-				System.out.print(member_mailVO.getMail_no()+"<br>");
-				System.out.print(member_mailVO.getSend_no()+"<br>");
-				System.out.print(member_mailVO.getRcpt_no()+"<br>");
-				System.out.print(member_mailVO.getMail_cont().replace("\n", "<br>")+"<br>");
-				System.out.print(member_mailVO.getMail_stat()+"<br>");
-				System.out.print(member_mailVO.getMail_read_stat()+"<br>");
-				System.out.print(member_mailVO.getMail_time()+"<br>");
+			try {
+				Map<String,String[]> map = req.getParameterMap();
+				Set<String> keys = map.keySet();
+				int checkCount = 0;
+				for(String key: keys) {
+					switch (map.get(key)[0]) {
+					case "no":
+					case "":
+					case "compositeSearch":
+						checkCount++;
+					}
+				}
+				if(checkCount == 8) {
+					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/select_page.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				
+				Member_mailService member_mailSvc = new Member_mailService();
+				Set<Member_mailVO> member_mailVOSet = member_mailSvc.getWhereCondition(map);
+				req.setAttribute("member_mailVOSet", member_mailVOSet);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/member_mail/listWhereMember_mail.jsp");
+				successView.forward(req, res);
+				
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/select_page.jsp");
+				failureView.forward(req, res);
 			}
 		}
 	}

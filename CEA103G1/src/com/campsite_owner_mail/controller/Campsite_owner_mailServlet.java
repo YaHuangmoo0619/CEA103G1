@@ -33,18 +33,38 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		
 		if("compositeSearch".equals(action)) {
-			Map<String,String[]> map = req.getParameterMap();
+			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
+			req.setAttribute("errorMsgs", errorMsgs);
 			
-			Campsite_owner_mailService campsite_owner_mailSvc = new Campsite_owner_mailService();
-			Set<Campsite_owner_mailVO> campsite_owner_mailVOSet = campsite_owner_mailSvc.getWhereCondition(map);
-			for(Campsite_owner_mailVO campsite_owner_mailVO : campsite_owner_mailVOSet) {
-				System.out.print(campsite_owner_mailVO.getMail_no()+"<br>");
-				System.out.print(campsite_owner_mailVO.getSend_no()+"<br>");
-				System.out.print(campsite_owner_mailVO.getRcpt_no()+"<br>");
-				System.out.print(campsite_owner_mailVO.getMail_cont().replace("\n", "<br>")+"<br>");
-				System.out.print(campsite_owner_mailVO.getMail_stat()+"<br>");
-				System.out.print(campsite_owner_mailVO.getMail_read_stat()+"<br>");
-				System.out.print(campsite_owner_mailVO.getMail_time()+"<br>");
+			try {	
+				Map<String,String[]> map = req.getParameterMap();
+				Set<String> keys = map.keySet();
+				int checkCount = 0;
+				for(String key: keys) {
+					switch (map.get(key)[0]) {
+					case "no":
+					case "":
+					case "compositeSearch":
+						checkCount++;
+					}
+				}
+				if(checkCount == 8) {
+					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite_owner_mail/select_page.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+			
+				Campsite_owner_mailService campsite_owner_mailSvc = new Campsite_owner_mailService();
+				Set<Campsite_owner_mailVO> campsite_owner_mailVOSet = campsite_owner_mailSvc.getWhereCondition(map);
+				req.setAttribute("campsite_owner_mailVOSet", campsite_owner_mailVOSet);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/campsite_owner_mail/listWhereCampsite_owner_mail.jsp");
+				successView.forward(req, res);
+		
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite_owner_mail/select_page.jsp");
+				failureView.forward(req, res);
 			}
 		}
 	}

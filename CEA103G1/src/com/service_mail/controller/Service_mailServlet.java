@@ -33,18 +33,38 @@ public class Service_mailServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		
 		if("compositeSearch".equals(action)) {
-			Map<String,String[]> map = req.getParameterMap();
+			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
+			req.setAttribute("errorMsgs", errorMsgs);
 			
-			Service_mailService service_mailSvc = new Service_mailService();
-			Set<Service_mailVO> service_mailVOSet = service_mailSvc.getWhereCondition(map);
-			for(Service_mailVO service_mailVO : service_mailVOSet) {
-				System.out.print(service_mailVO.getMail_no()+"<br>");
-				System.out.print(service_mailVO.getEmp_no()+"<br>");
-				System.out.print(service_mailVO.getMbr_no()+"<br>");
-				System.out.print(service_mailVO.getMail_cont().replace("\n", "<br>")+"<br>");
-				System.out.print(service_mailVO.getMail_stat()+"<br>");
-				System.out.print(service_mailVO.getMail_read_stat()+"<br>");
-				System.out.print(service_mailVO.getMail_time()+"<br>");
+			try {
+				Map<String,String[]> map = req.getParameterMap();
+				Set<String> keys = map.keySet();
+				int checkCount = 0;
+				for(String key: keys) {
+					switch (map.get(key)[0]) {
+					case "no":
+					case "":
+					case "compositeSearch":
+						checkCount++;
+					}
+				}
+				if(checkCount == 8) {
+					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/select_page.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+
+				Service_mailService service_mailSvc = new Service_mailService();
+				Set<Service_mailVO> service_mailVOSet = service_mailSvc.getWhereCondition(map);
+				req.setAttribute("service_mailVOSet", service_mailVOSet);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/service_mail/listWhereService_mail.jsp");
+				successView.forward(req, res);
+				
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/select_page.jsp");
+				failureView.forward(req, res);
 			}
 		}
 	}

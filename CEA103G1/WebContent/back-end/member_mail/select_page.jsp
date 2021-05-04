@@ -67,7 +67,7 @@ input.confirm:hover{
 			<hr>
 			<h3>資料查詢:</h3>
 			<%-- 錯誤列表 map ${errorMsgs}--%>
-			
+			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}</h5>
 			<ul>
 				<li>
 					<a class="content" href="<%=request.getContextPath() %>/back-end/member_mail/listAllMember_mail.jsp">List</a><br>
@@ -88,34 +88,12 @@ input.confirm:hover{
 					<br>
 					<label for="send_no">寄件會員編號:</label>
 					<select size="1" name="send_no" id="send_no">
-					<% 
-// 						Service_mailService service_mailSvc2 = new Service_mailService();
-// 						List<Service_mailVO> lists = service_mailSvc2.getAll();
-// 						List<Integer> list = new ArrayList<Integer>();
-// 						Set<Integer> set = new HashSet<Integer>();
-// 						for(Service_mailVO service_mailVO : lists){
-// 							if(set.add(service_mailVO.getEmp_no())){
-// 								list.add(service_mailVO.getEmp_no());
-// 							}
-// 						}
-// 						request.setAttribute("emp_noList", list);
-					%>
 					<option value="no">--請選擇--</option>
 					<c:forEach var="memberVO" items="${memberSvc.all}">
 						<option value="${memberVO.mbr_no}">${memberVO.mbr_no}${memberVO.name}</option>
 					</c:forEach>
 					</select>
 					<br>
-<!-- 					<label for="employee_name">員工姓名:</label> -->
-<!-- 					<select size="1" name="employee_name" id="employee_name"> -->
-<!-- 					<option value="no">--請選擇--</option> -->
-<%-- 					<c:forEach var="employeeVO" items="${employeeSvc.all}"> --%>
-<%-- 						<c:if test="${employeeVO.emp_no != 90001}"> --%>
-<%-- 						<option value="${employeeVO.emp_no}">${employeeVO.name}</option> --%>
-<%-- 						</c:if> --%>
-<%-- 					</c:forEach> --%>
-<!-- 					</select> -->
-<!-- 					<br> -->
 					<label for="rcpt_no">收件會員編號:</label>
 					<select size="1" name="rcpt_no" id="rcpt_no">
 					<option value="no">--請選擇--</option>
@@ -124,13 +102,6 @@ input.confirm:hover{
 					</c:forEach>
 					</select>
 					<br>
-<!-- 					<label for="member_name">會員姓名:</label> -->
-<!-- 					<select size="1" name="member_name" id="member_name"> -->
-<%-- 					<c:forEach var="memberVO" items="${memberSvc.all}"> --%>
-<%-- 						<option value="${memberVO.mbr_no}">${memberVO.name}</option> --%>
-<%-- 					</c:forEach> --%>
-<!-- 					</select> -->
-<!-- 					<br> -->
 					<label for="mail_time">發信日期:</label>
 					<input type="text" name="mail_time" id="mail_time"></input>
 					<br>
