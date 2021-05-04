@@ -114,5 +114,70 @@ public class Service_mailServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		if("getOne_For_Update".equals(action)) {
+			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				Service_mailVO service_mailVO = new Service_mailService().getOneService_mail(Integer.valueOf(req.getParameter("mail_no")));
+				req.setAttribute("service_mailVO", service_mailVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/service_mail/update_service_mail_input.jsp");
+				successView.forward(req, res);
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if("update".equals(action)) {
+			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				
+				String emp_noTest = req.getParameter("emp_no");
+				if(emp_noTest.equals("99")) {
+					errorMsgs.put("emp_no", new String[] {"請選擇員工編號"});
+				}
+				Integer emp_no = Integer.valueOf(emp_noTest);
+				
+				String mbr_noTest = req.getParameter("mbr_no");
+				if(mbr_noTest.equals("99")) {
+					errorMsgs.put("mbr_no", new String[] {"請選擇會員編號"});
+				}
+				Integer mbr_no = Integer.valueOf(mbr_noTest);
+				
+				String mail_cont = req.getParameter("mail_cont");
+				if(mail_cont.trim().isEmpty()) {
+					errorMsgs.put("mail_cont", new String[] {"請輸入信件內容"});
+				}
+
+				if(!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/update_service_mail_input.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				
+				
+				Integer mail_stat =  Integer.valueOf(req.getParameter("mail_stat"));
+				Integer mail_read_stat =  Integer.valueOf(req.getParameter("mail_read_stat"));
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String mail_time = sdf.format(new java.util.Date());
+				Integer mail_no =  Integer.valueOf(req.getParameter("mail_no"));
+				
+				Service_mailService service_mailSvc = new Service_mailService();
+				Service_mailVO service_mailVO = service_mailSvc.updateService_mail(mail_no,emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time);
+				req.setAttribute("service_mailVO", service_mailVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
+				successView.forward(req, res);
+				
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/update_service_mail_input.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 }

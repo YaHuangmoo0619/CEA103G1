@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<title>新增客服信</title>
+<title>修改客服信</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -88,7 +88,7 @@ input.confirm:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>新增客服信&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
+			<h2>修改客服信&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<h3>資料列表:</h3>
@@ -107,7 +107,7 @@ input.confirm:hover{
 						<option value="99">--請選擇--</option>
 						<c:forEach var="employeeVO" items="${employeeSvc.all}">
 							<c:if test="${employeeVO.emp_no != 90001}">
-							<option value="${employeeVO.emp_no}" ${employeeVO.emp_no == param.emp_no? 'selected':''}>${employeeVO.emp_no}${employeeVO.name}</option>
+							<option value="${employeeVO.emp_no}" ${employeeVO.emp_no == service_mailVO.emp_no || employeeVO.emp_no == param.emp_no? 'selected':''}>${employeeVO.emp_no}${employeeVO.name}</option>
 							</c:if>
 						</c:forEach>
 						</select>
@@ -122,7 +122,7 @@ input.confirm:hover{
 						<select size="1" name="mbr_no" id="mbr_no">
 						<option value="99">--請選擇--</option>
 						<c:forEach var="memberVO" items="${memberSvc.all}">
-							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.mbr_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
+							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == service_mailVO.mbr_no || memberVO.mbr_no == param.mbr_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
 						</c:forEach>
 						</select>
 					</td>
@@ -133,13 +133,14 @@ input.confirm:hover{
 						<br><h5 style="color:#80c344;">${errorMsgs.mail_cont[0]}</h5>	
 					</td>
 					<td>
-						<textarea name="mail_cont" rows="10" cols="45" class="mail_cont">${param.mail_cont.trim().isEmpty()? '':param.mail_cont.trim()}</textarea>
+						<textarea name="mail_cont" rows="10" cols="45" class="mail_cont"><c:if test="${service_mailVO != null}">${service_mailVO.mail_cont.trim().isEmpty()? '':service_mailVO.mail_cont.trim()}</c:if><c:if test="${service_mailVO == null}">${param.mail_cont.trim().isEmpty()? '':param.mail_cont.trim()}</c:if></textarea>
 					</td>
 				</tr>
 			</table>
 					<input type="hidden" name="mail_stat" value="0">
 					<input type="hidden" name="mail_read_stat" value="0">
-					<input type="hidden" name="action" value="insert">
+					<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}">
+					<input type="hidden" name="action" value="update">
 					<input type="submit" value="送出新增" class="confirm">
 					<input type="submit" value="存入草稿" class="confirm">
 			</form>

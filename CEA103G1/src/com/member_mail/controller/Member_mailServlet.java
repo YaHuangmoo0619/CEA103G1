@@ -120,5 +120,70 @@ public class Member_mailServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		if("getOne_For_Update".equals(action)) {
+			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				Member_mailVO member_mailVO = new Member_mailService().getOneMember_mail(Integer.valueOf(req.getParameter("mail_no")));
+				req.setAttribute("member_mailVO", member_mailVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/member_mail/update_member_mail_input.jsp");
+				successView.forward(req, res);
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/listAllMember_mail.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if("update".equals(action)) {
+			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				
+				String send_noTest = req.getParameter("send_no");
+				if(send_noTest.equals("99")) {
+					errorMsgs.put("send_no", new String[] {"請選擇員工編號"});
+				}
+				Integer send_no = Integer.valueOf(send_noTest);
+				
+				String rcpt_noTest = req.getParameter("rcpt_no");
+				if(rcpt_noTest.equals("99")) {
+					errorMsgs.put("rcpt_no", new String[] {"請選擇會員編號"});
+				}
+				Integer rcpt_no = Integer.valueOf(rcpt_noTest);
+				
+				String mail_cont = req.getParameter("mail_cont");
+				if(mail_cont.trim().isEmpty()) {
+					errorMsgs.put("mail_cont", new String[] {"請輸入信件內容"});
+				}
+
+				if(!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/update_member_mail_input.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				
+				
+				Integer mail_stat =  Integer.valueOf(req.getParameter("mail_stat"));
+				Integer mail_read_stat =  Integer.valueOf(req.getParameter("mail_read_stat"));
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String mail_time = sdf.format(new java.util.Date());
+				Integer mail_no =  Integer.valueOf(req.getParameter("mail_no"));
+				
+				Member_mailService member_mailSvc = new Member_mailService();
+				Member_mailVO member_mailVO = member_mailSvc.updateMember_mail(mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time);
+				req.setAttribute("member_mailVO", member_mailVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/member_mail/listAllMember_mail.jsp");
+				successView.forward(req, res);
+				
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/update_member_mail_input.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 }

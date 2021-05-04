@@ -113,7 +113,7 @@ input.change:hover{
 						<td>${service_mailVO.mail_read_stat}</td>
 						<td>${service_mailVO.mail_time}</td>
 						<td>
-							<form method="post" action="<%=request.getContextPath()%>/authority/authority.do">
+							<form method="post" action="<%=request.getContextPath()%>/service_mail/service_mail.do">
 								<input class="change" type="submit" value="н╫зя">
 								<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}">
 								<input type="hidden" name="action" value="getOne_For_Update">
