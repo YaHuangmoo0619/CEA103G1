@@ -118,7 +118,7 @@ input.confirm:hover{
 						<option value="1">寄件</option>
 					</select>
 					<br>
-					<label for="mail_read_stat">信件狀態:</label>
+					<label for="mail_read_stat">信件閱讀狀態:</label>
 					<select size="1" name="mail_read_stat" id="mail_read_stat">
 						<option value="no">--請選擇--</option>
 						<option value="0">未讀</option>
@@ -130,12 +130,12 @@ input.confirm:hover{
 				</form>
 				</li>
 			</ul>
-<!-- 		<h3>網站管理員權限管理:</h3>
+			<h3>新增客服信件:</h3>
 			<ul>
 				<li>
-					<a class="content" href="<%=request.getContextPath()%>/service_mail/service_mail.do">add</a>
+					<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/addService_mail.jsp">add</a>
 				</li>
-			</ul> -->
+			</ul>
 		</div>
 	</div>
 </div>

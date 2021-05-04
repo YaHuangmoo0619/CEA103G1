@@ -127,12 +127,12 @@ input.confirm:hover{
 				</form>
 				</li>
 			</ul>
-<!-- 		<h3>網站管理員權限管理:</h3>
+	 		<h3>新增營主站內信:</h3>
 			<ul>
 				<li>
-					<a class="content" href="<%=request.getContextPath()%>/campsite_owner_mail/campsite_owner_mail.do">add</a>
+					<a class="content" href="<%=request.getContextPath()%>/back-end/campsite_owner_mail/addCampsite_owner_mail.jsp">add</a>
 				</li>
-			</ul> -->
+			</ul>
 		</div>
 	</div>
 </div>
