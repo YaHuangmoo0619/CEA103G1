@@ -12,7 +12,7 @@ public class Camp_PictureDAO implements Camp_PictureDAO_interface {
 	static {
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB2");
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/Campion");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
@@ -26,7 +26,6 @@ public class Camp_PictureDAO implements Camp_PictureDAO_interface {
 	public List<String> findByCamp(Integer camp_no) {
 		List<String> list = new ArrayList<String>();
 		Camp_PictureVO camp_pictureVO = null;
-
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

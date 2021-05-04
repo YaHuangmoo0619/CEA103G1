@@ -9,7 +9,7 @@
 	CampVO campVO = (CampVO) request.getAttribute("campVO");
 	Camp_PictureService camp_pictureSvc = new Camp_PictureService();
 	List<String> camp_piclist = camp_pictureSvc.getCamp_Picture(campVO.getCamp_no());
-// 	pageContext.setAttribute("camp_piclist", camp_piclist);
+	pageContext.setAttribute("camp_piclist", camp_piclist);
 %>
 <html>
 <head>
@@ -28,23 +28,25 @@ table, th, td {
 	background-color: white;
 	text-align: center;
 }
+
 button {
-  background-color: white; /* Blue background */
-  border: none; /* Remove borders */
-  color: black; /* White text */
-  padding: 12px 16px; /* Some padding */
-  font-size: 16px; /* Set a font size */
-  cursor: pointer; /* Mouse pointer on hover */
+	background-color: white; /* Blue background */
+	border: none; /* Remove borders */
+	color: black; /* White text */
+	padding: 12px 16px; /* Some padding */
+	font-size: 16px; /* Set a font size */
+	cursor: pointer; /* Mouse pointer on hover */
 }
 </style>
 </head>
 <body bgcolor='white'>
 
-    <div>
+	<div>
 		<h1>修改營區</h1>
 
 		<h3>
-			<a href="<%=request.getContextPath()%>/back-end/campsite/listAllCamp.jsp">回清單</a>
+			<a
+				href="<%=request.getContextPath()%>/back-end/campsite/listAllCamp.jsp">回清單</a>
 		</h3>
 	</div>
 
@@ -62,7 +64,7 @@ button {
 		enctype="multipart/form-data"
 		οnkeydοwn="if(event.keyCode==13){return false;}">
 		<table>
-			<tr style="display:none;">
+			<tr style="display: none;">
 				<td>營主編號:</td>
 				<td><input type="TEXT" name="cso_no" size="45"
 					value="<%=campVO.getCso_no()%>" /></td>
@@ -88,20 +90,21 @@ button {
 					type="hidden" name="image"
 					value="<%=(campVO == null) ? "無" : campVO.getConfig()%>">
 					<div class="container">
-  						<img id="showconfig">
-					</div>
-				</td>
+						<img id="showconfig">
+					</div></td>
 			</tr>
 			<tr>
 				<td>無線通訊:</td>
-				<td><div id="wireless" class="checkbox-group required"><input type="checkbox" name="wireless" value="有wifi">wifi
+				<td><div id="wireless" class="checkbox-group required">
+						<input type="checkbox" name="wireless" value="有wifi">wifi
 
-					<input type="checkbox" name="wireless" value="中華電信有訊號">
-					中華電信 <input type="checkbox" name="wireless" value="遠傳有訊號">
-					遠傳 <input type="checkbox" name="wireless" value="台哥大有訊號">
-					台哥大 <input type="checkbox" name="wireless" value="亞太有訊號">
-					亞太 <input type="checkbox" name="wireless" value="台灣之星有訊號">
-					台灣之星</div></td>
+						<input type="checkbox" name="wireless" value="中華電信有訊號">
+						中華電信 <input type="checkbox" name="wireless" value="遠傳有訊號">
+						遠傳 <input type="checkbox" name="wireless" value="台哥大有訊號">
+						台哥大 <input type="checkbox" name="wireless" value="亞太有訊號">
+						亞太 <input type="checkbox" name="wireless" value="台灣之星有訊號">
+						台灣之星
+					</div></td>
 			</tr>
 			<tr>
 				<td>寵物:</td>
@@ -115,9 +118,10 @@ button {
 			</tr>
 			<tr>
 				<td>營業日:</td>
-				<td id=operate_date><input type="radio" name="operate_Date" value="0">只有平日
-					<input type="radio" name="operate_Date" value="1">只有假日
-					<input type="radio" name="operate_Date" value="2">平、假日皆營業</td>
+				<td id=operate_date><input type="radio" name="operate_Date"
+					value="0">只有平日 <input type="radio" name="operate_Date"
+					value="1">只有假日 <input type="radio" name="operate_Date"
+					value="2">平、假日皆營業</td>
 			</tr>
 			<tr>
 				<td>停車方式:</td>
@@ -167,25 +171,36 @@ button {
 			</tr>
 		</table>
 		<input id="plc_amt" type="hidden" name="plc_amt">
-		<button id="plc" type="button"><ion-icon name="add-circle" size="large"></ion-icon></button>
+		<button id="plc" type="button">
+			<ion-icon name="add-circle" size="large"></ion-icon>
+		</button>
 		<input type="button" id="done" value="確定">
 		<hr>
-		<input type="file" id="progressbarTWInput" name="photo" accept="image/gif, image/jpeg, image/png" multiple/ >
-   		<div id="preview_progressbarTW_imgs" style="width:100%; height: 300px; overflow:scroll;">
-      	<p>目前沒有圖片</p>
-   		</div>
-   			
+		<input type="file" id="progressbarTWInput" name="photo"
+			accept="image/gif, image/jpeg, image/png"multiple/ >
+		<div id="preview_progressbarTW_imgs"
+			style="width: 100%; height: 300px; overflow: scroll;">
+			<p>目前沒有圖片</p>
+		</div>
+
 		<hr>
 		<input type="hidden" name="action" value="update"> <input
 			type="hidden" name="camp_no" value="<%=campVO.getCamp_no()%>">
 		<input type="submit" value="送出修改">
 	</FORM>
-<!-- 	/CEA103G1/camp/campconfig.do? -->
+	<!-- 	/CEA103G1/camp/campconfig.do? -->
 	<script>
-// 		<c:forEach var="camp_pic" items="${camp_piclist}">
-// 			var img = $("<img width='500' height='500'>").attr('src', camp_pic);
-// 		    $("#preview_progressbarTW_imgs").append(img);
-// 	    </c:forEach>
+		$("#preview_progressbarTW_imgs").html("");
+		var camp_pic = `${camp_piclist}`;
+		camp_pic = camp_pic.substring(1,camp_pic.length-1);
+		camp_pic = camp_pic.split(", ");
+		console.log(camp_pic);
+		
+		for(let i = 0; i < camp_pic.length; i++){
+			var img = $("<img width='500' height='500'>").attr('src', camp_pic[i]);
+			$("#preview_progressbarTW_imgs").append(img);
+		}
+		
 		var src = `/CEA103G1/camp/campconfig.do?camp_no=<%=campVO.getCamp_no()%>`;
 		$("#showconfig").attr('src', src);
 		
@@ -206,8 +221,8 @@ button {
 		});
 		var operate_date = `<%=campVO.getOperate_Date()%>`;
 		$("#operate_date").find(':input').each(function() {
-			if($(this).val()===operate_date){
-				$(this).prop("checked",true);
+			if ($(this).val() === operate_date) {
+				$(this).prop("checked", true);
 			}
 		});
 		$("#done").click(function() {
@@ -218,41 +233,43 @@ button {
 			});
 			$("#plc_amt").val(index - 1);
 		});
-		$("#plc").click(function() {
-			let index = 0;
-			$("#title").next().clone().find('input').val("").end().appendTo("#camp_plc")
+		$("#plc").click(
+				function() {
+					let index = 0;
+					$("#title").next().clone().find('input').val("").end()
+							.appendTo("#camp_plc")
+				});
+
+		$('#config').on('change', function(e) {
+			const file = this.files[0];
+			const fr = new FileReader();
+			fr.onload = function(e) {
+				$('#showconfig').attr('src', e.target.result);
+			};
+
+			fr.readAsDataURL(file);
 		});
-		
-		$('#config').on('change', function(e){      
-			  const file = this.files[0];	      
-			  const fr = new FileReader();
-			  fr.onload = function (e) {
-			    $('#showconfig').attr('src', e.target.result);
-			  };
 
-			  fr.readAsDataURL(file);
-			});
-		
-		$("#progressbarTWInput").change(function(){
-			  $("#preview_progressbarTW_imgs").html(""); // 清除預覽
-			  readURL(this);
-			});
+		$("#progressbarTWInput").change(function() {
+			readURL(this);
+		});
 
-			function readURL(input){
-			  if (input.files && input.files.length >= 0) {
-			    for(var i = 0; i < input.files.length; i ++){
-			      var reader = new FileReader();
-			      reader.onload = function (e) {
-			        var img = $("<img width='500' height='500'>").attr('src', e.target.result);
-			        $("#preview_progressbarTW_imgs").append(img);
-			      }
-			      reader.readAsDataURL(input.files[i]);
-			    }
-			  }else{
-			     var noPictures = $("<p>目前沒有圖片</p>");
-			     $("#preview_progressbarTW_imgs").append(noPictures);
-			  }
+		function readURL(input) {
+			if (input.files && input.files.length >= 0) {
+				for (var i = 0; i < input.files.length; i++) {
+					var reader = new FileReader();
+					reader.onload = function(e) {
+						var img = $("<img width='500' height='500'>").attr(
+								'src', e.target.result);
+						$("#preview_progressbarTW_imgs").append(img);
+					}
+					reader.readAsDataURL(input.files[i]);
+				}
+			} else {
+				var noPictures = $("<p>目前沒有圖片</p>");
+				$("#preview_progressbarTW_imgs").append(noPictures);
 			}
+		}
 	</script>
 </body>
 
