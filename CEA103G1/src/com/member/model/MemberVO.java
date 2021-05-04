@@ -23,7 +23,7 @@ public class MemberVO implements java.io.Serializable{
 	private Integer pt;
 	private Integer acc_stat;
 	private Integer exp;
-	private Byte sticker;
+	private byte[] sticker;
 	private String rmk;
 	
 	public Integer getMbr_no() {
@@ -170,11 +170,11 @@ public class MemberVO implements java.io.Serializable{
 		this.exp = exp;
 	}
 	
-	public Byte getSticker() {
+	public byte[] getSticker() {
 		return sticker;
 	}
 	
-	public void setSticker(Byte sticker) {
+	public void setSticker(byte[] sticker) {
 		this.sticker = sticker;
 	}
 	

@@ -12,7 +12,7 @@ public class MemberService {
 		dao = new MemberDAO();
 	}
 
-	public MemberVO addMember(Integer rank_no, String acc, String pwd, String id, String name, Date bday, Integer sex, String mobile, String mail, String city, String dist, String add, Timestamp join_time, String card, Integer pt, Integer acc_stat, Integer exp, Byte sticker, String rmk) {
+	public MemberVO addMember(Integer rank_no, String acc, String pwd, String id, String name, Date bday, Integer sex, String mobile, String mail, String city, String dist, String add, Timestamp join_time, String card, Integer pt, Integer acc_stat, Integer exp, byte[] sticker, String rmk) {
 
 		MemberVO memberVO = new MemberVO();
 
@@ -40,7 +40,7 @@ public class MemberService {
 		return memberVO;
 	}
 	
-	public MemberVO updateMember(Integer mbr_no, Integer rank_no, String acc, String pwd, String id, String name, Date bday, Integer sex, String mobile, String mail, String city, String dist, String add, Timestamp join_time, String card, Integer pt, Integer acc_stat, Integer exp, Byte sticker, String rmk) {
+	public MemberVO updateMember(Integer mbr_no, Integer rank_no, String acc, String pwd, String id, String name, Date bday, Integer sex, String mobile, String mail, String city, String dist, String add, Timestamp join_time, String card, Integer pt, Integer acc_stat, Integer exp, byte[] sticker, String rmk) {
 
 		MemberVO memberVO = new MemberVO();
 		
@@ -69,10 +69,15 @@ public class MemberService {
 		return memberVO;
 	}
 
+	public void updateMember(MemberVO memberVO) {
+		dao.update(memberVO);
+	}
+	
 	public void deleteMember(Integer mbr_no) {
 		dao.delete(mbr_no);
 	}
 
+	
 	public MemberVO getOneMember(Integer mbr_no) {
 		return dao.findByPrimaryKey(mbr_no);
 	}
@@ -80,4 +85,11 @@ public class MemberService {
 	public List<MemberVO> getAll() {
 		return dao.getAll();
 	}
+
+	public List<MemberVO> getDateMbr_no(Date bday) {
+		return dao.getDateMbr_no(bday);
+	}
+
+	
+
 }

@@ -30,7 +30,7 @@ public class Place_OrderService {
 		place_orderVO.setUsed_pt(used_pt);
 		place_orderVO.setReceipt(receipt);
 		place_orderVO.setRmk(rmk);
-		dao.insert(place_orderVO, list);
+		place_orderVO = dao.insert(place_orderVO, list);
 
 		return place_orderVO;
 	}

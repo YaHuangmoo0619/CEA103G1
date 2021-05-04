@@ -18,6 +18,7 @@
 <meta charset="BIG5">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 <style>
 img {
 	width: 150px;
@@ -28,6 +29,14 @@ table, th, td {
 	border: 1px solid black;
 	background-color: white;
 	text-align: center;
+}
+button {
+  background-color: white; /* Blue background */
+  border: none; /* Remove borders */
+  color: black; /* White text */
+  padding: 12px 16px; /* Some padding */
+  font-size: 16px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
 }
 </style>
 </head>
@@ -77,7 +86,7 @@ table, th, td {
 			</tr>
 			<tr>
 				<td>配置圖:</td>
-				<td><input type="file" id="config" name="config"><input
+				<td><input type="file" id="config" name="config" required><input
 					type="hidden" name="image"
 					value="<%=(campVO == null) ? "無" : campVO.getConfig()%>">
 					<div class="container">
@@ -87,19 +96,19 @@ table, th, td {
 			</tr>
 			<tr>
 				<td>無線通訊:</td>
-				<td><input type="checkbox" name="wireless" value="有wifi">wifi
+				<td><div class="checkbox-group required"><input type="checkbox" name="wireless" value="有wifi">wifi
 
 					<input type="checkbox" name="wireless" value="中華電信有訊號 ">
 					中華電信 <input type="checkbox" name="wireless" value="遠傳有訊號">
 					遠傳 <input type="checkbox" name="wireless" value="台哥大有訊號">
 					台哥大 <input type="checkbox" name="wireless" value="亞太有訊號">
 					亞太 <input type="checkbox" name="wireless" value="台灣之星有訊號">
-					台灣之星</td>
+					台灣之星</div></td>
 			</tr>
 			<tr>
 				<td>寵物:</td>
 				<td><input type="radio" name="pet" value="0"
-					check="<%=(campVO == null) ? "" : (campVO.getPet() == 0 ? "true" : "")%>">不可攜帶寵物
+					check="<%=(campVO == null) ? "" : (campVO.getPet() == 0 ? "true" : "")%>" required>不可攜帶寵物
 					<input type="radio" name="pet" value="1"
 					check="<%=(campVO == null) ? "" : (campVO.getPet() == 1 ? "true" : "")%>">可攜帶寵物</td>
 			</tr>
@@ -111,7 +120,7 @@ table, th, td {
 			<tr>
 				<td>營業日:</td>
 				<td><input type="radio" name="operate_Date" value="0"
-					check="<%=(campVO == null) ? "" : (campVO.getOperate_Date() == 0 ? "true" : "")%>">只有平日
+					check="<%=(campVO == null) ? "" : (campVO.getOperate_Date() == 0 ? "true" : "")%>" required>只有平日
 					<input type="radio" name="operate_Date" value="1"
 					check="<%=(campVO == null) ? "" : (campVO.getOperate_Date() == 1 ? "true" : "")%>">只有假日
 					<input type="radio" name="operate_Date" value="2"
@@ -141,9 +150,9 @@ table, th, td {
 		</table>
 		<div>
 			<c:forEach var="feature_listVO" items="${list}">
-				<p>
+				<div>
 					<input type="checkbox" name="feature_list"
-						value="${feature_listVO.camp_fl_no}">${feature_listVO.camp_fl_name}</p>
+						value="${feature_listVO.camp_fl_no}">${feature_listVO.camp_fl_name}</div>
 			</c:forEach>
 		</div>
 		<table id="camp_plc">
@@ -165,10 +174,9 @@ table, th, td {
 			</tr>
 		</table>
 		<input id="plc_amt" type="hidden" name="plc_amt">
-		<input type="button" id="plc" value="新增營位">
+		<button id="plc" type="button"><ion-icon name="add-circle" size="large"></ion-icon></button>
 		<input type="button" id="done" value="確定">
 		<hr>
-
 		<input type="file" id="progressbarTWInput" name="photo" accept="image/gif, image/jpeg, image/png" multiple/ >
    		<div id="preview_progressbarTW_imgs" style="width:100%; height: 300px; overflow:scroll;">
       	<p>目前沒有圖片</p>
@@ -176,7 +184,7 @@ table, th, td {
    			
 		<hr>
 		<input type="hidden" name="action" value="insert">
-		<input type="submit" value="送出新增">
+		<input type="submit" value="刊登營區">
 	</FORM>
 	<script>
 		$("#done").click(function() {
@@ -198,7 +206,6 @@ table, th, td {
 			  fr.onload = function (e) {
 			    $('#showconfig').attr('src', e.target.result);
 			  };
-
 			  fr.readAsDataURL(file);
 			});
 		
@@ -212,7 +219,7 @@ table, th, td {
 			    for(var i = 0; i < input.files.length; i ++){
 			      var reader = new FileReader();
 			      reader.onload = function (e) {
-			        var img = $("<img width='300' height='200'>").attr('src', e.target.result);
+			        var img = $("<img width='500' height='500'>").attr('src', e.target.result);
 			        $("#preview_progressbarTW_imgs").append(img);
 			      }
 			      reader.readAsDataURL(input.files[i]);

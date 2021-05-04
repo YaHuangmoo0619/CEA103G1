@@ -207,7 +207,7 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 	}
 
 	@Override
-	public void insert(Place_OrderVO place_orderVO, List<Place_Order_DetailsVO> list) {
+	public Place_OrderVO insert(Place_OrderVO place_orderVO, List<Place_Order_DetailsVO> list) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -244,7 +244,7 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 				System.out.println("未取得自增主鍵值");
 			}
 			rs.close();
-			// 再同時新增員工
+			place_orderVO.setPlc_ord_no(new Integer(next_plc_ord_no));
 			Place_Order_DetailsDAO dao = new Place_Order_DetailsDAO();
 			for (Place_Order_DetailsVO aDetail : list) {
 				aDetail.setPlc_ord_no(new Integer(next_plc_ord_no));
@@ -285,7 +285,7 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 				}
 			}
 		}
-
+		return place_orderVO;
 	}
 
 	@Override

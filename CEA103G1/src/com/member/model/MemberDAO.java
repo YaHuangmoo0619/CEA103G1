@@ -1,6 +1,7 @@
 package com.member.model;
 
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 import javax.naming.Context;
@@ -26,7 +27,7 @@ public class MemberDAO implements MemberDAO_interface {
 	private static final String GET_ALL_STMT = 
 		"SELECT mbr_no,rank_no,acc,pwd,id,name,bday,sex,mobile,mail,city,dist,add,join_time,card,pt,acc_stat,exp,sticker,rmk FROM campion.member order by mbr_no";
 	private static final String GET_ONE_STMT = 
-		"SELECT * FROM campion.member where mbr_no = ?";
+		"SELECT mbr_no,rank_no,acc,pwd,id,name,bday,sex,mobile,mail,city,dist,add,join_time,card,pt,acc_stat,exp,sticker,rmk FROM campion.member where mbr_no = ?";
 	private static final String DELETE = 
 		"DELETE FROM campion.member where mbr_no = ?";
 	private static final String UPDATE = 
@@ -61,7 +62,7 @@ public class MemberDAO implements MemberDAO_interface {
 			pstmt.setInt(15, memberVO.getPt());
 			pstmt.setInt(16, memberVO.getAcc_stat());
 			pstmt.setInt(17, memberVO.getExp());
-			pstmt.setByte(18, memberVO.getSticker());
+			pstmt.setBytes(18, memberVO.getSticker());
 			pstmt.setString(19, memberVO.getRmk());
 
 			pstmt.executeUpdate();
@@ -119,7 +120,7 @@ public class MemberDAO implements MemberDAO_interface {
 			pstmt.setInt(15, memberVO.getPt());
 			pstmt.setInt(16, memberVO.getAcc_stat());
 			pstmt.setInt(17, memberVO.getExp());
-			pstmt.setByte(18, memberVO.getSticker());
+			pstmt.setBytes(18, memberVO.getSticker());
 			pstmt.setString(19, memberVO.getRmk());
 			pstmt.setInt(20, memberVO.getMbr_no());
 
@@ -226,7 +227,7 @@ public class MemberDAO implements MemberDAO_interface {
 				memberVO.setPt(rs.getInt("pt"));
 				memberVO.setAcc_stat(rs.getInt("acc_stat"));
 				memberVO.setExp(rs.getInt("exp"));
-				memberVO.setSticker(rs.getByte("sticker"));
+				memberVO.setSticker(rs.getBytes("sticker"));
 				memberVO.setRmk(rs.getString("rmk"));
 			}
 
@@ -297,7 +298,7 @@ public class MemberDAO implements MemberDAO_interface {
 				memberVO.setPt(rs.getInt("pt"));
 				memberVO.setAcc_stat(rs.getInt("acc_stat"));
 				memberVO.setExp(rs.getInt("exp"));
-				memberVO.setSticker(rs.getByte("sticker"));
+				memberVO.setSticker(rs.getBytes("sticker"));
 				memberVO.setRmk(rs.getString("rmk"));
 				list.add(memberVO); // Store the row in the list
 			}
@@ -331,5 +332,17 @@ public class MemberDAO implements MemberDAO_interface {
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public List<MemberVO> getDateMbr_no(Date bday) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<MemberVO> getTimestampMbr_no(Timestamp join_time) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
