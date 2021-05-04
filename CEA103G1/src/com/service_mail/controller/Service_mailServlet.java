@@ -29,7 +29,6 @@ public class Service_mailServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		System.out.println("in!");
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
@@ -72,27 +71,23 @@ public class Service_mailServlet extends HttpServlet {
 		if("insert".equals(action)){
 			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			System.out.println("in");
 			try {
 				
 				String emp_noTest = req.getParameter("emp_no");
 				if(emp_noTest.equals("99")) {
 					errorMsgs.put("emp_no", new String[] {"請選擇員工編號"});
-					System.out.print('a');
 				}
 				Integer emp_no = Integer.valueOf(emp_noTest);
 				
 				String mbr_noTest = req.getParameter("mbr_no");
 				if(mbr_noTest.equals("99")) {
 					errorMsgs.put("mbr_no", new String[] {"請選擇會員編號"});
-					System.out.print('b');
 				}
 				Integer mbr_no = Integer.valueOf(mbr_noTest);
 				
 				String mail_cont = req.getParameter("mail_cont");
 				if(mail_cont.trim().isEmpty()) {
 					errorMsgs.put("mail_cont", new String[] {"請輸入信件內容"});
-					System.out.print('c');
 				}
 
 				if(!errorMsgs.isEmpty()) {

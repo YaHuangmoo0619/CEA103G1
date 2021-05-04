@@ -86,8 +86,8 @@ input.change:hover{
 			<table>
 				<tr>
 					<th style="width:50px">編號</th>
-					<th style="width:50px">管理員</th>
-					<th style="width:50px">會員</th>
+					<th style="width:50px">寄件人</th>
+					<th style="width:50px">收件人</th>
 					<th style="width:200px">內容</th>
 					<th style="width:50px">信件狀態</th>
 					<th style="width:100px">信件閱讀狀態</th>

@@ -10,10 +10,10 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-<title>所有客服信列表</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<title>新增客服信</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -88,7 +88,7 @@ input.confirm:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>所有客服信列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
+			<h2>新增客服信&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<h3>資料列表:</h3>
@@ -99,7 +99,7 @@ input.confirm:hover{
 			<table>
 				<tr>
 					<td>
-						<label for="emp_no">管理員</label>
+						<label for="emp_no">寄件人</label>
 						<br><h5 style="color:#80c344;">${errorMsgs.emp_no[0]}</h5>
 					</td>
 					<td>
@@ -115,7 +115,7 @@ input.confirm:hover{
 				</tr>
 				<tr>
 					<td>
-						<label for="mbr_no">會員</label>
+						<label for="mbr_no">收件人</label>
 						<br><h5 style="color:#80c344;">${errorMsgs.mbr_no[0]}</h5>
 					</td>
 					<td>

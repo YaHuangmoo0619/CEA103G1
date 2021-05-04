@@ -1,6 +1,7 @@
 package com.member_mail.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.member_mail.model.Member_mailService;
 import com.member_mail.model.Member_mailVO;
+import com.service_mail.model.Service_mailService;
+import com.service_mail.model.Service_mailVO;
 
 @WebServlet("/member_mail/member_mail.do")
 public class Member_mailServlet extends HttpServlet {
@@ -64,6 +67,56 @@ public class Member_mailServlet extends HttpServlet {
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/select_page.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if("insert".equals(action)){
+			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			try {
+				
+				String send_noTest = req.getParameter("send_no");
+				if(send_noTest.equals("99")) {
+					errorMsgs.put("send_no", new String[] {"請選擇寄件人編號"});
+					System.out.print('a');
+				}
+				Integer send_no = Integer.valueOf(send_noTest);
+				
+				String rcpt_noTest = req.getParameter("rcpt_no");
+				if(rcpt_noTest.equals("99")) {
+					errorMsgs.put("rcpt_no", new String[] {"請選擇收件人編號"});
+					System.out.print('b');
+				}
+				Integer rcpt_no = Integer.valueOf(rcpt_noTest);
+				
+				String mail_cont = req.getParameter("mail_cont");
+				if(mail_cont.trim().isEmpty()) {
+					errorMsgs.put("mail_cont", new String[] {"請輸入信件內容"});
+					System.out.print('c');
+				}
+
+				if(!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/addMember_mail.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				
+				
+				Integer mail_stat =  Integer.valueOf(req.getParameter("mail_stat"));
+				Integer mail_read_stat =  Integer.valueOf(req.getParameter("mail_read_stat"));
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String mail_time = sdf.format(new java.util.Date());
+				
+				Member_mailService member_mailSvc = new Member_mailService();
+				Member_mailVO member_mailVO = member_mailSvc.addMember_mail(send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time);
+				req.setAttribute("member_mailVO", member_mailVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/member_mail/listAllMember_mail.jsp");
+				successView.forward(req, res);
+				
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/addMember_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}

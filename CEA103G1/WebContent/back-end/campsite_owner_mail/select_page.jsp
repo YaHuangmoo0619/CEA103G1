@@ -77,6 +77,7 @@ input.confirm:hover{
 					<jsp:useBean id="campsite_owner_mailSvc" class="com.campsite_owner_mail.model.Campsite_owner_mailService"/>
 					<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 					<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
+					<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>
 					
 					<label for="mail_no">信件編號:</label>
 					<select size="1" name="mail_no" id="mail_no">
@@ -97,8 +98,8 @@ input.confirm:hover{
 					<label for="rcpt_no">收件會員編號:</label>
 					<select size="1" name="rcpt_no" id="rcpt_no">
 					<option value="no">--請選擇--</option>
-					<c:forEach var="memberVO" items="${memberSvc.all}">
-						<option value="${memberVO.mbr_no}">${memberVO.mbr_no}${memberVO.name}</option>
+					<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
+						<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.rcpt_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
 					</c:forEach>
 					</select>
 					<br>
