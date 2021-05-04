@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="com.product.model.*"%>
 
 <%
@@ -52,14 +54,53 @@
 	</td></tr>
 </table>
 
+<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
+
 <table>
 	<tr>
 		<th>商品編號</th>
+		<th>商品分類名稱</th>
+		<th>商品狀態</th>
 		<th>商品名稱</th>
+		<th>商品價格</th>
+		<th>商品庫存</th>
+		<th>商品資訊</th>
+		<th>商品品牌</th>
+		<th>商品顏色</th>
+		<th>商品大小</th>
+		<th>運送方式</th>
 	</tr>
 	<tr>
-		<td><%=productVO.getProd_no()%></td>
-		<td><%=productVO.getProd_name()%></td>
+		<td>${productVO.prod_no}</td>
+			<td>
+			${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}
+			</td>
+			<td>
+			<c:if test="${productVO.prod_stat==0}">
+				<c:out value="下架" />
+			</c:if>
+			<c:if test="${productVO.prod_stat==1}">
+				<c:out value="上架" />
+			</c:if>
+			</td>
+			<td>${productVO.prod_name}</td>
+			<td>${productVO.prod_pc}</td>
+			<td>${productVO.prod_stg}</td>
+			<td>${productVO.prod_info}</td>
+			<td>${productVO.prod_bnd}</td>
+			<td>${productVO.prod_clr}</td>
+			<td>${productVO.prod_size}</td>
+			<td>
+			<c:if test="${productVO.ship_meth==0}">
+				<c:out value="不限運送方式" />
+			</c:if>
+			<c:if test="${productVO.ship_meth==1}">
+				<c:out value="限宅配" />
+			</c:if>
+			<c:if test="${productVO.ship_meth==2}">
+				<c:out value="限超商取貨" />
+			</c:if>
+			</td>
 	</tr>
 </table>
 

@@ -3,8 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.product.model.*"%>
-<%@ page import="com.product_category.model.*"%>
-
 <%
     ProductService productSvc = new ProductService();
     List<ProductVO> list = productSvc.getAll();
@@ -56,7 +54,7 @@
 <table id="table-1">
 	<tr><td>
 		 <h3>所有商品 </h3>
-		 <h4><a href="${pageContext.request.contextPath}/back-end/product/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0"></a></h4>
+		 <h4><a href="${pageContext.request.contextPath}/front-end/product/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0"></a></h4>
 	</td></tr>
 </table>
 
@@ -69,10 +67,12 @@
 	</ul>
 </c:if>
 
+<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
+
 <table>
 	<tr>
 		<th>商品編號</th>
-		<th>商品分類編號</th>
+		<th>商品分類名稱</th>
 		<th>商品狀態</th>
 		<th>商品名稱</th>
 		<th>商品價格</th>
@@ -86,10 +86,11 @@
 <%-- <%@ include file="page1.file" %> --%>
 	<c:forEach var="productVO" items="${list}" > <%-- begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" --%>
 		
-		
 		<tr>
 			<td>${productVO.prod_no}</td>
-			<td>${productVO.prod_cat_no}</td>
+			<td>
+			${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}
+			</td>
 			<td>
 			<c:if test="${productVO.prod_stat==0}">
 				<c:out value="下架" />

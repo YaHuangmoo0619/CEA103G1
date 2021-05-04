@@ -68,11 +68,55 @@
 <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" name="form1">
 <table>
 	<tr>
+		<td>商品分類名稱:</td>	
+		<td><input type="TEXT" name="prod_cat_name" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_cat_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品狀態:</td>
+		<td><input type="TEXT" name="prod_stat" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_stat()%>" /></td>
+	</tr>
+	<tr>
 		<td>商品名稱:</td>
 		<td><input type="TEXT" name="prod_name" size="45" 
 			 value="<%= (productVO==null)? "" : productVO.getProd_name()%>" /></td>
 	</tr>
-
+	<tr>
+		<td>商品價格:</td>
+		<td><input type="TEXT" name="prod_pc" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_pc()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品庫存:</td>
+		<td><input type="TEXT" name="prod_stg" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_stg()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品資訊:</td>
+		<td><input type="TEXT" name="prod_info" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_info()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品品牌:</td>
+		<td><input type="TEXT" name="prod_bnd" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_bnd()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品顏色:</td>
+		<td><input type="TEXT" name="prod_clr" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_clr()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品大小:</td>
+		<td><input type="TEXT" name="prod_size" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_size()%>" /></td>
+	</tr>
+	<tr>
+		<td>運送方式:</td>
+		<td><input type="TEXT" name="ship_meth" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getShip_meth()%>" /></td>
+	</tr>
 </table>
 <br>
 <input type="hidden" name="action" value="insert">

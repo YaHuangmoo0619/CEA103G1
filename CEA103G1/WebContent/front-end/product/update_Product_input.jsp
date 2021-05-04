@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="com.product.model.*"%>
 
 <%
@@ -68,18 +69,18 @@
 <table>
 	<tr>
 		<td>商品編號:<font color=red><b>*</b></font></td>
-		<td><%=productVO.getProd_no()%></td>
+		<td>${productVO.prod_no}</td>
 	</tr>
 	<tr>
 		<td>商品名稱:</td>
-		<td><input type="TEXT" name="ename" size="45" value="<%=productVO.getProd_name()%>" /></td>
+		<td><input type="TEXT" name="ename" size="45" value="${productVO.prod_name}" /></td>
 	</tr>
 
 </table>
 
 <br>
 <input type="hidden" name="action" value="update">
-<input type="hidden" name="prod_no" value="<%=productVO.getProd_no()%>">
+<input type="hidden" name="prod_no" value="${productVO.prod_no}">
 <input type="submit" value="送出修改"></FORM>
 
 </body>
