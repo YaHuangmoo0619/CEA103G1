@@ -11,7 +11,7 @@
 					<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
 					<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li>
 					<li><a href="<%=request.getContextPath() %>/back-end/announcement/select_page.jsp">公告管理</a></li>
-					<li><a href="">客服管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/service_mail/select_page.jsp">客服管理</a></li>
 					<li><a href="">即時小幫手管理</a></li>
 				</ul>
 			</div>

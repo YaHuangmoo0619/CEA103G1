@@ -3,7 +3,7 @@
 <html lang="zh-tw">
 
 <head>
-<meta charset="BIG5">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <link rel="icon" href="<%=request.getContextPath() %>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
@@ -45,6 +45,10 @@ a {
 
 a:hover {
 	text-decoration: none;
+}
+
+a.button{
+	margin: 0px;
 }
 
 form.form-inline {
@@ -380,11 +384,11 @@ section.footer {
 				<button type="button" class="btn btn-secondary">論壇</button>
 			</div>
 			<div class="btn-group" role="group" aria-label="Basic example">
-				<button type="button" class="btn btn-outline-secondary">營主</button>
-				<button type="button" class="btn btn-outline-secondary">註冊</button>
-				<button type="button" class="btn btn-outline-secondary">登入</button>
-				<button type="button" class="btn btn-outline-secondary">FAQ</button>
-				<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
+				<a class="button" href="<%=request.getContextPath() %>/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
+				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">註冊</button></a>
+				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">登入</button></a>
+				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">FAQ</button></a>
+				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a>
 			</div>
 			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu"> <a
 				href="nnn"> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
@@ -405,11 +409,11 @@ section.footer {
 			<button type="button" class="btn btn-secondary">論壇</button>
 		</div>
 		<div class="btn-group sec" role="group" aria-label="Basic example">
-			<button type="button" class="btn btn-outline-secondary">營主</button>
-			<button type="button" class="btn btn-outline-secondary">註冊</button>
-			<button type="button" class="btn btn-outline-secondary">登入</button>
-			<button type="button" class="btn btn-outline-secondary">FAQ</button>
-			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
+			<a class="button" href="<%=request.getContextPath() %>/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
+				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">註冊</button></a>
+				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">登入</button></a>
+				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">FAQ</button></a>
+				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a>
 		</div>
 	</div>
 	<div class="backToTop">

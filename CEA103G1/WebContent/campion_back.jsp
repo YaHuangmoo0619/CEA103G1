@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*"%>
 <!DOCTYPE html>
 <html lang="zh-tw">
 
@@ -126,7 +127,7 @@ p {
 					<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
 					<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li>
 					<li><a href="<%=request.getContextPath() %>/back-end/announcement/select_page.jsp">公告管理</a></li>
-					<li><a href="">客服管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/service_mail/select_page.jsp">客服管理</a></li>
 					<li><a href="">即時小幫手管理</a></li>
 				</ul>
 			</div>
@@ -137,10 +138,10 @@ p {
 					<!-- 以下內容可以替換成自記查找出來的表格，或新增修改的畫面 -->
 						<div class="countBox">
 							<h5>用戶總數</h5>
-							<!--<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>-->
-							<p>100位會員</p>
-							<!--<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>-->
-							<p>20位營主</p>
+							<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
+							<p>${memberSvc.getAll().size()}位會員</p>
+							<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>
+							<p>${campsite_ownerSvc.getAll().size()}位營主</p>
 						</div>
 					</div>
 					<div class="col">
@@ -163,7 +164,7 @@ p {
 					</div>
 					<div class="col">
 						<div class="countBox">
-							<h5>檢舉回報</h5>
+							<h5>客服信件</h5>
 <%-- 							<jsp:useBean id="article_replay_reportSvc" class="com.article_replay_report.model.Article_Rep_ReportService"/> --%>
 <%-- 							<jsp:useBean id="article_reportSvc" class="com.article_report.model.Article_ReportService"/> --%>
 <%-- 							<jsp:useBean id="campsite_comment_reportSvc" class="com.campsite_comment_report.model.Campsite_comment_reportService"/> --%>
@@ -178,8 +179,13 @@ p {
 <%-- 							member_reportSvc.getAll().size()+ --%>
 <%-- 							product_comment_reportSvc.getAll().size()+ --%>
 <%-- 							product_reportSvc.getAll().size()}件</p> --%>
-							<p>目前尚有12件</p>
-							<p>檢舉未處裡</p>
+							<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService"/>
+							<% Map<String,String[]> map = new LinkedHashMap<String,String[]>();
+								map.put("mail_read_stat", new String[]{"0"});
+								request.setAttribute("map",map);
+							%>
+							<p>目前尚有${service_mailSvc.getWhereCondition(map).size()}件</p>
+							<p>信件未讀取</p>
 						</div>
 					</div>
 				</div>
