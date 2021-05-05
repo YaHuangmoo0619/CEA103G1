@@ -8,7 +8,7 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
 	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 
 <style>
@@ -294,34 +294,35 @@ tr:nth-child(even) {
 </head>
 <body>
 	<div style="background-color: #eee;">
-		<img src="/CEA103G1/campionLogoLong.png" class="logo">
+		<img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
 		<form class="form-inline my-2 my-lg-0">
 			<input class="form-control mr-sm-2" type="search"
 				placeholder="營位/商品/文章" aria-label="Search">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
 		</form>
-		<img src="/CEA103G1/search-circle-outline.svg" class="searchIcon"
+		<img src="/CEA103G1/front-images/search-circle-outline.svg" class="searchIcon"
 			onclick="showSearch()">
 		<div class="btn-group" role="group" aria-label="Basic example">
 			<button type="button" class="btn btn-secondary">營區</button>
 			<button type="button" class="btn btn-secondary">商城</button>
 			<button type="button" class="btn btn-secondary">論壇</button>
 		</div>
-		<img src="/CEA103G1/cart-outline.svg" class="cart">
+		<img src="/CEA103G1/front-images/cart-outline.svg" class="cart">
 		<div class="btn-group" role="group" aria-label="Basic example">
 			<button type="button" class="btn btn-outline-secondary">註冊</button>
 			<button type="button" class="btn btn-outline-secondary">登入</button>
 			<button type="button" class="btn btn-outline-secondary">FAQ</button>
 			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
 		</div>
-		<img src="/CEA103G1/menu-outline.svg" class="menu"
+		<img src="/CEA103G1/front-images/menu-outline.svg" class="menu"
 			onclick="showMenu()"> <img
-			src="/CEA103G1/person-circle-outline.svg" class="person">
+			src="/CEA103G1/front-images/person-circle-outline.svg" class="person">
 
 	</div>
 	<div id="map"></div>
 	<div><h1 id="title"></h1>
 	<label><ion-icon id="fav" name="bookmark-outline" size="large" style="cursor: pointer;"></ion-icon></label></div>
+	<div id="featurelist"></div>
 	<div id="addrblock">
 		<p id="address"></p>
 		<p id="location"></p>
@@ -354,6 +355,7 @@ tr:nth-child(even) {
 	<div id="showplace">
 		<table id="placeInfo"></table>
 	</div>
+	<div id="photo"></div>
 	<div>
 		<FORM method="post" id="order" onsubmit="return false"
 			accept-charset="big5" style="display: none;">
@@ -411,7 +413,7 @@ tr:nth-child(even) {
 		<p id="note"></p>
 	</div>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS3FFLkorvfSYZ9kblu3kplAs2a1H8dO8"></script>
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 		crossorigin="anonymous"></script>
 	<script
@@ -449,6 +451,7 @@ tr:nth-child(even) {
 					initMap(data);
 					showCamp(data);
 					showPlace(data);
+					showFeature(data)
 				}
 			});
 		}else{
@@ -465,6 +468,7 @@ tr:nth-child(even) {
 				success : function(data) {
 					initMap(data);
 					showCamp(data);
+					showFeature(data)
 				}
 			});
 		}
@@ -570,6 +574,22 @@ tr:nth-child(even) {
 			}
 		});
 
+		function showFeature(data){
+			if(data.length === 3){
+				for(i in data[2]){
+					let html;
+					html =`<button value="${data[2][i].camp_fl_no}">${data[2][i].camp_fl_name}</button>`;
+					$('#featurelist').append(html);
+				}
+			}else{
+				for(i in data[1]){
+					let html;
+					html =`<button value="${data[1][i].camp_fl_no}">${data[1][i].camp_fl_name}</button>`;
+					$('#featurelist').append(html);
+				}
+			}
+		}
+		
 		function showPlace(data){
 			let html;
 			$('#placeInfo').append(`<tr class=><th>名稱</th><th>人數</th><th>人數上限</th><th>平日價格</th><th>假日價格</th><th>選取</th><th>入住金額</th></tr>`);
