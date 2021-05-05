@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*" %>
-<%@ page import="com.member_mail.model.*" %>
+<%@ page import="com.campsite_owner_mail.model.*" %>
 
-<% Member_mailVO member_mailVO = (Member_mailVO)request.getAttribute("member_mailVO"); %>
+<% Campsite_owner_mailVO campsite_owner_mailVO = (Campsite_owner_mailVO)request.getAttribute("campsite_owner_mailVO"); %>
 
 <!DOCTYPE html>
 <html>
@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<title>修改會員站內信</title>
+<title>修改營主站內信</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -89,12 +89,12 @@ input.confirm:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>修改會員站內信&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/member_mail/select_page.jsp">回首頁</a></h2>
+			<h2>修改營主站內信&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/campsite_owner_mail/select_page.jsp">回首頁</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<h3>資料列表:</h3>
-			<form method="post" action="<%=request.getContextPath()%>/member_mail/member_mail.do">
-			<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService"/>
+			<form method="post" action="<%=request.getContextPath()%>/campsite_owner_mail/campsite_owner_mail.do">
+			<jsp:useBean id="campsite_owner_mailSvc" class="com.campsite_owner_mail.model.Campsite_owner_mailService"/>
 			<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>
 			<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
 			<table>
@@ -107,10 +107,7 @@ input.confirm:hover{
 						<select size="1" name="send_no" id="send_no">
 						<option value="99">--請選擇--</option>
 						<c:forEach var="memberVO" items="${memberSvc.all}">
-							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == member_mailVO.send_no || memberVO.mbr_no == param.send_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
-						</c:forEach>
-						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
-							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == member_mailVO.send_no || campsite_ownerVO.cso_no == param.send_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
+							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == campsite_owner_mailVO.send_no || memberVO.mbr_no == param.send_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
 						</c:forEach>
 						</select>
 					</td>
@@ -123,8 +120,8 @@ input.confirm:hover{
 					<td>
 						<select size="1" name="rcpt_no" id="rcpt_no">
 						<option value="99">--請選擇--</option>
-						<c:forEach var="memberVO" items="${memberSvc.all}">
-							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == member_mailVO.rcpt_no || memberVO.mbr_no == param.rcpt_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
+						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
+							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == campsite_owner_mailVO.rcpt_no || campsite_ownerVO.cso_no == param.rcpt_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
 						</c:forEach>
 						</select>
 					</td>
@@ -135,14 +132,14 @@ input.confirm:hover{
 						<br><h5 style="color:#80c344;">${errorMsgs.mail_cont[0]}</h5>	
 					</td>
 					<td>
-						<textarea name="mail_cont" rows="10" cols="45" class="mail_cont"><c:if test="${member_mailVO != null}">${member_mailVO.mail_cont.trim().isEmpty()? '':member_mailVO.mail_cont.trim()}</c:if><c:if test="${member_mailVO == null}">${param.mail_cont.trim().isEmpty()? '':param.mail_cont.trim()}</c:if></textarea>
+						<textarea name="mail_cont" rows="10" cols="45" class="mail_cont"><c:if test="${campsite_owner_mailVO != null}">${campsite_owner_mailVO.mail_cont.trim().isEmpty()? '':campsite_owner_mailVO.mail_cont.trim()}</c:if><c:if test="${campsite_owner_mailVO == null}">${param.mail_cont.trim().isEmpty()? '':param.mail_cont.trim()}</c:if></textarea>
 					</td>
 				</tr>
 			</table>
 					<input type="hidden" name="mail_stat" value="0">
 					<input type="hidden" name="mail_read_stat" value="0">
-					<c:if test="${member_mailVO != null}"><input type="hidden" name="mail_no" value="${member_mailVO.mail_no}"></c:if>
-					<c:if test="${member_mailVO == null}"><input type="hidden" name="mail_no" value="${param.mail_no}"></c:if>
+					<c:if test="${campsite_owner_mailVO != null}"><input type="hidden" name="mail_no" value="${campsite_owner_mailVO.mail_no}"></c:if>
+					<c:if test="${campsite_owner_mailVO == null}"><input type="hidden" name="mail_no" value="${param.mail_no}"></c:if>
 					<input type="hidden" name="action" value="update">
 					<input type="submit" value="送出修改" class="confirm">
 					<input type="submit" value="存入草稿" class="confirm">
