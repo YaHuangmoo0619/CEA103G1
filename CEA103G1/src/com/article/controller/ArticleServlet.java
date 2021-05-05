@@ -638,7 +638,9 @@ public class ArticleServlet extends HttpServlet {
 
 			try {
 				
-				
+				String requestURI = req.getRequestURI();
+				System.out.println(requestURI);
+				req.setAttribute("requestURI", requestURI);
 				Jedis jedis = new Jedis("localhost", 6379);
 				jedis.auth("123456");
 				jedis.select(6);

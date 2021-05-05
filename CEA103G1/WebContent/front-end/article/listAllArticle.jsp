@@ -353,7 +353,7 @@ img.person:hover {
 </head>
 <body>
 
-<button></button>
+
 
 	<div style="background-color: #eee;">
 		<img src="/CEA103G1/images/campionLogoLong.png" class="logo">
@@ -392,12 +392,13 @@ img.person:hover {
 </div>
 
 
-<div class=main_content>
+<div class=main_content id=main_content>
+<div class="scroll"> 
 	<%@ include file="pageforhome.file"%>
 
 	<c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>"
 		end="<%=pageIndex+rowsPerPage-1%>">
-<div>
+<div class=article>
 
 ${articleVO.art_no}
 <c:forEach var="bd_clVO" items="${bd_clDAO.all}">
@@ -429,6 +430,7 @@ ${articleVO.likes}
 					<div class="modal-body">
 						<!-- =========================================以下為原listOneArticle.jsp的內容========================================== -->
 						<jsp:include page="listOneArticle.jsp" />
+						
 						<!-- =========================================以上為原listOneArticle.jsp的內容========================================== -->
 					</div>
 				</div>
@@ -438,10 +440,31 @@ ${articleVO.likes}
 	</c:if>
 
 </div>
+</div>
+
+<div class="pagination">
+    <a href="/CEA103G1/front-end/article/listAllArticle.jsp?whichPage=2" class="next">Next</a>
+</div>
+
+
+
+
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://unpkg.com/@webcreate/infinite-ajax-scroll@^3.0.0-beta.6/dist/infinite-ajax-scroll.min.js"></script>	
+	
+	
+	<script>
+	let ias = new InfiniteAjaxScroll('.main_content', {
+		  item: '.article',
+		  next: '.next',
+		  pagination: '.pagination'
+		});
+	</script>	
+		
+		
 
 	<script>
 		let countMenu = 0;

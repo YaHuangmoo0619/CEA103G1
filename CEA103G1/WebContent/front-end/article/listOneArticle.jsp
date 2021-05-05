@@ -13,6 +13,8 @@
   Set<String> tag_list = (Set<String>) request.getAttribute("tag_list"); //ArticleServlet.java(Concroller), 存入req的articleVO物件
 %>
 
+<%String requestURI = (String)request.getAttribute("requestURI"); %>
+
 <html>
 <head>
 <title>文章資料 - listOneArticle.jsp 前台</title>
@@ -182,7 +184,7 @@
    
 </table>
 
-
+<div><%=(String)request.getAttribute("requestURI")%></div>
 
 <div>
 <div>回應  </div>
@@ -206,10 +208,10 @@
 <div id = "addrep"></div>
 <div id="demo"></div>
 <button id=rep>新增文章留言</button>
-<button id=get>顯示文章留言</button>
 
 
->
+
+
 	<script>   
   	$("#rep").click(function(){
 		$.ajax({
