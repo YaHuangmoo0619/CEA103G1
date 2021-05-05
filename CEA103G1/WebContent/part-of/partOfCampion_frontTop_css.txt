@@ -26,6 +26,10 @@ a:hover {
 	text-decoration: none;
 }
 
+a.button{
+	margin: 0px;
+}
+
 form.form-inline {
 	display: inline;
 	border: none;

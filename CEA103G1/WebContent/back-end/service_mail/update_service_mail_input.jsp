@@ -141,7 +141,7 @@ input.confirm:hover{
 					<input type="hidden" name="mail_read_stat" value="0">
 					<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}">
 					<input type="hidden" name="action" value="update">
-					<input type="submit" value="送出新增" class="confirm">
+					<input type="submit" value="送出修改" class="confirm">
 					<input type="submit" value="存入草稿" class="confirm">
 			</form>
 		</div>

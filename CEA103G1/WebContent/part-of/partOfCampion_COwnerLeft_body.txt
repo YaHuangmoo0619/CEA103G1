@@ -5,14 +5,11 @@
 				<ul>
 					<li><a
 						href="<%=request.getContextPath()%>/back-end/place_order/listAllPlace_order.jsp">預約訂單列表</a></li>
-					<li><a href="">營位清單</a></li>
-					<li><a href="">營位刊登</a></li>
 					<li><a
 						href="<%=request.getContextPath()%>/back-end/campsite/listAllCamp.jsp">營區清單</a></li>
 					<li><a
 						href="<%=request.getContextPath()%>/back-end/campsite/addCamp.jsp">新增營區申請</a></li>
-					<li><a href="">廣告申請</a></li>
-					<li><a href="">站內信</a></li>
+					<li><a href="<%=request.getContextPath()%>/back-end/campsite_owner_mail/select_page.jsp">站內信</a></li>
 					<li><a href="">修改營主資料</a></li>
 					<li><a href="">登出</a></li>
 				</ul>

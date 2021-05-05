@@ -68,6 +68,9 @@ input.change:hover{
 	color: #80c344;
 	cursor: pointer;
 }
+#focus{
+	margin-right: -5px;
+}
 </style>
 
 </head>
