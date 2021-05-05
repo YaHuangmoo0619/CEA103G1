@@ -239,13 +239,13 @@ System.out.println("營區名稱:" + camp_name);
 	
 	public String getFileNameFromPart(Part part) {
 		String header = part.getHeader("content-disposition");
-System.out.println(new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName());
+
 		String[] filename = (new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName()).split("\\.");
 		for(int i = 0; i < filename.length; i++) {
-System.out.println(filename[i]);
+
 		}
 		String extension = filename[1];
-System.out.println(extension);
+
 		if (extension.length() == 0) {
 			return null;
 		}
@@ -256,7 +256,6 @@ System.out.println(extension);
 		List<String> fileDirectory = new ArrayList();
 		String realPath = getServletContext().getRealPath(saveDirectory);// 阿飄路徑
 		File fsaveDirectory = new File(realPath);
-System.out.println("好");
 		Camp_PictureService camp_pictureSvc = new Camp_PictureService();
 		int count = 1;
 		Collection<Part> parts = req.getParts();

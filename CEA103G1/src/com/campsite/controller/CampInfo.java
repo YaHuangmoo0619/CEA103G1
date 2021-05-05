@@ -20,6 +20,10 @@ import javax.servlet.http.HttpSession;
 import com.campsite.model.*;
 import com.campsite_collection.model.Camp_CollectionService;
 import com.campsite_collection.model.Camp_CollectionVO;
+import com.campsite_feature.model.Camp_FeatureService;
+import com.campsite_feature.model.Camp_FeatureVO;
+import com.feature_list.model.Feature_ListService;
+import com.feature_list.model.Feature_ListVO;
 import com.google.gson.Gson;
 import com.member.model.MemberVO;
 import com.place.model.*;
@@ -80,8 +84,10 @@ public class CampInfo extends HttpServlet {
 				}
 			});
 			campVO = seeIfCollect(req, campVO);
+
 			list.add(campVO);
 			list.add(placelist);
+			list.add(findFeature(campVO));
 
 		} else {
 			String action = req.getParameter("action");
@@ -115,10 +121,28 @@ public class CampInfo extends HttpServlet {
 				CampVO campVO = campSvc.getOneCamp(camp_no);
 				campVO = seeIfCollect(req, campVO);
 				list.add(campVO);
+				list.add(findFeature(campVO));
 			}
 		}
 		jsonObject = gson.toJson(list);
 		out.println(jsonObject);
+	}
+
+	public List<Feature_ListVO> findFeature(CampVO campVO) {
+		Feature_ListService feature_listSvc = new Feature_ListService();
+		Camp_FeatureService camp_featureSvc = new Camp_FeatureService();
+		List<Camp_FeatureVO> camp_featurelist = camp_featureSvc.getAll();
+		List<Feature_ListVO> featurelist = new ArrayList();
+		for (Camp_FeatureVO camp_featureVO : camp_featurelist) {
+			if ((int) campVO.getCamp_no() == (int) camp_featureVO.getCamp_no()) {
+				Feature_ListVO feature_listVO = feature_listSvc.getOneFeature_List(camp_featureVO.getCamp_fl_no());
+				featurelist.add(feature_listVO);
+			}
+		}
+		for (Feature_ListVO feature_listVO : featurelist) {
+			System.out.println(feature_listVO.getCamp_fl_name());
+		}
+		return featurelist;
 	}
 
 	public CampVO seeIfCollect(HttpServletRequest req, CampVO campVO) {

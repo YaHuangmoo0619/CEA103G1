@@ -22,7 +22,9 @@ img {
 	width: 150px;
 	height: 100px;
 }
-
+table{
+	width:60%;
+}
 table, th, td {
 	border: 1px solid black;
 	background-color: white;
@@ -192,15 +194,16 @@ button {
 	<script>
 		$("#preview_progressbarTW_imgs").html("");
 		var camp_pic = `${camp_piclist}`;
-		camp_pic = camp_pic.substring(1,camp_pic.length-1);
-		camp_pic = camp_pic.split(", ");
-		console.log(camp_pic);
-		
-		for(let i = 0; i < camp_pic.length; i++){
-			var img = $("<img width='500' height='500'>").attr('src', camp_pic[i]);
-			$("#preview_progressbarTW_imgs").append(img);
+		if(!(camp_pic === "[]")){
+			camp_pic = camp_pic.substring(1,camp_pic.length-1);
+			camp_pic = camp_pic.split(", ");
+			console.log(camp_pic);
+			
+			for(let i = 0; i < camp_pic.length; i++){
+				var img = $("<img width='500' height='500'>").attr('src', camp_pic[i]);
+				$("#preview_progressbarTW_imgs").append(img);
+			}
 		}
-		
 		var src = `/CEA103G1/camp/campconfig.do?camp_no=<%=campVO.getCamp_no()%>`;
 		$("#showconfig").attr('src', src);
 		

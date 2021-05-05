@@ -4,152 +4,108 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.place_order.model.*"%>
 
-<%
-	Place_OrderService place_orderSvc = new Place_OrderService();
-	List<Place_OrderVO> list = place_orderSvc.getAll();
-	pageContext.setAttribute("list", list);
-	Place_OrderVO place_orderVO = (Place_OrderVO) request.getAttribute("place_orderVO");
-%>
-<jsp:useBean id="campSvc" scope="page"
-	class="com.campsite.model.CampService" />
+<%-- <% --%>
+<!-- // 	Place_OrderService place_orderSvc = new Place_OrderService(); -->
+<!-- // 	List<Place_OrderVO> list = place_orderSvc.getAll(); -->
+<!-- // 	pageContext.setAttribute("list", list); -->
+<!-- // 	Place_OrderVO place_orderVO = (Place_OrderVO) request.getAttribute("place_orderVO"); -->
+<%-- %> --%>
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>營位訂單管理</title>
+<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
-table, th, td {
-	border: 0.1px solid black;
-	background-color: white;
-	text-align: center;
+body {
+	background-color: #4e5452;
+	color: #4e5452;
 }
 
-div {
-	background-color: lightgreen;
+div.left {
+	margin-top: 20px;
 }
-#plc_ord_bo{
-    background-color: white;
-    border:0px;
+
+div.right {
+	background-color: #fff;
+	margin-top: 40px;
+	padding: 50px 50px;
+	border-radius: 5px;
+}
+
+a.content {
+	color: #80c344;
+}
+
+a.content:hover {
+	color: #4B7F52;
+}
+
+form {
+	margin: 0px auto;
+}
+
+span {
+	color: #80c344;
 }
 </style>
 </head>
 <body>
-	<div>
-		<h1>所有訂單</h1>
-		<h3>
-			<a href="select_page.jsp">回首頁</a>
-		</h3>
-	</div>
+	<%@ include file="/part-of/partOfCampion_COwnerTop_body.txt"%>
+
+	<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 
 	<%-- 錯誤表列 --%>
-	<c:if test="${not empty errorMsgs}">
-		<font style="color: red">請修正以下錯誤:</font>
-		<ul>
-			<c:forEach var="message" items="${errorMsgs}">
-				<li style="color: red">${message}</li>
-			</c:forEach>
-		</ul>
-	</c:if>
+	<!-- 	<div class="container"> -->
+	<!-- 		<div class="row"> -->
+	<!-- 			<div class="left col-3"> -->
+	<%-- 				<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div> --%>
+	<!-- 			<div class="left col-9">123</div> -->
 
-	<table>
-		<tr>
-			<th>訂單編號</th>
-			<th>會員姓名</th>
-			<th>營區名稱</th>
-			<th>訂單時間</th>
-			<th>入住日期</th>
-			<th>退房日期</th>
-			<th>入住營位數</th>
-			<th>入住金額</th>
-			<th>加購人數</th>
-			<th>付款方式</th>
-			<th>付款狀態</th>
-			<th>使用點數</th>
-			<th>入住狀態</th>
-			<th>發票形式</th>
-			<th>訂單備註</th>
-		</tr>
-		<%@ include file="page1.file"%>
-		<c:forEach var="place_orderVO" items="${list}" begin="<%=pageIndex%>"
-			end="<%=pageIndex+rowsPerPage-1%>">
-			<tr>
-				<td><FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/place_order_details/place_order_details.do"
-						style="margin-bottom: 0px;">
-						<input type="submit" id="plc_ord_no" name="place_order_details" value="${place_orderVO.plc_ord_no}">
-						<input type="hidden" name="action" value="getplace_order_details">
-					</FORM></td>
-				<td>${place_orderVO.mbr_no}</td>
-				<td><c:forEach var="campVO" items="${campSvc.all}">
-						<c:if test="${place_orderVO.camp_no==campVO.camp_no}">
-	                    ${campVO.camp_name}
-                    </c:if>
-					</c:forEach></td>
-				<td><fmt:formatDate value="${place_orderVO.plc_ord_time}"
-						pattern="yyyy-MM-dd HH:mm:ss E" /></td>
-				<td>${place_orderVO.ckin_date}</td>
-				<td>${place_orderVO.ckout_date}</td>
-				<td>${place_orderVO.plc_amt}</td>
-				<td>${place_orderVO.plc_ord_sum}</td>
-				<td>${place_orderVO.ex_ppl}</td>
-				<c:if test="${place_orderVO.pay_meth==0}">
-					<td><c:out value="信用卡" /></td>
-				</c:if>
-				<c:if test="${place_orderVO.pay_meth==1}">
-					<td><c:out value="匯款" /></td>
-				</c:if>
-				<c:if test="${place_orderVO.pay_stat==0}">
-					<td><c:out value="未付款" /></td>
-				</c:if>
-				<c:if test="${place_orderVO.pay_stat==1}">
-					<td><c:out value="已付訂金" /></td>
-				</c:if>
-				<c:if test="${place_orderVO.pay_stat==2}">
-					<td><c:out value="已付全額" /></td>
-				</c:if>
-				<td>${place_orderVO.used_pt}</td>
-				<c:if test="${place_orderVO.ckin_stat==0}">
-					<td><c:out value="未入住" /></td>
-				</c:if>
-				<c:if test="${place_orderVO.ckin_stat==1}">
-					<td><c:out value="未出席" /></td>
-				</c:if>
-				<c:if test="${place_orderVO.ckin_stat==2}">
-					<td><c:out value="已入住" /></td>
-				</c:if>
-				<c:if test="${place_orderVO.ckin_stat==3}">
-					<td><c:out value="已退房" /></td>
-				</c:if>
-				<c:if test="${place_orderVO.receipt==0}">
-					<td><c:out value="紙本發票" /></td>
-				</c:if>
-				<c:if test="${place_orderVO.receipt==1}">
-					<td><c:out value="電子發票" /></td>
-				</c:if>
-				<c:if test="${place_orderVO.receipt==2}">
-					<td><c:out value="發票捐贈" /></td>
-				</c:if>
-				<td>${place_orderVO.rmk}</td>
-				<td>
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+	<div class="container">
+		<div class="row">
+			<div class="left col-3">
+				<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
+			<div class="right col-9">
+				<h3>所有訂單</h3>
+				<div style="display: inline-block;">
 					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/emp/emp.do"
+						ACTION="<%=request.getContextPath()%>/place_order/place_order.do"
 						style="margin-bottom: 0px;">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp_no" value="${campVO.camp_no}"> <input
-							type="hidden" name="action" value="getOne_For_Update">
+						<input type="submit" value="現有訂單"><input type="hidden"
+							name="action" value="listPresent">
 					</FORM>
-				</td>
-				<td>
+				</div>
+				<div style="display: inline-block;">
 					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/emp/emp.do"
+						ACTION="<%=request.getContextPath()%>/place_order/place_order.do"
 						style="margin-bottom: 0px;">
-						<input type="submit" value="刪除"> <input type="hidden"
-							name="camp_no" value="${campVO.camp_no}"> <input
-							type="hidden" name="action" value="delete">
+						<input type="submit" value="歷史訂單"><input type="hidden"
+							name="action" value="listHistory">
 					</FORM>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
-	<%@ include file="page2.file"%>
+				</div>
+				<%
+					if (request.getAttribute("list") != null) {
+						String path = (String) request.getAttribute("list");
+						System.out.println(path);
+				%>
+				<jsp:include page="<%=path%>" />
+				<%
+					} else {
+				%>
+				<jsp:include page="PresentPlace_order.jsp" />
+				<%
+					}
+				%>
+			</div>
+		</div>
+	</div>
+	<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 </body>
 </html>

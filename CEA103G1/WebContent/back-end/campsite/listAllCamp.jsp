@@ -13,139 +13,147 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="icon"
+	href="<%=request.getContextPath()%>/images/campionLogoIcon.png"
+	type="image/png">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>Insert title here</title>
+<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
-img {
-	width: 150px;
-	height: 100px;
-}
-table, th, td {
-	border: 1px solid black;
-	background-color: white;
-	text-align: center;
+body {
+	background-color: #4e5452;
+	color: #4e5452;
 }
 
-div {
-	background-color: lightgreen;
+div.left {
+	margin-top: 20px;
+}
+
+div.right {
+	background-color: #fff;
+	margin-top: 40px;
+	padding: 50px 50px;
+	border-radius: 5px;
+}
+
+a.content {
+	color: #80c344;
+}
+
+a.content:hover {
+	color: #4B7F52;
+}
+
+form {
+	margin: 0px auto;
+}
+
+span {
+	color: #80c344;
+}
+
+#camp_plc tr td input {
+	width: 80%;
 }
 </style>
 </head>
 <body>
-	<div>
-		<h1>所有營區資料</h1>
-		<h3>
-			<a href="<%=request.getContextPath()%>/back-end/select_page.jsp">回首頁</a>
-		</h3>
-	</div>
+	<%@ include file="/part-of/partOfCampion_COwnerTop_body.txt"%>
+
+	<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
+
 
 	<%-- 錯誤表列 --%>
-	<c:if test="${not empty errorMsgs}">
-		<font style="color: red">請修正以下錯誤:</font>
-		<ul>
-			<c:forEach var="message" items="${errorMsgs}">
-				<li style="color: red">${message}</li>
-			</c:forEach>
-		</ul>
-	</c:if>
+	<div class="container">
+		<div class="row">
+			<div class="left col-3">
+				<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
+			<div class="right col-9">
+				<h3>所有營區資料</h3>
+				<c:if test="${not empty errorMsgs}">
+					<font style="color: red">請修正以下錯誤:</font>
+					<ul>
+						<c:forEach var="message" items="${errorMsgs}">
+							<li style="color: red">${message}</li>
+						</c:forEach>
+					</ul>
+				</c:if>
 
-	<table>
-		<tr>
-			<th>營區編號</th>
-			<th>營主姓名</th>
-			<th>營區名稱</th>
-			<th>營業狀態</th>
-			<th>營區資訊</th>
-			<th>注意事項</th>
-			<th>審核狀態</th>
-			<th>海拔</th>
-			<th>無線通訊</th>
-			<th>寵物</th>
-			<th>營區設施</th>
-			<th>營業日</th>
-			<th>停車方式</th>
-			<th>地址</th>
-			<th>緯經度</th>
-			<th>總星數</th>
-			<th>總評論數</th>
-		</tr>
-		<%@ include file="page1.file"%>
-		<c:forEach var="campVO" items="${list}" begin="<%=pageIndex%>"
-			end="<%=pageIndex+rowsPerPage-1%>">
-			<tr>
+				<table>
+					<tr>
+						<th>營區編號</th>
+						<th>營主姓名</th>
+						<th>營區名稱</th>
+						<th>營業狀態</th>
+						<th>審核狀態</th>
+						<th>地址</th>
+						<th>總星數</th>
+						<th>總評論數</th>
+					</tr>
+					<%@ include file="page1.file"%>
+					<c:forEach var="campVO" items="${list}" begin="<%=pageIndex%>"
+						end="<%=pageIndex+rowsPerPage-1%>">
+						<tr>
 
-				<td>${campVO.camp_no}</td>
-				<td>${campVO.cso_no}</td>
-				<td>${campVO.camp_name}</td>
-				<c:if test="${campVO.campsite_Status==0}">
-					<td><c:out value="不隱藏" /></td>
-				</c:if>
-				<c:if test="${campVO.campsite_Status==1}">
-					<td><c:out value="隱藏" /></td>
-				</c:if>
-				<td>${campVO.campInfo}</td>
-				<td>${campVO.note}</td>
-				<c:if test="${campVO.review_Status==0}">
-					<td><c:out value="待審核" /></td>
-				</c:if>
-				<c:if test="${campVO.review_Status==1}">
-					<td><c:out value="通過" /></td>
-				</c:if>
-				<c:if test="${campVO.review_Status==2}">
-					<td><c:out value="未通過" /></td>
-				</c:if>
-				<td>${campVO.height}</td>
-				<td>${campVO.wireless}</td>
-				<c:if test="${campVO.pet==0}">
-					<td><c:out value="不可攜帶寵物" /></td>
-				</c:if>
-				<c:if test="${campVO.pet==1}">
-					<td><c:out value="可攜帶寵物" /></td>
-				</c:if>
-				<td>${campVO.facility}</td>
-				<c:if test="${campVO.operate_Date==0}">
-					<td><c:out value="平日" /></td>
-				</c:if>
-				<c:if test="${campVO.operate_Date==1}">
-					<td><c:out value="假日" /></td>
-				</c:if>
-				<c:if test="${campVO.operate_Date==2}">
-					<td><c:out value="平假日" /></td>
-				</c:if>
-				<td>${campVO.park}</td>
-				<td>${campVO.address}</td>
-				<td>${campVO.latitude}, ${campVO.longitude}</td>
-				<td>${campVO.total_Stars}</td>
-				<td>${campVO.total_Cmnt}</td>
-				<td>
+							<td>${campVO.camp_no}</td>
+							<td>${campVO.cso_no}</td>
+							<td>${campVO.camp_name}</td>
+							<c:if test="${campVO.campsite_Status==0}">
+								<td><c:out value="不隱藏" /></td>
+							</c:if>
+							<c:if test="${campVO.campsite_Status==1}">
+								<td><c:out value="隱藏" /></td>
+							</c:if>
+							<c:if test="${campVO.review_Status==0}">
+								<td><c:out value="待審核" /></td>
+							</c:if>
+							<c:if test="${campVO.review_Status==1}">
+								<td><c:out value="通過" /></td>
+							</c:if>
+							<c:if test="${campVO.review_Status==2}">
+								<td><c:out value="未通過" /></td>
+							</c:if>
+							<td>${campVO.address}</td>
+							<td>${campVO.total_Stars}</td>
+							<td>${campVO.total_Cmnt}</td>
+							<td>
+								<FORM METHOD="post"
+									ACTION="<%=request.getContextPath()%>/camp/camp.do"
+									style="margin-bottom: 0px;">
+									<input type="submit" value="修改"> <input type="hidden"
+										name="camp_no" value="${campVO.camp_no}"> <input
+										type="hidden" name="action" value="getOne_For_Update">
+								</FORM>
+							</td>
+							<td>
+								<FORM METHOD="post"
+									ACTION="<%=request.getContextPath()%>/camp/camp.do"
+									style="margin-bottom: 0px;">
+									<input type="submit" value="刪除"> <input type="hidden"
+										name="camp_no" value="${campVO.camp_no}"> <input
+										type="hidden" name="action" value="delete">
+								</FORM>
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
+				<%@ include file="page2.file"%>
+				<ul>
+					<li><a href='addCamp.jsp'>刊登營區</a></li>
 					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.do"
-						style="margin-bottom: 0px;">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp_no" value="${campVO.camp_no}"> <input
-							type="hidden" name="action" value="getOne_For_Update">
+						ACTION="<%=request.getContextPath()%>/camp/camp.do">
+						<b>輸入編號:</b> <input type="text" name="camp_no"> <input
+							type="hidden" name="action" value="getOne_For_Display"> <input
+							type="submit" value="送出">
 					</FORM>
-				</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.do"
-						style="margin-bottom: 0px;">
-						<input type="submit" value="刪除"> <input type="hidden"
-							name="camp_no" value="${campVO.camp_no}"> <input
-							type="hidden" name="action" value="delete">
-					</FORM>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
-	<%@ include file="page2.file"%>
-	<ul>
-  <li><a href='addCamp.jsp'>刊登營區</a></li>
-  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/camp/camp.do" >
-        <b>輸入編號:</b>
-        <input type="text" name="camp_no">
-        <input type="hidden" name="action" value="getOne_For_Display">
-        <input type="submit" value="送出">
-    </FORM>
-</ul>
+				</ul>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

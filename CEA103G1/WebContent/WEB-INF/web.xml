@@ -36,15 +36,6 @@
 		<url-pattern>/camp/camp.do</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>Place_OrderServlet</servlet-name>
-		<servlet-class>com.place_order.controller.Place_OrderServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Place_OrderServlet</servlet-name>
-		<url-pattern>/place_order/place_order.do</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
 		<servlet-name>Place_Order_DetailsServlet</servlet-name>
 		<servlet-class>com.place_order_details.controller.Place_Order_DetailsServlet</servlet-class>
 	</servlet>
