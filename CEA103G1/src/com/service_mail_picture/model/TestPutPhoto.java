@@ -26,85 +26,30 @@ import com.campsite_picture.model.Camp_PictureVO;
 @MultipartConfig(fileSizeThreshold=1024*1024, maxFileSize=5*1024*1024, maxRequestSize=5*5*1024*1024)
 public class TestPutPhoto extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+    String saveDirectory = "/images/service_mail_picture";
+	
+	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		doPost(req, res);
 	}
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
-//		response.setContentType("text/html; chartset=UTF-8");
-//		PrintWriter out = response.getWriter();
+		req.setCharacterEncoding("UTF-8");
+		res.setContentType("text/html; chartset=UTF-8");
+		PrintWriter out = res.getWriter();
 		
-		Part part = request.getPart("myfile");
-//		String path = request.getContextPath()+"/images/service_mail_picture/test.jpg";
-		part.write(part.getSubmittedFileName());
+		String realPath = getServletContext().getRealPath(saveDirectory);
+//		System.out.println(realPath);
+		File fsaveDirectory = new File(realPath);
+		if(!fsaveDirectory.exists()) {
+			fsaveDirectory.mkdirs();
+		}
 		
-//		out.print("getContentType()="+part.getContentType()+"<br>");
-//		out.print("getName()="+part.getName()+"<br>");
-//		out.print("getSubmittedFileName()="+part.getSubmittedFileName()+"<br>");
-//		out.print("part.getHeader(\"content-disposition\")="+part.getHeader("content-disposition"));
-//		
-//		out.print("test.jpg part.write(\"test.jpg\")="+getServletContext().getRealPath("/"+part.getSubmittedFileName())+"<br>");
-//		
-//		File file = new File(getServletContext().getRealPath("/"+part.getSubmittedFileName()));
-//		out.print("test.jpg file="+file.getAbsolutePath());
-//		FileInputStream fin = new FileInputStream(file);
-//		BufferedInputStream bin = new BufferedInputStream(fin);
-//		byte[] b = new byte[bin.available()];
-//		bin.read(b);
-//		File file2 = new File(getServletContext().getRealPath("/WebContent/images/service_mail_picture")+"/testtest.jsp");
-//		FileOutputStream fout = new FileOutputStream(file2);
-//		BufferedOutputStream bout = new BufferedOutputStream(fout);
-//		bout.write(b);
-		
-//		bout.close();
-//		fout.close();
-//		bin.close();
-//		fin.close();
-//		
-//		out.print("testtest.jpg="+getServletContext().getRealPath("testtest.jpg"));
-	}
+		Part part = req.getPart("myfile");
+		String fileType = part.getSubmittedFileName().substring(part.getSubmittedFileName().lastIndexOf("."));
+//		System.out.println(part.getSubmittedFileName()+"/"+fileType);
+		int count = 1;
+		File f = new File(fsaveDirectory, "service_mail_picture"+count+fileType);
+		part.write(f.toString());
 
-//	public String getFileNameFromPart(Part part) {
-//		String header = part.getHeader("content-disposition");
-//System.out.println(new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName());
-//		String[] filename = (new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName()).split("\\.");
-//		for(int i = 0; i < filename.length; i++) {
-//System.out.println(filename[i]);
-//		}
-//		String extension = filename[1];
-//System.out.println(extension);
-//		if (extension.length() == 0) {
-//			return null;
-//		}
-//		return extension;
-//	}
-//	
-//	public List<String> savePictureAtLocal(HttpServletRequest req, String camp_name) throws IOException, ServletException{
-//		List<String> fileDirectory = new ArrayList();
-//		String realPath = getServletContext().getRealPath(saveDirectory);// ªüÄÆ¸ô®|
-//		File fsaveDirectory = new File(realPath);
-//System.out.println("¦n");
-//		Camp_PictureService camp_pictureSvc = new Camp_PictureService();
-//		int count = 1;
-//		Collection<Part> parts = req.getParts();
-//		for (Part part : parts) {
-//			if(!("photo".equals(part.getName()))) {
-//				continue;
-//			}
-//			String extension = getFileNameFromPart(part);
-//			String filename = camp_name + count + "." + extension;
-//			count++;
-//			Camp_PictureVO camp_pictureVO = new Camp_PictureVO();
-//			if (filename != null && part.getContentType() != null) {
-//				File f = new File(fsaveDirectory, filename);
-//				part.write(f.toString());
-//			}
-//			camp_pictureVO.setCamp_pic(req.getContextPath() + saveDirectory + filename);
-//			filename = req.getContextPath() + saveDirectory + "/" + filename;
-//			fileDirectory.add(filename);
-//		}
-//		
-//		return fileDirectory;		
-//	}
+	}
 }
