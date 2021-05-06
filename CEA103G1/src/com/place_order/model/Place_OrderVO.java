@@ -20,6 +20,7 @@ public class Place_OrderVO implements Serializable{
 	private Integer ckin_stat;
 	private Integer receipt;
 	private String rmk;
+	private String camp_name;
 
 	public Place_OrderVO() {
 		super();
@@ -165,4 +166,13 @@ public class Place_OrderVO implements Serializable{
 	public void setRmk(String rmk) {
 		this.rmk = rmk;
 	}
+
+	public String getCamp_name() {
+		return camp_name;
+	}
+
+	public void setCamp_name(String camp_name) {
+		this.camp_name = camp_name;
+	}
+	
 }

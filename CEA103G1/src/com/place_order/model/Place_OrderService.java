@@ -67,6 +67,10 @@ public class Place_OrderService {
 	public List<Place_OrderVO> getByCamp(Integer camp_no) {
 		return dao.findByCamp(camp_no);
 	}
+	
+	public List<Place_OrderVO> getByMember(Integer mbr_no) {
+		return dao.findByMember(mbr_no);
+	}
 
 	public List<Place_OrderVO> getAll() {
 		return dao.getAll();
