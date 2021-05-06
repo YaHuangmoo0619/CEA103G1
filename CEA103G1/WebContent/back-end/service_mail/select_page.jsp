@@ -54,6 +54,9 @@ input.confirm:hover{
 	color: #80c344;
 	cursor: pointer;
 }
+label,select,input{
+	font-size: 0.8em;
+}
 </style>
 </head>
 <body>

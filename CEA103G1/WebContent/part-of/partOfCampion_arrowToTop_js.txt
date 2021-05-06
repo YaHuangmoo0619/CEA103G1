@@ -2,7 +2,6 @@
 <script>
 	let backToTop = document.getElementsByClassName("backToTop");
 	$(window).scroll(function(e) {
-		console.log(e);
 		if ($(window).scrollTop() <= 1) {
 			backToTop[1].style.display = "none";
 		} else {
