@@ -59,6 +59,12 @@ input.confirm:hover {
 	cursor: pointer;
 }
 
+#confirmTop:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+
 div.forSearch{
 	margin: 0 auto;
 	width: 70%;
@@ -163,8 +169,7 @@ tr:hover {
 				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 			<div class="right col-9">
 				<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-								${errorMsgs.Exception}
-				<h3>客服信列表:</h3>
+				<h3>客服信列表</h3>
 				<hr>
 				<div class="forSearch" id="forSearch">
 					<ul>
@@ -259,12 +264,12 @@ tr:hover {
 					<c:forEach var="service_mailVO" items="${service_mailSvc.all}">
 						<%-- 					<tr ${service_mailVO.mail_no == param.mail_no ? 'bgcolor=#eee':''}> --%>
 						<tr>
-							<c:if test="${service_mailVO.mail_no==param.mail_no}">
-								<td>${service_mailVO.mail_no}<a id="focus"></a></td>
-							</c:if>
-							<c:if test="${service_mailVO.mail_no!=param.mail_no}">
-								<td>${service_mailVO.mail_no}</td>
-							</c:if>
+<%-- 							<c:if test="${service_mailVO.mail_no==param.mail_no}"> --%>
+<%-- 								<td>${service_mailVO.mail_no}<a id="focus"></a></td> --%>
+<%-- 							</c:if> --%>
+<%-- 							<c:if test="${service_mailVO.mail_no!=param.mail_no}"> --%>
+							<td>${service_mailVO.mail_no}</td>
+<%-- 							</c:if> --%>
 							<td>${service_mailVO.emp_no}</td>
 							<td>${service_mailVO.mbr_no}</td>
 							<c:set var="mail_cont" value="${service_mailVO.mail_cont}" />
@@ -315,6 +320,7 @@ tr:hover {
 			$("#confirmTop")[0].setAttribute("disabled","");
 			$("#confirmTop")[0].style.backgroundColor="#4B7F52";
 			$("#confirmTop")[0].style.color="#80c344";
+			$("#confirmTop")[0].style.cursor="context-menu";
 		} else {
 			$("#forSearchMore")[0].style.display="none";
 			$("#confirmTop")[0].removeAttribute("disabled");

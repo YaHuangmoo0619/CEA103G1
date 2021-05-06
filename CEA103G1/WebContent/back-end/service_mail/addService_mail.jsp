@@ -79,7 +79,27 @@ input.confirm:hover{
 	cursor: pointer;
 }
 </style>
-
+<style>
+#container {
+	padding: 10px;
+	width: 600px;
+	margin: 0px auto;
+}
+.align{
+	display: inline;
+	vertical-align: text-top;
+}
+#preview, .change{
+	margin: 10px 0px;
+}
+img{
+	width: 160px;
+	margin: 10px;
+}
+.delete{
+	display: none;
+}
+</style>
 </head>
 <body>
 <%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
@@ -93,7 +113,7 @@ input.confirm:hover{
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<h3>信件撰寫:</h3>
-			<form method="post" action="<%=request.getContextPath()%>/service_mail/service_mail.do">
+			<form method="post" action="<%=request.getContextPath()%>/service_mail/service_mail.do" enctype="multipart/form-data">
 			<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService"/>
 			<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 			<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
@@ -137,6 +157,17 @@ input.confirm:hover{
 						<textarea name="mail_cont" rows="10" cols="45" class="mail_cont">${param.mail_cont.trim().isEmpty()? '':param.mail_cont.trim()}</textarea>
 					</td>
 				</tr>
+				<tr>
+				<td>附件照片</td>
+				<td>
+					<div id='container'>
+						<label>請上傳圖片檔案：</label>
+			            <input type="file" id='myFile' name='files' multiple>
+				        <div id='preview'>               
+				        </div>        
+				    </div>
+				</td>
+				</tr>
 			</table>
 					<input type="hidden" name="mail_stat" value="0">
 					<input type="hidden" name="mail_read_stat" value="0">
@@ -147,5 +178,37 @@ input.confirm:hover{
 	</div>
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<script>
+        let myFile = document.getElementById('myFile');
+        let preview = document.getElementById('preview');
+	let imgs = document.getElementsByClassName('img');        
+
+        myFile.addEventListener('change', function(e) {
+	    while(imgs.length != 0){
+		imgs[0].remove();
+	    }
+        	let files = e.target.files;
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].type.indexOf('image') > -1) {
+                    fileName = files[i].name;
+                    //console.log(files[i]);
+                    let reader = new FileReader();
+                    reader.addEventListener('load', function(e) {
+                        let result = e.target.result;
+                        //console.log(result);
+                        let img = document.createElement('img');
+                        img.setAttribute('class', 'img');
+                        img.classList.add('align');
+                        img.src = result;
+                        preview.append(img);
+                    });
+                    reader.readAsDataURL(files[i]);
+                } else {
+                    alert('請上傳圖檔');
+                }
+            }
+        });
+
+    </script>
 </body>
 </html>
