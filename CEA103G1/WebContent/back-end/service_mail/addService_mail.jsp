@@ -91,7 +91,7 @@ input.confirm:hover{
 			<h2>新增客服信&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>資料列表:</h3>
+			<h3>信件撰寫:</h3>
 			<form method="post" action="<%=request.getContextPath()%>/service_mail/service_mail.do">
 			<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService"/>
 			<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>

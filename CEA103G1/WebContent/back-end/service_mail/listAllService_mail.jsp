@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.util.*" %>
 <%@ page import="com.service_mail.model.*" %>
 
@@ -39,11 +40,11 @@ a.content:hover {
 table{
 	width: 700px;
 	margin: 30px auto;
-	border: 1px solid #4e5452;
+/* 	border: 1px solid #4e5452; */
 }
 th, td{
 	text-align: center;
-	border: 1px solid #4e5452;
+/* 	border: 1px solid #4e5452; */
 	padding: 10px 15px;
 }
 td.function{
@@ -71,6 +72,14 @@ input.change:hover{
 #focus{
 	margin-right: -5px;
 }
+tr{
+	border-top: 1px solid #4e5452;
+	border-bottom: 1px solid #4e5452;
+}
+tr:hover{
+ 	box-shadow: 0 1px 5px 0 #4e5452;
+ 	cursor: pointer;
+}
 </style>
 
 </head>
@@ -82,7 +91,7 @@ input.change:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>所有客服信列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
+			<h2>所有客服信列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回客服管理首頁</a></h2>
 			<hr>
 			${errorMsgs.Exception}
 			<h3>資料列表:</h3>
@@ -95,12 +104,13 @@ input.change:hover{
 					<th style="width:50px">信件狀態</th>
 					<th style="width:100px">信件閱讀狀態</th>
 					<th style="width:100px">發信時間</th>
-					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a
-						id="first" style="text-decoration: none;"></a></th>
+<!-- 					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a -->
+<!-- 						id="first" style="text-decoration: none;"></a></th> -->
 				</tr>
 				<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService"/>
 				<c:forEach var="service_mailVO" items="${service_mailSvc.all}">
-					<tr ${service_mailVO.mail_no == param.mail_no ? 'bgcolor=#eee':''}>
+<%-- 					<tr ${service_mailVO.mail_no == param.mail_no ? 'bgcolor=#eee':''}> --%>
+					<tr>
 						<c:if
 							test="${service_mailVO.mail_no==param.mail_no}">
 							<td>${service_mailVO.mail_no}<a id="focus"></a></td>
@@ -111,17 +121,19 @@ input.change:hover{
 						</c:if>
 						<td>${service_mailVO.emp_no}</td>
 						<td>${service_mailVO.mbr_no}</td>
-						<td>${service_mailVO.mail_cont}</td>
+						<c:set var="mail_cont" value="${service_mailVO.mail_cont}"/>
+						<td>${fn:substring(mail_cont, 0, 10)}...</td>
 						<td>${service_mailVO.mail_stat}</td>
 						<td>${service_mailVO.mail_read_stat}</td>
-						<td>${service_mailVO.mail_time}</td>
-						<td>
-							<form method="post" action="<%=request.getContextPath()%>/service_mail/service_mail.do">
-								<input class="change" type="submit" value="修改">
-								<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}">
-								<input type="hidden" name="action" value="getOne_For_Update">
-							</form>
-						</td>
+						<c:set var="mail_time" value="${service_mailVO.mail_time}"/>
+						<td>${fn:substring(mail_time, 0, 10)}</td>
+<!-- 						<td> -->
+<%-- 							<form method="post" action="<%=request.getContextPath()%>/service_mail/service_mail.do"> --%>
+<!-- 								<input class="change" type="submit" value="修改"> -->
+<%-- 								<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}"> --%>
+<!-- 								<input type="hidden" name="action" value="getOne_For_Update"> -->
+<!-- 							</form> -->
+<!-- 						</td> -->
 					</tr>
 				</c:forEach>
 			</table>
@@ -129,5 +141,12 @@ input.change:hover{
 	</div>
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<script>
+	$("tr").click(function(e){
+		let mail_no = e.currentTarget.children[0].innerText;
+		console.log(mail_no);
+		window.location.href="<%=request.getContextPath()%>/back-end/service_mail/listOneService_mail.jsp?mail_no="+mail_no+"&action=read";
+	});
+</script>
 </body>
 </html>

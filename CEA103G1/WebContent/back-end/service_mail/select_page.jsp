@@ -63,16 +63,17 @@ input.confirm:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>This is the Home page for Service_mail</h2>
+			<h2>客服管理</h2>
 			<hr>
-			<h3>資料查詢:</h3>
+			<ul>
+				<li>
+					<a class="content" href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">信件列表</a><br>
+				</li>
+			</ul>
+			<h3>信件查詢:</h3>
 			<%-- 錯誤列表 map ${errorMsgs}--%>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<ul>
-				<li>
-					<a class="content" href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">List</a><br>
-				</li>
-				
 				<li>
 				<form method="post" action="<%=request.getContextPath() %>/service_mail/service_mail.do">
 					<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService"/>
