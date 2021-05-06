@@ -177,7 +177,7 @@ tr:hover {
 							<form method="post"	action="<%=request.getContextPath()%>/service_mail/service_mail.do">
 								<label	for="mail_cont"></label>
 								<input type="text" name="mail_cont" id="mail_cont" placeholder="依信件內容查詢">
-								<input type="hidden" name="action"	value="compositeSearch">
+								<input type="hidden" name="action"	value="compositeSearchTop">
 								<input type="submit" value="送出查詢" class="confirm" id="confirmTop">&nbsp;<span>進階查詢</span>
 							</form>
 					</li>

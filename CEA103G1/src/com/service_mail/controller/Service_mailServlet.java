@@ -30,6 +30,7 @@ import com.service_mail_picture.model.Service_mail_pictureVO;
 public class Service_mailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	String saveDirectory = "/images/service_mail_picture";
+	int count = 1;
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
@@ -40,7 +41,7 @@ public class Service_mailServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
-		if("compositeSearch".equals(action)) {
+		if("compositeSearch".equals(action) || "compositeSearchTop".equals(action)) {
 			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
@@ -56,7 +57,13 @@ public class Service_mailServlet extends HttpServlet {
 						checkCount++;
 					}
 				}
-				if(checkCount == 8 || map.get("mail_cont")[0].isEmpty()) {
+				if("compositeSearchTop".equals(action) && map.get("mail_cont")[0].isEmpty()) {
+					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				if(checkCount == 8) {
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
 					failureView.forward(req, res);
@@ -79,7 +86,7 @@ public class Service_mailServlet extends HttpServlet {
 		if("insert".equals(action)){
 			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			try {
+//			try {
 				
 				String emp_noTest = req.getParameter("emp_no");
 				if(emp_noTest.equals("99")) {
@@ -97,32 +104,42 @@ public class Service_mailServlet extends HttpServlet {
 				if(mail_cont.trim().isEmpty()) {
 					errorMsgs.put("mail_cont", new String[] {"請輸入信件內容"});
 				}
-				
-				//照片處理
-				String realPath = getServletContext().getRealPath(saveDirectory);
-				File fsaveDirectory = new File(realPath);
-				if(!fsaveDirectory.exists()) {
-					fsaveDirectory.mkdirs();
-				}
-				int count = 1;
+
 				
 				if(!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/addService_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
+				
+				
+				Set<Service_mail_pictureVO> set = new LinkedHashSet<Service_mail_pictureVO>();
+				String realPath = getServletContext().getRealPath(saveDirectory);
+				File fsaveDirectory = new File(realPath);
+				if(!fsaveDirectory.exists()) {
+					fsaveDirectory.mkdirs();
+				}
+				
 				Collection<Part> parts = req.getParts();
+//				System.out.println(parts.size());
 				if(parts.size() != 0) {
 					for(Part part : parts) {
-						String fileType = part.getSubmittedFileName().substring(part.getSubmittedFileName().lastIndexOf("."));
-						
-						File f = new File(fsaveDirectory, "service_mail_picture"+count+fileType);
-						part.write(f.toString());
-						count++;
-						String mail_pic = req.getContextPath()+"/images/service_mail_picture/service_mail_picture"+count+fileType;
-//						Service_mail_pictureDAO service_mail_pictureDAO = new Service_mail_pictureDAO();
-//						Service_mail_pictureVO service_mail_pictureVO = new Service_mail_pictureVO(80004,req.getContextPath()+"/images/service_mail_picture/service_mail_picture"+count+fileType);
-//						service_mail_pictureDAO.insert(service_mail_pictureVO);
+//						System.out.println(part.getHeader("content-disposition"));
+						if(part.getSubmittedFileName()!=null) {
+							String fileType = part.getSubmittedFileName().substring(part.getSubmittedFileName().lastIndexOf("."));
+							
+							File f = new File(fsaveDirectory, "service_mail_picture"+count+fileType);
+							part.write(f.toString());
+							
+							String mail_pic = req.getContextPath()+"/images/service_mail_picture/service_mail_picture"+count+fileType;
+							Service_mail_pictureVO service_mail_pictureVO = new Service_mail_pictureVO();
+							service_mail_pictureVO.setMail_pic(mail_pic);
+							set.add(service_mail_pictureVO);
+							count++;
+//							Service_mail_pictureDAO service_mail_pictureDAO = new Service_mail_pictureDAO();
+//							Service_mail_pictureVO service_mail_pictureVO = new Service_mail_pictureVO(80004,req.getContextPath()+"/images/service_mail_picture/service_mail_picture"+count+fileType);
+//							service_mail_pictureDAO.insert(service_mail_pictureVO);
+						}
 					}
 				}
 				
@@ -133,16 +150,22 @@ public class Service_mailServlet extends HttpServlet {
 				String mail_time = sdf.format(new java.util.Date());
 				
 				Service_mailService service_mailSvc = new Service_mailService();
-				Service_mailVO service_mailVO = service_mailSvc.addService_mail(emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time);
-				req.setAttribute("service_mailVO", service_mailVO);
+				if(set.size() == 0) {
+					Service_mailVO service_mailVO = service_mailSvc.addService_mail(emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time);
+					req.setAttribute("service_mailVO", service_mailVO);
+				}else {
+					service_mailSvc.insertWithPic(emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time, set);
+				}
+				
+				
 				RequestDispatcher successView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
 				successView.forward(req, res);
 				
-			}catch(Exception e) {
-				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/addService_mail.jsp");
-				failureView.forward(req, res);
-			}
+//			}catch(Exception e) {
+//				errorMsgs.put("exception", new String[] {e.getMessage()});
+//				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/addService_mail.jsp");
+//				failureView.forward(req, res);
+//			}
 		}
 		
 		if("getOne_For_Update".equals(action)) {

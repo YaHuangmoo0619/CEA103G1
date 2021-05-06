@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<title>新增信件</title>
+<title>回覆信件</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -82,7 +82,7 @@ input.confirm:hover{
 <style>
 #container {
 	padding: 10px;
-	width: 600px;
+	max-width: 250px;
 	margin: 0px auto;
 }
 .align{
@@ -91,9 +91,10 @@ input.confirm:hover{
 }
 #preview, .change{
 	margin: 10px 0px;
+	
 }
 img{
-	width: 160px;
+	max-width: 100%;
 	margin: 10px;
 }
 .delete{
@@ -109,7 +110,7 @@ img{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>新增信件&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
+			<h2>回覆信件&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/listAllService_mail.jsp">回客服信列表</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<h3>信件撰寫:</h3>
