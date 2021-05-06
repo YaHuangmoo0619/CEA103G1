@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<title>新增會員站內信</title>
+<title>新增信件</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -88,10 +88,9 @@ input.confirm:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>新增會員站內信&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/member_mail/select_page.jsp">回首頁</a></h2>
+			<h2>新增信件&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/member_mail/select_page.jsp">回首頁</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>資料列表:</h3>
 			<form method="post" action="<%=request.getContextPath()%>/member_mail/member_mail.do">
 			<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService"/>
 			<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
@@ -144,8 +143,8 @@ ${param.mail_cont.trim().isEmpty()? '':param.mail_cont.trim()}
 					<input type="hidden" name="mail_stat" value="0">
 					<input type="hidden" name="mail_read_stat" value="0">
 					<input type="hidden" name="action" value="insert">
-					<input type="submit" value="送出新增" class="confirm">
-					<input type="submit" value="存入草稿" class="confirm">
+					<input type="submit" value="發送" class="confirm">
+<!-- 					<input type="submit" value="存入草稿" class="confirm"> -->
 			</form>
 		</div>
 	</div>

@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<title>新增客服信</title>
+<title>新增信件</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -33,6 +33,7 @@ div.right{
 }
 a.content{
 	color: #80c344;
+	font-size: 0.6em;
 }
 a.content:hover {
 	color: #4B7F52;
@@ -88,7 +89,7 @@ input.confirm:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>新增客服信&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
+			<h2>新增信件&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<h3>信件撰寫:</h3>
@@ -140,8 +141,7 @@ input.confirm:hover{
 					<input type="hidden" name="mail_stat" value="0">
 					<input type="hidden" name="mail_read_stat" value="0">
 					<input type="hidden" name="action" value="insert">
-					<input type="submit" value="送出新增" class="confirm">
-					<input type="submit" value="存入草稿" class="confirm">
+					<input type="submit" value="發送" class="confirm">
 			</form>
 		</div>
 	</div>

@@ -106,9 +106,7 @@ input.confirm:hover{
 						<select size="1" name="emp_no" id="emp_no">
 						<option value="99">--請選擇--</option>
 						<c:forEach var="employeeVO" items="${employeeSvc.all}">
-							<c:if test="${employeeVO.emp_no != 90001}">
 							<option value="${employeeVO.emp_no}" ${employeeVO.emp_no == service_mailVO.emp_no || employeeVO.emp_no == param.emp_no? 'selected':''}>${employeeVO.emp_no}${employeeVO.name}</option>
-							</c:if>
 						</c:forEach>
 						</select>
 					</td>
@@ -141,7 +139,7 @@ input.confirm:hover{
 					<input type="hidden" name="mail_read_stat" value="0">
 					<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}">
 					<input type="hidden" name="action" value="update">
-					<input type="submit" value="送出修改" class="confirm">
+					<input type="submit" value="送出修改" class="confirm" disabled>
 					<input type="submit" value="存入草稿" class="confirm">
 			</form>
 		</div>

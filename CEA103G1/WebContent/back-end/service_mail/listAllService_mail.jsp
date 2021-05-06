@@ -73,13 +73,14 @@ input.change:hover{
 	margin-right: -5px;
 }
 tr{
-	border-top: 1px solid #4e5452;
-	border-bottom: 1px solid #4e5452;
+	border-top: 1px solid #eee;
+	border-bottom: 2px solid #eee;
 }
 tr:hover{
  	box-shadow: 0 1px 5px 0 #4e5452;
  	cursor: pointer;
 }
+
 </style>
 
 </head>
@@ -122,9 +123,14 @@ tr:hover{
 						<td>${service_mailVO.emp_no}</td>
 						<td>${service_mailVO.mbr_no}</td>
 						<c:set var="mail_cont" value="${service_mailVO.mail_cont}"/>
-						<td>${fn:substring(mail_cont, 0, 10)}...</td>
+						<c:if test="${mail_cont.length() > 10}">
+							<td>${fn:substring(mail_cont, 0, 10)}...</td>
+						</c:if>
+						<c:if test="${mail_cont.length() <= 10}">
+							<td>${mail_cont}</td>
+						</c:if>
 						<td>${service_mailVO.mail_stat}</td>
-						<td>${service_mailVO.mail_read_stat}</td>
+						<td class="mail_read_stat">${service_mailVO.mail_read_stat}</td>
 						<c:set var="mail_time" value="${service_mailVO.mail_time}"/>
 						<td>${fn:substring(mail_time, 0, 10)}</td>
 <!-- 						<td> -->
@@ -145,8 +151,22 @@ tr:hover{
 	$("tr").click(function(e){
 		let mail_no = e.currentTarget.children[0].innerText;
 		console.log(mail_no);
-		window.location.href="<%=request.getContextPath()%>/back-end/service_mail/listOneService_mail.jsp?mail_no="+mail_no+"&action=read";
+		window.location.href="<%=request.getContextPath()%>/service_mail/service_mail.do?mail_no="+mail_no+"&action=read";
 	});
+	
+	
+	for(let i = 0; i < $(".mail_read_stat").length; i++){
+		console.log($(".mail_read_stat")[i].innerText);
+		if($(".mail_read_stat")[i].innerText === '1'){
+			console.log('ok');
+			$($(".mail_read_stat")[i]).parent()[0].style.backgroundColor='#eee';
+		}
+		if($(".mail_read_stat")[i].innerText === '0'){
+			console.log('ok');
+			$($(".mail_read_stat")[i]).parent()[0].style.fontWeight='555';
+		}
+	}
+	
 </script>
 </body>
 </html>
