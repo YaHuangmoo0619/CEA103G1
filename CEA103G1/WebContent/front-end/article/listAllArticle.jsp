@@ -26,7 +26,7 @@
 	class="com.board_class.model.Board_ClassService" />
 <jsp:useBean id="bd_clDAO" scope="page"
 	class="com.board_class.model.Board_ClassDAO" />
-<%-- <jsp:useBean id="articleDAO" scope="page" class="com.article.model.ArticleDAO" /> --%>
+
 
 <html>
 <head>

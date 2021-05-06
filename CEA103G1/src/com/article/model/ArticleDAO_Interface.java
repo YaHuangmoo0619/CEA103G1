@@ -28,5 +28,7 @@ public interface ArticleDAO_Interface {
 	
 	public List<ArticleVO> getAll_Front();
 	
+	public List<ArticleVO> findByMbr_no(Integer mbr_no);
+	
 	public List<ArticleVO> getAll_Back();
 }

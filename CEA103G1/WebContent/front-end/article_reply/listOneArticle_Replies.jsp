@@ -2,16 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ page import="com.article_reply.model.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="com.article_reply.model.*"%>
+
 
 <%int art_no = Integer.parseInt(request.getParameter("art_no")); %>
 <%
   Article_ReplyService article_replySvc = new Article_ReplyService();
-
   List<Article_ReplyVO> list = article_replySvc.getOneArticle_Replies(art_no);
-  pageContext.setAttribute("list", list);
-  
+  pageContext.setAttribute("list", list); 
 %>
 
 

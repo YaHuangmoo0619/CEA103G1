@@ -638,9 +638,9 @@ public class ArticleServlet extends HttpServlet {
 
 			try {
 				
-				String requestURI = req.getRequestURI();
-				System.out.println(requestURI);
-				req.setAttribute("requestURI", requestURI);
+				String requestURL = req.getHeader("Referer");  
+				System.out.println(requestURL);
+				req.setAttribute("requestURL", requestURL);
 				Jedis jedis = new Jedis("localhost", 6379);
 				jedis.auth("123456");
 				jedis.select(6);
@@ -675,9 +675,8 @@ public class ArticleServlet extends HttpServlet {
 				System.out.println(openModal);
 				req.setAttribute("openModal",openModal );
 				
-				// 取出的articleVO送給listOneEmp.jsp
-				RequestDispatcher successView = req
-						.getRequestDispatcher("/front-end/article/listAllArticle.jsp");
+
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/article/listAllArticle.jsp");
 				successView.forward(req, res);
 				return;
 
@@ -689,7 +688,7 @@ public class ArticleServlet extends HttpServlet {
 		
 		
 		
-		if ("getOne_From3".equals(action)) {  //回到論壇首頁的燈箱
+		if ("getOne_From3".equals(action)) {  //回到看板首頁的燈箱
 
 			try {
 				// Retrieve form parameters.

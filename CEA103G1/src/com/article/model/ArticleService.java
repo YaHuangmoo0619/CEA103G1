@@ -136,6 +136,10 @@ public class ArticleService {
 		return dao.findByBd_cl_no_front(bd_cl_no);
 	}
 	
+	public List<ArticleVO> getByMbr_no(Integer mbr_no){
+		return dao.findByMbr_no(mbr_no);
+	}
+	
 }
 
 

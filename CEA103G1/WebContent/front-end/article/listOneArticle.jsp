@@ -13,7 +13,7 @@
   Set<String> tag_list = (Set<String>) request.getAttribute("tag_list"); //ArticleServlet.java(Concroller), 存入req的articleVO物件
 %>
 
-<%String requestURI = (String)request.getAttribute("requestURI"); %>
+<%String requestURL = (String)request.getAttribute("requestURL"); %>
 
 <html>
 <head>
@@ -123,7 +123,7 @@
    </tr>
     <tr>
 		<td>會員編號</td>
-		<td><%=articleVO.getMbr_no()%></td>
+		<td><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=<%=articleVO.getMbr_no()%>&action=getProfile"><%=articleVO.getMbr_no()%></a></td>
    </tr>
    <tr>
 		<td>發表時間</td>
@@ -210,7 +210,10 @@
 <button id=rep>新增文章留言</button>
 
 
-
+<script>
+ var stateObj = { foo: "bar" };
+ history.pushState(stateObj, "page 2", "${requestURL}");
+</script>
 
 	<script>   
   	$("#rep").click(function(){
