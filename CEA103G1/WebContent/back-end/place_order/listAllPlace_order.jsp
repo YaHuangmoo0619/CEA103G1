@@ -52,6 +52,19 @@ form {
 span {
 	color: #80c344;
 }
+input.confirm{
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+input.confirm:hover{
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -78,7 +91,7 @@ span {
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/place_order/place_order.do"
 						style="margin-bottom: 0px;">
-						<input type="submit" value="現有訂單"><input type="hidden"
+						<input type="submit" value="現有訂單" class="confirm"><input type="hidden"
 							name="action" value="listPresent">
 					</FORM>
 				</div>
@@ -86,7 +99,7 @@ span {
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/place_order/place_order.do"
 						style="margin-bottom: 0px;">
-						<input type="submit" value="歷史訂單"><input type="hidden"
+						<input type="submit" value="歷史訂單" class="confirm"><input type="hidden"
 							name="action" value="listHistory">
 					</FORM>
 				</div>

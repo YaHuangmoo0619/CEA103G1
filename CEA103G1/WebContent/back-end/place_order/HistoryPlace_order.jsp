@@ -104,7 +104,7 @@ table, th, td {
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/place_order/place_order.do"
 						style="margin-bottom: 0px;">
-						<input type="submit" value="查看"> <input type="hidden"
+						<input type="submit" value="查看" class="confirm"> <input type="hidden"
 							name="plc_ord_no" value="${place_orderVO.plc_ord_no}"> <input
 							type="hidden" name="action" value="getOnePlaceOrder">
 					</FORM>

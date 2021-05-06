@@ -12,6 +12,34 @@
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 
 <style>
+.confirm {
+	margin: 2px;
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+	background-color: #80c344;
+}
+
+.confirm:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+
+div.left {
+	margin-top: 20px;
+	/* 	margin-right: 100%; */
+}
+
+div.right {
+	background-color: #fff;
+	margin-top: 20px;
+	/* 	padding: 50px 50px; */
+	border-radius: 5px;
+}
 
 html, body {
 	margin: 0;
@@ -271,24 +299,24 @@ img.person:hover {
 
 table {
 	border-collapse: collapse;
-	width: 60%;
+	width: 100%;
 	/*自動斷行*/
 	word-wrap: break-word;
 	table-layout: fixed;
 	text-align: center;
 }
-tr:nth-child(odd) {
-	background: white;
-}
 
-tr:nth-child(even) {
-	background: #F0FFF0;
-}
+/* tr:nth-child(odd) { */
+/* 	background: white; */
+/* } */
 
+/* tr:nth-child(even) { */
+/* 	background: #F0FFF0; */
+/* } */
 #map {
-	width: 300px;
-	height: 200px;
-	margin: 10px auto;
+	width: 330px;
+	height: 220px;
+	margin: 10px;
 }
 </style>
 </head>
@@ -300,8 +328,8 @@ tr:nth-child(even) {
 				placeholder="營位/商品/文章" aria-label="Search">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
 		</form>
-		<img src="/CEA103G1/front-images/search-circle-outline.svg" class="searchIcon"
-			onclick="showSearch()">
+		<img src="/CEA103G1/front-images/search-circle-outline.svg"
+			class="searchIcon" onclick="showSearch()">
 		<div class="btn-group" role="group" aria-label="Basic example">
 			<button type="button" class="btn btn-secondary">營區</button>
 			<button type="button" class="btn btn-secondary">商城</button>
@@ -319,100 +347,141 @@ tr:nth-child(even) {
 			src="/CEA103G1/front-images/person-circle-outline.svg" class="person">
 
 	</div>
-	<div id="map"></div>
-	<div><h1 id="title"></h1>
-	<label><ion-icon id="fav" name="bookmark-outline" size="large" style="cursor: pointer;"></ion-icon></label></div>
-	<div id="featurelist"></div>
-	<div id="addrblock">
-		<p id="address"></p>
-		<p id="location"></p>
-	</div>
-	<div id="information">
-		<div id="facility"><ion-icon name="bicycle-outline"></ion-icon></div>
-		<div id="pet"><ion-icon name="paw-outline"></ion-icon></div>
-		<div id="wireless"><ion-icon name="wifi-outline"></ion-icon></div>
-		<div id="park"><ion-icon name="car-sport-outline"></ion-icon></div>
-		<div id="height"><ion-icon name="trending-up-outline"></ion-icon></div>
-		<div id="operate"><ion-icon name="calendar-number-outline"></ion-icon></div>
-	</div>
-	<div id="infoblock">
-		<p id="campInfo"></p>
-	</div>
-	<img id="config" width="800" height="500">
-	<FORM method="get" id="form1" onsubmit="return false"
-		accept-charset="big5">
-		入住日期:<input id="startdate" name="startdate" type="text">退房日期:<input
-			id="enddate" name="enddate" type="text">人數:<input
-			name="people" id="people" type="text"><input type="hidden"
-			id="camp_no" name="camp_no"><input type="hidden"
-			value="restart" name="action"><input type="button"
-			id="restart" value="更改">
-	</FORM>
-	<input id="stdt" name="startdate" type="hidden">
-	<input id="eddt" name="enddate" type="hidden">
-	<input name="pp" id="people" type="hidden">
-
-	<div id="showplace">
-		<table id="placeInfo"></table>
-	</div>
-	<div id="photo"></div>
-	<div>
-		<FORM method="post" id="order" onsubmit="return false"
-			accept-charset="big5" style="display: none;">
-			<table id="info">
-				<tr>
-					<td>日期</td>
-					<td>入住日期<input type="text" name="startdate" id="stdate"
-						readonly="true"><br>退房日期<input type="text"
-						name="enddate" id="eddate" readonly="true"></td>
-				</tr>
-				<tr>
-					<td>加購人數</td>
-					<td><input type="text" name="ex_ppl" id="ex_ppl"
-						readonly="true" value="0">人 200元/人</td>
-				</tr>
-				<tr>
-					<td>總金額</td>
-					<td><input type="text" name="total" id="total" readonly="true">元</td>
-				</tr>
-				<tr>
-					<td>訂金</td>
-					<td id="deposit"><input type="radio" name="deposit" value="0" required>全額付清<input
-						type="radio" name="deposit" value="1">先付訂金</td>
-				</tr>
-				<tr id="useornot" style="display: none;">
-					<td id="point">點數折抵</td>
-					<td><input type="radio" name="point" value="0" required>使用<input
-						type="radio" name="point" value="1" checked="checked">不使用</td>
-				</tr>
-				<tr>
-					<td>付款方式</td>
-					<td id="pay_meth"><input type="radio" name="pay_meth" value="0" required>信用卡<input
-						type="radio" name="pay_meth" value="1">匯款</td>
-				</tr>
-				<tr>
-					<td>發票方式</td>
-					<td><input type="radio" name="receipt" value="0" required>紙本發票<input
-						type="radio" name="receipt" value="1">電子發票<input
-						type="radio" name="reciept" value="2">發票捐贈</td>
-				</tr>
-				<tr>
-					<td>備註</td>
-					<td><textArea name="rmk"></textArea></td>
-				</tr>
-				<tr>
-					<td><input type="hidden" name="camp" id="camp"><input
-						type="hidden" name="place" id="place"><input type="reset"
-						value="重置"></td>
-					<td><input type="button" id="send" value="送出"></td>
-				</tr>
-			</table>
+	<div style="margin-top:15px;text-align:center;">
+		<FORM method="get" id="condition" onsubmit="return false"
+			accept-charset="big5">
+			<!-- 		縣市:<select id="county" name="county"></select> -->
+			縣市: <input type="text" name="c" id="c"> 入住日期: <input
+				name="st" id="st" type="text"> 退房日期: <input
+				name="ed" id="ed" type="text"> 人數: <input
+				name="p" id="p" type="number"> <input
+				type="hidden" name="action" value="search"> <input
+				type="button" id="backtobrowse" value="重新查詢">
 		</FORM>
+		<hr>
 	</div>
-	<div id="noteblock">
-		<p id="note"></p>
+	<div class="container" style="margin-left: 0;">
+		<div class="row">
+			<div class="left col-4">
+				<div id="map"></div>
+			</div>
+			<div class="right col-8">
+				<div>
+					<h1 id="title"></h1>
+					<label><ion-icon id="fav" name="bookmark-outline"
+							size="large" style="cursor: pointer;"></ion-icon></label>
+				</div>
+				<div id="featurelist"></div>
+				<div id="addrblock">
+					<div id="address" style="display: inline-block;"></div>
+					<div id="location" style="display: inline-block;"></div>
+				</div>
+				<div id="photo"></div>
+				<br>
+				<div id="information">
+					<div id="facility">
+						<ion-icon name="bicycle-outline"></ion-icon>
+					</div>
+					<div id="pet">
+						<ion-icon name="paw-outline"></ion-icon>
+					</div>
+					<div id="wireless">
+						<ion-icon name="wifi-outline"></ion-icon>
+					</div>
+					<div id="park">
+						<ion-icon name="car-sport-outline"></ion-icon>
+					</div>
+					<div id="height">
+						<ion-icon name="trending-up-outline"></ion-icon>
+					</div>
+					<div id="operate">
+						<ion-icon name="calendar-number-outline"></ion-icon>
+					</div>
+				</div>
+				<div id="infoblock">
+					<p id="campInfo"></p>
+				</div>
+				<img id="config" width="800" height="500"><br> <br>
+				<FORM method="get" id="form1" onsubmit="return false"
+					accept-charset="big5">
+					入住日期:<input id="startdate" name="startdate" type="text">退房日期:<input
+						id="enddate" name="enddate" type="text">人數:<input
+						name="people" id="people" type="text"><input type="hidden"
+						id="camp_no" name="camp_no"><input type="hidden"
+						value="restart" name="action"><input type="button"
+						id="restart" value="更改">
+				</FORM>
+				<input id="stdt" name="startdate" type="hidden"> <input
+					id="eddt" name="enddate" type="hidden"> <input name="pp"
+					id="people" type="hidden">
+
+				<div id="showplace">
+					<table id="placeInfo"></table>
+				</div>
+				<div>
+					<FORM method="post" id="order" onsubmit="return false"
+						accept-charset="big5" style="display: none;">
+						<table id="info">
+							<tr>
+								<td>日期</td>
+								<td>入住日期<input type="text" name="startdate" id="stdate"
+									readonly="true"><br>退房日期<input type="text"
+									name="enddate" id="eddate" readonly="true"></td>
+							</tr>
+							<tr>
+								<td>加購人數</td>
+								<td><input type="text" name="ex_ppl" id="ex_ppl"
+									readonly="true" value="0">人 200元/人</td>
+							</tr>
+							<tr>
+								<td>總金額</td>
+								<td><input type="text" name="total" id="total"
+									readonly="true">元</td>
+							</tr>
+							<tr>
+								<td>訂金</td>
+								<td id="deposit"><input type="radio" name="deposit"
+									value="0" required>全額付清<input type="radio"
+									name="deposit" value="1">先付訂金</td>
+							</tr>
+							<tr id="useornot" style="display: none;">
+								<td id="point">點數折抵</td>
+								<td><input type="radio" name="point" value="0" required>使用<input
+									type="radio" name="point" value="1" checked="checked">不使用</td>
+							</tr>
+							<tr>
+								<td>付款方式</td>
+								<td id="pay_meth"><input type="radio" name="pay_meth"
+									value="0" required>信用卡<input type="radio"
+									name="pay_meth" value="1">匯款</td>
+							</tr>
+							<tr>
+								<td>發票方式</td>
+								<td><input type="radio" name="receipt" value="0" required>紙本發票<input
+									type="radio" name="receipt" value="1">電子發票<input
+									type="radio" name="reciept" value="2">發票捐贈</td>
+							</tr>
+							<tr>
+								<td>備註</td>
+								<td><textArea name="rmk"></textArea></td>
+							</tr>
+							<tr>
+								<td><input type="hidden" name="camp" id="camp"><input
+									type="hidden" name="place" id="place"><input
+									type="reset" value="重置"></td>
+								<td><input type="button" id="send" value="送出"></td>
+							</tr>
+						</table>
+					</FORM>
+				</div>
+				<div id="noteblock">
+					<p id="note"></p>
+				</div>
+			</div>
+		</div>
 	</div>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS3FFLkorvfSYZ9kblu3kplAs2a1H8dO8"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS3FFLkorvfSYZ9kblu3kplAs2a1H8dO8"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 		crossorigin="anonymous"></script>
@@ -475,7 +544,7 @@ tr:nth-child(even) {
 		function showCamp(data) {
 			$('#camp_no').val(`${data[0].camp_no}`);
 			$('#title').text(`${data[0].camp_name}`);
-			$('#address').text(`地址:${data[0].address}`);
+			$('#address').text(`地址:${data[0].address}   `);
 			$('#location').text(`位置:${data[0].latitude}, ${data[0].longitude}`);
 			$('#facility').append(`設施:${data[0].facility}`);
 			$('#park').append(`停車方式:${data[0].park}`);
@@ -578,17 +647,30 @@ tr:nth-child(even) {
 			if(data.length === 3){
 				for(i in data[2]){
 					let html;
-					html =`<button value="${data[2][i].camp_fl_no}">${data[2][i].camp_fl_name}</button>`;
+					html =`<button value="${data[2][i].camp_fl_no}" onclick="findWithFeature(this.value)" class="confirm">${data[2][i].camp_fl_name}</button>`;
 					$('#featurelist').append(html);
 				}
 			}else{
 				for(i in data[1]){
 					let html;
-					html =`<button value="${data[1][i].camp_fl_no}">${data[1][i].camp_fl_name}</button>`;
+					html =`<button value="${data[1][i].camp_fl_no}" onclick="findWithFeature(this.value)" class="confirm">${data[1][i].camp_fl_name}</button>`;
 					$('#featurelist').append(html);
 				}
 			}
 		}
+		
+		function findWithFeature(e) {
+			window.location.href="http://localhost:8081/CEA103G1/front-end/NewFile.html?camp_fl_no=" + e;
+		}
+
+		$("#backtobrowse").click(function(){
+			let st = $('#st').val();
+			let ed = $('#ed').val();
+			let p = $('#p').val();
+			let c = $('#c').val();
+			sessionStorage.setItem('county',c)
+			window.location.href="http://localhost:8081/CEA103G1/front-end/NewFile.html?startdate=" + st + "&enddate=" + ed + "&people=" + p;
+		});
 		
 		function showPlace(data){
 			let html;

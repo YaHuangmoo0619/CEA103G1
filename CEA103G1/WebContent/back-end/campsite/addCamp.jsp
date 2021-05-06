@@ -176,14 +176,16 @@ span {
 								value="<%=(campVO == null) ? "復興路46號" : campVO.getAddress()%>"></td>
 						</tr>
 
-					</table>
+					</table><br>
 					<div>
 						<c:forEach var="feature_listVO" items="${list}">
-							<div>
+							<div style="display:inline-block;">
 								<input type="checkbox" name="feature_list"
 									value="${feature_listVO.camp_fl_no}">${feature_listVO.camp_fl_name}</div>
 						</c:forEach>
-					</div>
+						<div style="display:inline-block;"><input type="checkbox" name="feature_list"
+									value="other">其他:<input type="text"></div>
+					</div><br>
 					<table id="camp_plc">
 						<tr id="title">
 							<th>營位名稱</th>
