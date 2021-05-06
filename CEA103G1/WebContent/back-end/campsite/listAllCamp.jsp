@@ -25,6 +25,19 @@
 <%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
+input.confirm{
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+input.confirm:hover{
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
 body {
 	background-color: #4e5452;
 	color: #4e5452;
@@ -125,18 +138,10 @@ span {
 								<FORM METHOD="post"
 									ACTION="<%=request.getContextPath()%>/camp/camp.do"
 									style="margin-bottom: 0px;">
-									<input type="submit" value="修改"> <input type="hidden"
-										name="camp_no" value="${campVO.camp_no}"> <input
-										type="hidden" name="action" value="getOne_For_Update">
-								</FORM>
-							</td>
-							<td>
-								<FORM METHOD="post"
-									ACTION="<%=request.getContextPath()%>/camp/camp.do"
-									style="margin-bottom: 0px;">
-									<input type="submit" value="刪除"> <input type="hidden"
-										name="camp_no" value="${campVO.camp_no}"> <input
-										type="hidden" name="action" value="delete">
+									<input type="submit" value="查看" class="confirm"> <input
+										type="hidden" name="camp_no"
+										value="${campVO.camp_no}"> <input
+										type="hidden" name="action" value="getOne_For_Display">
 								</FORM>
 							</td>
 						</tr>

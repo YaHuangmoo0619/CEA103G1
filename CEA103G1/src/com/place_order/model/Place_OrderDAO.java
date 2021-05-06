@@ -22,6 +22,7 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 	}
 	private static final String GET_ONE_STMT = "SELECT * FROM PLACE_ORDER where PLC_ORD_NO = ?";
 	private static final String GET_BYCAMP_STMT = "SELECT PLC_ORD_NO FROM PLACE_ORDER where CAMP_NO = ?";
+	private static final String GET_BYMEMBER_STMT = "SELECT * FROM PLACE_ORDER where MBR_NO = ?";
 	private static final String GET_ALL_STMT = "SELECT * FROM PLACE_ORDER order by PLC_ORD_NO";
 	private static final String INSERT_STMT = "INSERT INTO PLACE_ORDER (mbr_no,camp_no,ckin_date,ckout_date,plc_amt,plc_ord_sum,ex_ppl,pay_meth,pay_stat,used_pt,receipt,rmk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE PLACE_ORDER set ckin_date=?,ckout_date=?,plc_amt=?,plc_ord_sum=?,ex_ppl=?,pay_meth=?,pay_stat=?,used_pt=?,ckin_stat=?,receipt=?,rmk=? where PLC_ORD_NO = ?";
@@ -98,6 +99,65 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 			pstmt.setInt(1, camp_no);
 			rs = pstmt.executeQuery();
 
+			while (rs.next()) {
+				place_orderVO = new Place_OrderVO();
+				place_orderVO.setPlc_ord_no(rs.getInt("plc_ord_no"));
+				place_orderVO.setMbr_no(rs.getInt("mbr_no"));
+				place_orderVO.setCamp_no(rs.getInt("camp_no"));
+				place_orderVO.setPlc_ord_time(rs.getTimestamp("plc_ord_time"));
+				place_orderVO.setCkin_date(rs.getDate("ckin_date"));
+				place_orderVO.setCkout_date(rs.getDate("ckout_date"));
+				place_orderVO.setPlc_amt(rs.getInt("plc_amt"));
+				place_orderVO.setPlc_ord_sum(rs.getInt("plc_ord_sum"));
+				place_orderVO.setEx_ppl(rs.getInt("ex_ppl"));
+				place_orderVO.setPay_meth(rs.getInt("pay_meth"));
+				place_orderVO.setPay_stat(rs.getInt("pay_stat"));
+				place_orderVO.setUsed_pt(rs.getInt("used_pt"));
+				place_orderVO.setCkin_stat(rs.getInt("ckin_stat"));
+				place_orderVO.setReceipt(rs.getInt("receipt"));
+				place_orderVO.setRmk(rs.getString("rmk"));
+				list.add(place_orderVO);
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	public List<Place_OrderVO> findByMember(Integer mbr_no) {
+		List<Place_OrderVO> list = new ArrayList<Place_OrderVO>();
+		Place_OrderVO place_orderVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_BYMEMBER_STMT);
+			pstmt.setInt(1, mbr_no);
+			rs = pstmt.executeQuery();
+			
 			while (rs.next()) {
 				place_orderVO = new Place_OrderVO();
 				place_orderVO.setPlc_ord_no(rs.getInt("plc_ord_no"));

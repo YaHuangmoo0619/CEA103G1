@@ -2,45 +2,358 @@
 <html>
 <head>
 <META http-equiv="Content-Type" content="text/html; charset=BIG5">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="icon" href="/CEA103G1/images/campionLogoIcon.png"
+	type="image/png">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>搜尋營區</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+<style>
+.confirm {
+	margin: 2px;
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+	background-color: #80c344;
+}
+
+.confirm:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+
+.camp:hover {
+	background-color: #F0FFF0;
+}
+
+.camp {
+	margin: 0px;
+}
+
+div.left {
+	margin-top: 20px;
+}
+
+div.right {
+	background-color: #fff;
+	margin-top: 20px;
+	/* 	padding: 50px 50px; */
+	border-radius: 5px;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	/*background-color: #4e5452;*/
+	background-color: #fff;
+	color: #4B7F52;
+}
+
+section {
+	text-align: center;
+}
+
+img.logo {
+	width: 100px;
+	margin: 10px;
+	margin-left: 100px;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+form.form-inline {
+	display: inline;
+	border: none;
+}
+
+img.searchIcon {
+	display: none;
+}
+
+img.cart {
+	width: 30px;
+	margin: 10px;
+}
+
+img.cart:hover {
+	cursor: pointer;
+}
+
+img.menu {
+	width: 40px;
+	margin: 10px;
+	display: none;
+}
+
+img.menu:hover {
+	cursor: pointer;
+}
+
+img.person {
+	width: 40px;
+	margin: 10px;
+}
+
+img.person:hover {
+	cursor: pointer;
+}
+
+@media screen and (max-width: 575px) {
+	container {
+		width: 100%;
+	}
+	form.form-inline {
+		display: none;
+	}
+	form.secSearch {
+		display: none;
+	}
+	img.searchIcon {
+		display: inline;
+		width: 30px;
+		margin: 0px;
+	}
+	img.searchIcon:hover {
+		cursor: pointer;
+	}
+	div.btn-group {
+		display: none;
+	}
+	img.menu {
+		width: 30px;
+		margin: 10px;
+		display: inline-block;
+	}
+	div.sec {
+		display: none;
+		background-color: #eee;
+	}
+	div.where {
+		display: block;
+		padding: 5px 100px;
+		text-align: left;
+	}
+	div.slogan h1 {
+		color: #fff;
+		font-size: 2em;
+		font-weight: 999;
+		margin: 50px auto;
+	}
+	div.photo {
+		width: 200px;
+		height: 100px;
+		margin: 20px auto;
+		background-color: #eee;
+		overflow: hidden;
+	}
+	div.row {
+		margin-top: 0px;
+	}
+	div.article {
+		width: 90%;
+		margin: 20px auto;
+		text-align: left;
+		background-color: #eee;
+		border-radius: 5px;
+		padding: 10px 50px 20px 50px;
+	}
+	div.more {
+		display: inline;
+	}
+	section.footer {
+		background-color: #4B7F52;
+		color: #80c344;
+		height: 100px;
+		padding-top: 30px;
+	}
+}
+
+@media ( min-width : 576px) and (max-width: 767px) {
+	container {
+		width: 540px;
+		margin: 0px auto;
+	}
+	form.form-inline {
+		display: none;
+	}
+	form.secSearch {
+		display: none;
+	}
+	img.searchIcon {
+		display: inline;
+		width: 30px;
+		margin: 0px;
+	}
+	img.searchIcon:hover {
+		cursor: pointer;
+	}
+	div.btn-group {
+		display: none;
+	}
+	img.menu {
+		width: 30px;
+		margin: 10px;
+		display: inline-block;
+	}
+	div.sec {
+		display: none;
+		background-color: #eee;
+	}
+	div.where {
+		display: block;
+		padding: 5px 130px;
+		text-align: left;
+	}
+}
+
+@media ( min-width : 768px) and (max-width: 991px) {
+	container {
+		width: 720px;
+		margin: 0px auto;
+	}
+	form.form-inline {
+		display: none;
+	}
+	form.secSearch {
+		display: none;
+	}
+	img.searchIcon {
+		display: inline;
+		width: 30px;
+		margin: 0px;
+	}
+	img.searchIcon:hover {
+		cursor: pointer;
+	}
+	div.btn-group {
+		display: none;
+	}
+	img.menu {
+		width: 30px;
+		margin: 10px;
+		display: inline-block;
+	}
+	div.sec {
+		display: none;
+		background-color: #fff;
+	}
+	div.where {
+		display: block;
+		padding: 5px 220px;
+		text-align: left;
+	}
+	div.photo {
+		width: 300px;
+		height: 150px;
+		margin: 20px auto;
+		background-color: #eee;
+		overflow: hidden;
+	}
+}
+
+@media ( min-width : 992px) and (max-width: 1199px) {
+	container {
+		width: 960px;
+		margin: 0px auto;
+	}
+	div.menuForButton {
+		display: none;
+	}
+	div.forSearch {
+		display: none;
+	}
+	div.photo {
+		width: 400px;
+		height: 200px;
+		margin: 20px auto;
+		background-color: #fff;
+		overflow: hidden;
+	}
+}
+
+@media ( min-width : 1200px) {
+	container {
+		width: 1140px;
+		margin: 0px auto;
+	}
+	div.menuForButton {
+		display: none;
+	}
+	div.forSearch {
+		display: none;
+	}
+	div.photo {
+		width: 400px;
+		height: 200px;
+		margin: 20px auto;
+		background-color: #fff;
+		overflow: hidden;
+	}
+}
+</style>
 </head>
 <body>
-	<div class="container" id="form">
+	<div style="background-color: #eee;">
+		<img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
+		<form class="form-inline my-2 my-lg-0">
+			<input class="form-control mr-sm-2" type="search"
+				placeholder="營位/商品/文章" aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
+		</form>
+		<img src="/CEA103G1/front-images/search-circle-outline.svg"
+			class="searchIcon" onclick="showSearch()">
+		<div class="btn-group" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-secondary">營區</button>
+			<button type="button" class="btn btn-secondary">商城</button>
+			<button type="button" class="btn btn-secondary">論壇</button>
+		</div>
+		<img src="/CEA103G1/front-images/cart-outline.svg" class="cart">
+		<div class="btn-group" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-outline-secondary">註冊</button>
+			<button type="button" class="btn btn-outline-secondary">登入</button>
+			<button type="button" class="btn btn-outline-secondary">FAQ</button>
+			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
+		</div>
+		<img src="/CEA103G1/front-images/menu-outline.svg" class="menu"
+			onclick="showMenu()"> <img
+			src="/CEA103G1/front-images/person-circle-outline.svg" class="person">
+
+	</div>
+	<div class="container" style="margin-left: 0; margin-right: 0;">
 		<div class="row">
-			<div class="col-sm-3">
+			<div class="left col-3">
 				<FORM method="get" id="condition" onsubmit="return false"
 					accept-charset="big5">
 					<!-- 		縣市:<select id="county" name="county"></select> -->
-					縣市:<input type="type" name="county"> 入住日期:<input
-						name="startdate" id="startdate" type="text"> 退房日期:<input
-						name="enddate" id="enddate" type="text"> 人數:<input
-						name="people" id="people" type="number"><input
-						type="hidden" name="action" value="search"><input
-						type="button" id="idForm" value="搜尋">
+					縣市:<br>
+					<input type="type" name="county" id="county"><br> 入住日期:<br>
+					<input name="startdate" id="startdate" type="text"><br>
+					退房日期:<br>
+					<input name="enddate" id="enddate" type="text"><br>
+					人數:<br>
+					<input name="people" id="people" type="number"><br>
+					<input type="hidden" name="action" value="search"><br>
+					<input type="button" id="idForm" value="搜尋">
 				</FORM>
 				<FORM id="feature"></FORM>
-<!-- 				<FORM id="budget"> -->
-<!-- 					<input type="radio" name="budget" value="1000">1000<input -->
-<!-- 						type="radio" name="budget" value="1500">1500<input -->
-<!-- 						type="radio" name="budget" value="2000">2000<input -->
-<!-- 						type="radio" name="budget" value="2500">2500<input -->
-<!-- 						type="radio" name="budget" value="3000">3000<input -->
-<!-- 						type="radio" name="budget" value="3500">3500 -->
-<!-- 				</FORM> -->
 			</div>
-		</div>
-	</div>
-
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-9" id="featurelist"></div>
-		</div>
-	</div>
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-9" id="all"></div>
+			<div class="right col-9">
+				<div id="featurelist"></div>
+				<div id="all"></div>
+			</div>
 		</div>
 	</div>
 	<script>
@@ -52,14 +365,55 @@
 				showFeature(data);
 			}
 		});
-		$.ajax({
-			type : "GET",
-			dataType : "json",
-			url : "http://localhost:8081/CEA103G1/campsite/CampInfo.do?action=getall",
-			success : function(data) {
-				showAll(data);
-			}
-		});
+		const url = window.location.href;
+		if(!url.includes("?")){
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "http://localhost:8081/CEA103G1/campsite/CampInfo.do?action=getall",
+				success : function(data) {
+					showAll(data);
+				}
+			});
+		}else if(url.includes("camp_fl_no")){
+			const splitUrl = url.split('?');
+			const query = splitUrl[1];
+			$('#all').children().remove();
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "http://localhost:8081/CEA103G1/feature_list/featurelist.do?action=getCamp&" + query,
+				success : function(data) {
+					window.history.pushState({}, document.title, url.substring(0,url.indexOf('?')));
+					showAll(data);
+				}
+			});
+		}else if(url.includes("&")){
+			const splitUrl = url.split('?');
+			const query = splitUrl[1];
+			const eachQuery = query.split('&');
+			const startdate = eachQuery[0].split('=');
+			const enddate = eachQuery[1].split('=');
+			const people = eachQuery[2].split('=');
+			const county = sessionStorage.getItem('county');
+			$('#startdate').val(startdate[1]);
+			$('#enddate').val(enddate[1]);
+			$('#people').val(people[1]);
+			$('#county').val(county);
+			$.ajax({
+				type : "GET",
+				cache : "false",
+				dataType : "json",
+				url : "http://localhost:8081/CEA103G1/ValidPlace.do",
+				data : $('#condition').serialize(), // serializes the form's elements.
+				success : function(data) {
+					window.history.pushState({}, document.title, url.substring(0,url.indexOf('?')));
+					showNames(data);
+				}
+			});
+		}
+		
+		
 	    $("#idForm").click(function(){
 			$('#all').children().remove();
 			$.ajax({
@@ -77,7 +431,7 @@
 		function showFeature(data){
 			for (i in data) {
 				let html;
-				html =`<button value="${data[i].camp_fl_no}" onclick="findWithFeature(this.value)">${data[i].camp_fl_name}</button>`;
+				html =`<button value="${data[i].camp_fl_no}" onclick="findWithFeature(this.value)" class="confirm">${data[i].camp_fl_name}</button>`;
 				$('#featurelist').append(html);
 			}
 		}
@@ -96,8 +450,8 @@
 			for (i in data) {
 				let html;	
 				var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
-				html = `<div><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
-					</a><ion-icon id="fav" name="bookmark-outline" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">最低價:${data[i].low_pc}</p></div><hr>`;
+				html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="180" height="130" style="margin-right:15px;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
+					</a><ion-icon id="fav" name="bookmark-outline" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr></div>`;
 				$('#all').append(html);
 				$(`#${data[i].camp_no}`).attr("href",href);
 				$(`#${data[i].camp_no}`).attr("target","_blank");
@@ -108,8 +462,8 @@
 				let html;
 				if (i) {	
 					var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&startdate=` + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val();
-					html = `<div><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
-						</a><ion-icon id="fav" name="bookmark-outline" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">最低價:${data[i].low_pc}</p></div><hr>`;
+					html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="180" height="130" style="margin-right:15px;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
+						</a><ion-icon id="fav" name="bookmark-outline" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr></div>`;
 				} else {
 					html = "<center>所有營區皆已滿</center>";
 				}

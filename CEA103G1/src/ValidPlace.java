@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import com.campsite.model.*;
 import com.campsite_collection.model.Camp_CollectionService;
 import com.campsite_collection.model.Camp_CollectionVO;
+import com.campsite_picture.model.Camp_PictureService;
 import com.district.model.*;
 import com.feature_list.model.Feature_ListService;
 import com.feature_list.model.Feature_ListVO;
@@ -46,7 +47,7 @@ public class ValidPlace extends HttpServlet {
 		} catch (NumberFormatException e) {
 			people = 1;
 		}
-		
+		Camp_PictureService camp_pictureSvc = new Camp_PictureService();
 		Place_Order_DetailsService place_order_detailsSvc = new Place_Order_DetailsService();
 		List<Place_Order_DetailsVO> place_order_detailslist = place_order_detailsSvc.getAll();// 把所有訂單明細取出來
 		LinkedHashSet<Integer> plc_no_set = new LinkedHashSet();// new一個放已被下訂之營位編號的set
@@ -190,7 +191,15 @@ public class ValidPlace extends HttpServlet {
 			campVO.setAddress(campSvc.getOneCamp(camp_no).getAddress());
 			camplist.add(campVO);
 		}
-
+		
+		for(CampVO campVO : camplist) {
+			List<String> firstPic = camp_pictureSvc.getCamp_Picture(campVO.getCamp_no());
+			if (firstPic.size() == 0) {// 暫時
+				firstPic.add("/CEA103G1/front-images/campionLogoShort.png");
+			}
+			campVO.setFirst_pic(firstPic.get(0));
+		}
+		
 		for (CampVO campVO : camplist) {
 			List<Integer> low_pc = new ArrayList();
 			List<PlaceVO> plclist = placeSvc.getByCamp(campVO.getCamp_no());

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="BIG5">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+	<div>
+		<input type="button" id="present" value="現有訂單"> <input
+			type="button" id="history" value="歷史訂單">
+	</div>
+	<div>
+		<table id="placeOrder">
+			<tr>
+				<th>營區名稱</th>
+				<th>入住日期</th>
+				<th>退房日期</th>
+				<th>總金額</th>
+				<th>付款狀態</th>
+			</tr>
+		</table>
+	</div>
+	<script>
+		$.ajax({
+			type : "GET",
+			dataType : "json",
+			url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=listPresent",
+			success : function(data) {
+				showPresent(data);
+			}
+		});
+		$('#present').click(function() {
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=listPresent",
+				success : function(data) {
+					showPresent(data);
+				}
+			});
+		})
+		$('#history').click(function() {
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=listHistory",
+				success : function(data) {
+					showHistory(data);
+				}
+			});
+		})
+		function showPresent(data) {
+			$('#placeOrder').children("tr:first-child").nextAll().remove();
+			for (i in data) {
+				if (`${data[i].pay_stat}` === `0`) {
+					var pay_stat = "未付款";
+				} else if (`${data[i].pay_stat}` === `1`) {
+					var pay_stat = "已付訂金";
+				} else if (`${data[i].pay_stat}` === `2`) {
+					var pay_stat = "已付全額";
+				}
+				let html;
+				html = `<tr><td>${data[i].camp_name}</td><td>${data[i].ckin_date}</td><td>${data[i].ckout_date}</td><td>${data[i].plc_ord_sum}</td><td>`
+						+ pay_stat + `</td></tr>`;
+				$('#placeOrder').append(html);
+			}
+		}
+		function showHistory(data) {
+			$('#placeOrder').children("tr:first-child").nextAll().remove();
+			for (i in data) {
+				if (`${data[i].pay_stat}` === `0`) {
+					var pay_stat = "未付款";
+				} else if (`${data[i].pay_stat}` === `1`) {
+					var pay_stat = "已付訂金";
+				} else if (`${data[i].pay_stat}` === `2`) {
+					var pay_stat = "已付全額";
+				}
+				let html;
+				html = `<tr><td>${data[i].camp_name}</td><td>${data[i].ckin_date}</td><td>${data[i].ckout_date}</td><td>${data[i].plc_ord_sum}</td><td>`
+						+ pay_stat + `</td></tr>`;
+				$('#placeOrder').append(html);
+			}
+		}
+	</script>
+</body>
+</html>

@@ -22,6 +22,7 @@ import com.campsite_collection.model.Camp_CollectionService;
 import com.campsite_collection.model.Camp_CollectionVO;
 import com.campsite_feature.model.Camp_FeatureService;
 import com.campsite_feature.model.Camp_FeatureVO;
+import com.campsite_picture.model.Camp_PictureService;
 import com.feature_list.model.Feature_ListService;
 import com.feature_list.model.Feature_ListVO;
 import com.google.gson.Gson;
@@ -41,6 +42,7 @@ public class CampInfo extends HttpServlet {
 		Gson gson = new Gson();
 
 		CampService campSvc = new CampService();
+		Camp_PictureService camp_pictureSvc = new Camp_PictureService();
 		List<Object> list = new LinkedList<Object>();
 
 		if (!req.getQueryString().contains("action") || !(req.getParameter("startdate") == null)) {
@@ -102,6 +104,15 @@ public class CampInfo extends HttpServlet {
 				for (CampVO campVO : camplist) {
 					list.add(campVO);
 				}
+				
+				for(Object campVO : list) {
+					List<String> firstPic = camp_pictureSvc.getCamp_Picture(((CampVO)campVO).getCamp_no());
+					if (firstPic.size() == 0) {
+						firstPic.add("/CEA103G1/front-images/campionLogoShort.png");
+					}
+					((CampVO) campVO).setFirst_pic(firstPic.get(0));
+				}
+				
 				for (Object campVO : list) {
 					List<Integer> low_pc = new ArrayList();
 					List<PlaceVO> plclist = placeSvc.getByCamp(((CampVO) campVO).getCamp_no());

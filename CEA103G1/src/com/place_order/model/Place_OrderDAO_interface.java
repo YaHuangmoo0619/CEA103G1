@@ -17,4 +17,6 @@ public interface Place_OrderDAO_interface {
 	public List<Place_OrderVO> getAll();
 
 	public List<Place_OrderVO> findByCamp(Integer camp_no);
+
+	public List<Place_OrderVO> findByMember(Integer mbr_no);
 }
