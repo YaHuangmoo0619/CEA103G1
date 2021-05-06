@@ -85,6 +85,10 @@ input.confirm:hover{
 	color: #80c344;
 	cursor: pointer;
 }
+img.info{
+	max-width:30%;
+	margin: 3px;
+}
 </style>
 
 </head>
@@ -102,6 +106,7 @@ input.confirm:hover{
 			<div class="mail">
 			
 			<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService"/>
+			<jsp:useBean id="service_mail_pictureSvc" class="com.service_mail_picture.model.Service_mail_pictureService"/>
 			<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 			<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
 			
@@ -110,7 +115,14 @@ input.confirm:hover{
 				<p>發信會員：&nbsp;${service_mailVO.mbr_no}${memberSvc.getOneMember(service_mailVO.mbr_no).name}</p>
 					
 				<p>內容：</p>
-				<p>${service_mailVO.mail_cont.trim()}</p>	
+				<p>${service_mailVO.mail_cont.trim()}</p>
+
+				<p>${service_mail_pictureSvc.getByMail_no(service_mailVO.mail_no).size()!=0?'附件照片：':''}</p>
+				<p>
+				<c:forEach var="service_mail_pictureVO" items="${service_mail_pictureSvc.getByMail_no(service_mailVO.mail_no)}">
+					<img class="info" src="${service_mail_pictureVO.mail_pic}">
+				</c:forEach>
+				</p>
 				<hr>
 				<p style="font-size:0.5em">發信時間：&nbsp;${service_mailVO.mail_time}</p>
 						

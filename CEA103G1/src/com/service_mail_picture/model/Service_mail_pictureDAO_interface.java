@@ -9,4 +9,5 @@ public interface Service_mail_pictureDAO_interface {
     public void delete(Integer svc_mail_pic_no);
     public Service_mail_pictureVO findByPrimaryKey(Integer svc_mail_pic_no);
     public List<Service_mail_pictureVO> getAll();
+    public List<Service_mail_pictureVO> findByMail_no(Integer mail_no);
 }

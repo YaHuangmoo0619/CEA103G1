@@ -38,7 +38,7 @@
 	<input type="submit">
 </form>
 <jsp:useBean id="service_mail_pictureSvc" class="com.service_mail_picture.model.Service_mail_pictureService"/>
-<img src="${service_mail_pictureSvc.getOneService_mail_picture(12).mail_pic}" width=30px>
+<img src="${service_mail_pictureSvc.getOneService_mail_picture(9).mail_pic}" width=30px>
 <img src="<%=request.getContextPath()%>/images/campionLogoCircle.png" width=30px>
 
 <div id='container'>
