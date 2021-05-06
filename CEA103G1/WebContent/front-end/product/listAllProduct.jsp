@@ -4,7 +4,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.product.model.*"%>
 <%
-    ProductService productSvc = new ProductService();
+	ProductService productSvc = new ProductService();
     List<ProductVO> list = productSvc.getAll();
     pageContext.setAttribute("list",list);
 %>
@@ -14,7 +14,9 @@
 
 <head>
 <title>所有商品 </title>
-
+<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
   table#table-1 {
 	background-color: #CCCCFF;

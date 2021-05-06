@@ -11,6 +11,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <title>商品資料新增 - addProduct.jsp</title>
 
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
 <style>
   table#table-1 {
 	background-color: #CCCCFF;
@@ -66,16 +68,19 @@
 </c:if>
 
 <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" name="form1">
+<input type="reset" value="重置清空">
 <table>
 	<tr>
-		<td>商品分類名稱:</td>	
-		<td><input type="TEXT" name="prod_cat_name" size="45" 
+		<td>商品分類編號:</td>	
+		<td><input type="TEXT" name="prod_cat_no" size="45" 
 			 value="<%= (productVO==null)? "" : productVO.getProd_cat_no()%>" /></td>
 	</tr>
 	<tr>
 		<td>商品狀態:</td>
-		<td><input type="TEXT" name="prod_stat" size="45" 
-			 value="<%= (productVO==null)? "" : productVO.getProd_stat()%>" /></td>
+		<td>
+			<input type="radio" name="prod_stat" value="0" checked>下架<br>
+			<input type="radio" name="prod_stat" value="1">上架<br> 
+		</td>
 	</tr>
 	<tr>
 		<td>商品名稱:</td>
@@ -114,13 +119,20 @@
 	</tr>
 	<tr>
 		<td>運送方式:</td>
-		<td><input type="TEXT" name="ship_meth" size="45" 
-			 value="<%= (productVO==null)? "" : productVO.getShip_meth()%>" /></td>
+		<td>
+			<select name="ship_meth">
+			    <option selected disabled>請選擇運送方式</option>
+			    <option value="0">不限運送方式</option>
+			    <option value="1">限宅配</option>
+			    <option value="2">限超商取貨</option>
+			</select>
+		</td>
 	</tr>
 </table>
 <br>
 <input type="hidden" name="action" value="insert">
-<input type="submit" value="送出新增"></FORM>
+<input type="submit" value="送出新增">
+</FORM>
 </body>
 
 </html>

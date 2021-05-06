@@ -72,6 +72,17 @@
 	<tr>
 		<th>商品訂單編號</th>
 		<th>會員編號</th>
+		<th>下訂時間</th>
+		<th>訂單狀態</th>
+		<th>訂單總金額</th>
+		<th>使用點數</th>
+		<th>運送方式</th>
+		<th>付款方式</th>
+		<th>運送地址_縣市</th>
+		<th>運送地址_區域</th>
+		<th>運送地址</th>
+		<th>發票形式</th>
+		<th>訂單備註</th>
 	</tr>
 <%-- <%@ include file="page1.file" %> --%>
 	<c:forEach var="product_orderVO" items="${list}" > <%-- begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" --%>
@@ -80,6 +91,16 @@
 		<tr>
 			<td>${product_orderVO.prod_ord_no}</td>
 			<td>${product_orderVO.mbr_no}</td>
+			<td>${product_orderVO.prod_ord_time}</td>
+			<td>${product_orderVO.prod_ord_sum}</td>
+			<td>${product_orderVO.used_pt}</td>
+			<td>${product_orderVO.ship_meth}</td>
+			<td>${product_orderVO.pay_meth}</td>
+			<td>${product_orderVO.ship_cty}</td>
+			<td>${product_orderVO.ship_dist}</td>
+			<td>${product_orderVO.ship_add}</td>
+			<td>${product_orderVO.receipt}</td>
+			<td>${product_orderVO.rmk}</td>
 			<td>
 			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="修改">

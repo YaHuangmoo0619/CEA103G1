@@ -12,6 +12,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <title>商品修改 - update_Product_input.jsp</title>
 
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
 <style>
   table#table-1 {
 	background-color: #CCCCFF;
@@ -66,17 +68,84 @@
 </c:if>
 
 <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" name="form1">
+<input type="reset" value="重置清空">
 <table>
+<tr>
+		<td>商品分類編號:</td>	
+		<td><input type="TEXT" name="prod_cat_no" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_cat_no()%>" /></td>
+	</tr>
 	<tr>
-		<td>商品編號:<font color=red><b>*</b></font></td>
-		<td>${productVO.prod_no}</td>
+		<td>商品狀態:</td>
+		<td>
+			<input id="prod_stat" type="radio" name="prod_stat" value="0">下架<br>
+			<input id="prod_stat" type="radio" name="prod_stat" value="1">上架<br> 
+		</td>
 	</tr>
 	<tr>
 		<td>商品名稱:</td>
-		<td><input type="TEXT" name="ename" size="45" value="${productVO.prod_name}" /></td>
+		<td><input type="TEXT" name="prod_name" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_name()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品價格:</td>
+		<td><input type="TEXT" name="prod_pc" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_pc()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品庫存:</td>
+		<td><input type="TEXT" name="prod_stg" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_stg()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品資訊:</td>
+		<td><input type="TEXT" name="prod_info" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_info()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品品牌:</td>
+		<td><input type="TEXT" name="prod_bnd" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_bnd()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品顏色:</td>
+		<td><input type="TEXT" name="prod_clr" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_clr()%>" /></td>
+	</tr>
+	<tr>
+		<td>商品大小:</td>
+		<td><input type="TEXT" name="prod_size" size="45" 
+			 value="<%= (productVO==null)? "" : productVO.getProd_size()%>" /></td>
+	</tr>
+	<tr>
+		<td>運送方式:</td>
+		<td id="ship_meth">
+			<select name="ship_meth">
+			    <option disabled>請選擇運送方式</option>
+			    <option value="0">不限運送方式</option>
+			    <option value="1">限宅配</option>
+			    <option value="2">限超商取貨</option>
+			</select>
+		</td>
 	</tr>
 
 </table>
+
+<script>
+	var prod_stat = `<%=productVO.getProd_stat()%>`;
+	$("#prod_stat").find(':input').each(function() {
+		if($(this).val()===prod_stat){
+			$(this).prop("checked",true);
+		}
+	});
+	var ship_meth = `<%=productVO.getShip_meth()%>`;
+	$("#ship_meth").find(':input').each(function() {
+		if($(this).val()===ship_meth){
+			$(this).prop("checked",true);
+		}
+	});
+</script>
+
 
 <br>
 <input type="hidden" name="action" value="update">
