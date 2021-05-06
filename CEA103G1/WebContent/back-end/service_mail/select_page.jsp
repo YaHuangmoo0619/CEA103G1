@@ -67,7 +67,7 @@ input.confirm:hover{
 			<hr>
 			<h3>資料查詢:</h3>
 			<%-- 錯誤列表 map ${errorMsgs}--%>
-			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}</h5>
+			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<ul>
 				<li>
 					<a class="content" href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">List</a><br>
