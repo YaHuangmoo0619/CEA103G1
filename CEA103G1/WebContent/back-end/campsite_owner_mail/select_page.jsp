@@ -99,7 +99,7 @@ input.confirm:hover{
 					<select size="1" name="rcpt_no" id="rcpt_no">
 					<option value="no">--½Ð¿ï¾Ü--</option>
 					<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
-						<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.rcpt_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
+						<option value="${campsite_ownerVO.cso_no}">${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
 					</c:forEach>
 					</select>
 					<br>

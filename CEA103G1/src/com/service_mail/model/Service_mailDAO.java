@@ -35,7 +35,7 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 		private static final String INSERT_STMT = 
 			"INSERT INTO campion.service_mail (emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time) VALUES (?, ?, ?, ?, ?, ?)";
 		private static final String GET_ALL_STMT = 
-			"SELECT mail_no,emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time FROM campion.service_mail order by mail_no";
+			"SELECT mail_no,emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time FROM campion.service_mail order by mail_time desc";
 		private static final String GET_ONE_STMT = 
 			"SELECT mail_no,emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time FROM campion.service_mail where mail_no = ?";
 		private static final String DELETE = 

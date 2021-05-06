@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<title>新增信件</title>
+<title>信件內容</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -39,19 +39,19 @@ a.content:hover {
 	color: #4B7F52;
 }
 
-table{
-	width: 700px;
-	margin: 30px auto;
-	border: 1px solid #4e5452;
-}
-th, td{
-	text-align: center;
-	border: 1px solid #4e5452;
-	padding: 10px 15px;
-}
-td.function{
-	text-align: justify;	
-}
+/* table{ */
+/* 	width: 700px; */
+/* 	margin: 30px auto; */
+/* 	border: 1px solid #4e5452; */
+/* } */
+/* th, td{ */
+/* 	text-align: center; */
+/* 	border: 1px solid #4e5452; */
+/* 	padding: 10px 15px; */
+/* } */
+/* td.function{ */
+/* 	text-align: justify;	 */
+/* } */
 label.spotlight{
 	background-color: #80c344;
 	padding: 2px 5px;
@@ -61,9 +61,16 @@ label.spotlight{
 form{
 	text-align: center;
 }
-textarea{
-	resize: none;
+/* textarea{ */
+/* 	resize: none; */
+/* } */
+
+div.mail{
+	text-align: left;
+	margin: 50px auto;
+	width: 70%;
 }
+
 input.confirm{
 	background-color: #80c344;
 	color: #4e5452;
@@ -78,6 +85,10 @@ input.confirm:hover{
 	color: #80c344;
 	cursor: pointer;
 }
+img.info{
+	max-width:30%;
+	margin: 3px;
+}
 </style>
 
 </head>
@@ -89,60 +100,39 @@ input.confirm:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>新增信件&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
+			<h2>信件內容&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/listAllService_mail.jsp">回客服信列表</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>信件撰寫:</h3>
-			<form method="post" action="<%=request.getContextPath()%>/service_mail/service_mail.do">
+			<div class="mail">
+			
 			<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService"/>
+			<jsp:useBean id="service_mail_pictureSvc" class="com.service_mail_picture.model.Service_mail_pictureService"/>
 			<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 			<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
-			<table>
-				<tr>
-					<td>
-						<label for="emp_no">寄件人</label>
-						<br><h5 style="color:#80c344;">${errorMsgs.emp_no[0]}</h5>
-					</td>
-					<td>
-						<select size="1" name="emp_no" id="emp_no">
-						<option value="99">--請選擇--</option>
-						<c:forEach var="employeeVO" items="${employeeSvc.all}">
-							<c:if test="${employeeVO.emp_no != 90001}">
-							<option value="${employeeVO.emp_no}" ${employeeVO.emp_no == param.emp_no? 'selected':''}>${employeeVO.emp_no}${employeeVO.name}</option>
-							</c:if>
-						</c:forEach>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="mbr_no">收件人</label>
-						<br><h5 style="color:#80c344;">${errorMsgs.mbr_no[0]}</h5>
-					</td>
-					<td>
-						<select size="1" name="mbr_no" id="mbr_no">
-						<option value="99">--請選擇--</option>
-						<c:forEach var="memberVO" items="${memberSvc.all}">
-							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.mbr_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
-						</c:forEach>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="mail_cont">內容</label>
-						<br><h5 style="color:#80c344;">${errorMsgs.mail_cont[0]}</h5>	
-					</td>
-					<td>
-						<textarea name="mail_cont" rows="10" cols="45" class="mail_cont">${param.mail_cont.trim().isEmpty()? '':param.mail_cont.trim()}</textarea>
-					</td>
-				</tr>
-			</table>
-					<input type="hidden" name="mail_stat" value="0">
-					<input type="hidden" name="mail_read_stat" value="0">
-					<input type="hidden" name="action" value="insert">
-					<input type="submit" value="發送" class="confirm">
+			
+				<p>回覆人員：&nbsp;${service_mailVO.emp_no}${employeeSvc.getOneEmployee(service_mailVO.emp_no).name}</p>
+					
+				<p>發信會員：&nbsp;${service_mailVO.mbr_no}${memberSvc.getOneMember(service_mailVO.mbr_no).name}</p>
+					
+				<p>內容：</p>
+				<p>${service_mailVO.mail_cont.trim()}</p>
+
+				<p>${service_mail_pictureSvc.getByMail_no(service_mailVO.mail_no).size()!=0?'附件照片：':''}</p>
+				<p>
+				<c:forEach var="service_mail_pictureVO" items="${service_mail_pictureSvc.getByMail_no(service_mailVO.mail_no)}">
+					<img class="info" src="${service_mail_pictureVO.mail_pic}">
+				</c:forEach>
+				</p>
+				<hr>
+				<p style="font-size:0.5em">發信時間：&nbsp;${service_mailVO.mail_time}</p>
+						
+			</div>
+			<form method="post" action="<%=request.getContextPath()%>/back-end/service_mail/addService_mail.jsp">		
+					<input type="hidden" name="emp_no" value="${service_mailVO.emp_no}">
+					<input type="hidden" name="mbr_no" value="${service_mailVO.mbr_no}">
+					<input type="submit" value="回覆" class="confirm">
 			</form>
+			
 		</div>
 	</div>
 </div>

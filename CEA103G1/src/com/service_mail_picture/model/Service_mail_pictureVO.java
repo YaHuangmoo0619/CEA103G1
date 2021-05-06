@@ -12,8 +12,7 @@ public class Service_mail_pictureVO implements Serializable {
 
 	}
 
-	public Service_mail_pictureVO(Integer svc_mail_pic_no, Integer mail_no, String mail_pic) {
-		this.svc_mail_pic_no = svc_mail_pic_no;
+	public Service_mail_pictureVO(Integer mail_no, String mail_pic) {
 		this.mail_no = mail_no;
 		this.mail_pic = mail_pic;
 	}

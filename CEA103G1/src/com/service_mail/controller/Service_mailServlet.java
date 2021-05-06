@@ -179,5 +179,32 @@ public class Service_mailServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		if("read".equals(action)) {
+			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				Service_mailService service_mailSvc = new Service_mailService();
+				Service_mailVO service_mailVO = service_mailSvc.getOneService_mail(Integer.valueOf(req.getParameter("mail_no")));
+				service_mailVO.setMail_read_stat(1);
+				
+				Integer emp_no =  service_mailVO.getEmp_no();
+				Integer mbr_no =  service_mailVO.getMbr_no();
+				String mail_cont =  service_mailVO.getMail_cont();
+				Integer mail_stat =  service_mailVO.getMail_stat();
+				Integer mail_read_stat =  service_mailVO.getMail_read_stat();
+				String mail_time = service_mailVO.getMail_time();
+				Integer mail_no =  service_mailVO.getMail_no();
+				Service_mailVO service_mailVO2 = service_mailSvc.updateService_mail(mail_no,emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time);
+				
+				req.setAttribute("service_mailVO", service_mailVO2);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/service_mail/listOneService_mail.jsp");
+				successView.forward(req, res);
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 }
