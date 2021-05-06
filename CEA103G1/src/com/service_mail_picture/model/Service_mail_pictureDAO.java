@@ -77,239 +77,198 @@ public class Service_mail_pictureDAO implements Service_mail_pictureDAO_interfac
 		}
 
 	}
-//
-//	@Override
-//	public void update(Service_mail_pictureVO service_mail_pictureVO) {
-//
-//		Connection con = null;
-//		PreparedStatement pstmt = null;
-//
-//		try {
-//
-//			con = ds.getConnection();
-//			pstmt = con.prepareStatement(UPDATE);
-//
-//			pstmt.setInt(1, service_mail_pictureVO.getSvc_mail_pic_no());
-//			pstmt.setInt(2, service_mail_pictureVO.getMail_no());
-//			byte[] pic = null;
-//			try {
-//				pic = getPictureByteArray("items/FC_Barcelona.png");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			pstmt.setBytes(3, pic);
-//
-//			pstmt.executeUpdate();
-//
-//			// Handle any driver errors
-//		} catch (SQLException se) {
-//			throw new RuntimeException("A database error occured. "
-//					+ se.getMessage());
-//			// Clean up JDBC resources
-//		} finally {
-//			if (pstmt != null) {
-//				try {
-//					pstmt.close();
-//				} catch (SQLException se) {
-//					se.printStackTrace(System.err);
-//				}
-//			}
-//			if (con != null) {
-//				try {
-//					con.close();
-//				} catch (Exception e) {
-//					e.printStackTrace(System.err);
-//				}
-//			}
-//		}
-//
-//	}
-//
-//	@Override
-//	public void delete(Integer svc_mail_pic_no) {
-//
-//		Connection con = null;
-//		PreparedStatement pstmt = null;
-//
-//		try {
-//
-//			con = ds.getConnection();
-//			pstmt = con.prepareStatement(DELETE);
-//
-//			pstmt.setInt(1, svc_mail_pic_no);
-//
-//			pstmt.executeUpdate();
-//
-//			// Handle any driver errors
-//		} catch (SQLException se) {
-//			throw new RuntimeException("A database error occured. "
-//					+ se.getMessage());
-//			// Clean up JDBC resources
-//		} finally {
-//			if (pstmt != null) {
-//				try {
-//					pstmt.close();
-//				} catch (SQLException se) {
-//					se.printStackTrace(System.err);
-//				}
-//			}
-//			if (con != null) {
-//				try {
-//					con.close();
-//				} catch (Exception e) {
-//					e.printStackTrace(System.err);
-//				}
-//			}
-//		}
-//
-//	}
-//
-//	@Override
-//	public Service_mail_pictureVO findByPrimaryKey(Integer svc_mail_pic_no) {
-//
-//		Service_mail_pictureVO service_mail_pictureVO = null;
-//		Connection con = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//
-//		try {
-//
-//			con = ds.getConnection();
-//			pstmt = con.prepareStatement(GET_ONE_STMT);
-//			
-//			pstmt.setInt(1, svc_mail_pic_no);
-//
-//			rs = pstmt.executeQuery();
-//
-//			while (rs.next()) {
-//				// empVo �]붙О Domain objects
-//				service_mail_pictureVO = new Service_mail_pictureVO();
-//				service_mail_pictureVO.setSvc_mail_pic_no(rs.getInt("svc_mail_pic_no"));
-//				service_mail_pictureVO.setMail_no(rs.getInt("mail_no"));
-//				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("mail_pic"));
-//				byte[] buf = new byte[4 * 1024]; // 4K buffer
-//				int len;
-//				try {
-//					while ((len = in.read(buf)) != -1) {
-//						service_mail_pictureVO.setMail_pic(buf);
-//					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//				try {
-//					in.close();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//
-//			// Handle any driver errors
-//		} catch (SQLException se) {
-//			throw new RuntimeException("A database error occured. "
-//					+ se.getMessage());
-//			// Clean up JDBC resources
-//		} finally {
-//			if (rs != null) {
-//				try {
-//					rs.close();
-//				} catch (SQLException se) {
-//					se.printStackTrace(System.err);
-//				}
-//			}
-//			if (pstmt != null) {
-//				try {
-//					pstmt.close();
-//				} catch (SQLException se) {
-//					se.printStackTrace(System.err);
-//				}
-//			}
-//			if (con != null) {
-//				try {
-//					con.close();
-//				} catch (Exception e) {
-//					e.printStackTrace(System.err);
-//				}
-//			}
-//		}
-//		return service_mail_pictureVO;
-//	}
-//
-//	@Override
-//	public List<Service_mail_pictureVO> getAll() {
-//		List<Service_mail_pictureVO> list = new ArrayList<Service_mail_pictureVO>();
-//		Service_mail_pictureVO service_mail_pictureVO = null;
-//
-//		Connection con = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//
-//		try {
-//
-//			con = ds.getConnection();
-//			pstmt = con.prepareStatement(GET_ALL_STMT);
-//			rs = pstmt.executeQuery();
-//
-//
-//			while (rs.next()) {
-//				// empVo �]붙О Domain objects
-//				service_mail_pictureVO = new Service_mail_pictureVO();
-//				service_mail_pictureVO.setSvc_mail_pic_no(rs.getInt("svc_mail_pic_no"));
-//				service_mail_pictureVO.setMail_no(rs.getInt("mail_no"));
-//				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("mail_pic"));
-//				byte[] buf = new byte[4 * 1024]; // 4K buffer
-//				int len;
-//				try {
-//					while ((len = in.read(buf)) != -1) {
-//						service_mail_pictureVO.setMail_pic(buf);
-//					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//				try {
-//					in.close();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//				list.add(service_mail_pictureVO);
-//			}
-//
-//			// Handle any driver errors
-//		} catch (SQLException se) {
-//			throw new RuntimeException("A database error occured. "
-//					+ se.getMessage());
-//			// Clean up JDBC resources
-//		} finally {
-//			if (rs != null) {
-//				try {
-//					rs.close();
-//				} catch (SQLException se) {
-//					se.printStackTrace(System.err);
-//				}
-//			}
-//			if (pstmt != null) {
-//				try {
-//					pstmt.close();
-//				} catch (SQLException se) {
-//					se.printStackTrace(System.err);
-//				}
-//			}
-//			if (con != null) {
-//				try {
-//					con.close();
-//				} catch (Exception e) {
-//					e.printStackTrace(System.err);
-//				}
-//			}
-//		}
-//		return list;
-//	}
-//
-//	public static byte[] getPictureByteArray(String path) throws IOException {
-//		FileInputStream fis = new FileInputStream(path);
-//		byte[] buffer = new byte[fis.available()];
-//		fis.read(buffer);
-//		fis.close();
-//		return buffer;
-//	}
+
+	@Override
+	public void update(Service_mail_pictureVO service_mail_pictureVO) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE);
+
+			pstmt.setInt(1, service_mail_pictureVO.getSvc_mail_pic_no());
+			pstmt.setInt(2, service_mail_pictureVO.getMail_no());
+			pstmt.setString(3, service_mail_pictureVO.getMail_pic());
+
+			pstmt.executeUpdate();
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
+
+	@Override
+	public void delete(Integer svc_mail_pic_no) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(DELETE);
+
+			pstmt.setInt(1, svc_mail_pic_no);
+
+			pstmt.executeUpdate();
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
+
+	@Override
+	public Service_mail_pictureVO findByPrimaryKey(Integer svc_mail_pic_no) {
+
+		Service_mail_pictureVO service_mail_pictureVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ONE_STMT);
+			
+			pstmt.setInt(1, svc_mail_pic_no);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVo �]붙О Domain objects
+				service_mail_pictureVO = new Service_mail_pictureVO();
+				service_mail_pictureVO.setSvc_mail_pic_no(rs.getInt("svc_mail_pic_no"));
+				service_mail_pictureVO.setMail_no(rs.getInt("mail_no"));
+				service_mail_pictureVO.setMail_pic(rs.getString("mail_pic"));
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return service_mail_pictureVO;
+	}
+
+	@Override
+	public List<Service_mail_pictureVO> getAll() {
+		List<Service_mail_pictureVO> list = new ArrayList<Service_mail_pictureVO>();
+		Service_mail_pictureVO service_mail_pictureVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_STMT);
+			rs = pstmt.executeQuery();
+
+
+			while (rs.next()) {
+				// empVo �]붙О Domain objects
+				service_mail_pictureVO = new Service_mail_pictureVO();
+				service_mail_pictureVO.setSvc_mail_pic_no(rs.getInt("svc_mail_pic_no"));
+				service_mail_pictureVO.setMail_no(rs.getInt("mail_no"));
+				service_mail_pictureVO.setMail_pic(rs.getString("mail_pic"));
+
+				list.add(service_mail_pictureVO);
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
 
 }

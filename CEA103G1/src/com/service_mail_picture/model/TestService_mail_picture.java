@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import com.service_mail_picture.model.Service_mail_pictureDAO;
 import com.service_mail_picture.model.Service_mail_pictureVO;
 
 @WebServlet("/TestService_mail_picture")
+@MultipartConfig(fileSizeThreshold=1024*1024, maxFileSize=5*1024*1024, maxRequestSize=5*5*1024*1024)
 public class TestService_mail_picture extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -33,17 +35,12 @@ public class TestService_mail_picture extends HttpServlet {
 		out.print("<HEAD><TITLE>TestService_mail_picture</TITLE><STYLE>tr{border:solid 1px black;}</STYLE></HEAD>");		
 		out.print("<BODY>");
 		
-//		//testInsert		
-//		InputStream in = getServletContext().getResourceAsStream("/images/relax.png");
-//		long millis = System.currentTimeMillis();
-//		java.sql.Date date = new java.sql.Date(millis);
-//		byte[] b = new byte[in.available()];
-//		in.read(b);
-//		Service_mail_pictureVO service_mail_pictureVO = new Service_mail_pictureVO(90002, "abc");
-//		service_mail_pictureDAO.insert(service_mail_pictureVO);
-//		out.print("insert ok");
-//		
-//		in.close();
+		//testInsert		
+		
+		Service_mail_pictureVO service_mail_pictureVO = new Service_mail_pictureVO(90002, "abc");
+		service_mail_pictureDAO.insert(service_mail_pictureVO);
+		out.print("insert ok");
+		
 		
 //		//testUpdate
 //		InputStream in2 = getServletContext().getResourceAsStream("/images/campionLogoLong.png");

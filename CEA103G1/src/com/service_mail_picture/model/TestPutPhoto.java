@@ -27,7 +27,7 @@ import com.campsite_picture.model.Camp_PictureVO;
 public class TestPutPhoto extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     String saveDirectory = "/images/service_mail_picture";
-	
+    
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
@@ -37,19 +37,30 @@ public class TestPutPhoto extends HttpServlet {
 		res.setContentType("text/html; chartset=UTF-8");
 		PrintWriter out = res.getWriter();
 		
+		//testInsert
 		String realPath = getServletContext().getRealPath(saveDirectory);
 //		System.out.println(realPath);
 		File fsaveDirectory = new File(realPath);
 		if(!fsaveDirectory.exists()) {
 			fsaveDirectory.mkdirs();
 		}
-		
-		Part part = req.getPart("myfile");
-		String fileType = part.getSubmittedFileName().substring(part.getSubmittedFileName().lastIndexOf("."));
-//		System.out.println(part.getSubmittedFileName()+"/"+fileType);
 		int count = 1;
-		File f = new File(fsaveDirectory, "service_mail_picture"+count+fileType);
-		part.write(f.toString());
-
+		Collection<Part> parts = req.getParts();
+		for(Part part : parts) {
+			String fileType = part.getSubmittedFileName().substring(part.getSubmittedFileName().lastIndexOf("."));
+//			System.out.println(part.getSubmittedFileName()+"/"+fileType);
+			
+			File f = new File(fsaveDirectory, "service_mail_picture"+count+fileType);
+			part.write(f.toString());
+			count++;
+			System.out.print(f.toString());
+			Service_mail_pictureDAO service_mail_pictureDAO = new Service_mail_pictureDAO();
+			Service_mail_pictureVO service_mail_pictureVO = new Service_mail_pictureVO(80004,req.getContextPath()+"/images/service_mail_picture/service_mail_picture"+count+fileType);
+			service_mail_pictureDAO.insert(service_mail_pictureVO);
+		}
+		out.print("insert ok");
+		
+		//TestUpdate
+		
 	}
 }

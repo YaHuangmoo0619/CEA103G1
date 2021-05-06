@@ -27,7 +27,7 @@ a:hover {
 }
 
 a.button{
-	margin: 0px;
+	margin: 5px;
 }
 
 form.form-inline {
