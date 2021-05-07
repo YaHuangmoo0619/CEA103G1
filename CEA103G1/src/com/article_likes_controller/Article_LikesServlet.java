@@ -166,7 +166,7 @@ public class Article_LikesServlet extends HttpServlet {
 				article_likesVO = article_likesSvc.addArticle_Likes(mbr_no, art_no);
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
-				String url = "/back-end/article/listOneArticle.jsp";
+				String url = "/front-end/article/listOneArticle.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交回listOneArticle.jsp
 				successView.forward(req, res);
 
@@ -177,28 +177,28 @@ public class Article_LikesServlet extends HttpServlet {
 			}
 		}
 
-		if ("unlike".equals(action)) { // 來自listOneArticle.jsp 取消某人對文章的按讚
-
-			try {
-				/*************************** 1.接收請求參數 ***************************************/
-				Integer mbr_no = new Integer(req.getParameter("mbr_no"));
-				Integer art_no = new Integer(req.getParameter("art_no"));
-
-				/*************************** 2.開始刪除資料 ***************************************/
-				Article_LikesService article_likesSvc = new Article_LikesService();
-				article_likesSvc.deleteLike(mbr_no, art_no);
-
-				/*************************** 3.刪除完成,準備轉交(Send the Success view) ***********/
-				String url = "/back-end/article/listOneArticle.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
-				successView.forward(req, res);
-
-				/*************************** 其他可能的錯誤處理 **********************************/
-			} catch (Exception e) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/article/listOneArticle.jsp");
-				failureView.forward(req, res);
-			}
-		}
+//		if ("unlike".equals(action)) { // 來自listOneArticle.jsp 取消某人對文章的按讚
+//
+//			try {
+//				/*************************** 1.接收請求參數 ***************************************/
+//				Integer mbr_no = new Integer(req.getParameter("mbr_no"));
+//				Integer art_no = new Integer(req.getParameter("art_no"));
+//
+//				/*************************** 2.開始刪除資料 ***************************************/
+//				Article_LikesService article_likesSvc = new Article_LikesService();
+//				article_likesSvc.deleteLike(mbr_no, art_no);
+//
+//				/*************************** 3.刪除完成,準備轉交(Send the Success view) ***********/
+//				String url = "/back-end/article/listOneArticle.jsp";
+//				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
+//				successView.forward(req, res);
+//
+//				/*************************** 其他可能的錯誤處理 **********************************/
+//			} catch (Exception e) {
+//				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/article/listOneArticle.jsp");
+//				failureView.forward(req, res);
+//			}
+//		}
 
 		if ("plus_like".equals(action)) { // 來自listOneArticle.jsp的請求 為某篇文章新增一筆按讚資料
 

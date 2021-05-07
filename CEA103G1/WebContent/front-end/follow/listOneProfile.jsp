@@ -72,6 +72,9 @@ padding: 8px 16px;
                     <h1 class="profile-user-name"><%=mbr_no%></h1>
                     
                     <button class="btn profile-edit-btn">編輯個人檔案</button>
+                    <button class="btn profile-edit-btn" id=follow-btn onclick="add_follow()">追蹤對方</button>
+                    <button class="btn profile-edit-btn" id=cancel-follow-btn onclick="cancel_follow()" style="display:none">取消追蹤</button>
+                    <button class="btn profile-edit-btn">發送站內信</button>
                     <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
                 </div>
                 <div class="profile-stats">
@@ -82,8 +85,8 @@ padding: 8px 16px;
 <!--                     </ul> -->
 
                         <div class="profile-stat-count article"><%=article_num%> 貼文</div>
-                        <div class="profile-stat-count fans"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${mbr_no}&action=getFollowers" ><%=fans_num%> 追蹤者</a></div>
-                        <div class="profile-stat-count follows"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${mbr_no}&action=getFollowing" ><%=follows_num%> 追蹤中</a></div>
+                        <div class="profile-stat-count fans"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${mbr_no}&action=getFollowers" ><span id=follower><%=fans_num%></span>追蹤者</a></div>
+                        <div class="profile-stat-count follows"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${mbr_no}&action=getFollowing" ><span id=following><%=follows_num%></span>追蹤中</a></div>
  
                 </div>
                 <div class="profile-bio">
@@ -120,5 +123,48 @@ padding: 8px 16px;
 <%-- <c:forEach var="follows_list" items="${follows_list}"> --%>
 <%-- <div class=follow><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${follows_list.flwed_mbr_no}&action=getProfile">${follows_list.flwed_mbr_no}</a></div> --%>
 <%-- </c:forEach> --%>
-<!-- </body> -->
-<!-- </html> -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	function add_follow()
+ 	{
+ 	 var x=document.getElementById("follower").innerHTML;
+ 	 x=parseInt(x)+1;
+ 	 document.getElementById("follower").innerHTML=x;
+ 	 document.getElementById("follow-btn").style.display="none"; 
+ 	 document.getElementById("cancel-follow-btn").style.display="inline-block"; 
+ 	 
+ 	 
+			$.ajax({ //負責傳到followServlet 新增某人對某人的追蹤  需要的參數: 追蹤者mbr_no 被追蹤者的 mbr_no   目前追蹤者mbr_no寫死 之後要從session get到目前是哪個會員對這個人追蹤
+			type : "POST",
+			url : "http://localhost:8081/CEA103G1/follow/follow.do",
+			data : {action: "add_follow",flw_mbr_no:"10001",flwed_mbr_no:<%=mbr_no%>}, //參數傳遞 
+			success : function(data) {
+				alert("新增某人對某人的追蹤成功");
+			}
+		}); 
+ 	}
+	
+	
+	function cancel_follow()
+ 	{
+ 	 var x=document.getElementById("follower").innerHTML;
+ 	 x=parseInt(x)-1;
+ 	 document.getElementById("follower").innerHTML=x;
+ 	 document.getElementById("follow-btn").style.display="inline-block"; 
+ 	 document.getElementById("cancel-follow-btn").style.display="none"; 
+ 	 
+ 	 
+			$.ajax({ //負責傳到followServlet 取消某人對某人的追蹤  需要的參數: 追蹤者mbr_no 被追蹤者的 mbr_no   目前追蹤者mbr_no寫死 之後要從session get到目前是哪個會員對這個人追蹤
+			type : "POST",
+			url : "http://localhost:8081/CEA103G1/follow/follow.do",
+			data : {action: "cancel_follow",flw_mbr_no:"10001",flwed_mbr_no:<%=mbr_no%>}, //參數傳遞 
+			success : function(data) {
+				alert("取消某人對某人的追蹤成功");
+			}
+		}); 
+ 	}
+	
+</script>
+</body>
+</html>

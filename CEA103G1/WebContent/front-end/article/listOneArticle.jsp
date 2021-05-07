@@ -243,7 +243,7 @@
  	 x=parseInt(x)+1;
  	 document.getElementById("like_td").innerHTML=x;
  	 document.getElementById("like").style.display="none"; 
- 	 document.getElementById("unlike").style.display="block"; 
+ 	 document.getElementById("unlike").style.display="inline-block"; 
  	 
  	 
 			$.ajax({ //第一個ajax 負責傳到article_likesServlet 新增某人對某文章的按讚  需要的參數: art_no mbr_no   目前mbr_no寫死 之後要從session get到目前是哪個會員對這篇文章按讚 
@@ -275,7 +275,7 @@
  	 
  	 
  	 document.getElementById("unlike").style.display="none"; //收回讚設為隱藏
- 	 document.getElementById("like").style.display="block";  //按讚設為顯示
+ 	 document.getElementById("like").style.display="inline-block";  //按讚設為顯示
  	 
  	 
  	 
@@ -304,7 +304,7 @@
  	function add_collection()
  	{
 	 document.getElementById("collection").style.display="none"; 
-	 document.getElementById("uncollection").style.display="block"; 
+	 document.getElementById("uncollection").style.display="inline-block"; 
  	
 			$.ajax({ //負責傳到article_collectionServlet 新增某人對某文章的按讚  需要的參數: art_no mbr_no   目前mbr_no寫死 之後要從session get到目前是哪個會員對這篇文章收藏 
 			type : "POST",
@@ -321,7 +321,7 @@
  	function minus_collection()
  	{
  	 document.getElementById("uncollection").style.display="none"; 
-	 document.getElementById("collection").style.display="block"; 
+	 document.getElementById("collection").style.display="inline-block"; 
  	
 		$.ajax({ //負責傳到article_collectionServlet 刪除某人對某文章的收藏  需要的參數: art_no mbr_no   目前mbr_no寫死 之後要從session get到目前是哪個會員對這篇文章按讚 
 			type : "POST",

@@ -295,9 +295,42 @@ public class FollowServlet extends HttpServlet {
 				/***************************其他可能的錯誤處理*************************************/
 
 		}
+	
 		
+		
+		if ("add_follow".equals(action)) { // 新增一筆訂閱關係
+				
+				String str = new String(req.getParameter("flwed_mbr_no"));
+				Integer flwed_mbr_no = new Integer(str);
+				System.out.println("flwed_mbr_no:"+flwed_mbr_no);
+				String str2 = new String(req.getParameter("flw_mbr_no"));
+				Integer flw_mbr_no = new Integer(str2);
+				System.out.println("flw_mbr_no:"+flw_mbr_no);
+				FollowVO followVO = new FollowVO();
+				followVO.setFlwed_mbr_no(flwed_mbr_no);
+				followVO.setFlw_mbr_no(flw_mbr_no);
+				/***************************2.開始新增資料*****************************************/
+				FollowService followSvc = new FollowService();
+				followVO = followSvc.addFollow(flwed_mbr_no, flw_mbr_no);
+
+		}
+		
+		
+		if ("cancel_follow".equals(action)) { // 新增一筆訂閱關係
+			
+			String str = new String(req.getParameter("flwed_mbr_no"));
+			Integer flwed_mbr_no = new Integer(str);
+			System.out.println("flwed_mbr_no:"+flwed_mbr_no);
+			String str2 = new String(req.getParameter("flw_mbr_no"));
+			Integer flw_mbr_no = new Integer(str2);
+			System.out.println("flw_mbr_no:"+flw_mbr_no);
+			/***************************2.開始新增資料*****************************************/
+			FollowService followSvc = new FollowService();
+			followSvc.deleteFollow(flwed_mbr_no, flw_mbr_no);
+
 	}
-	
-	
+		
+		
+	}	
 	
 }
