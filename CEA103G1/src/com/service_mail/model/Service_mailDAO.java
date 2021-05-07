@@ -20,6 +20,7 @@ import javax.sql.DataSource;
 
 import com.member_mail.model.Member_mailDAO;
 import com.member_mail.model.Member_mailVO;
+import com.member_mail_picture.model.Member_mail_pictureDAO;
 import com.service_mail_picture.model.Service_mail_pictureDAO;
 import com.service_mail_picture.model.Service_mail_pictureVO;
 

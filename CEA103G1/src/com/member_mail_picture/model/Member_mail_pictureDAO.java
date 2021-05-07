@@ -28,7 +28,7 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 	}
 	
 	private static final String INSERT_STMT = 
-			"INSERT INTO campion.member_mail_picture (mail_pic_no,mail_no,mail_pic) VALUES (?, ?, ?)";
+			"INSERT INTO campion.member_mail_picture (mail_no,mail_pic) VALUES (?, ?)";
 		private static final String GET_ALL_STMT = 
 			"SELECT mail_pic_no,mail_no,mail_pic FROM campion.member_mail_picture order by mail_pic_no";
 		private static final String GET_ONE_STMT = 
@@ -53,11 +53,11 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 			pstmt.setInt(1, member_mail_pictureVO.getMail_pic_no());
 			pstmt.setInt(2, member_mail_pictureVO.getMail_no());
 			byte[] pic = null;
-			try {
-				pic = getPictureByteArray("items/FC_Barcelona.png");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			try {
+////				pic = getPictureByteArray("items/FC_Barcelona.png");
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 			pstmt.setBytes(3, pic);
 
 			pstmt.executeUpdate();
@@ -100,11 +100,11 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 			pstmt.setInt(1, member_mail_pictureVO.getMail_pic_no());
 			pstmt.setInt(2, member_mail_pictureVO.getMail_no());
 			byte[] pic = null;
-			try {
-				pic = getPictureByteArray("items/FC_Barcelona.png");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				pic = getPictureByteArray("items/FC_Barcelona.png");
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 			pstmt.setBytes(3, pic);
 
 			pstmt.executeUpdate();
@@ -194,21 +194,7 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 				member_mail_pictureVO = new Member_mail_pictureVO();
 				member_mail_pictureVO.setMail_pic_no(rs.getInt("mail_pic_no"));
 				member_mail_pictureVO.setMail_no(rs.getInt("mail_no"));
-				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("mail_pic"));
-				byte[] buf = new byte[4 * 1024]; // 4K buffer
-				int len;
-				try {
-					while ((len = in.read(buf)) != -1) {
-						member_mail_pictureVO.setMail_pic(buf);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				try {
-					in.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				member_mail_pictureVO.setMail_pic(rs.getString("mail_pic"));
 			}
 
 			// Handle any driver errors
@@ -262,23 +248,10 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 			while (rs.next()) {
 				// empVo 也稱為 Domain objects
 				member_mail_pictureVO = new Member_mail_pictureVO();
+				member_mail_pictureVO = new Member_mail_pictureVO();
 				member_mail_pictureVO.setMail_pic_no(rs.getInt("mail_pic_no"));
 				member_mail_pictureVO.setMail_no(rs.getInt("mail_no"));
-				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("mail_pic"));
-				byte[] buf = new byte[4 * 1024]; // 4K buffer
-				int len;
-				try {
-					while ((len = in.read(buf)) != -1) {
-						member_mail_pictureVO.setMail_pic(buf);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				try {
-					in.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				member_mail_pictureVO.setMail_pic(rs.getString("mail_pic"));
 				list.add(member_mail_pictureVO);
 			}
 
@@ -313,12 +286,45 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 		return list;
 	}
 
-	public static byte[] getPictureByteArray(String path) throws IOException {
-		FileInputStream fis = new FileInputStream(path);
-		byte[] buffer = new byte[fis.available()];
-		fis.read(buffer);
-		fis.close();
-		return buffer;
-	}
+	public void insertWithMail (Member_mail_pictureVO member_mail_pictureVO , Connection con) {
+		System.out.println("member_mail_pictureDAO");
+		System.out.println(member_mail_pictureVO == null);
+		
+		PreparedStatement pstmt = null;
+		try {
 
+			pstmt = con.prepareStatement(INSERT_STMT);
+			System.out.println(pstmt == null);
+
+//			pstmt.setInt(1, member_mail_pictureVO.getMail_pic_no());
+			pstmt.setInt(1, member_mail_pictureVO.getMail_no());
+			pstmt.setString(2, member_mail_pictureVO.getMail_pic());
+
+			pstmt.executeUpdate();
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-member_mail_picture");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
 }

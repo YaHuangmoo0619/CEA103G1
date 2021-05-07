@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.member_mail.model.Member_mailService;
+import com.member_mail_picture.model.Member_mail_pictureVO;
 import com.service_mail.model.Service_mailService;
 import com.service_mail.model.Service_mailVO;
 import com.service_mail_picture.model.Service_mail_pictureDAO;
@@ -93,12 +95,14 @@ public class Service_mailServlet extends HttpServlet {
 					errorMsgs.put("emp_no", new String[] {"請選擇員工編號"});
 				}
 				Integer emp_no = Integer.valueOf(emp_noTest);
+				Integer send_no = Integer.valueOf(emp_noTest);
 				
 				String mbr_noTest = req.getParameter("mbr_no");
 				if(mbr_noTest.equals("99")) {
 					errorMsgs.put("mbr_no", new String[] {"請選擇會員編號"});
 				}
 				Integer mbr_no = Integer.valueOf(mbr_noTest);
+				Integer rcpt_no = Integer.valueOf(mbr_noTest);
 				
 				String mail_cont = req.getParameter("mail_cont");
 				if(mail_cont.trim().isEmpty()) {
@@ -114,6 +118,7 @@ public class Service_mailServlet extends HttpServlet {
 				
 				
 				Set<Service_mail_pictureVO> set = new LinkedHashSet<Service_mail_pictureVO>();
+				Set<Member_mail_pictureVO> setMember = new LinkedHashSet<Member_mail_pictureVO>();
 				String realPath = getServletContext().getRealPath(saveDirectory);
 				File fsaveDirectory = new File(realPath);
 				if(!fsaveDirectory.exists()) {
@@ -122,10 +127,11 @@ public class Service_mailServlet extends HttpServlet {
 				
 				Collection<Part> parts = req.getParts();
 				System.out.println(parts.size());
-				if(parts.size() > 7) {
+				if(parts.size() >= 7) {
 					for(Part part : parts) {
 //						System.out.println(part.getHeader("content-disposition"));
-						if(part.getSubmittedFileName()!=null) {
+//						System.out.println(part.getSubmittedFileName());
+						if(part.getSubmittedFileName()!=null && !part.getSubmittedFileName().isEmpty()) {
 							String fileType = part.getSubmittedFileName().substring(part.getSubmittedFileName().lastIndexOf("."));
 							
 							File f = new File(fsaveDirectory, "service_mail_picture"+count+fileType);
@@ -135,6 +141,9 @@ public class Service_mailServlet extends HttpServlet {
 							Service_mail_pictureVO service_mail_pictureVO = new Service_mail_pictureVO();
 							service_mail_pictureVO.setMail_pic(mail_pic);
 							set.add(service_mail_pictureVO);
+							Member_mail_pictureVO member_mail_pictureVO = new Member_mail_pictureVO();
+							member_mail_pictureVO.setMail_pic(mail_pic);
+							setMember.add(member_mail_pictureVO);
 							count++;
 						}
 					}
@@ -142,16 +151,19 @@ public class Service_mailServlet extends HttpServlet {
 				
 				
 				Integer mail_stat =  1;
+				Integer mail_statMember =  Integer.valueOf(req.getParameter("mail_stat"));
 				Integer mail_read_stat =  Integer.valueOf(req.getParameter("mail_read_stat"));
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String mail_time = sdf.format(new java.util.Date());
 				
 				Service_mailService service_mailSvc = new Service_mailService();
+				Member_mailService member_mailSvc = new Member_mailService();
 				if(set.size() == 0) {
 					Service_mailVO service_mailVO = service_mailSvc.addService_mail(emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time);
 					req.setAttribute("service_mailVO", service_mailVO);
 				}else {
 					service_mailSvc.insertWithPic(emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time, set);
+					member_mailSvc.insertWithPic(send_no,rcpt_no,mail_read_stat,mail_statMember,mail_cont,mail_time, setMember);
 				}
 				
 				
