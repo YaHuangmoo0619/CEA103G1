@@ -149,7 +149,7 @@ input.change:hover {
 }
 
 tr {
-	border-top: 1px solid #eee;
+/* 	border-top: 1px solid #eee; */
 	border-bottom: 2px solid #eee;
 }
 
@@ -198,7 +198,7 @@ tr:hover {
 								</c:forEach>
 							</select>
 							<br>
-							<label for="emp_no">員工編號:</label>
+							<label for="emp_no">回覆人員:</label>
 							<select size="1" name="emp_no" id="emp_no">
 								<option value="no">--請選擇--</option>
 								<c:forEach var="employeeVO" items="${employeeSvc.all}">
@@ -206,7 +206,7 @@ tr:hover {
 								</c:forEach>
 							</select>
 							<br>
-							<label for="mbr_no">會員編號:</label> 
+							<label for="mbr_no">發信會員:</label> 
 							<select size="1" name="mbr_no" id="mbr_no">
 								<option value="no">--請選擇--</option>
 								<c:forEach var="memberVO" items="${memberSvc.all}">
@@ -245,16 +245,22 @@ tr:hover {
 <%-- 					所有客服信列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回客服管理首頁</a> --%>
 <!-- 				</h2> -->
 <!-- 				<hr> -->
-
+				<div style="text-align:center;font-weight:555;">
+					<div style="width: 150px;display:inline-block;">回覆人員</div>
+					<div style="width: 150px;display:inline-block;">發信會員</div>
+					<div style="width: 250px;display:inline-block;">信件內容</div>
+					<div style="width: 150px;display:inline-block;">信件日期</div>
+				</div>
+				<hr>
 				<table>
 <!-- 					<tr> -->
 <!-- 						<th style="width: 50px">編號</th> -->
-<!-- 						<th style="width: 50px">寄件人</th> -->
-<!-- 						<th style="width: 50px">收件人</th> -->
-<!-- 						<th style="width: 200px">內容</th> -->
+<!-- 						<th style="width: 50px">回覆人員</th> -->
+<!-- 						<th style="width: 50px">發信會員</th> -->
+<!-- 						<th style="width: 200px">信件內容</th> -->
 <!-- 						<th style="width: 50px">信件狀態</th> -->
 <!-- 						<th style="width: 100px">信件閱讀狀態</th> -->
-<!-- 						<th style="width: 100px">發信時間</th> -->
+<!-- 						<th style="width: 100px">信件日期</th> -->
 <!-- 					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a -->
 <!-- 						id="first" style="text-decoration: none;"></a></th> -->
 <!-- 					</tr> -->
@@ -266,10 +272,10 @@ tr:hover {
 <%-- 								<td>${service_mailVO.mail_no}<a id="focus"></a></td> --%>
 <%-- 							</c:if> --%>
 <%-- 							<c:if test="${service_mailVO.mail_no!=param.mail_no}"> --%>
-							<td>${service_mailVO.mail_no}</td>
+							<td style="display:none;">${service_mailVO.mail_no}</td>
 <%-- 							</c:if> --%>
-							<td>${service_mailVO.emp_no}</td>
-							<td>${service_mailVO.mbr_no}</td>
+							<td>${service_mailVO.emp_no}${employeeSvc.getOneEmployee(service_mailVO.emp_no).name}</td>
+							<td>${service_mailVO.mbr_no}${memberSvc.getOneMember(service_mailVO.mbr_no).name}</td>
 							<c:set var="mail_cont" value="${service_mailVO.mail_cont}" />
 							<c:if test="${mail_cont.length() > 10}">
 								<td>${fn:substring(mail_cont, 0, 10)}...</td>
@@ -277,8 +283,8 @@ tr:hover {
 							<c:if test="${mail_cont.length() <= 10}">
 								<td>${mail_cont}</td>
 							</c:if>
-							<td>${service_mailVO.mail_stat}</td>
-							<td class="mail_read_stat">${service_mailVO.mail_read_stat}</td>
+							<td style="display:none;">${service_mailVO.mail_stat}</td>
+							<td class="mail_read_stat" style="display:none;">${service_mailVO.mail_read_stat}</td>
 							<c:set var="mail_time" value="${service_mailVO.mail_time}" />
 							<td>${fn:substring(mail_time, 0, 10)}</td>
 <!-- 						<td> -->

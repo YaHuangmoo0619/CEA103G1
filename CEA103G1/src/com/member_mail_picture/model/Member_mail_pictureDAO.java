@@ -50,15 +50,8 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, member_mail_pictureVO.getMail_pic_no());
-			pstmt.setInt(2, member_mail_pictureVO.getMail_no());
-			byte[] pic = null;
-//			try {
-////				pic = getPictureByteArray("items/FC_Barcelona.png");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-			pstmt.setBytes(3, pic);
+			pstmt.setInt(1, member_mail_pictureVO.getMail_no());
+			pstmt.setString(2, member_mail_pictureVO.getMail_pic());
 
 			pstmt.executeUpdate();
 
@@ -99,13 +92,7 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 
 			pstmt.setInt(1, member_mail_pictureVO.getMail_pic_no());
 			pstmt.setInt(2, member_mail_pictureVO.getMail_no());
-			byte[] pic = null;
-//			try {
-//				pic = getPictureByteArray("items/FC_Barcelona.png");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-			pstmt.setBytes(3, pic);
+			pstmt.setString(3, member_mail_pictureVO.getMail_pic());
 
 			pstmt.executeUpdate();
 
@@ -248,7 +235,6 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 			while (rs.next()) {
 				// empVo ¤]ºÙ¬° Domain objects
 				member_mail_pictureVO = new Member_mail_pictureVO();
-				member_mail_pictureVO = new Member_mail_pictureVO();
 				member_mail_pictureVO.setMail_pic_no(rs.getInt("mail_pic_no"));
 				member_mail_pictureVO.setMail_no(rs.getInt("mail_no"));
 				member_mail_pictureVO.setMail_pic(rs.getString("mail_pic"));
@@ -296,7 +282,6 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 			pstmt = con.prepareStatement(INSERT_STMT);
 			System.out.println(pstmt == null);
 
-//			pstmt.setInt(1, member_mail_pictureVO.getMail_pic_no());
 			pstmt.setInt(1, member_mail_pictureVO.getMail_no());
 			pstmt.setString(2, member_mail_pictureVO.getMail_pic());
 

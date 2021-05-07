@@ -170,6 +170,7 @@ img{
 				</td>
 				</tr>
 			</table>
+					<input type="hidden" name="mail_no" value="${param.mail_no}">
 					<input type="hidden" name="mail_stat" value="0">
 					<input type="hidden" name="mail_read_stat" value="0">
 					<input type="hidden" name="action" value="insert">

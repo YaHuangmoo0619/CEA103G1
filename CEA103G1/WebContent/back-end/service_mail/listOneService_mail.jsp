@@ -128,6 +128,7 @@ img.info{
 						
 			</div>
 			<form method="post" action="<%=request.getContextPath()%>/back-end/service_mail/addService_mail.jsp">		
+					<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}">
 					<input type="hidden" name="emp_no" value="${service_mailVO.emp_no}">
 					<input type="hidden" name="mbr_no" value="${service_mailVO.mbr_no}">
 					<input type="submit" value="¦^ÂÐ" class="confirm">

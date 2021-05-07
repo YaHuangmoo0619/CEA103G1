@@ -127,7 +127,7 @@ public class Service_mailServlet extends HttpServlet {
 				
 				Collection<Part> parts = req.getParts();
 				System.out.println(parts.size());
-				if(parts.size() >= 7) {
+				if(parts.size() >= 8) {
 					for(Part part : parts) {
 //						System.out.println(part.getHeader("content-disposition"));
 //						System.out.println(part.getSubmittedFileName());
@@ -165,6 +165,20 @@ public class Service_mailServlet extends HttpServlet {
 					service_mailSvc.insertWithPic(emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time, set);
 					member_mailSvc.insertWithPic(send_no,rcpt_no,mail_read_stat,mail_statMember,mail_cont,mail_time, setMember);
 				}
+				System.out.println(req.getParameter("mail_no"));
+				Integer mail_no = Integer.valueOf(req.getParameter("mail_no"));
+				Service_mailVO service_mailVO = service_mailSvc.getOneService_mail(mail_no);
+				service_mailVO.setEmp_no(emp_no);
+				
+				Integer mail_noDone = service_mailVO.getMail_no();
+				Integer emp_noDone = service_mailVO.getEmp_no();
+				Integer mbr_noDone = service_mailVO.getMbr_no();
+				Integer mail_statusDone = service_mailVO.getMail_stat();
+				Integer mail_read_statusDone = service_mailVO.getMail_read_stat();
+				String mail_contDone = service_mailVO.getMail_cont();
+				String mail_timeDone = service_mailVO.getMail_time();
+				
+				service_mailSvc.updateService_mail(mail_noDone, emp_noDone, mbr_noDone, mail_contDone, mail_statusDone, mail_read_statusDone, mail_timeDone);
 				
 				
 				RequestDispatcher successView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
