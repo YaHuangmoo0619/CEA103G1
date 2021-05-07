@@ -25,6 +25,36 @@
 <%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
+.confirm {
+	background-color: #5599FF;
+	color: #000088;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+
+.confirm:hover {
+	background-color: #000088;
+	color: #5599FF;
+	cursor: pointer;
+}
+
+.not {
+	background-color: #FF3333;
+	color: #880000;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+
+.not:hover {
+	background-color: #AA0000;
+	color: #FF0000;
+	cursor: pointer;
+}
+
 body {
 	background-color: #4e5452;
 	color: #4e5452;
@@ -56,6 +86,7 @@ form {
 span {
 	color: #80c344;
 }
+
 table {
 	border-collapse: collapse;
 	width: 40%;
@@ -153,13 +184,60 @@ table {
 					</tr>
 					<tr>
 						<th>祇布:</th>
-						<td>${place_orderVO.receipt}</td>
+						<c:if test="${place_orderVO.receipt==0}">
+							<td><c:out value="セ祇布" /></td>
+						</c:if>
+						<c:if test="${place_orderVO.receipt==1}">
+							<td><c:out value="筿祇布" /></td>
+						</c:if>
+						<c:if test="${place_orderVO.receipt==2}">
+							<td><c:out value="祇布秘" /></td>
+						</c:if>
 					</tr>
 					<tr>
 						<th>称爹:</th>
 						<td>${place_orderVO.rmk}</td>
 					</tr>
 				</table>
+				<br>
+				<c:if test="${place_orderVO.ckin_stat==0}">
+					<div style="display: inline-block;">
+						<FORM METHOD="post"
+							ACTION="<%=request.getContextPath()%>/place_order/place_order.do">
+							<button class="not">
+								<c:out value="ゼ畊" />
+							</button>
+							<input type="hidden" name=action value="update"> <input
+								type="hidden" name="plc_ord_no"
+								value="${place_orderVO.plc_ord_no}"> <input
+								type="hidden" name="ckin_stat" value="1">
+						</FORM>
+					</div>
+					<div style="display: inline-block;">
+						<FORM METHOD="post"
+							ACTION="<%=request.getContextPath()%>/place_order/place_order.do">
+							<button class="confirm">
+								<c:out value="CKECK IN" />
+							</button>
+							<input type="hidden" name=action value="update"> <input
+								type="hidden" name="plc_ord_no"
+								value="${place_orderVO.plc_ord_no}"> <input
+								type="hidden" name="ckin_stat" value="2">
+						</FORM>
+					</div>
+				</c:if>
+				<c:if test="${place_orderVO.ckin_stat==2}">
+					<FORM METHOD="post"
+						ACTION="<%=request.getContextPath()%>/place_order/place_order.do">
+						<button class="confirm">
+							<c:out value="CKECK OUT" />
+						</button>
+						<input type="hidden" name=action value="update"> <input
+							type="hidden" name="plc_ord_no"
+							value="${place_orderVO.plc_ord_no}"> <input type="hidden"
+							name="ckin_stat" value="3">
+					</FORM>
+				</c:if>
 			</div>
 		</div>
 	</div>

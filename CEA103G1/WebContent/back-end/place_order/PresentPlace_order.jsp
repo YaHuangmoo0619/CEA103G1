@@ -9,7 +9,7 @@
 	List<Place_OrderVO> order_list = place_orderSvc.getAll();
 	List<Place_OrderVO> list = new ArrayList();
 	for (Place_OrderVO place_orderVO : order_list) {
-		if (place_orderVO.getCkin_stat() == 0) {
+		if (place_orderVO.getCkin_stat() == 0 || place_orderVO.getCkin_stat() == 2) {
 			list.add(place_orderVO);
 		}
 	}
