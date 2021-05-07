@@ -202,9 +202,7 @@ tr:hover {
 							<select size="1" name="emp_no" id="emp_no">
 								<option value="no">--½Ð¿ï¾Ü--</option>
 								<c:forEach var="employeeVO" items="${employeeSvc.all}">
-									<c:if test="${employeeVO.emp_no != 90001}">
-										<option value="${employeeVO.emp_no}">${employeeVO.emp_no}${employeeVO.name}</option>
-									</c:if>
+									<option value="${employeeVO.emp_no}">${employeeVO.emp_no}${employeeVO.name}</option>
 								</c:forEach>
 							</select>
 							<br>

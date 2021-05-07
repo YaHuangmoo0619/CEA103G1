@@ -121,8 +121,8 @@ public class Service_mailServlet extends HttpServlet {
 				}
 				
 				Collection<Part> parts = req.getParts();
-//				System.out.println(parts.size());
-				if(parts.size() != 0) {
+				System.out.println(parts.size());
+				if(parts.size() > 7) {
 					for(Part part : parts) {
 //						System.out.println(part.getHeader("content-disposition"));
 						if(part.getSubmittedFileName()!=null) {
@@ -136,15 +136,12 @@ public class Service_mailServlet extends HttpServlet {
 							service_mail_pictureVO.setMail_pic(mail_pic);
 							set.add(service_mail_pictureVO);
 							count++;
-//							Service_mail_pictureDAO service_mail_pictureDAO = new Service_mail_pictureDAO();
-//							Service_mail_pictureVO service_mail_pictureVO = new Service_mail_pictureVO(80004,req.getContextPath()+"/images/service_mail_picture/service_mail_picture"+count+fileType);
-//							service_mail_pictureDAO.insert(service_mail_pictureVO);
 						}
 					}
 				}
 				
 				
-				Integer mail_stat =  Integer.valueOf(req.getParameter("mail_stat"));
+				Integer mail_stat =  1;
 				Integer mail_read_stat =  Integer.valueOf(req.getParameter("mail_read_stat"));
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String mail_time = sdf.format(new java.util.Date());
