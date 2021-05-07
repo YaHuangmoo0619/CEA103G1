@@ -9,7 +9,7 @@
 	List<Place_OrderVO> order_list = place_orderSvc.getAll();
 	List<Place_OrderVO> list = new ArrayList();
 	for (Place_OrderVO place_orderVO : order_list) {
-		if (!(place_orderVO.getCkin_stat() == 0)) {
+		if (place_orderVO.getCkin_stat() == 1 || place_orderVO.getCkin_stat() == 3 || place_orderVO.getCkin_stat() == 4) {
 			list.add(place_orderVO);
 		}
 	}
@@ -99,6 +99,9 @@ table, th, td {
 				</c:if>
 				<c:if test="${place_orderVO.ckin_stat==3}">
 					<td><c:out value="已退房" /></td>
+				</c:if>
+				<c:if test="${place_orderVO.ckin_stat==4}">
+					<td><c:out value="已取消" /></td>
 				</c:if>
 				<td>
 					<FORM METHOD="post"

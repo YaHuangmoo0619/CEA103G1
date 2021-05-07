@@ -88,6 +88,7 @@ table {
 			<div class="right col-9">
 				<div style="display: inline-block;">
 					<h3>營區資料</h3>
+<!-- 					<button>修改</button> -->
 					<table>
 						<tr>
 							<th>營主編號</th>
