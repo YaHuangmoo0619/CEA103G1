@@ -18,6 +18,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.member_mail.model.Member_mailDAO;
+import com.member_mail.model.Member_mailVO;
 import com.service_mail_picture.model.Service_mail_pictureDAO;
 import com.service_mail_picture.model.Service_mail_pictureVO;
 
@@ -55,6 +57,9 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 		try {
 
 			con = ds.getConnection();
+			
+			con.setAutoCommit(false);
+			
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			pstmt.setInt(1, service_mailVO.getEmp_no());
@@ -65,9 +70,33 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 			pstmt.setString(6, service_mailVO.getMail_time());
 
 			pstmt.executeUpdate();
+			
+			Member_mailDAO member_mailDAO = new Member_mailDAO();
+			Integer send_no = service_mailVO.getEmp_no();
+			Integer rcpt_no = service_mailVO.getMbr_no();
+			Integer mail_read_stat = 0;
+			Integer mail_stat = 0;
+			String mail_cont = service_mailVO.getMail_cont();
+			String mail_time = service_mailVO.getMail_time();
+			Member_mailVO member_mailVO = new Member_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
+			member_mailDAO.insertWithEmp(member_mailVO, con);
+			
+			con.commit();
+			con.setAutoCommit(true);
 
 			// Handle any SQL errors
 		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-service_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
@@ -474,6 +503,16 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 //			stmt.executeUpdate("set auto_increment_offset=80001;");    //自增主鍵-初始值
 //			stmt.executeUpdate("set auto_increment_increment=1;");
 			pstmt.executeUpdate();
+			
+			Member_mailDAO member_mailDAO = new Member_mailDAO();
+			Integer send_no = service_mailVO.getEmp_no();
+			Integer rcpt_no = service_mailVO.getMbr_no();
+			Integer mail_read_stat = 0;
+			Integer mail_stat = 0;
+			String mail_cont = service_mailVO.getMail_cont();
+			String mail_time = service_mailVO.getMail_time();
+			Member_mailVO member_mailVO = new Member_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
+			member_mailDAO.insertWithEmp(member_mailVO, con);
 			
 			String next_mail_no = null;
 			ResultSet rs = pstmt.getGeneratedKeys();

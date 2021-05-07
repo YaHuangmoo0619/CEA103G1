@@ -447,4 +447,46 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 		}
 		return set;
 	}
+	
+	public void insertWithEmp (Member_mailVO member_mailVO , Connection con) {
+		PreparedStatement pstmt = null;
+		try {
+
+			pstmt = con.prepareStatement(INSERT_STMT);
+			
+
+			pstmt.setInt(1, member_mailVO.getSend_no());
+			pstmt.setInt(2, member_mailVO.getRcpt_no());
+			pstmt.setInt(3, member_mailVO.getMail_read_stat());
+			pstmt.setInt(4, member_mailVO.getMail_stat());
+			pstmt.setString(5, member_mailVO.getMail_cont());
+			pstmt.setString(6, member_mailVO.getMail_time());
+
+			pstmt.executeUpdate();
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-member_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
 }
