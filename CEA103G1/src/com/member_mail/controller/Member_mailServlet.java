@@ -53,13 +53,13 @@ public class Member_mailServlet extends HttpServlet {
 				}
 				if("compositeSearchTop".equals(action) && map.get("mail_cont")[0].isEmpty()) {
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/select_page.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/listAllService_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
 				if(checkCount == 8) {
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/listAllService_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -67,12 +67,12 @@ public class Member_mailServlet extends HttpServlet {
 				Member_mailService member_mailSvc = new Member_mailService();
 				Set<Member_mailVO> member_mailVOSet = member_mailSvc.getWhereCondition(map);
 				req.setAttribute("member_mailVOSet", member_mailVOSet);
-				RequestDispatcher successView = req.getRequestDispatcher("/back-end/member_mail/listWhereMember_mail.jsp");
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/member_mail/listWhereMember_mail.jsp");
 				successView.forward(req, res);
 				
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/listAllService_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -103,7 +103,7 @@ public class Member_mailServlet extends HttpServlet {
 				}
 
 				if(!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/addMember_mail.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/addMember_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -117,12 +117,12 @@ public class Member_mailServlet extends HttpServlet {
 				Member_mailService member_mailSvc = new Member_mailService();
 				Member_mailVO member_mailVO = member_mailSvc.addMember_mail(send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time);
 				req.setAttribute("member_mailVO", member_mailVO);
-				RequestDispatcher successView = req.getRequestDispatcher("/back-end/member_mail/listAllMember_mail.jsp");
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");
 				successView.forward(req, res);
 				
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/addMember_mail.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/addMember_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -134,11 +134,11 @@ public class Member_mailServlet extends HttpServlet {
 			try {
 				Member_mailVO member_mailVO = new Member_mailService().getOneMember_mail(Integer.valueOf(req.getParameter("mail_no")));
 				req.setAttribute("member_mailVO", member_mailVO);
-				RequestDispatcher successView = req.getRequestDispatcher("/back-end/member_mail/update_member_mail_input.jsp");
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/member_mail/update_member_mail_input.jsp");
 				successView.forward(req, res);
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/listAllMember_mail.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -167,7 +167,7 @@ public class Member_mailServlet extends HttpServlet {
 				}
 
 				if(!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/update_member_mail_input.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/update_member_mail_input.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -182,12 +182,12 @@ public class Member_mailServlet extends HttpServlet {
 				Member_mailService member_mailSvc = new Member_mailService();
 				Member_mailVO member_mailVO = member_mailSvc.updateMember_mail(mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time);
 				req.setAttribute("member_mailVO", member_mailVO);
-				RequestDispatcher successView = req.getRequestDispatcher("/back-end/member_mail/listAllMember_mail.jsp");
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");
 				successView.forward(req, res);
 				
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/update_member_mail_input.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/update_member_mail_input.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -211,11 +211,11 @@ public class Member_mailServlet extends HttpServlet {
 				Member_mailVO member_mailVO2 = member_mailSvc.updateMember_mail(mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time);
 				
 				req.setAttribute("member_mailVO", member_mailVO2);
-				RequestDispatcher successView = req.getRequestDispatcher("/back-end/member_mail/listOneMember_mail.jsp");
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/member_mail/listOneMember_mail.jsp");
 				successView.forward(req, res);
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/listAllMember_mail.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}

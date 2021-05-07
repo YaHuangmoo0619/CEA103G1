@@ -69,6 +69,14 @@ img.cart:hover {
 	cursor: pointer;
 }
 
+img.announcement{
+	width: 30px;
+	margin: 10px;
+}
+img.announcement:hover{
+	cursor: pointer;
+}
+
 img.menu {
 	width: 40px;
 	margin: 10px;
@@ -383,6 +391,7 @@ section.footer {
 				<a class="button" href=""><button type="button" class="btn btn-secondary">商城</button></a>
 			</div>
 			<img src="<%=request.getContextPath() %>/front-images/cart-outline.svg" class="cart">
+			<a href="<%=request.getContextPath() %>/front-end/announcement/listAllAnnouncement.jsp"><img src="<%=request.getContextPath() %>/front-images/megaphone-outline.svg" class="announcement"></a>
 			<div class="btn-group" role="group" aria-label="Basic example">
 				<a class="button" href="<%=request.getContextPath() %>/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">註冊</button></a>
@@ -390,8 +399,8 @@ section.footer {
 <!-- 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">FAQ</button></a> -->
 <!-- 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 			</div>
-			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu"> <a
-				href="nnn"> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
+			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu">
+			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp"> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
 		</div>
 	</div>
 
