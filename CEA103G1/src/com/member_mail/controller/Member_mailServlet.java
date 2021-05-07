@@ -35,7 +35,7 @@ public class Member_mailServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
-		if("compositeSearch".equals(action)) {
+		if("compositeSearch".equals(action) || "compositeSearchTop".equals(action)) {
 			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
@@ -51,9 +51,15 @@ public class Member_mailServlet extends HttpServlet {
 						checkCount++;
 					}
 				}
-				if(checkCount == 8) {
+				if("compositeSearchTop".equals(action) && map.get("mail_cont")[0].isEmpty()) {
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/select_page.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				if(checkCount == 8) {
+					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}

@@ -41,7 +41,7 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 	private static final String INSERT_STMT = 
 		"INSERT INTO campion.member_mail (send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
-		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail order by mail_no";
+		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail order by mail_time desc";
 	private static final String GET_ONE_STMT = 
 		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail where mail_no = ?";
 	private static final String DELETE = 

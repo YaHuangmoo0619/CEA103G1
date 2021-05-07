@@ -158,7 +158,7 @@ tr:hover {
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>會員站內信列表</h3>
+			<h3>會員站內信列表</h3><a href="<%=request.getContextPath()%>/back-end/member_mail/addMember_mail.jsp">寄信</a>
 			<hr>
 			${errorMsgs.Exception}
 			<div class="forSearch" id="forSearch">
@@ -247,8 +247,8 @@ tr:hover {
 					<th style="width:50px">信件狀態</th>
 					<th style="width:100px">信件閱讀狀態</th>
 					<th style="width:100px">發信時間</th>
-					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a
-						id="first" style="text-decoration: none;"></a></th>
+<!-- 					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a -->
+<!-- 						id="first" style="text-decoration: none;"></a></th> -->
 				</tr>
 <%-- 				<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService"/> --%>
 				<c:forEach var="member_mailVO" items="${member_mailSvc.all}">
@@ -273,13 +273,13 @@ tr:hover {
 						<td class="mail_read_stat">${member_mailVO.mail_read_stat}</td>
 						<c:set var="mail_time" value="${member_mailVO.mail_time}" />
 							<td>${fn:substring(mail_time, 0, 10)}</td>
-						<td>
-							<form method="post" action="<%=request.getContextPath()%>/member_mail/member_mail.do">
-								<input class="change" type="submit" value="修改">
-								<input type="hidden" name="mail_no" value="${member_mailVO.mail_no}">
-								<input type="hidden" name="action" value="getOne_For_Update">
-							</form>
-						</td>
+<!-- 						<td> -->
+<%-- 							<form method="post" action="<%=request.getContextPath()%>/member_mail/member_mail.do"> --%>
+<!-- 								<input class="change" type="submit" value="修改"> -->
+<%-- 								<input type="hidden" name="mail_no" value="${member_mailVO.mail_no}"> --%>
+<!-- 								<input type="hidden" name="action" value="getOne_For_Update"> -->
+<!-- 							</form> -->
+<!-- 						</td> -->
 					</tr>
 				</c:forEach>
 			</table>
