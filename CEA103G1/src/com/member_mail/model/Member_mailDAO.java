@@ -18,7 +18,11 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.member_mail_picture.model.Member_mail_pictureDAO;
+import com.member_mail_picture.model.Member_mail_pictureVO;
 import com.service_mail.model.Service_mailVO;
+import com.service_mail_picture.model.Service_mail_pictureDAO;
+import com.service_mail_picture.model.Service_mail_pictureVO;
 
 
 public class Member_mailDAO implements Member_mailDAO_interface {
@@ -37,7 +41,7 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 	private static final String INSERT_STMT = 
 		"INSERT INTO campion.member_mail (send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
-		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail order by mail_no";
+		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail order by mail_time desc";
 	private static final String GET_ONE_STMT = 
 		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail where mail_no = ?";
 	private static final String DELETE = 
@@ -446,5 +450,120 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 			}
 		}
 		return set;
+	}
+	
+	public void insertWithEmp (Member_mailVO member_mailVO , Connection con) {
+		PreparedStatement pstmt = null;
+		try {
+
+			pstmt = con.prepareStatement(INSERT_STMT);
+			
+
+			pstmt.setInt(1, member_mailVO.getSend_no());
+			pstmt.setInt(2, member_mailVO.getRcpt_no());
+			pstmt.setInt(3, member_mailVO.getMail_read_stat());
+			pstmt.setInt(4, member_mailVO.getMail_stat());
+			pstmt.setString(5, member_mailVO.getMail_cont());
+			pstmt.setString(6, member_mailVO.getMail_time());
+
+			pstmt.executeUpdate();
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-member_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	public void insertWithPic(Member_mailVO member_mailVO, Set<Member_mail_pictureVO> set) {
+		System.out.println("member_mailDAO");
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			
+			con.setAutoCommit(false);
+			
+			String cols[] = {"mail_no"};
+			pstmt = con.prepareStatement(INSERT_STMT , cols);
+
+			pstmt.setInt(1, member_mailVO.getSend_no());
+			pstmt.setInt(2, member_mailVO.getRcpt_no());
+			pstmt.setInt(3, member_mailVO.getMail_read_stat());
+			pstmt.setInt(4, member_mailVO.getMail_stat());
+			pstmt.setString(5, member_mailVO.getMail_cont());
+			pstmt.setString(6, member_mailVO.getMail_time());
+			
+			pstmt.executeUpdate();
+			
+			String next_mail_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+//			System.out.println("Res="+ rs);
+			if(rs.next()) {
+				next_mail_no = rs.getString(1);
+			}
+			rs.close();
+			
+			Member_mail_pictureDAO member_mail_pictureDAO = new Member_mail_pictureDAO();
+			for(Member_mail_pictureVO member_mail_pictureVO : set) {
+				member_mail_pictureVO.setMail_no(new Integer(next_mail_no));
+				member_mail_pictureDAO.insertWithMail(member_mail_pictureVO , con);
+			}
+			
+			con.commit();
+			con.setAutoCommit(true);
+			// Handle any SQL errors
+		}catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-service_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
 	}
 }

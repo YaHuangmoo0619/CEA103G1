@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.member_mail_picture.model.Member_mail_pictureVO;
 import com.service_mail.model.Service_mailVO;
 
 public class Member_mailService {
@@ -69,5 +70,18 @@ public class Member_mailService {
 
 	public Set<Member_mailVO> getWhereCondition(Map<String,String[]> map){
 		return dao.getWhereCondition(map);
+	}
+	
+	public void insertWithPic(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time, Set<Member_mail_pictureVO> set) {
+		System.out.println("member_mailService");
+		Member_mailVO member_mailVO = new Member_mailVO();
+		
+		member_mailVO.setSend_no(send_no);
+		member_mailVO.setRcpt_no(rcpt_no);
+		member_mailVO.setMail_cont(mail_cont);
+		member_mailVO.setMail_stat(mail_stat);
+		member_mailVO.setMail_read_stat(mail_read_stat);
+		member_mailVO.setMail_time(mail_time);
+		dao.insertWithPic(member_mailVO, set);
 	}
 }

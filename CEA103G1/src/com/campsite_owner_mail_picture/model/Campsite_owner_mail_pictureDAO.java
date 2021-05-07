@@ -28,7 +28,7 @@ public class Campsite_owner_mail_pictureDAO implements Campsite_owner_mail_pictu
 	}
 	
 	private static final String INSERT_STMT = 
-			"INSERT INTO campion.member_mail_picture (mail_pic_no,mail_no,mail_pic) VALUES (?, ?, ?)";
+			"INSERT INTO campion.member_mail_picture (mail_no,mail_pic) VALUES (?, ?)";
 		private static final String GET_ALL_STMT = 
 			"SELECT mail_pic_no,mail_no,mail_pic FROM campion.member_mail_picture order by mail_pic_no";
 		private static final String GET_ONE_STMT = 
@@ -50,15 +50,8 @@ public class Campsite_owner_mail_pictureDAO implements Campsite_owner_mail_pictu
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, campsite_owner_mail_pictureVO.getMail_pic_no());
-			pstmt.setInt(2, campsite_owner_mail_pictureVO.getMail_no());
-			byte[] pic = null;
-			try {
-				pic = getPictureByteArray("items/FC_Barcelona.png");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			pstmt.setBytes(3, pic);
+			pstmt.setInt(1, campsite_owner_mail_pictureVO.getMail_no());
+			pstmt.setString(2, campsite_owner_mail_pictureVO.getMail_pic());
 
 			pstmt.executeUpdate();
 
@@ -99,13 +92,7 @@ public class Campsite_owner_mail_pictureDAO implements Campsite_owner_mail_pictu
 
 			pstmt.setInt(1, campsite_owner_mail_pictureVO.getMail_pic_no());
 			pstmt.setInt(2, campsite_owner_mail_pictureVO.getMail_no());
-			byte[] pic = null;
-			try {
-				pic = getPictureByteArray("items/FC_Barcelona.png");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			pstmt.setBytes(3, pic);
+			pstmt.setString(3, campsite_owner_mail_pictureVO.getMail_pic());
 
 			pstmt.executeUpdate();
 
@@ -194,21 +181,8 @@ public class Campsite_owner_mail_pictureDAO implements Campsite_owner_mail_pictu
 				campsite_owner_mail_pictureVO = new Campsite_owner_mail_pictureVO();
 				campsite_owner_mail_pictureVO.setMail_pic_no(rs.getInt("mail_pic_no"));
 				campsite_owner_mail_pictureVO.setMail_no(rs.getInt("mail_no"));
-				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("mail_pic"));
-				byte[] buf = new byte[4 * 1024]; // 4K buffer
-				int len;
-				try {
-					while ((len = in.read(buf)) != -1) {
-						campsite_owner_mail_pictureVO.setMail_pic(buf);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				try {
-					in.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				campsite_owner_mail_pictureVO.setMail_pic(rs.getString("mail_pic"));
+				
 			}
 
 			// Handle any driver errors
@@ -264,21 +238,8 @@ public class Campsite_owner_mail_pictureDAO implements Campsite_owner_mail_pictu
 				campsite_owner_mail_pictureVO = new Campsite_owner_mail_pictureVO();
 				campsite_owner_mail_pictureVO.setMail_pic_no(rs.getInt("mail_pic_no"));
 				campsite_owner_mail_pictureVO.setMail_no(rs.getInt("mail_no"));
-				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("mail_pic"));
-				byte[] buf = new byte[4 * 1024]; // 4K buffer
-				int len;
-				try {
-					while ((len = in.read(buf)) != -1) {
-						campsite_owner_mail_pictureVO.setMail_pic(buf);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				try {
-					in.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				campsite_owner_mail_pictureVO.setMail_pic(rs.getString("mail_pic"));
+				
 				list.add(campsite_owner_mail_pictureVO);
 			}
 
@@ -313,12 +274,6 @@ public class Campsite_owner_mail_pictureDAO implements Campsite_owner_mail_pictu
 		return list;
 	}
 
-	public static byte[] getPictureByteArray(String path) throws IOException {
-		FileInputStream fis = new FileInputStream(path);
-		byte[] buffer = new byte[fis.available()];
-		fis.read(buffer);
-		fis.close();
-		return buffer;
-	}
+
 
 }

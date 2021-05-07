@@ -6,12 +6,12 @@ public class Campsite_owner_mail_pictureVO implements Serializable {
 
 	private Integer mail_pic_no;
 	private Integer mail_no;
-	private byte[] mail_pic;
+	private String mail_pic;
 	
 	public Campsite_owner_mail_pictureVO() {
 	}
 	
-	public Campsite_owner_mail_pictureVO(Integer mail_pic_no, Integer mail_no, byte[] mail_pic) {
+	public Campsite_owner_mail_pictureVO(Integer mail_pic_no, Integer mail_no, String mail_pic) {
 		super();
 		this.mail_pic_no = mail_pic_no;
 		this.mail_no = mail_no;
@@ -30,10 +30,10 @@ public class Campsite_owner_mail_pictureVO implements Serializable {
 	public void setMail_no(Integer mail_no) {
 		this.mail_no = mail_no;
 	}
-	public byte[] getMail_pic() {
+	public String getMail_pic() {
 		return mail_pic;
 	}
-	public void setMail_pic(byte[] mail_pic) {
+	public void setMail_pic(String mail_pic) {
 		this.mail_pic = mail_pic;
 	}
 	

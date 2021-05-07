@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<title>新增信件</title>
+<title>回覆信件</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -79,7 +79,28 @@ input.confirm:hover{
 	cursor: pointer;
 }
 </style>
-
+<style>
+#container {
+	padding: 10px;
+	max-width: 250px;
+	margin: 0px auto;
+}
+.align{
+	display: inline;
+	vertical-align: text-top;
+}
+#preview, .change{
+	margin: 10px 0px;
+	
+}
+img{
+	max-width: 100%;
+	margin: 10px;
+}
+.delete{
+	display: none;
+}
+</style>
 </head>
 <body>
 <%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
@@ -89,11 +110,11 @@ input.confirm:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>新增信件&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回首頁</a></h2>
+			<h2>回覆信件&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/listAllService_mail.jsp">回客服信列表</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<h3>信件撰寫:</h3>
-			<form method="post" action="<%=request.getContextPath()%>/service_mail/service_mail.do">
+			<form method="post" action="<%=request.getContextPath()%>/service_mail/service_mail.do" enctype="multipart/form-data">
 			<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService"/>
 			<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 			<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
@@ -137,7 +158,19 @@ input.confirm:hover{
 						<textarea name="mail_cont" rows="10" cols="45" class="mail_cont">${param.mail_cont.trim().isEmpty()? '':param.mail_cont.trim()}</textarea>
 					</td>
 				</tr>
+				<tr>
+				<td>附件照片</td>
+				<td>
+					<div id='container'>
+						<label>請上傳圖片檔案：</label>
+			            <input type="file" id='myFile' name='files' multiple>
+				        <div id='preview'>               
+				        </div>        
+				    </div>
+				</td>
+				</tr>
 			</table>
+					<input type="hidden" name="mail_no" value="${param.mail_no}">
 					<input type="hidden" name="mail_stat" value="0">
 					<input type="hidden" name="mail_read_stat" value="0">
 					<input type="hidden" name="action" value="insert">
@@ -147,5 +180,37 @@ input.confirm:hover{
 	</div>
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<script>
+        let myFile = document.getElementById('myFile');
+        let preview = document.getElementById('preview');
+	let imgs = document.getElementsByClassName('img');        
+
+        myFile.addEventListener('change', function(e) {
+	    while(imgs.length != 0){
+		imgs[0].remove();
+	    }
+        	let files = e.target.files;
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].type.indexOf('image') > -1) {
+                    fileName = files[i].name;
+                    //console.log(files[i]);
+                    let reader = new FileReader();
+                    reader.addEventListener('load', function(e) {
+                        let result = e.target.result;
+                        //console.log(result);
+                        let img = document.createElement('img');
+                        img.setAttribute('class', 'img');
+                        img.classList.add('align');
+                        img.src = result;
+                        preview.append(img);
+                    });
+                    reader.readAsDataURL(files[i]);
+                } else {
+                    alert('請上傳圖檔');
+                }
+            }
+        });
+
+    </script>
 </body>
 </html>

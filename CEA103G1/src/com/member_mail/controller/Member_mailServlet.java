@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.member_mail.model.Member_mailService;
 import com.member_mail.model.Member_mailVO;
-import com.service_mail.model.Service_mailService;
-import com.service_mail.model.Service_mailVO;
+import com.member_mail.model.Member_mailService;
+import com.member_mail.model.Member_mailVO;
 
 @WebServlet("/member_mail/member_mail.do")
 public class Member_mailServlet extends HttpServlet {
@@ -35,7 +35,7 @@ public class Member_mailServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
-		if("compositeSearch".equals(action)) {
+		if("compositeSearch".equals(action) || "compositeSearchTop".equals(action)) {
 			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
@@ -51,9 +51,15 @@ public class Member_mailServlet extends HttpServlet {
 						checkCount++;
 					}
 				}
-				if(checkCount == 8) {
+				if("compositeSearchTop".equals(action) && map.get("mail_cont")[0].isEmpty()) {
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/select_page.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				if(checkCount == 8) {
+					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -182,6 +188,34 @@ public class Member_mailServlet extends HttpServlet {
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/update_member_mail_input.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if("read".equals(action)) {
+			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				Member_mailService member_mailSvc = new Member_mailService();
+				Member_mailVO member_mailVO = member_mailSvc.getOneMember_mail(Integer.valueOf(req.getParameter("mail_no")));
+				member_mailVO.setMail_read_stat(1);
+				
+				Integer send_no =  member_mailVO.getSend_no();
+				Integer rcpt_no =  member_mailVO.getRcpt_no();
+				String mail_cont =  member_mailVO.getMail_cont();
+				Integer mail_stat =  member_mailVO.getMail_stat();
+				Integer mail_read_stat =  member_mailVO.getMail_read_stat();
+				String mail_time = member_mailVO.getMail_time();
+				Integer mail_no =  member_mailVO.getMail_no();
+				Member_mailVO member_mailVO2 = member_mailSvc.updateMember_mail(mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time);
+				
+				req.setAttribute("member_mailVO", member_mailVO2);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/member_mail/listOneMember_mail.jsp");
+				successView.forward(req, res);
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/listAllMember_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}
