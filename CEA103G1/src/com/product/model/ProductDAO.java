@@ -23,11 +23,11 @@ public class ProductDAO implements ProductDAO_interface {
 	private static final String UPDATE = 
 		"update PRODUCT set PROD_CAT_NO = ?, PROD_STAT = ?, PROD_NAME = ?, PROD_PC = ?, PROD_STG = ?, PROD_INFO = ?, PROD_BND = ?, PROD_CLR = ?, PROD_SIZE = ?, SHIP_METH = ? where PROD_NO = ?";
 	private static final String DELETE = 
-		"delete from PRODUCT where PROD_NO = ?";
+		"update PRODUCT set PROD_STAT = 9 where PROD_NO = ?";
 	private static final String GET_ONE_STMT = 
-		"select * from PRODUCT where PROD_NO = ?";
+		"select * from PRODUCT where PROD_NO = ? and PROD_STAT != 9";
 	private static final String GET_ALL_STMT = 
-		"select * from PRODUCT order by PROD_NO";
+		"select * from PRODUCT where PROD_STAT != 9 order by PROD_NO";
 
 	@Override
 	public void insert(ProductVO productVO) {

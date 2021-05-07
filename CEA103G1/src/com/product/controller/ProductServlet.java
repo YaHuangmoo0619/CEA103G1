@@ -119,16 +119,44 @@ public class ProductServlet extends HttpServlet {
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				Integer prod_no = new Integer(req.getParameter("prod_no").trim());
+				
 				Integer prod_cat_no = new Integer(req.getParameter("prod_cat_no").trim());
+//				if (prod_cat_no == null ) {
+//					errorMsgs.add("請選擇商品類別！");
+//				}	
+				
 				Integer prod_stat = new Integer(req.getParameter("prod_stat"));
+				
 				String prod_name = req.getParameter("prod_name");
-				Integer prod_pc = new Integer(req.getParameter("prod_pc").trim());
+				if (prod_name == null || prod_name.trim().length() == 0) {
+					errorMsgs.add("請輸入商品名稱！");
+				}	
+				
+				Integer prod_pc = null;
+				try {
+					prod_pc = new Integer(req.getParameter("prod_pc").trim());
+				} catch (NumberFormatException e) {
+					prod_pc = 0;
+					errorMsgs.add("商品價格請填數字！");
+				}
+				
 				Integer prod_stg = new Integer(req.getParameter("prod_stg").trim());
+				try {
+					prod_pc = new Integer(req.getParameter("prod_pc").trim());
+				} catch (NumberFormatException e) {
+					prod_pc = 0;
+					errorMsgs.add("商品庫存請填數字！");
+				}
+				
 				String prod_info = req.getParameter("prod_info");
 				String prod_bnd = req.getParameter("prod_bnd");
 				String prod_clr = req.getParameter("prod_clr");
 				String prod_size = req.getParameter("prod_size");
+				
 				Integer ship_meth = new Integer(req.getParameter("ship_meth").trim());
+//				if (ship_meth == null ) {
+//				errorMsgs.add("請選擇運送方式！");
+//			}	
 				
 				ProductVO productVO = new ProductVO();
 				productVO.setProd_no(prod_no);
@@ -176,16 +204,42 @@ public class ProductServlet extends HttpServlet {
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				Integer prod_cat_no = new Integer(req.getParameter("prod_cat_no").trim());
+//				if (prod_cat_no == null ) {
+//					errorMsgs.add("請選擇商品類別！");
+//				}	
+				
 				Integer prod_stat = new Integer(req.getParameter("prod_stat"));
+				
 				String prod_name = req.getParameter("prod_name");
-				Integer prod_pc = new Integer(req.getParameter("prod_pc").trim());
+				if (prod_name == null || prod_name.trim().length() == 0) {
+					errorMsgs.add("請輸入商品名稱！");
+				}	
+				
+				Integer prod_pc = null;
+				try {
+					prod_pc = new Integer(req.getParameter("prod_pc").trim());
+				} catch (NumberFormatException e) {
+					prod_pc = 0;
+					errorMsgs.add("商品價格請填數字！");
+				}
+				
 				Integer prod_stg = new Integer(req.getParameter("prod_stg").trim());
+				try {
+					prod_pc = new Integer(req.getParameter("prod_pc").trim());
+				} catch (NumberFormatException e) {
+					prod_pc = 0;
+					errorMsgs.add("商品庫存請填數字！");
+				}
+				
 				String prod_info = req.getParameter("prod_info");
 				String prod_bnd = req.getParameter("prod_bnd");
 				String prod_clr = req.getParameter("prod_clr");
 				String prod_size = req.getParameter("prod_size");
+				
 				Integer ship_meth = new Integer(req.getParameter("ship_meth").trim());
-
+//				if (ship_meth == null ) {
+//				errorMsgs.add("請選擇運送方式！");
+//			}	
 				ProductVO productVO = new ProductVO();
 				productVO.setProd_cat_no(prod_cat_no);
 				productVO.setProd_stat(prod_stat);
