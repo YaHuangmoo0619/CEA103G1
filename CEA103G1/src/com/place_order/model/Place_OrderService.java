@@ -35,22 +35,12 @@ public class Place_OrderService {
 		return place_orderVO;
 	}
 
-	public Place_OrderVO updatePlace_Order(Date ckin_date, Date ckout_date, Integer plc_amt, Integer plc_ord_sum,
-			Integer ex_ppl, Integer pay_meth, Integer pay_stat, Integer used_pt, Integer ckin_stat, Integer receipt,
-			String rmk) {
+	public Place_OrderVO updatePlace_Order(Integer plc_ord_no, Integer pay_stat, Integer ckin_stat) {
 
-		Place_OrderVO place_orderVO = new Place_OrderVO();
-		place_orderVO.setCkin_date(ckin_date);
-		place_orderVO.setCkout_date(ckout_date);
-		place_orderVO.setPlc_amt(plc_amt);
-		place_orderVO.setPlc_ord_sum(plc_ord_sum);
-		place_orderVO.setEx_ppl(ex_ppl);
-		place_orderVO.setPay_meth(pay_meth);
+		Place_OrderVO place_orderVO = new Place_OrderVO();		
+		place_orderVO.setPlc_ord_no(plc_ord_no);
 		place_orderVO.setPay_stat(pay_stat);
-		place_orderVO.setUsed_pt(used_pt);
 		place_orderVO.setCkin_stat(ckin_stat);
-		place_orderVO.setReceipt(receipt);
-		place_orderVO.setRmk(rmk);
 		dao.update(place_orderVO);
 
 		return place_orderVO;

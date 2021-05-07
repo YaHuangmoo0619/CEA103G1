@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Place_Order_DetailsVO implements Serializable{
 	private Integer plc_ord_no;
 	private Integer plc_no;
+	private String plc_name;
 
 	public Place_Order_DetailsVO() {
 		super();
@@ -32,4 +33,11 @@ public class Place_Order_DetailsVO implements Serializable{
 		this.plc_no = plc_no;
 	}
 
+	public String getPlc_name() {
+		return plc_name;
+	}
+
+	public void setPlc_name(String plc_name) {
+		this.plc_name = plc_name;
+	}
 }

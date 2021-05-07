@@ -1,25 +1,432 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="BIG5">
+<META http-equiv="Content-Type" content="text/html; charset=BIG5">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="icon" href="/CEA103G1/images/campionLogoIcon.png"
+	type="image/png">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<style>
+.confirm {
+	margin: 2px;
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+	background-color: #80c344;
+}
+
+.confirm:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+#cancel {
+	margin: 2px;
+	background-color: #FF0000;
+	color: #880000;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+	background-color: #FF3333;
+}
+
+#cancel:hover {
+	background-color: #AA0000;
+	color: #FF0000;
+	cursor: pointer;
+}
+table{
+  width:100%;
+  table-layout: fixed;
+}
+.tbl-header{
+  background-color: rgba(255,255,255,0.3);
+ }
+.tbl-content{
+  height:300px;
+  overflow-x:auto;
+  margin-top: 0px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+th{
+  padding: 20px 15px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 14px;
+/*   color: #fff; */
+  text-transform: uppercase;
+}
+td{
+  padding: 15px;
+  text-align: left;
+  vertical-align:middle;
+  font-weight: 300;
+  font-size: 13px;
+/*   color: #fff; */
+/*   border-bottom: solid 1px rgba(255,255,255,0.1); */
+  border-bottom: solid 1px #80c344;
+}
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+body{
+/* background: -webkit-linear-gradient(left, #25c481, #25b7c4); */
+/* background: linear-gradient(to right, #25c481, #25b7c4); */
+  font-family: 'Roboto', sans-serif;
+}
+section{
+  margin: 50px;
+}
+.camp:hover {
+	background-color: #F0FFF0;
+}
+
+.camp {
+	margin: 0px;
+}
+
+div.left {
+	margin-top: 20px;
+}
+
+div.right {
+/* 	background-color: #fff; */
+	margin-top: 20px;
+	/* 	padding: 50px 50px; */
+	border-radius: 5px;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	/*background-color: #4e5452;*/
+/* 	background-color: #fff; */
+	color: #4B7F52;
+}
+
+section {
+	text-align: center;
+}
+
+img.logo {
+	width: 100px;
+	margin: 10px;
+	margin-left: 100px;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+form.form-inline {
+	display: inline;
+	border: none;
+}
+
+img.searchIcon {
+	display: none;
+}
+
+img.cart {
+	width: 30px;
+	margin: 10px;
+}
+
+img.cart:hover {
+	cursor: pointer;
+}
+
+img.menu {
+	width: 40px;
+	margin: 10px;
+	display: none;
+}
+
+img.menu:hover {
+	cursor: pointer;
+}
+
+img.person {
+	width: 40px;
+	margin: 10px;
+}
+
+img.person:hover {
+	cursor: pointer;
+}
+
+@media screen and (max-width: 575px) {
+	container {
+		width: 100%;
+	}
+	form.form-inline {
+		display: none;
+	}
+	form.secSearch {
+		display: none;
+	}
+	img.searchIcon {
+		display: inline;
+		width: 30px;
+		margin: 0px;
+	}
+	img.searchIcon:hover {
+		cursor: pointer;
+	}
+	div.btn-group {
+		display: none;
+	}
+	img.menu {
+		width: 30px;
+		margin: 10px;
+		display: inline-block;
+	}
+	div.sec {
+		display: none;
+		background-color: #eee;
+	}
+	div.where {
+		display: block;
+		padding: 5px 100px;
+		text-align: left;
+	}
+	div.slogan h1 {
+		color: #fff;
+		font-size: 2em;
+		font-weight: 999;
+		margin: 50px auto;
+	}
+	div.photo {
+		width: 200px;
+		height: 100px;
+		margin: 20px auto;
+		background-color: #eee;
+		overflow: hidden;
+	}
+	div.row {
+		margin-top: 0px;
+	}
+	div.article {
+		width: 90%;
+		margin: 20px auto;
+		text-align: left;
+		background-color: #eee;
+		border-radius: 5px;
+		padding: 10px 50px 20px 50px;
+	}
+	div.more {
+		display: inline;
+	}
+	section.footer {
+		background-color: #4B7F52;
+		color: #80c344;
+		height: 100px;
+		padding-top: 30px;
+	}
+}
+
+@media ( min-width : 576px) and (max-width: 767px) {
+	container {
+		width: 540px;
+		margin: 0px auto;
+	}
+	form.form-inline {
+		display: none;
+	}
+	form.secSearch {
+		display: none;
+	}
+	img.searchIcon {
+		display: inline;
+		width: 30px;
+		margin: 0px;
+	}
+	img.searchIcon:hover {
+		cursor: pointer;
+	}
+	div.btn-group {
+		display: none;
+	}
+	img.menu {
+		width: 30px;
+		margin: 10px;
+		display: inline-block;
+	}
+	div.sec {
+		display: none;
+		background-color: #eee;
+	}
+	div.where {
+		display: block;
+		padding: 5px 130px;
+		text-align: left;
+	}
+}
+
+@media ( min-width : 768px) and (max-width: 991px) {
+	container {
+		width: 720px;
+		margin: 0px auto;
+	}
+	form.form-inline {
+		display: none;
+	}
+	form.secSearch {
+		display: none;
+	}
+	img.searchIcon {
+		display: inline;
+		width: 30px;
+		margin: 0px;
+	}
+	img.searchIcon:hover {
+		cursor: pointer;
+	}
+	div.btn-group {
+		display: none;
+	}
+	img.menu {
+		width: 30px;
+		margin: 10px;
+		display: inline-block;
+	}
+	div.sec {
+		display: none;
+		background-color: #fff;
+	}
+	div.where {
+		display: block;
+		padding: 5px 220px;
+		text-align: left;
+	}
+	div.photo {
+		width: 300px;
+		height: 150px;
+		margin: 20px auto;
+		background-color: #eee;
+		overflow: hidden;
+	}
+}
+
+@media ( min-width : 992px) and (max-width: 1199px) {
+	container {
+		width: 960px;
+		margin: 0px auto;
+	}
+	div.menuForButton {
+		display: none;
+	}
+	div.forSearch {
+		display: none;
+	}
+	div.photo {
+		width: 400px;
+		height: 200px;
+		margin: 20px auto;
+		background-color: #fff;
+		overflow: hidden;
+	}
+}
+
+@media ( min-width : 1200px) {
+	container {
+		width: 1140px;
+		margin: 0px auto;
+	}
+	div.menuForButton {
+		display: none;
+	}
+	div.forSearch {
+		display: none;
+	}
+	div.photo {
+		width: 400px;
+		height: 200px;
+		margin: 20px auto;
+		background-color: #fff;
+		overflow: hidden;
+	}
+}
+</style>
 </head>
-<body>
-	<div>
-		<input type="button" id="present" value="現有訂單"> <input
-			type="button" id="history" value="歷史訂單">
+<body translate="no">
+<div style="background-color: #eee;">
+		<img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
+		<form class="form-inline my-2 my-lg-0">
+			<input class="form-control mr-sm-2" type="search"
+				placeholder="營位/商品/文章" aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
+		</form>
+		<img src="/CEA103G1/front-images/search-circle-outline.svg"
+			class="searchIcon" onclick="showSearch()">
+		<div class="btn-group" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-secondary">營區</button>
+			<button type="button" class="btn btn-secondary">商城</button>
+			<button type="button" class="btn btn-secondary">論壇</button>
+		</div>
+		<img src="/CEA103G1/front-images/cart-outline.svg" class="cart">
+		<div class="btn-group" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-outline-secondary">註冊</button>
+			<button type="button" class="btn btn-outline-secondary">登入</button>
+			<button type="button" class="btn btn-outline-secondary">FAQ</button>
+			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
+		</div>
+		<img src="/CEA103G1/front-images/menu-outline.svg" class="menu"
+			onclick="showMenu()"> <img
+			src="/CEA103G1/front-images/person-circle-outline.svg" class="person">
+
 	</div>
 	<div>
-		<table id="placeOrder">
-			<tr>
-				<th>營區名稱</th>
-				<th>入住日期</th>
-				<th>退房日期</th>
-				<th>總金額</th>
-				<th>付款狀態</th>
-			</tr>
-		</table>
+		<input class="confirm" type="button" id="present" value="現有訂單"> <input
+			class="confirm" type="button" id="history" value="歷史訂單">
+	</div>
+	<div class="container" style="margin-left: 0; margin-right: 0;">
+		<div class="row">
+			<div class="left col-8">
+				<div class="tbl-header">
+					<table id="placeOrder" cellpadding="0" cellspacing="0" border="0">
+						<thead id="title">
+							<tr>
+								<th>營區名稱</th>
+								<th>入住日期</th>
+								<th>退房日期</th>
+								<th>總金額</th>
+								<th>付款狀態</th>
+								<th>入住狀態</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				</div>
+				<div class="right col-4">
+					<table id="whole"  class="tbl-header">
+						<tr><th>營區名稱</th><td id="camp_name"></td></tr>
+						<tr><th>訂單時間</th><td id="plc_ord_time"></td></tr>
+						<tr><th>入住日期</th><td id="ckin_date"></td></tr>
+						<tr><th>退房日期</th><td id="ckout_date"></td></tr>
+						<tr><th>營位數量</th><td id="plc_amt"></td></tr>
+						<tr><th>總金額</th><td id="plc_ord_sum"></td></tr>
+						<tr><th>加購人數</th><td id="ex_ppl"></td></tr>
+						<tr><th>付款方式</th><td id="pay_meth"></td></tr>
+						<tr><th>付款狀態</th><td id="pay_stat"></td></tr>
+						<tr><th>使用點數</th><td id="used_pt"></td></tr>
+						<tr><th>入住狀態</th><td id="ckin_stat"></td></tr>
+						<tr><th>發票方式</th><td id="receipt"></td></tr>
+						<tr id="last"><th>備註</th><td id="rmk"></td></tr>
+					</table>
+				</div>
+			
+		</div>
 	</div>
 	<script>
 		$.ajax({
@@ -51,7 +458,7 @@
 			});
 		})
 		function showPresent(data) {
-			$('#placeOrder').children("tr:first-child").nextAll().remove();
+			$('#title').nextAll().remove();
 			for (i in data) {
 				if (`${data[i].pay_stat}` === `0`) {
 					var pay_stat = "未付款";
@@ -60,14 +467,33 @@
 				} else if (`${data[i].pay_stat}` === `2`) {
 					var pay_stat = "已付全額";
 				}
+
+				if (`${data[i].ckin_stat}` === `0`) {
+					var ckin_stat = "未入住";
+				} else if (`${data[i].ckin_stat}` === `1`) {
+					var ckin_stat = "未出席";
+				} else if (`${data[i].ckin_stat}` === `2`) {
+					var ckin_stat = "已入住";
+				} else if (`${data[i].ckin_stat}` === `3`) {
+					var ckin_stat = "已退房";
+				} else {
+					var ckin_stat = "已取消";
+				}
 				let html;
-				html = `<tr><td>${data[i].camp_name}</td><td>${data[i].ckin_date}</td><td>${data[i].ckout_date}</td><td>${data[i].plc_ord_sum}</td><td>`
-						+ pay_stat + `</td></tr>`;
+				var href = `http://localhost:8081/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
+				html = `<tr><td><a id="${data[i].plc_ord_no}">${data[i].camp_name}</a></td><td>${data[i].ckin_date}</td><td>${data[i].ckout_date}</td><td>${data[i].plc_ord_sum}</td><td>`
+						+ pay_stat
+						+ `</td><td>`
+						+ ckin_stat
+						+ `</td><td><button class="confirm" type="button" onclick="check(this.value)" value="${data[i].plc_ord_no}">查看</button></td></tr>`;
 				$('#placeOrder').append(html);
+				$(`#${data[i].plc_ord_no}`).attr("href",href);
+				$(`#${data[i].plc_ord_no}`).attr("target","_blank");
 			}
+			sessionStorage.setItem("action", "present");
 		}
 		function showHistory(data) {
-			$('#placeOrder').children("tr:first-child").nextAll().remove();
+			$('#title').nextAll().remove();
 			for (i in data) {
 				if (`${data[i].pay_stat}` === `0`) {
 					var pay_stat = "未付款";
@@ -75,12 +501,135 @@
 					var pay_stat = "已付訂金";
 				} else if (`${data[i].pay_stat}` === `2`) {
 					var pay_stat = "已付全額";
+				} else {
+					var pay_stat = "已退款";
+				}
+
+				if (`${data[i].ckin_stat}` === `0`) {
+					var ckin_stat = "未入住";
+				} else if (`${data[i].ckin_stat}` === `1`) {
+					var ckin_stat = "未出席";
+				} else if (`${data[i].ckin_stat}` === `2`) {
+					var ckin_stat = "已入住";
+				} else if (`${data[i].ckin_stat}` === `3`) {
+					var ckin_stat = "已退房";
+				} else {
+					var ckin_stat = "已取消";
 				}
 				let html;
-				html = `<tr><td>${data[i].camp_name}</td><td>${data[i].ckin_date}</td><td>${data[i].ckout_date}</td><td>${data[i].plc_ord_sum}</td><td>`
-						+ pay_stat + `</td></tr>`;
+				var href = `http://localhost:8081/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
+				html = `<tr><td><a id="${data[i].plc_ord_no}">${data[i].camp_name}</a></td><td>${data[i].ckin_date}</td><td>${data[i].ckout_date}</td><td>${data[i].plc_ord_sum}</td><td>`
+						+ pay_stat
+						+ `</td><td>`
+						+ ckin_stat
+						+ `</td><td><button class="confirm" type="button" onclick="check(this.value)" value="${data[i].plc_ord_no}">查看</button></td></tr>`;
 				$('#placeOrder').append(html);
+				$(`#${data[i].plc_ord_no}`).attr("href",href);
+				$(`#${data[i].plc_ord_no}`).attr("target","_blank");
 			}
+			sessionStorage.setItem("action", "history");
+		}
+
+		function check(e) {
+// 			window.location.href = "http://localhost:8081/CEA103G1/front-end/place_order/listOnePlace_order.html?action=listOne&plc_ord_no="
+// 					+ e;
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=listOne&plc_ord_no=" + e,
+				success : function(data) {
+					showOrder(data);
+				}
+			});
+		}
+		function showOrder(data){
+			$('#last').nextAll().remove();
+			$('#whole').next().remove();
+			$('#camp_name').html(`<a href="http://localhost:8081/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[0].camp_no}&action=getone">${data[0].camp_name}</a>`);
+			$('#plc_ord_time').text(`${data[0].plc_ord_time}`);
+			$('#ckin_date').text(`${data[0].ckin_date}`);
+			$('#ckout_date').text(`${data[0].ckout_date}`);
+			$('#plc_amt').text(`${data[0].plc_amt}`);
+			$('#plc_ord_sum').text(`${data[0].plc_ord_sum}`);
+			$('#ex_ppl').text(`${data[0].ex_ppl}`);
+			$('#pay_meth').text(`${data[0].pay_meth}`);
+				
+			if (`${data[0].pay_meth}` === `0`) {
+				$('#pay_meth').text("信用卡");
+			} else if (`${data[0].pay_meth}` === `1`) {
+				$('#pay_meth').text("匯款");
+			} 
+				
+			if (`${data[0].pay_stat}` === `0`) {
+				$('#pay_stat').text("未付款");
+			} else if (`${data[0].pay_stat}` === `1`) {
+				$('#pay_stat').text("已付訂金");
+			} else if (`${data[0].pay_stat}` === `2`) {
+				$('#pay_stat').text("已付全額");
+			} else {
+				$('#pay_stat').text("已退款");
+			}
+				
+			$('#used_pt').text(`${data[0].used_pt}`);
+				
+			if (`${data[0].ckin_stat}` === `0`) {
+				$('#ckin_stat').text("未入住");
+				let html=`<button type="button" value="${data[0].plc_ord_no}" onclick="cancelOrd(this.value)" id="cancel">取消訂單</button>`;
+				$('#whole').after(html);
+			} else if (`${data[0].ckin_stat}` === `1`) {
+				$('#ckin_stat').text("未出席");
+			} else if (`${data[0].ckin_stat}` === `2`) {
+				$('#ckin_stat').text("已入住");
+			} else if (`${data[0].ckin_stat}` === `3`) {
+				$('#ckin_stat').text("已退房");
+			} else {
+				$('#ckin_stat').text("已取消");
+			}
+				
+			$('#receipt').text(`${data[0].receipt}`);
+				
+			if (`${data[0].receipt}` === `0`) {
+				$('#receipt').text("紙本發票");
+			} else if (`${data[0].receipt}` === `1`) {
+				$('#receipt').text("電子發票");
+			} else{
+				$('#receipt').text("發票捐贈");
+			}
+				
+			$('#rmk').text(`${data[0].rmk}`);
+			$('#camp_name').find('a').attr("target","_blank");
+			showDetails(data);
+		}
+		function showDetails(data){
+			let html;
+			html=`<tr><th>營位</th><td>`;
+			for(i in data[1]){
+				html+=`${data[1][i].plc_name}<br>`;
+			}
+			html+="</td></tr>";
+			$('#whole').append(html);
+		}
+		function cancelOrd(e){
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=cancel&plc_ord_no=" + e,
+				success : function(data) {
+					alert("已取消訂單")
+					$(`#${data[0].plc_ord_no}`).parent().parent().remove();
+					showOrder(data);
+					if(sessionStorage.getItem("action")==="history"){
+						$.ajax({
+							type : "GET",
+							dataType : "json",
+							url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=listHistory",
+							success : function(data) {
+								showHistory(data);
+							}
+						});
+					}
+				}
+			});
 		}
 	</script>
 </body>

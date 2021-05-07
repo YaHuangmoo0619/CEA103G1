@@ -297,22 +297,37 @@ img.person:hover {
 	}
 }
 
-table {
-	border-collapse: collapse;
-	width: 100%;
-	/*¦Û°ÊÂ_¦æ*/
-	word-wrap: break-word;
-	table-layout: fixed;
-	text-align: center;
+table{
+  width:100%;
+  table-layout: fixed;
 }
-
-/* tr:nth-child(odd) { */
-/* 	background: white; */
-/* } */
-
-/* tr:nth-child(even) { */
-/* 	background: #F0FFF0; */
-/* } */
+.tbl-header{
+  background-color: rgba(255,255,255,0.3);
+ }
+.tbl-content{
+  height:300px;
+  overflow-x:auto;
+  margin-top: 0px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+th{
+  padding: 20px 15px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 14px;
+/*   color: #fff; */
+  text-transform: uppercase;
+}
+td{
+  padding: 15px;
+  text-align: left;
+  vertical-align:middle;
+  font-weight: 300;
+  font-size: 13px;
+/*   color: #fff; */
+/*   border-bottom: solid 1px rgba(255,255,255,0.1); */
+  border-bottom: solid 1px #80c344;
+}
 #map {
 	width: 330px;
 	height: 220px;
@@ -360,7 +375,7 @@ table {
 		</FORM>
 		<hr>
 	</div>
-	<div class="container" style="margin-left: 0;">
+	<div class="container" style="margin-left: 0;margin-top: 0;">
 		<div class="row">
 			<div class="left col-4">
 				<div id="map"></div>

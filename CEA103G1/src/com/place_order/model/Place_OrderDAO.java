@@ -25,7 +25,7 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 	private static final String GET_BYMEMBER_STMT = "SELECT * FROM PLACE_ORDER where MBR_NO = ?";
 	private static final String GET_ALL_STMT = "SELECT * FROM PLACE_ORDER order by PLC_ORD_NO";
 	private static final String INSERT_STMT = "INSERT INTO PLACE_ORDER (mbr_no,camp_no,ckin_date,ckout_date,plc_amt,plc_ord_sum,ex_ppl,pay_meth,pay_stat,used_pt,receipt,rmk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String UPDATE = "UPDATE PLACE_ORDER set ckin_date=?,ckout_date=?,plc_amt=?,plc_ord_sum=?,ex_ppl=?,pay_meth=?,pay_stat=?,used_pt=?,ckin_stat=?,receipt=?,rmk=? where PLC_ORD_NO = ?";
+	private static final String UPDATE = "UPDATE PLACE_ORDER set pay_stat=?,ckin_stat=? where PLC_ORD_NO = ?";
 	private static final String DELETE = "DELETE FROM PLACE_ORDER where PLC_ORD_NO = ?";
 
 	public Place_OrderVO findByPrimaryKey(Integer plc_ord_no) {
@@ -358,18 +358,9 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setDate(1, place_orderVO.getCkin_date());
-			pstmt.setDate(2, place_orderVO.getCkout_date());
-			pstmt.setInt(3, place_orderVO.getPlc_amt());
-			pstmt.setInt(4, place_orderVO.getPlc_ord_sum());
-			pstmt.setInt(5, place_orderVO.getEx_ppl());
-			pstmt.setInt(6, place_orderVO.getPay_meth());
-			pstmt.setInt(7, place_orderVO.getPay_stat());
-			pstmt.setInt(8, place_orderVO.getUsed_pt());
-			pstmt.setInt(9, place_orderVO.getCkin_stat());
-			pstmt.setInt(10, place_orderVO.getReceipt());
-			pstmt.setString(11, place_orderVO.getRmk());
-			pstmt.setInt(12, place_orderVO.getPlc_ord_no());
+			pstmt.setInt(1, place_orderVO.getPay_stat());
+			pstmt.setInt(2, place_orderVO.getCkin_stat());
+			pstmt.setInt(3, place_orderVO.getPlc_ord_no());
 
 			pstmt.executeUpdate();
 
