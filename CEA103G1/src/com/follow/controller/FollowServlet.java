@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.article.model.ArticleService;
 import com.article.model.ArticleVO;
@@ -176,8 +177,9 @@ public class FollowServlet extends HttpServlet {
 		
 		
 		if ("getProfile".equals(action)) { 
-			// 來自listOneArticle的請求，列出這個人的以下資訊 1. 有多少粉絲，那些粉絲是誰 2. 追蹤多少人，追蹤的人是哪些人 3.貼文數
-			//目標:點擊那些粉絲或追蹤的人，可以再連到那些人的profile
+			// 來自listOneArticle的請求，列出這個人的以下資訊
+			//1. 有多少粉絲，那些粉絲是誰  2. 追蹤多少人，追蹤的人是哪些人  3.貼文數 4.該會員與該發文者的粉絲、追蹤者的關係
+
 
 			//			List<String> errorMsgs = new LinkedList<String>();
 //			// Store this set in the request scope, in case we need to
@@ -186,11 +188,27 @@ public class FollowServlet extends HttpServlet {
 //
 //			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				
 				String str = req.getParameter("mbr_no");
 				Integer mbr_no = new Integer(str);
 				System.out.println("mbr_no:"+mbr_no);
 				
+				/*
+				 從某篇文章點發文者
+				傳遞會員的Mbr_no進入Servlet中
+				從該會員的Mbr_no取得該會員有追蹤的人
+				並且跟發文者的粉絲、追蹤者進行關係比對，存成兩個數字的list
+				0代表沒追蹤對方 1:代表有追蹤對方
+				在listOneProfile的for迴圈中
+				如果是0  就顯示「追蹤」
+				如果是1  就顯示「追蹤中」*/
+				
+//				HttpSession session = req.getSession();  //for Session
+//				String str2 = (String)session.getAttribute("mbr_no");
+//				Integer mbr_no_self = new Integer(str2);
+				Integer mbr_no_self = 10001;
 				/***************************2.開始查詢資料*****************************************/
+				
 				ArticleService articleSvc = new ArticleService();
 				List<ArticleVO> articleVO = articleSvc.getByMbr_no(mbr_no); //找到某個人發的所有文章
 				int article_num = articleVO.size();//某人發的文章數量
@@ -202,6 +220,10 @@ public class FollowServlet extends HttpServlet {
 				List<FollowVO> followVO_follows = followSvc.findbyflw(mbr_no); //找到某個人追蹤哪些人
 				int follows_num = followVO_follows.size(); //共追蹤多少人
 				System.out.println("follows_num:"+follows_num);
+				
+				
+				List<FollowVO> followVO_mine = followSvc.findbyflw(mbr_no_self); //取得我追蹤那些人
+				
 				// Send the use back to the form, if there were errors
 //				if (!errorMsgs.isEmpty()) {
 //					RequestDispatcher failureView = req
@@ -220,6 +242,8 @@ public class FollowServlet extends HttpServlet {
 				
 				req.setAttribute("followVO_follows", followVO_follows); //某人的追蹤者
 				req.setAttribute("follows_num",follows_num); //追蹤數量
+				
+				req.setAttribute("followVO_mine", followVO_mine); //我追蹤的人
 				
 				req.setAttribute("mbr_no",mbr_no);
 				String url = "/front-end/follow/listOneProfile.jsp";

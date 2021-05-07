@@ -17,8 +17,10 @@
   FollowService followSvc = new FollowService();
   List<FollowVO> fans_list = (List<FollowVO>)request.getAttribute("followVO_fans");
   List<FollowVO> follows_list = (List<FollowVO>)request.getAttribute("followVO_follows");
+  List<FollowVO> followVO_mine = (List<FollowVO>)request.getAttribute("followVO_mine");
   pageContext.setAttribute("fans_list", fans_list); 
   pageContext.setAttribute("follows_list", follows_list); 
+  pageContext.setAttribute("followVO_mine", followVO_mine); 
 %>
 
 <!DOCTYPE html>
@@ -26,6 +28,9 @@
 <head>
 <meta charset="BIG5">
 <link rel="stylesheet" type="text/css" href="/CEA103G1/profile.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <style>
 .profile-stat-count{
     display: inline-block;
@@ -53,9 +58,17 @@ a:active {
 
 .fans{
 padding: 8px 16px;
+list-style:none;
+}
+.fans_list{
+display:inline-block;
 }
 .follow{
 padding: 8px 16px;
+}
+
+.clear{
+clear: both;
 }
 </style>
 <title>Profile</title>
@@ -78,15 +91,10 @@ padding: 8px 16px;
                     <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
                 </div>
                 <div class="profile-stats">
-<!--                     <ul> -->
-<%--                         <li><span class="profile-stat-count article"><%=article_num%></span> 貼文</li> --%>
-<%--                         <li><span class="profile-stat-count fans"><%=fans_num%></span> 追蹤者</li> --%>
-<%--                         <li><span class="profile-stat-count follows"><%=follows_num %></span> 追蹤中</li> --%>
-<!--                     </ul> -->
-
                         <div class="profile-stat-count article"><%=article_num%> 貼文</div>
-                        <div class="profile-stat-count fans"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${mbr_no}&action=getFollowers" ><span id=follower><%=fans_num%></span>追蹤者</a></div>
-                        <div class="profile-stat-count follows"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${mbr_no}&action=getFollowing" ><span id=following><%=follows_num%></span>追蹤中</a></div>
+<%--                         <div class="profile-stat-count fans"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${mbr_no}&action=getFollowers" ><span id=follower><%=fans_num%></span>追蹤者</a></div> --%>
+                        <div class="profile-stat-count fans" onclick="showModal1()"><span id=follower><%=fans_num%></span>追蹤者</div>
+                        <div class="profile-stat-count follows" onclick="showModal2()"><span id=following><%=follows_num%></span>追蹤中</div>
  
                 </div>
                 <div class="profile-bio">
@@ -111,9 +119,7 @@ padding: 8px 16px;
 
 
 <!-- 粉絲名單 -->
-<%-- <c:forEach var="fans_list" items="${fans_list}"> --%>
-<%-- <div class=fans><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${fans_list.flw_mbr_no}&action=getProfile" >${fans_list.flw_mbr_no}</a></div> --%>
-<%-- </c:forEach> --%>
+
 
 <!-- <br> -->
 <!-- <br> -->
@@ -124,8 +130,57 @@ padding: 8px 16px;
 <%-- <div class=follow><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${follows_list.flwed_mbr_no}&action=getProfile">${follows_list.flwed_mbr_no}</a></div> --%>
 <%-- </c:forEach> --%>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<div>
+<div class="modal" tabindex="-1" role="dialog" id="test1">
+     <div class="modal-dialog" role="document"> 
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">粉絲</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
+            </div>
+            <div class="modal-body">
+				<c:forEach var="fans_list" items="${fans_list}">
+					<%System.out.println("hello"); %>
+				<li class=fans>
+					<div class=fans_list style="width:47px;height:38px;"><img src="/CEA103G1/images/profile.png" width="30" height="30"></div>
+					<div class=fans_list style="width:241px;height:36px;"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${fans_list.flw_mbr_no}&action=getProfile" >${fans_list.flw_mbr_no}</a></div>
+					<div class=fans_list style="width:48px;height:38px;"><button style="width:28;height:18;padding:9 5;border:1">追蹤</button></div>
+<!-- 					<div class=fans_list style="width:48px;height:38px;"><button style="width:28;height:18;padding:9 5;border:1">追蹤中</button></div> -->
+					</li>
+				</c:forEach> 
+            </div>
+       </div>
+   </div>
+</div>
+</div>
+
+
+<div>
+<div class="modal" tabindex="-1" role="dialog" id="test2">
+     <div class="modal-dialog" role="document"> 
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">追蹤名單</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
+            </div>
+            <div class="modal-body">
+				<c:forEach var="follows_list" items="${follows_list}">
+					<%System.out.println("hello"); %>
+				<li class=fans>
+					<div class=fans_list style="width:47px;height:38px;"><img src="/CEA103G1/images/profile.png" width="30" height="30"></div>
+					<div class=fans_list style="width:241px;height:36px;"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${follows_list.flwed_mbr_no}&action=getProfile">${follows_list.flwed_mbr_no}</a></div>
+					<div class=fans_list style="width:48px;height:38px;"><button style="width:28;height:18;padding:9 5;border:1">追蹤</button></div>
+<!-- 					<div class=fans_list style="width:48px;height:38px;"><button style="width:28;height:18;padding:9 5;border:1">追蹤中</button></div> -->
+					</li>
+				</c:forEach> 
+            </div>
+       </div>
+   </div>
+</div>
+</div>
+
 <script>
+
 	function add_follow()
  	{
  	 var x=document.getElementById("follower").innerHTML;
@@ -165,6 +220,14 @@ padding: 8px 16px;
 		}); 
  	}
 	
+	
+    function showModal1() {
+         $('#test1').modal('show'); 
+    }
+    
+    function showModal2() {
+         $('#test2').modal('show'); 
+   }
 </script>
 </body>
 </html>
