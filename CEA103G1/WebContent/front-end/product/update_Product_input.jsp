@@ -68,7 +68,8 @@
 </c:if>
 
 <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" name="form1">
-<input type="reset" value="重置清空">
+<input type="reset" value="重置">
+<input type="button" id="blank" value="清空">
 <table>
 <tr>
 		<td>商品分類編號:</td>	
@@ -77,9 +78,9 @@
 	</tr>
 	<tr>
 		<td>商品狀態:</td>
-		<td>
-			<input id="prod_stat" type="radio" name="prod_stat" value="0">下架<br>
-			<input id="prod_stat" type="radio" name="prod_stat" value="1">上架<br> 
+		<td id="prod_stat">
+			<input type="radio" name="prod_stat" value="0">下架<br>
+			<input type="radio" name="prod_stat" value="1">上架<br> 
 		</td>
 	</tr>
 	<tr>
@@ -119,9 +120,9 @@
 	</tr>
 	<tr>
 		<td>運送方式:</td>
-		<td id="ship_meth">
-			<select name="ship_meth">
-			    <option disabled>請選擇運送方式</option>
+		<td>
+			<select id="ship_meth" name="ship_meth">
+			    <option disabled value="">請選擇運送方式</option>
 			    <option value="0">不限運送方式</option>
 			    <option value="1">限宅配</option>
 			    <option value="2">限超商取貨</option>
@@ -133,16 +134,14 @@
 
 <script>
 	var prod_stat = `<%=productVO.getProd_stat()%>`;
-	$("#prod_stat").find(':input').each(function() {
+	$("#prod_stat").find(":input").each(function() {
 		if($(this).val()===prod_stat){
 			$(this).prop("checked",true);
 		}
 	});
-	var ship_meth = `<%=productVO.getShip_meth()%>`;
-	$("#ship_meth").find(':input').each(function() {
-		if($(this).val()===ship_meth){
-			$(this).prop("checked",true);
-		}
+	
+	$("#blank").click(function(){
+		$("td > :input").val(null);
 	});
 </script>
 

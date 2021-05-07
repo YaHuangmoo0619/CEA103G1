@@ -121,7 +121,7 @@
 		<td>運送方式:</td>
 		<td>
 			<select name="ship_meth">
-			    <option selected disabled>請選擇運送方式</option>
+			    <option selected disabled value="">請選擇運送方式</option>
 			    <option value="0">不限運送方式</option>
 			    <option value="1">限宅配</option>
 			    <option value="2">限超商取貨</option>
@@ -129,6 +129,12 @@
 		</td>
 	</tr>
 </table>
+
+
+<script>
+
+</script>
+
 <br>
 <input type="hidden" name="action" value="insert">
 <input type="submit" value="送出新增">
