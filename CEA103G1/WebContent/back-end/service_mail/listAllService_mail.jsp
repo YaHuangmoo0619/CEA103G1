@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="BIG5"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.*"%>
@@ -183,63 +182,63 @@ tr:hover {
 					</li>
 					</ul>
 					<div class="forSearch forSearchMore" id="forSearchMore">
-				<ul>
-					<li>
-						<form method="post"	action="<%=request.getContextPath()%>/service_mail/service_mail.do">
-							<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService" />
-							<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService" />
-							<jsp:useBean id="memberSvc"	class="com.member.model.MemberService" />
-
-							<label for="mail_no">信件編號:</label>
-							<select size="1" name="mail_no" id="mail_no">
-								<option value="no">--請選擇--</option>
-								<c:forEach var="service_mailVO" items="${service_mailSvc.all}">
-									<option value="${service_mailVO.mail_no}">${service_mailVO.mail_no}</option>
-								</c:forEach>
-							</select>
-							<br>
-							<label for="emp_no">回覆人員:</label>
-							<select size="1" name="emp_no" id="emp_no">
-								<option value="no">--請選擇--</option>
-								<c:forEach var="employeeVO" items="${employeeSvc.all}">
-									<option value="${employeeVO.emp_no}">${employeeVO.emp_no}${employeeVO.name}</option>
-								</c:forEach>
-							</select>
-							<br>
-							<label for="mbr_no">發信會員:</label> 
-							<select size="1" name="mbr_no" id="mbr_no">
-								<option value="no">--請選擇--</option>
-								<c:forEach var="memberVO" items="${memberSvc.all}">
-									<option value="${memberVO.mbr_no}">${memberVO.mbr_no}${memberVO.name}</option>
-								</c:forEach>
-							</select>
-							<br>
-							<label for="mail_time">發信日期:</label>
-							<input	type="text" name="mail_time" id="mail_time"></input>
-							<br>
-							<label	for="mail_cont">信件內容:</label>
-							<input type="text"	name="mail_cont" id="mail_cont">
-							<br>
-							<label	for="mail_stat">信件狀態:</label>
-							<select size="1" name="mail_stat" id="mail_stat">
-								<option value="no">--請選擇--</option>
-								<option value="0">收件</option>
-								<option value="1">寄件</option>
-							</select>
-							<br>
-							<label for="mail_read_stat">信件閱讀狀態:</label>
-							<select	size="1" name="mail_read_stat" id="mail_read_stat">
-								<option value="no">--請選擇--</option>
-								<option value="0">未讀</option>
-								<option value="1">已讀</option>
-							</select>
-							<br>
-							<input type="hidden" name="action" value="compositeSearch">
-							<input type="submit" value="送出查詢" class="confirm">
-						</form>
-					</li>
-				</ul>
-				</div>
+					<ul>
+						<li>
+							<form method="post"	action="<%=request.getContextPath()%>/service_mail/service_mail.do">
+								<jsp:useBean id="service_mailSvc" class="com.service_mail.model.Service_mailService" />
+								<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService" />
+								<jsp:useBean id="memberSvc"	class="com.member.model.MemberService" />
+	
+								<label for="mail_no">信件編號:</label>
+								<select size="1" name="mail_no" id="mail_no">
+									<option value="no">--請選擇--</option>
+									<c:forEach var="service_mailVO" items="${service_mailSvc.all}">
+										<option value="${service_mailVO.mail_no}">${service_mailVO.mail_no}</option>
+									</c:forEach>
+								</select>
+								<br>
+								<label for="emp_no">回覆人員:</label>
+								<select size="1" name="emp_no" id="emp_no">
+									<option value="no">--請選擇--</option>
+									<c:forEach var="employeeVO" items="${employeeSvc.all}">
+										<option value="${employeeVO.emp_no}">${employeeVO.emp_no}${employeeVO.name}</option>
+									</c:forEach>
+								</select>
+								<br>
+								<label for="mbr_no">發信會員:</label> 
+								<select size="1" name="mbr_no" id="mbr_no">
+									<option value="no">--請選擇--</option>
+									<c:forEach var="memberVO" items="${memberSvc.all}">
+										<option value="${memberVO.mbr_no}">${memberVO.mbr_no}${memberVO.name}</option>
+									</c:forEach>
+								</select>
+								<br>
+								<label for="mail_time">發信日期:</label>
+								<input	type="text" name="mail_time" id="mail_time"></input>
+								<br>
+								<label	for="mail_cont">信件內容:</label>
+								<input type="text"	name="mail_cont" id="mail_cont">
+								<br>
+								<label	for="mail_stat">信件狀態:</label>
+								<select size="1" name="mail_stat" id="mail_stat">
+									<option value="no">--請選擇--</option>
+									<option value="0">收件</option>
+									<option value="1">寄件</option>
+								</select>
+								<br>
+								<label for="mail_read_stat">信件閱讀狀態:</label>
+								<select	size="1" name="mail_read_stat" id="mail_read_stat">
+									<option value="no">--請選擇--</option>
+									<option value="0">未讀</option>
+									<option value="1">已讀</option>
+								</select>
+								<br>
+								<input type="hidden" name="action" value="compositeSearch">
+								<input type="submit" value="送出查詢" class="confirm">
+							</form>
+						</li>
+					</ul>
+					</div>
 				</div>
 <!-- 				<h2> -->
 <%-- 					所有客服信列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/select_page.jsp">回客服管理首頁</a> --%>

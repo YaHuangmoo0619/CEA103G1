@@ -15,6 +15,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.service_mail_picture.model.Service_mail_pictureVO;
+
 public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface {
 
 	private static DataSource ds = null;
@@ -31,6 +33,8 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 			"INSERT INTO campion.member_mail_picture (mail_no,mail_pic) VALUES (?, ?)";
 		private static final String GET_ALL_STMT = 
 			"SELECT mail_pic_no,mail_no,mail_pic FROM campion.member_mail_picture order by mail_pic_no";
+		private static final String GET_ByMail_no_STMT = 
+				"SELECT svc_mail_pic_no,mail_no,mail_pic FROM campion.service_mail_picture where mail_no = ?";
 		private static final String GET_ONE_STMT = 
 			"SELECT mail_pic_no,mail_no,mail_pic FROM campion.member_mail_picture where mail_pic_no = ?";
 		private static final String DELETE = 
@@ -272,6 +276,63 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 		return list;
 	}
 
+	public List<Member_mail_pictureVO> findByMail_no(Integer mail_no){
+		List<Member_mail_pictureVO> list = new ArrayList<Member_mail_pictureVO>();
+		Member_mail_pictureVO member_mail_pictureVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ByMail_no_STMT);
+			pstmt.setInt(1, mail_no);
+			rs = pstmt.executeQuery();
+
+
+			while (rs.next()) {
+				// empVo ¤]ºÙ¬° Domain objects
+				member_mail_pictureVO = new Member_mail_pictureVO();
+				member_mail_pictureVO.setMail_pic_no(rs.getInt("mail_pic_no"));
+				member_mail_pictureVO.setMail_no(rs.getInt("mail_no"));
+				member_mail_pictureVO.setMail_pic(rs.getString("mail_pic"));
+
+				list.add(member_mail_pictureVO);
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
 	public void insertWithMail (Member_mail_pictureVO member_mail_pictureVO , Connection con) {
 		System.out.println("member_mail_pictureDAO");
 		System.out.println(member_mail_pictureVO == null);

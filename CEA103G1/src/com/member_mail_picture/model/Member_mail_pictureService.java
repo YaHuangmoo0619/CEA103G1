@@ -2,6 +2,8 @@ package com.member_mail_picture.model;
 
 import java.util.List;
 
+import com.service_mail_picture.model.Service_mail_pictureVO;
+
 public class Member_mail_pictureService {
 	
 	private Member_mail_pictureDAO_interface dao;
@@ -52,6 +54,10 @@ public class Member_mail_pictureService {
 
 	public List<Member_mail_pictureVO> getAll() {
 		return dao.getAll();
+	}
+	
+	public List<Member_mail_pictureVO> getByMail_no(Integer mail_no) {
+		return dao.findByMail_no(mail_no);
 	}
 
 }

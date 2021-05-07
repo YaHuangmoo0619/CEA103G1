@@ -397,7 +397,7 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 				}
 			}
 			//問號放入對應的值
-			pstmt = con.prepareStatement(partOfsqlWhere.toString());
+			pstmt = con.prepareStatement(partOfsqlWhere.toString()+" order by mail_time desc");
 			Set<Integer> keysPstmt = forPstmt.keySet();//上一個步驟存的資料
 			
 			int index = 1;
