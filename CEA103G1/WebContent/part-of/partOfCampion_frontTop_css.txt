@@ -48,6 +48,14 @@ img.cart:hover {
 	cursor: pointer;
 }
 
+img.announcement{
+	width: 30px;
+	margin: 10px;
+}
+img.announcement:hover{
+	cursor: pointer;
+}
+
 img.menu {
 	width: 40px;
 	margin: 10px;
