@@ -454,15 +454,6 @@ ${articleVO.likes}
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://unpkg.com/@webcreate/infinite-ajax-scroll@^3.0.0-beta.6/dist/infinite-ajax-scroll.min.js"></script>	
-	
-	
-	<script>
-	let ias = new InfiniteAjaxScroll('.main_content', {
-		  item: '.article',
-		  next: '.next',
-		  pagination: '.pagination'
-		});
-	</script>	
 		
 		
 

@@ -611,11 +611,10 @@ public class ArticleServlet extends HttpServlet {
 		
 		
 		if ("getOne_From".equals(action)) { //¦C¥X¬Y¤å³¹
-
+			System.out.println("I'm getOne_From");
 			try {
 				// Retrieve form parameters.
 				Integer art_no = new Integer(req.getParameter("art_no"));
-
 				com.article.model.ArticleDAO dao = new com.article.model.ArticleDAO();
 				ArticleVO articleVO = dao.findByPrimaryKey(art_no);
 

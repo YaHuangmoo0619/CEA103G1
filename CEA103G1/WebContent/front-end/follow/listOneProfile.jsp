@@ -110,7 +110,10 @@ clear: both;
 <br>
 <br>
 <c:forEach var="articleVO" items="${articleVO}">
-<div><a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></div>
+<%-- <div class=released_articles><a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></div> --%>
+<div class=released_articles id="${articleVO.art_no}">${articleVO.art_title}<div class=released_articles_no style="display:none">${articleVO.art_no}</div></div>
+	
+
 </c:forEach>
 
 <br>
@@ -179,6 +182,26 @@ clear: both;
 </div>
 </div>
 
+
+
+
+
+
+		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
+			aria-labelledby="basicModal" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-body">
+						<!-- =========================================以下為原listOneArticle.jsp的內容========================================== -->
+						<div id=oneArticle></div>
+						<!-- =========================================以上為原listOneArticle.jsp的內容========================================== -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
 <script>
 
 	function add_follow()
@@ -228,6 +251,32 @@ clear: both;
     function showModal2() {
          $('#test2').modal('show'); 
    }
+   
+    function showModal3(){
+    	$("#basicModal").modal('show');    	
+    }
+
+
+    $(".released_articles").click(function(){ //某篇文章的區塊被點到的話
+    	$(this).removeData("bs.modal");
+    	var the_art_no = $(this).attr("id"); //拿到該篇文章的號碼
+		$.ajax({
+			type : "POST",
+			url : "http://localhost:8081/CEA103G1/article/article.do",
+			data : {action: "getOne_From",art_no:the_art_no}, //參數傳遞 
+			success : function(data) {
+				$("#oneArticle").html(data);
+			}
+		});
+		$("#basicModal").modal('show'); 
+		
+    });
+    
+    $("#basicModal").on('hidden.bs.modal', function (e) {
+    	  document.querySelector("#basicModal").remove()
+    	})
+    
+
 </script>
 </body>
 </html>

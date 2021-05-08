@@ -15,6 +15,8 @@
 
 <%String requestURL = (String)request.getAttribute("requestURL"); %>
 
+
+<%System.out.println("I'm listOneArticle.jsp"); %>
 <html>
 <head>
 <title>文章資料 - listOneArticle.jsp 前台</title>
