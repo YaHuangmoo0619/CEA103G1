@@ -88,21 +88,21 @@ public class Service_mailServlet extends HttpServlet {
 		if("insert".equals(action)){
 			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
 			req.setAttribute("errorMsgs", errorMsgs);
-//			try {
+			try {
 				
 				String emp_noTest = req.getParameter("emp_no");
 				if(emp_noTest.equals("99")) {
 					errorMsgs.put("emp_no", new String[] {"請選擇員工編號"});
 				}
 				Integer emp_no = Integer.valueOf(emp_noTest);
-				Integer send_no = Integer.valueOf(emp_noTest);
+//				Integer send_no = Integer.valueOf(emp_noTest);
 				
 				String mbr_noTest = req.getParameter("mbr_no");
 				if(mbr_noTest.equals("99")) {
 					errorMsgs.put("mbr_no", new String[] {"請選擇會員編號"});
 				}
 				Integer mbr_no = Integer.valueOf(mbr_noTest);
-				Integer rcpt_no = Integer.valueOf(mbr_noTest);
+//				Integer rcpt_no = Integer.valueOf(mbr_noTest);
 				
 				String mail_cont = req.getParameter("mail_cont");
 				if(mail_cont.trim().isEmpty()) {
@@ -118,7 +118,7 @@ public class Service_mailServlet extends HttpServlet {
 				
 				
 				Set<Service_mail_pictureVO> set = new LinkedHashSet<Service_mail_pictureVO>();
-				Set<Member_mail_pictureVO> setMember = new LinkedHashSet<Member_mail_pictureVO>();
+//				Set<Member_mail_pictureVO> setMember = new LinkedHashSet<Member_mail_pictureVO>();
 				String realPath = getServletContext().getRealPath(saveDirectory);
 				File fsaveDirectory = new File(realPath);
 				if(!fsaveDirectory.exists()) {
@@ -141,9 +141,9 @@ public class Service_mailServlet extends HttpServlet {
 							Service_mail_pictureVO service_mail_pictureVO = new Service_mail_pictureVO();
 							service_mail_pictureVO.setMail_pic(mail_pic);
 							set.add(service_mail_pictureVO);
-							Member_mail_pictureVO member_mail_pictureVO = new Member_mail_pictureVO();
-							member_mail_pictureVO.setMail_pic(mail_pic);
-							setMember.add(member_mail_pictureVO);
+//							Member_mail_pictureVO member_mail_pictureVO = new Member_mail_pictureVO();
+//							member_mail_pictureVO.setMail_pic(mail_pic);
+//							setMember.add(member_mail_pictureVO);
 							count++;
 						}
 					}
@@ -151,7 +151,7 @@ public class Service_mailServlet extends HttpServlet {
 				
 				
 				Integer mail_stat =  1;
-				Integer mail_statMember =  Integer.valueOf(req.getParameter("mail_stat"));
+//				Integer mail_statMember =  Integer.valueOf(req.getParameter("mail_stat"));
 				Integer mail_read_stat =  Integer.valueOf(req.getParameter("mail_read_stat"));
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String mail_time = sdf.format(new java.util.Date());
@@ -165,7 +165,8 @@ public class Service_mailServlet extends HttpServlet {
 					service_mailSvc.insertWithPic(emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time, set);
 //					member_mailSvc.insertWithPic(send_no,rcpt_no,mail_read_stat,mail_statMember,mail_cont,mail_time, setMember);
 				}
-				System.out.println(req.getParameter("mail_no"));
+//				System.out.println(req.getParameter("mail_no"));
+				//將待處理改為回覆的人員
 				Integer mail_no = Integer.valueOf(req.getParameter("mail_no"));
 				Service_mailVO service_mailVO = service_mailSvc.getOneService_mail(mail_no);
 				service_mailVO.setEmp_no(emp_no);
@@ -184,11 +185,11 @@ public class Service_mailServlet extends HttpServlet {
 				RequestDispatcher successView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
 				successView.forward(req, res);
 				
-//			}catch(Exception e) {
-//				errorMsgs.put("exception", new String[] {e.getMessage()});
-//				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/addService_mail.jsp");
-//				failureView.forward(req, res);
-//			}
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/addService_mail.jsp");
+				failureView.forward(req, res);
+			}
 		}
 		
 		if("getOne_For_Update".equals(action)) {
