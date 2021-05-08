@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="com.product_order.model.*"%>
 
 <%
@@ -70,17 +72,61 @@
 	</tr>
 	<tr>
 		<td>${product_orderVO.prod_ord_no}</td>
-		<td>${product_orderVO.mbr_no}</td>
-		<td>${product_orderVO.prod_ord_time}</td>
-		<td>${product_orderVO.prod_ord_sum}</td>
-		<td>${product_orderVO.used_pt}</td>
-		<td>${product_orderVO.ship_meth}</td>
-		<td>${product_orderVO.pay_meth}</td>
-		<td>${product_orderVO.ship_cty}</td>
-		<td>${product_orderVO.ship_dist}</td>
-		<td>${product_orderVO.ship_add}</td>
-		<td>${product_orderVO.receipt}</td>
-		<td>${product_orderVO.rmk}</td>
+			<td>${product_orderVO.mbr_no}</td>
+			<td>${product_orderVO.prod_ord_time}</td>
+			<td>
+			<c:if test="${product_orderVO.prod_ord_stat==0}">
+				<c:out value="未付款" />
+			</c:if>
+			<c:if test="${product_orderVO.prod_ord_stat==1}">
+				<c:out value="已付款" />
+			</c:if>
+			<c:if test="${product_orderVO.prod_ord_stat==2}">
+				<c:out value="出貨中" />
+			</c:if>
+			<c:if test="${product_orderVO.prod_ord_stat==3}">
+				<c:out value="已收貨" />
+			</c:if>
+			<c:if test="${product_orderVO.prod_ord_stat==4}">
+				<c:out value="未取貨" />
+			</c:if>
+			</td>
+			<td>${product_orderVO.prod_ord_sum}</td>
+			<td>${product_orderVO.used_pt}</td>
+			<td>
+			<c:if test="${product_orderVO.ship_meth==0}">
+				<c:out value="宅配" />
+			</c:if>
+			<c:if test="${product_orderVO.ship_meth==1}">
+				<c:out value="超商取貨" />
+			</c:if>
+			</td>
+			<td>
+			<c:if test="${product_orderVO.pay_meth==0}">
+				<c:out value="信用卡" />
+			</c:if>
+			<c:if test="${product_orderVO.pay_meth==1}">
+				<c:out value="匯款" />
+			</c:if>
+			<c:if test="${product_orderVO.pay_meth==2}">
+				<c:out value="超商取貨付款" />
+			</c:if>
+			</td>
+			<td>${product_orderVO.ship_cty}</td>
+			<td>${product_orderVO.ship_dist}</td>
+			<td>${product_orderVO.ship_add}</td>
+			<td>
+			<c:if test="${product_orderVO.receipt==0}">
+				<c:out value="紙本發票" />
+			</c:if>
+			<c:if test="${product_orderVO.receipt==1}">
+				<c:out value="電子發票" />
+			</c:if>
+			<c:if test="${product_orderVO.receipt==2}">
+				<c:out value="發票捐贈" />
+			</c:if>
+			</td>
+			<td>${product_orderVO.rmk}</td>
 	</tr>
 </table>
 

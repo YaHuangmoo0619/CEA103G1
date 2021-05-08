@@ -211,10 +211,13 @@ public class ProductServlet extends HttpServlet {
 				Integer prod_stat = new Integer(req.getParameter("prod_stat"));
 				
 				String prod_name = req.getParameter("prod_name");
+				String nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
 				if (prod_name == null || prod_name.trim().length() == 0) {
 					errorMsgs.add("請輸入商品名稱！");
-				}	
-				
+				} else if (!prod_name.trim().matches(nameReg)) { // 以下練習正則(規)表示式(regular-expression)
+					errorMsgs.add("商品名稱只能是中文數字");
+				}
+								
 				Integer prod_pc = null;
 				try {
 					prod_pc = new Integer(req.getParameter("prod_pc").trim());
