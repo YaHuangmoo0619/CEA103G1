@@ -38,18 +38,31 @@ public class ValidPlace extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		Gson gson = new Gson();
 
-		java.sql.Date startdate = java.sql.Date.valueOf(req.getParameter("startdate").trim());
-		java.sql.Date enddate = java.sql.Date.valueOf(req.getParameter("enddate").trim());
 		String county = req.getParameter("county").trim();
 		Integer people;
 		try {
 			people = new Integer(req.getParameter("people"));
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			people = 1;
 		}
 		Camp_PictureService camp_pictureSvc = new Camp_PictureService();
 		Place_Order_DetailsService place_order_detailsSvc = new Place_Order_DetailsService();
+		Place_OrderService place_orderSvc = new Place_OrderService();
 		List<Place_Order_DetailsVO> place_order_detailslist = place_order_detailsSvc.getAll();// 把所有訂單明細取出來
+		
+		for(int i = 0; i < place_order_detailslist.size(); i++) { //把歷史訂單移除
+			int ckin_stat = place_orderSvc.getOnePlace_Order(place_order_detailslist.get(i).getPlc_ord_no()).getCkin_stat();
+			if(ckin_stat == 1 || ckin_stat == 3 || ckin_stat == 4) {
+				place_order_detailslist.remove(i);
+				if (!(i == 0)) {
+					i--;
+				}
+				if (place_order_detailslist.size() == 0) {
+					break;
+				}
+			}
+		}
+		
 		LinkedHashSet<Integer> plc_no_set = new LinkedHashSet();// new一個放已被下訂之營位編號的set
 
 		for (Place_Order_DetailsVO place_order_detailsVO : place_order_detailslist) {
@@ -75,32 +88,37 @@ public class ValidPlace extends HttpServlet {
 				break;
 			}
 		}
-
-		Place_OrderService place_orderSvc = new Place_OrderService();
+		
 		List<Place_OrderVO> place_orderlist;
 		Set<Integer> plc_ord_no_set = new LinkedHashSet();
-		for (Integer plc_no : plc_no_set) {
-			place_orderlist = new ArrayList<Place_OrderVO>();
-			Boolean flag = true;// 立個旗子
+		
+		try {
+			java.sql.Date startdate = java.sql.Date.valueOf(req.getParameter("startdate").trim());
+			java.sql.Date enddate = java.sql.Date.valueOf(req.getParameter("enddate").trim());
+			for (Integer plc_no : plc_no_set) {
+				place_orderlist = new ArrayList<Place_OrderVO>();
+				Boolean flag = true;// 立個旗子
 
-			plc_ord_no_set = place_order_detailsSvc.getOnePlace_Order_Details2(plc_no);// 把一個營位的所有訂單編號放進set
-			for (Integer plc_ord_no : plc_ord_no_set) {
-				place_orderlist.add(place_orderSvc.getOnePlace_Order(plc_ord_no));
-			}
-			for (Place_OrderVO place_orderVO : place_orderlist) {// 比對一筆訂單，入住日在訂單checkout日之後或退房日在訂單checkin日之前
-				if (startdate.after(place_orderVO.getCkout_date()) || startdate.equals(place_orderVO.getCkout_date())
-						|| enddate.before(place_orderVO.getCkin_date())
-						|| enddate.equals(place_orderVO.getCkin_date())) {
-					flag = true;
-				} else {
-					flag = false;// 日期不符合，旗子翻反面
-					break;
+				plc_ord_no_set = place_order_detailsSvc.getOnePlace_Order_Details2(plc_no);// 把一個營位的所有訂單編號放進set
+				for (Integer plc_ord_no : plc_ord_no_set) {
+					place_orderlist.add(place_orderSvc.getOnePlace_Order(plc_ord_no));
 				}
+				for (Place_OrderVO place_orderVO : place_orderlist) {// 比對一筆訂單，入住日在訂單checkout日之後或退房日在訂單checkin日之前
+					if (startdate.after(place_orderVO.getCkout_date()) || startdate.equals(place_orderVO.getCkout_date())
+							|| enddate.before(place_orderVO.getCkin_date())
+							|| enddate.equals(place_orderVO.getCkin_date())) {
+						flag = true;
+					} else {
+						flag = false;// 日期不符合，旗子翻反面
+						break;
+					}
+				}
+				if (flag) {
+					placelist.add(placeSvc.getOnePlace(plc_no));// 把比對過後可訂位的營位加進營位list
+				}
+				place_orderlist = null;
 			}
-			if (flag) {
-				placelist.add(placeSvc.getOnePlace(plc_no));// 把比對過後可訂位的營位加進營位list
-			}
-			place_orderlist = null;
+		} catch (Exception e) {
 		}
 
 		for (int i = 0; i < placelist.size(); i++) {

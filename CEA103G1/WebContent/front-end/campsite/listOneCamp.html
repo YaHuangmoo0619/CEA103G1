@@ -12,6 +12,20 @@
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 
 <style>
+.w3-content{position:relative;margin-top:0em;}
+.w3-btn,.w3-button{border:none;display:inline-block;outline:0;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}
+.w3-btn,.w3-button{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none} 
+.w3-disabled,.w3-btn:disabled,.w3-button:disabled{cursor:not-allowed;opacity:0.3}.w3-disabled *,:disabled *{pointer-events:none}
+.w3-bar-block .w3-dropdown-hover .w3-button,.w3-bar-block .w3-dropdown-click .w3-button{width:100%;text-align:left;padding:8px 16px}
+.w3-button:hover{color:#000!important;background-color:#ccc!important}
+
+.w3-content button {
+position: absolute;
+top: 32%;
+}
+
+.w3-display-right {right:0}
+.w3-display-left {left:0}
 .confirm {
 	margin: 2px;
 	background-color: #80c344;
@@ -22,7 +36,11 @@
 	font-weight: 999;
 	background-color: #80c344;
 }
-
+.formtoplace {
+	width:20%;
+	display:inline-block;
+	margin:2px;
+}
 .confirm:hover {
 	background-color: #4B7F52;
 	color: #80c344;
@@ -371,14 +389,15 @@ td{
 				name="ed" id="ed" type="text"> 人數: <input
 				name="p" id="p" type="number"> <input
 				type="hidden" name="action" value="search"> <input
-				type="button" id="backtobrowse" value="重新查詢">
+				type="button" id="backtobrowse" value="重新查詢" class="btn btn-outline-success my-2 my-sm-0">
 		</FORM>
 		<hr>
 	</div>
-	<div class="container" style="margin-left: 0;margin-top: 0;">
+	<div class="container" style="margin-left: 0;margin-top: 0;margin-right: 0;">
 		<div class="row">
-			<div class="left col-4">
+			<div class="left col-4" style="border-right:solid 1px #DDDDDD;">
 				<div id="map"></div>
+				<div id="spot"><h3>附近景點</h3></div>
 			</div>
 			<div class="right col-8">
 				<div>
@@ -391,7 +410,10 @@ td{
 					<div id="address" style="display: inline-block;"></div>
 					<div id="location" style="display: inline-block;"></div>
 				</div>
-				<div id="photo"></div>
+				<div id="photo" style="height:400px;" class="w3-content">
+					<button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)" style="absolute; top:44%;">&#10096;</button>
+ 					<button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)" style="absolute; top:44%;">&#10097;</button>
+ 				</div>
 				<br>
 				<div id="information">
 					<div id="facility">
@@ -417,15 +439,15 @@ td{
 					<p id="campInfo"></p>
 				</div>
 				<img id="config" width="800" height="500"><br> <br>
-				<FORM method="get" id="form1" onsubmit="return false"
+				<div style="width:1000px;"><hr><FORM method="get" id="form1" onsubmit="return false"
 					accept-charset="big5">
-					入住日期:<input id="startdate" name="startdate" type="text">退房日期:<input
-						id="enddate" name="enddate" type="text">人數:<input
-						name="people" id="people" type="text"><input type="hidden"
-						id="camp_no" name="camp_no"><input type="hidden"
-						value="restart" name="action"><input type="button"
-						id="restart" value="更改">
-				</FORM>
+					<div class="formtoplace">入住日期:<input id="startdate" name="startdate" type="text" required></div>
+					<div class="formtoplace">退房日期:<input id="enddate" name="enddate" type="text" required></div>
+					<div class="formtoplace">人數:<input name="people" id="people" type="text" required></div>
+					<div class="formtoplace"><input type="hidden" id="camp_no" name="camp_no">
+					<input type="hidden" value="restart" name="action">
+					<input type="button" id="restart" value="更改" class="btn btn-outline-success my-2 my-sm-0" style="margin-bottom:20px;"></div>
+				</FORM><hr></div>
 				<input id="stdt" name="startdate" type="hidden"> <input
 					id="eddt" name="enddate" type="hidden"> <input name="pp"
 					id="people" type="hidden">
@@ -439,9 +461,9 @@ td{
 						<table id="info">
 							<tr>
 								<td>日期</td>
-								<td>入住日期<input type="text" name="startdate" id="stdate"
-									readonly="true"><br>退房日期<input type="text"
-									name="enddate" id="eddate" readonly="true"></td>
+								<td><input type="text" name="startdate" id="stdate"
+									readonly="true">入住<br><input type="text"
+									name="enddate" id="eddate" readonly="true">退房</td>
 							</tr>
 							<tr>
 								<td>加購人數</td>
@@ -482,9 +504,8 @@ td{
 							</tr>
 							<tr>
 								<td><input type="hidden" name="camp" id="camp"><input
-									type="hidden" name="place" id="place"><input
-									type="reset" value="重置"></td>
-								<td><input type="button" id="send" value="送出"></td>
+									type="hidden" name="place" id="place"></td>
+								<td><input type="button" id="send" value="送出" class="confirm"></td>
 							</tr>
 						</table>
 					</FORM>
@@ -508,6 +529,19 @@ td{
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
 		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
 		crossorigin="anonymous"></script>
+	<script>
+		 var slideIndex = 1;
+		 showDivs(slideIndex);
+		 function plusDivs(n) {
+		 showDivs(slideIndex += n);
+		  }
+		 function showDivs(n) {
+		 var i;
+		 var x = document.getElementsByClassName("mySlides");
+		 if (n > x.length) {slideIndex = 1} if (n < 1) {slideIndex = x.length}for
+		 (i = 0; i < x.length; i++) {x[i].style.display = "none";}
+		 x[slideIndex-1].style.display = "block"; }
+	</script>
 	<script>
 		const url = window.location.href;
 		const splitUrl = url.split('?');
@@ -535,7 +569,9 @@ td{
 					initMap(data);
 					showCamp(data);
 					showPlace(data);
-					showFeature(data)
+					showFeature(data);
+					showPhoto(data);
+					near(data);
 				}
 			});
 		}else{
@@ -552,11 +588,16 @@ td{
 				success : function(data) {
 					initMap(data);
 					showCamp(data);
-					showFeature(data)
+					showFeature(data);
+					showPhoto(data);
+					near(data);
 				}
 			});
 		}
 		function showCamp(data) {
+			if(data[data.length-1].length===0){
+				$('#photo').css("display","none");
+			}
 			$('#camp_no').val(`${data[0].camp_no}`);
 			$('#title').text(`${data[0].camp_name}`);
 			$('#address').text(`地址:${data[0].address}   `);
@@ -564,7 +605,9 @@ td{
 			$('#facility').append(`設施:${data[0].facility}`);
 			$('#park').append(`停車方式:${data[0].park}`);
 			$('#wireless').append(`無線通訊:${data[0].wireless}`);
-			$('#height').append(`海拔:${data[0].height}`);
+			let height = parseInt(`${data[0].height}`);
+			height = "海拔" + height + "m";
+			$('#height').append(height);
 			if ('${data[0].pet}' === 0) {
 				$('#pet').append(`寵物:不可攜帶`);
 			} else {
@@ -589,6 +632,35 @@ td{
 				$("#fav").attr("name","bookmark-outline");
 			}
 
+		}
+		function showPhoto(data) {
+			let count = 1;
+			for(i in data[data.length-1]){
+				let alt = "custom_html_banner" + count;
+				let img = `<img class="mySlides" alt="${alt}" src="${data[data.length-1][i]}" style="width:100%;height:100%">`;
+				$('#photo').append(img);
+				$('#photo').find('img').each(function() {
+					if(!($(this).attr("alt") === "custom_html_banner1")){
+						$(this).css("display","none");
+					}
+				});
+				count++;
+			}
+		}
+		function near(data) {
+			var locat = `${data[0].latitude}, ${data[0].longitude}`;
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "http://localhost:8081/CEA103G1/near.do?locat="
+						+ locat,
+				success : function(spot) {
+					for(i in spot){
+						let html = `<a>${spot[i].name}</a><br>`;
+						$('#spot').append(html);
+					}
+				}
+			});
 		}
 		$("#search").click(function(){
 			$('#placeInfo').empty();
@@ -622,10 +694,13 @@ td{
 						showPlace(data);
 					}
 				});
-				
-				sessionStorage.setItem("people", $('#people').val());
-				sessionStorage.setItem("startdate", $('#startdate').val());
-				sessionStorage.setItem("enddate", $('#enddate').val());
+				if(!($('#people').val()==="")){
+					sessionStorage.setItem("people", $('#people').val());					
+				}
+				if(!($('#startdate').val()==="")|| !($('#enddate').val()==="")){
+					sessionStorage.setItem("startdate", $('#startdate').val());				
+					sessionStorage.setItem("enddate", $('#enddate').val());					
+				}
 				let split = url.split('&');
 				window.history.pushState({}, document.title, url.substring(0,url.indexOf('&')+1) + "startdate=" + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val());
 		});
@@ -659,7 +734,7 @@ td{
 		});
 
 		function showFeature(data){
-			if(data.length === 3){
+			if(data.length === 4){
 				for(i in data[2]){
 					let html;
 					html =`<button value="${data[2][i].camp_fl_no}" onclick="findWithFeature(this.value)" class="confirm">${data[2][i].camp_fl_name}</button>`;
@@ -696,7 +771,7 @@ td{
 					<td>${data[1][i].pc_wkdy}</td><td>${data[1][i].pc_wknd}</td><td><input type="checkbox" name="getprice" value="${data[1][i].plc_no}"></td><td class="pc"></td></tr>`;
 			    	$('#placeInfo').append(html);
 				}
-				$('#placeInfo').append(`<tr><td colspan="6"><input type="button" id="add" value="我要下訂" disabled="true"></td><td id="sum">0</td></tr>`);
+				$('#placeInfo').append(`<tr><td colspan="6"><input class="confirm" type="button" id="add" value="我要下訂" disabled="true"></td><td id="sum">0</td></tr>`);
 			}else{
 				$('#placeInfo').after("<p>查無營位</p>");
 			}
@@ -795,7 +870,7 @@ td{
 // 		$("input[name='gender']:checked").val() $("input[name*='deposit'][value='0']").attr("checked", true);
 		$("#deposit").children().change(function(){
 			if($("input[name='deposit']:checked").val()==="0"){
-				$("#useornot").css("display","block");
+				$("#useornot").css("display","");
 			}else{
 				$("#useornot").css("display","none");
 				$("input[name='point'][value='1']").prop("checked", true);
