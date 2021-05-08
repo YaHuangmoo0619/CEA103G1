@@ -505,16 +505,6 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 //			stmt.executeUpdate("set auto_increment_increment=1;");
 			pstmt.executeUpdate();
 			
-			Member_mailDAO member_mailDAO = new Member_mailDAO();
-			Integer send_no = service_mailVO.getEmp_no();
-			Integer rcpt_no = service_mailVO.getMbr_no();
-			Integer mail_read_stat = 0;
-			Integer mail_stat = 0;
-			String mail_cont = service_mailVO.getMail_cont();
-			String mail_time = service_mailVO.getMail_time();
-			Member_mailVO member_mailVO = new Member_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
-			member_mailDAO.insertWithSvc(member_mailVO, set, con);
-			
 			String next_mail_no = null;
 			ResultSet rs = pstmt.getGeneratedKeys();
 //			System.out.println("Res="+ rs);
@@ -528,6 +518,16 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 				service_mail_pictureVO.setMail_no(new Integer(next_mail_no));
 				service_mail_pictureDAO.insertWithMail(service_mail_pictureVO , con);
 			}
+			
+			Member_mailDAO member_mailDAO = new Member_mailDAO();
+			Integer send_no = service_mailVO.getEmp_no();
+			Integer rcpt_no = service_mailVO.getMbr_no();
+			Integer mail_read_stat = 0;
+			Integer mail_stat = 0;
+			String mail_cont = service_mailVO.getMail_cont();
+			String mail_time = service_mailVO.getMail_time();
+			Member_mailVO member_mailVO = new Member_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
+			member_mailDAO.insertWithSvc(member_mailVO, set, con);
 			
 			con.commit();
 			con.setAutoCommit(true);
