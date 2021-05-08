@@ -18,6 +18,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.campsite_owner_mail_picture.model.Campsite_owner_mail_pictureVO;
 import com.member_mail_picture.model.Member_mail_pictureDAO;
 import com.member_mail_picture.model.Member_mail_pictureVO;
 import com.service_mail.model.Service_mailVO;
@@ -452,7 +453,59 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 		return set;
 	}
 	
-	public void insertWithEmp (Member_mailVO member_mailVO , Connection con) {
+	@Override
+	public void insertWithSvc (Member_mailVO member_mailVO, Set<Service_mail_pictureVO> set, Connection con) {
+		PreparedStatement pstmt = null;
+		try {
+
+			pstmt = con.prepareStatement(INSERT_STMT);
+			
+
+//			pstmt.setInt(1, member_mailVO.getSend_no());
+//			pstmt.setInt(2, member_mailVO.getRcpt_no());
+//			pstmt.setInt(3, member_mailVO.getMail_read_stat());
+//			pstmt.setInt(4, member_mailVO.getMail_stat());
+//			pstmt.setString(5, member_mailVO.getMail_cont());
+//			pstmt.setString(6, member_mailVO.getMail_time());
+//
+//			pstmt.executeUpdate();
+//			
+			Set<Member_mail_pictureVO> setMbr = new LinkedHashSet<Member_mail_pictureVO>();
+			for(Service_mail_pictureVO service_mail_pictureVO : set) {
+				Member_mail_pictureVO member_mail_pictureVO = new Member_mail_pictureVO();
+				member_mail_pictureVO.setMail_pic(service_mail_pictureVO.getMail_pic());
+				setMbr.add(member_mail_pictureVO);
+			}
+			insertWithPic(member_mailVO,setMbr);
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-member_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void insertWithSvc (Member_mailVO member_mailVO, Connection con) {
 		PreparedStatement pstmt = null;
 		try {
 
@@ -494,6 +547,93 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 		}
 	}
 	
+	@Override
+	public void insertWithCOwner (Member_mailVO member_mailVO, Set<Campsite_owner_mail_pictureVO> set, Connection con) {
+		PreparedStatement pstmt = null;
+		try {
+
+			pstmt = con.prepareStatement(INSERT_STMT);
+			
+
+			pstmt.setInt(1, member_mailVO.getSend_no());
+			pstmt.setInt(2, member_mailVO.getRcpt_no());
+			pstmt.setInt(3, member_mailVO.getMail_read_stat());
+			pstmt.setInt(4, member_mailVO.getMail_stat());
+			pstmt.setString(5, member_mailVO.getMail_cont());
+			pstmt.setString(6, member_mailVO.getMail_time());
+
+			pstmt.executeUpdate();
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-member_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void insertWithCOwner (Member_mailVO member_mailVO, Connection con) {
+		PreparedStatement pstmt = null;
+		try {
+
+			pstmt = con.prepareStatement(INSERT_STMT);
+			
+
+			pstmt.setInt(1, member_mailVO.getSend_no());
+			pstmt.setInt(2, member_mailVO.getRcpt_no());
+			pstmt.setInt(3, member_mailVO.getMail_read_stat());
+			pstmt.setInt(4, member_mailVO.getMail_stat());
+			pstmt.setString(5, member_mailVO.getMail_cont());
+			pstmt.setString(6, member_mailVO.getMail_time());
+
+			pstmt.executeUpdate();
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-member_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
 	public void insertWithPic(Member_mailVO member_mailVO, Set<Member_mail_pictureVO> set) {
 		System.out.println("member_mailDAO");
 		Connection con = null;

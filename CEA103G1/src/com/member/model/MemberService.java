@@ -8,9 +8,9 @@ public class MemberService {
 
 	private MemberDAO_interface dao;
 
-//	public MemberService() {
-//		dao = new MemberDAO();
-//	}
+	public MemberService() {
+		dao = new MemberDAO();
+	}
 
 	public MemberVO addMember(Integer rank_no, String acc, String pwd, String id, String name, Date bday, Integer sex, String mobile, String mail, String city, String dist, String add, Timestamp join_time, String card, Integer pt, Integer acc_stat, Integer exp, byte[] sticker, String rmk) {
 

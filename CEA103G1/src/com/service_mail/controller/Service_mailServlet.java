@@ -157,13 +157,13 @@ public class Service_mailServlet extends HttpServlet {
 				String mail_time = sdf.format(new java.util.Date());
 				
 				Service_mailService service_mailSvc = new Service_mailService();
-				Member_mailService member_mailSvc = new Member_mailService();
+//				Member_mailService member_mailSvc = new Member_mailService();
 				if(set.size() == 0) {
 					Service_mailVO service_mailVO = service_mailSvc.addService_mail(emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time);
 					req.setAttribute("service_mailVO", service_mailVO);
 				}else {
 					service_mailSvc.insertWithPic(emp_no,mbr_no,mail_cont,mail_stat,mail_read_stat,mail_time, set);
-					member_mailSvc.insertWithPic(send_no,rcpt_no,mail_read_stat,mail_statMember,mail_cont,mail_time, setMember);
+//					member_mailSvc.insertWithPic(send_no,rcpt_no,mail_read_stat,mail_statMember,mail_cont,mail_time, setMember);
 				}
 				System.out.println(req.getParameter("mail_no"));
 				Integer mail_no = Integer.valueOf(req.getParameter("mail_no"));

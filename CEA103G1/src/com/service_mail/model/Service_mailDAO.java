@@ -80,7 +80,7 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 			String mail_cont = service_mailVO.getMail_cont();
 			String mail_time = service_mailVO.getMail_time();
 			Member_mailVO member_mailVO = new Member_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
-			member_mailDAO.insertWithEmp(member_mailVO, con);
+			member_mailDAO.insertWithSvc(member_mailVO, con);
 			
 			con.commit();
 			con.setAutoCommit(true);
@@ -513,7 +513,7 @@ public class Service_mailDAO implements Service_mailDAO_interface {
 			String mail_cont = service_mailVO.getMail_cont();
 			String mail_time = service_mailVO.getMail_time();
 			Member_mailVO member_mailVO = new Member_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
-			member_mailDAO.insertWithEmp(member_mailVO, con);
+			member_mailDAO.insertWithSvc(member_mailVO, set, con);
 			
 			String next_mail_no = null;
 			ResultSet rs = pstmt.getGeneratedKeys();
