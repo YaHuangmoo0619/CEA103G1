@@ -1,61 +1,61 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.member.model.*"%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
+<%
+	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
+%>
 
-<title>註冊頁面</title>
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">
-<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-<meta http-equiv="description" content="This is my page">
-<!--
-<link rel="stylesheet" type="text/css" href="styles.css">
--->
-<script language="javascript">
-	function isValid(form) {
-		if (form.username.value == "") {
-			alert("使用者名稱不能為空");
-			return false;
-		}
-		if (form.pwd.value != form.pwd2.value) {
-			alert("兩次輸入的密碼不同！");
-			return false;
-		} else if (form.pwd.value == "") {
-			alert("使用者密碼不能為空！");
-			return false;
-		} else
-			return true;
-	}
-</script>
-</head>
-<body>
-	<center>
-		<body bgcolor="#e3e3e3">
-			<h2>使用者註冊</h2>
-			<form action="check2.jsp" method="post"
-				onSubmit="return isValid(this);">
-				<table>
-					<tr>
-						<td>使用者名稱:</td>
-						<td><input type="text" name="username" size="20" /></td>
-					</tr>
-					<tr>
-						<td>輸入密碼:</td>
-						<td><input type="text" name="pwd" size="20" /></td>
-					</tr>
-					<tr>
-						<td>再次確認密碼:</td>
-						<td><input type="text" name="pwd2" size="20" /></td>
-					<tr>
-					<tr>
-						<td><input type="submit" value="註冊" />
-						<td><input type="reset" value="重置" />
-				</table>
-			</form>
-	</center>
-	<br>
-</body>
-</html>
+
+
+<div id="main">
+
+	<!-- Thread Start -->
+	<div class="t" style="margin-bottom: 0px; border-bottom: 0">
+		<table cellspacing="0" cellpadding="0" width="100%">
+			<tr>
+				<th class="h"><strong class="fl w">註冊使用者</strong> &nbsp; <span
+					style="color: red; font-weight: bold;">${ message }</span></th>
+			</tr>
+		</table>
+	</div>
+
+	<html:form action="/CEA103G1/member_rank/member_rank.do">
+		<html:hidden property="action" value="add" />
+		<div class="t t2">
+			<table cellspacing="0" cellpadding="0" width="100%"
+				style="table-layout: fixed; border-top: 0">
+
+				<tr>
+					<td>帳號:</td>
+					<td><input type="TEXT" name="acc" size="45" /></td>
+				</tr>
+				<tr>
+					<td>密碼:</td>
+					<td><input type="TEXT" name="pwd" size="45" /></td>
+				</tr>
+				<tr>
+					<td>確認密碼:</td>
+					<td><input type="TEXT" name="pwd2" size="45" /></td>
+				</tr>
+				<tr class="tr3">
+					<td>姓名:</td>
+					<td><input type="TEXT" name="name" size="45" /></td>
+				</tr>
+				<tr>
+					<td>電子郵件:</td>
+					<td><input type="TEXT" name="mail" size="45" /></td>
+				</tr>
+				<tr>
+					<td>生日:</td>
+					<td><input type="TEXT" name="bday" size="45" /></td>
+				</tr>
+				<tr>
+					<td colspan="2"><html:submit styleClass="btn" value="註冊" /></td>
+				</tr>
+			</table>
+			<input type="hidden" name="action" value="insert"> <input
+				type="submit" value="註冊">
+			</FORM>
+		</div>
+	</html:form>

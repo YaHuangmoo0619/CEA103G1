@@ -1,28 +1,59 @@
-<%@ page language="java" import="java.util.*"
-	contentType="text/html;charset=utf-8"%>
-<html>
-<head>
-<title>使用者登入</title>
-</head>
-<body bgcolor="#e3e3e3">
-	<center>
-		<form action="check.jsp" method="post">
-			<table>
-				<caption>使用者登入</caption>
-				<tr>
-					<td>使用者名稱:</td>
-					<td><input type="text" name="username" size="20" /></td>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://jakarta.apache.org/struts/tags-bean"
+	prefix="bean"%>
+<%@ taglib uri="http://jakarta.apache.org/struts/tags-html"
+	prefix="html"%>
+
+<jsp:include flush="true" page="../header.jsp"></jsp:include>
+
+
+<div id="main">
+
+	<!-- Thread Start -->
+	<div class="t" style="margin-bottom:0px; border-bottom:0">
+		<table cellspacing="0" cellpadding="0" width="100%">
+			<tr>
+				<th class="h">
+					<strong class="fl w">�ݭn�n�J</strong> &nbsp;
+					<span style="color: red; font-weight: bold; ">${
+						exception.message }</span>
+				</th>
+			</tr>
+		</table>
+	</div>
+
+	<html:form action="/person">
+		<html:hidden property="action" value="login" />
+		<div class="t t2">
+			<table cellspacing="0" cellpadding="0" width="100%"
+				style="table-layout:fixed;border-top:0">
+				<tr class="tr3">
+					<td style="width: 120px; ">
+						�b��:
+					</td>
+					<td>
+						<html:text property="person.account"></html:text>
+					</td>
 				</tr>
-				<tr>
-					<td>密碼:</td>
-					<td><input type="text" name="pwd" size="20" /></td>
+
+				<tr class="tr3">
+					<td style="width: 120px; ">
+						�K�X:
+					</td>
+					<td>
+						<html:password property="person.password"></html:password>
+					</td>
 				</tr>
-				<tr>
-					<td><input type="submit" value="登入" />
-					<td><input type="reset" value="重置" />
+
+				<tr class="tr3">
+					<td colspan="2">
+						<html:submit styleClass="btn" value="�n�J" />
+					</td>
+				</tr>
 			</table>
-		</form>
-		如果您還沒有註冊，請單擊<a href="register.jsp">這裡</a>註冊！
-</body>
-</center>
-</html>
+		</div>
+	</html:form>
+
+
+	<jsp:include flush="true" page="../footer.jsp" />
