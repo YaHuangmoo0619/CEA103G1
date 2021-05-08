@@ -72,6 +72,26 @@
 		<td><input type="TEXT" name="prod_no" size="45" 
 			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_no()%>" /></td>
 	</tr>
+		<tr>
+		<td>商品編號:</td>
+		<td><input type="TEXT" name="prod_no" size="45" 
+			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_no()%>" /></td>
+	</tr>
+		<tr>
+		<td>商品編號:</td>
+		<td><input type="TEXT" name="prod_no" size="45" 
+			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_no()%>" /></td>
+	</tr>
+		<tr>
+		<td>商品編號:</td>
+		<td><input type="TEXT" name="prod_no" size="45" 
+			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_no()%>" /></td>
+	</tr>
+		<tr>
+		<td>商品編號:</td>
+		<td><input type="TEXT" name="prod_no" size="45" 
+			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_no()%>" /></td>
+	</tr>
 
 </table>
 <br>

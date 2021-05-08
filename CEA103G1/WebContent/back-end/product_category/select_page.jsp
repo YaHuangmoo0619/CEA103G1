@@ -49,31 +49,8 @@
 <ul>
   <li><a href='${pageContext.request.contextPath}/back-end/product_category/listAllProduct_category.jsp'>List</a> all Product_category.  <br><br></li>
   
-  
-  <li>
-    <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_category/product_category.do" >
-        <b>輸入商品分類編號 :</b>
-        <input type="text" name="prod_cat_no">
-        <input type="hidden" name="action" value="getOne_For_Display">
-        <input type="submit" value="送出">
-    </FORM>
-  </li>
-
   <jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
-   
-  <li>
-     <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_category/product_category.do" >
-       <b>選擇商品分類編號:</b>
-       <select size="1" name="prod_cat_no">
-         <c:forEach var="product_categoryVO" items="${product_categorySvc.all}" > 
-          <option value="${product_categoryVO.prod_cat_no}">
-         </c:forEach>   
-       </select>
-       <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="送出">
-    </FORM>
-  </li>
-  
+
   <li>
      <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_category/product_category.do" >
        <b>選擇商品分類:</b>

@@ -72,6 +72,61 @@
 		<td><input type="TEXT" name="mbr_no" size="45" 
 			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
 	</tr>
+	<tr>
+		<td>下訂時間:</td>
+		<td><input type="TEXT" name="prod_ord_time" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>訂單狀態:</td>
+		<td><input type="TEXT" name="prod_ord_stat" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>訂單總金額:</td>
+		<td><input type="TEXT" name="prod_ord_sum" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>使用點數:</td>
+		<td><input type="TEXT" name="used_pt" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>運送方式:</td>
+		<td><input type="TEXT" name="ship_meth" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>付款方式:</td>
+		<td><input type="TEXT" name="pay_meth" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>運送地址_縣市:</td>
+		<td><input type="TEXT" name="ship_cty" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>運送地址_區域:</td>
+		<td><input type="TEXT" name="ship_dist" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>運送地址:</td>
+		<td><input type="TEXT" name="ship_add" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>發票形式:</td>
+		<td><input type="TEXT" name="receipt" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>訂單備註:</td>
+		<td><input type="TEXT" name="rmk" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+	</tr>
 
 </table>
 <br>
