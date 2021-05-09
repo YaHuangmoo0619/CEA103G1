@@ -718,6 +718,33 @@ public class ArticleServlet extends HttpServlet {
 		
 		
 		
+		if ("search_tag".equals(action)) { 
+
+			try {
+				System.out.println("hello");
+				// Retrieve parameters.
+				Integer art_no = new Integer(req.getParameter("art_no"));
+				Integer bd_cl_no = new Integer(req.getParameter("bd_cl_no"));
+				
+				ArticleDAO dao = new ArticleDAO();
+				ArticleVO articleVO = dao.findByPrimaryKey(art_no);
+
+				req.setAttribute("articleVO", articleVO); // 資料庫取出的articleVO物件,存入req
+				req.setAttribute("bd_cl_no", articleVO.getBd_cl_no());
+				
+
+				
+				// 取出的articleVO送給listOneEmp.jsp
+				RequestDispatcher successView = req
+						.getRequestDispatcher("/front-end/article/listOneBoard_ClassArticle.jsp");
+				successView.forward(req, res);
+				return;
+
+				// Handle any unusual exceptions
+			} catch (Exception e) {
+				throw new ServletException(e);
+			}
+		}
 		
 		
 	}

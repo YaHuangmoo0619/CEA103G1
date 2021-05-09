@@ -35,12 +35,9 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <!-- include libraries(jQuery, bootstrap) -->
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-	rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <!-- include summernote css/js -->
 <link
@@ -250,7 +247,7 @@ input#search-bar:focus:-ms-placeholder {
 					<div class="modal-body">
 						<div id="tags_add_list">
 
-							<input placeholder="根據你的文章內容搜尋相關話題" name=tags_input value="">
+							<input placeholder="根據你的文章內容搜尋相關話題" id=tags_input name=tags_input value="">
 						</div>
 						<br>
 
@@ -362,10 +359,12 @@ input#search-bar:focus:-ms-placeholder {
 
 		$("input[name*='tags_input']").on("input propertychange", function() { //實時監聽輸入框變化
 			console.log("正在輸入中");
+			var x = document.getElementById("tags_input").value;
+			console.log(x);
 			$.ajax({ //負責傳到articleServlet 回傳
 				type : "POST",
 				url : "http://localhost:8081/CEA103G1/article/article.do",
-				data : {action: "search_tag",tag:document.getElementById("tags_input").innerHTML,},
+				data : {action: "search_tag",tag:x},
 				success : function(data) {
 					alert("取消某人對某人的追蹤成功");
 				}
