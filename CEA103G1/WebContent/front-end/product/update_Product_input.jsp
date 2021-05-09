@@ -71,7 +71,7 @@
 <input type="reset" value="重置">
 <input type="button" id="blank" value="清空">
 <table>
-<tr>
+	<tr>
 		<td>商品分類編號:</td>	
 		<td><input type="TEXT" name="prod_cat_no" size="45" 
 			 value="<%= (productVO==null)? "" : productVO.getProd_cat_no()%>" /></td>
