@@ -94,10 +94,10 @@
 			<td>${product_orderVO.prod_ord_sum}</td>
 			<td>${product_orderVO.used_pt}</td>
 			<td>
-			<c:if test="${product_orderVO.ship_meth==0}">
+			<c:if test="${product_orderVO.ship_meth==1}">
 				<c:out value="¦v°t" />
 			</c:if>
-			<c:if test="${product_orderVO.ship_meth==1}">
+			<c:if test="${product_orderVO.ship_meth==2}">
 				<c:out value="¶W°Ó¨ú³f" />
 			</c:if>
 			</td>

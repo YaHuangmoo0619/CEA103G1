@@ -68,13 +68,83 @@
 <table>
 	<tr>
 		<td>商品訂單編號:<font color=red><b>*</b></font></td>
-		<td><%=product_orderVO.getProd_ord_no()%></td>
+		<td>${product_orderVO.prod_ord_no}</td>
 	</tr>
 	<tr>
-		<td>會員編號:</td>
-		<td><input type="TEXT" name="ename" size="45" value="<%=product_orderVO.getMbr_no()%>" /></td>
+		<td>會員編號:<font color=red><b>*</b></font></td>
+		<td>${product_orderVO.mbr_no}</td>
 	</tr>
+<tr>
+		<td>下訂時間:</td>	
+		<td><input type="TEXT" name="prod_cat_no" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getProd_ord_time()%>" /></td>
+	</tr>
+	<tr>
+		<td>訂單狀態:</td>
+		<td>
+			<select id="prod_stat" name="prod_stat">
+				<option value="0">未付款</option>
+				<option value="1">已付款</option>
+				<option value="2">出貨中</option> 
+				<option value="3">已收貨</option> 
+				<option value="4">未取貨</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>訂單總金額:</td>
+		<td><input type="TEXT" name="prod_ord_sum" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getProd_ord_sum()%>" /></td>
+	</tr>
+	<tr>
+		<td>使用點數:</td>
+		<td><input type="TEXT" name="used_pt" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getUsed_pt()%>" /></td>
+	</tr>
+	<tr>
+		<td>運送方式:</td>
+		<td>
+			<select id="ship_meth" name="ship_meth">
+			    <option disabled value="">請選擇運送方式</option>
+			    <option value="0">不限運送方式</option>
+			    <option value="1">限宅配</option>
+			    <option value="2">限超商取貨</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>付款方式:</td>
+		<td><input type="TEXT" name="pay_meth" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getPay_meth()%>" /></td>
+	</tr>
+	<tr>
+		<td>運送地址_縣市:</td>
+		<td><input type="TEXT" name="ship_cty" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getShip_cty()%>" /></td>
+	</tr>
+	<tr>
+		<td>運送地址_區域:</td>
+		<td><input type="TEXT" name="ship_dist" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getShip_dist()%>" /></td>
+	</tr>
+	<tr>
+		<td>運送地址:</td>
+		<td><input type="TEXT" name="ship_add" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getShip_add()%>" /></td>
+	</tr>
+	<tr>
+		<td>發票形式:</td>
+		<td><input type="TEXT" name="receipt" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getReceipt()%>" /></td>
 
+	</tr>
+	<tr>
+		<td>訂單備註:</td>
+		<td><input type="TEXT" name="rmk" size="45" 
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getRmk()%>" /></td>
+
+	</tr>
+	
 </table>
 <br>
 <input type="hidden" name="action" value="update">
