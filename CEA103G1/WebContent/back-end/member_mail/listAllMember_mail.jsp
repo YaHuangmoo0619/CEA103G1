@@ -9,9 +9,9 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
 <title>所有會員站內信列表</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
@@ -160,7 +160,6 @@ tr:hover {
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<h3>會員站內信列表</h3><a href="<%=request.getContextPath()%>/back-end/member_mail/addMember_mail.jsp">寄信</a>
 			<hr>
-			${errorMsgs.Exception}
 			<div class="forSearch" id="forSearch">
 					<ul>
 						<li>
@@ -239,17 +238,17 @@ tr:hover {
 					<div style="width: 150px;display:inline-block;">信件日期</div>
 				</div>
 			<table>
-				<tr>
-					<th style="width:50px">編號</th>
-					<th style="width:50px">寄件人</th>
-					<th style="width:50px">收件人</th>
-					<th style="width:200px">內容</th>
-					<th style="width:50px">信件狀態</th>
-					<th style="width:100px">信件閱讀狀態</th>
-					<th style="width:100px">發信時間</th>
+<!-- 				<tr> -->
+<!-- 					<th style="width:50px">編號</th> -->
+<!-- 					<th style="width:50px">寄件人</th> -->
+<!-- 					<th style="width:50px">收件人</th> -->
+<!-- 					<th style="width:200px">內容</th> -->
+<!-- 					<th style="width:50px">信件狀態</th> -->
+<!-- 					<th style="width:100px">信件閱讀狀態</th> -->
+<!-- 					<th style="width:100px">發信時間</th> -->
 <!-- 					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a -->
 <!-- 						id="first" style="text-decoration: none;"></a></th> -->
-				</tr>
+<!-- 				</tr> -->
 <%-- 				<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService"/> --%>
 				<c:forEach var="member_mailVO" items="${member_mailSvc.all}">
 <%-- 					<tr ${member_mailVO.mail_no == param.mail_no ? 'bgcolor=#eee':''}> --%>

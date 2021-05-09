@@ -34,7 +34,7 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 		private static final String GET_ALL_STMT = 
 			"SELECT mail_pic_no,mail_no,mail_pic FROM campion.member_mail_picture order by mail_pic_no";
 		private static final String GET_ByMail_no_STMT = 
-				"SELECT svc_mail_pic_no,mail_no,mail_pic FROM campion.service_mail_picture where mail_no = ?";
+				"SELECT mail_pic_no,mail_no,mail_pic FROM campion.member_mail_picture where mail_no = ?";
 		private static final String GET_ONE_STMT = 
 			"SELECT mail_pic_no,mail_no,mail_pic FROM campion.member_mail_picture where mail_pic_no = ?";
 		private static final String DELETE = 
@@ -334,14 +334,14 @@ public class Member_mail_pictureDAO implements Member_mail_pictureDAO_interface 
 	}
 	
 	public void insertWithMail (Member_mail_pictureVO member_mail_pictureVO , Connection con) {
-		System.out.println("member_mail_pictureDAO");
-		System.out.println(member_mail_pictureVO == null);
+//		System.out.println("member_mail_pictureDAO");
+//		System.out.println(member_mail_pictureVO == null);
 		
 		PreparedStatement pstmt = null;
 		try {
 
 			pstmt = con.prepareStatement(INSERT_STMT);
-			System.out.println(pstmt == null);
+//			System.out.println(pstmt == null);
 
 			pstmt.setInt(1, member_mail_pictureVO.getMail_no());
 			pstmt.setString(2, member_mail_pictureVO.getMail_pic());

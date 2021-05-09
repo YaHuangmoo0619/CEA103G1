@@ -54,4 +54,7 @@ public class Campsite_owner_mail_pictureService {
 		return dao.getAll();
 	}
 
+	public List<Campsite_owner_mail_pictureVO> getByMail_no(Integer mail_no){
+		return dao.findByMail_no(mail_no);
+	}
 }

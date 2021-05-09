@@ -3,7 +3,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="com.member_mail.model.*" %>
 
-<% Member_mailVO member_mailVO = (Member_mailVO)request.getAttribute("Member_mailVO"); %>
+<% Member_mailVO member_mailVO = (Member_mailVO)request.getAttribute("member_mailVO"); %>
 
 <!DOCTYPE html>
 <html>
@@ -33,6 +33,7 @@ div.right{
 }
 a.content{
 	color: #80c344;
+	font-size: 0.6em;
 }
 a.content:hover {
 	color: #4B7F52;
@@ -78,7 +79,28 @@ input.confirm:hover{
 	cursor: pointer;
 }
 </style>
-
+<style>
+#container {
+	padding: 10px;
+	max-width: 250px;
+	margin: 0px auto;
+}
+.align{
+	display: inline;
+	vertical-align: text-top;
+}
+#preview, .change{
+	margin: 10px 0px;
+	
+}
+img{
+	max-width: 100%;
+	margin: 10px;
+}
+.delete{
+	display: none;
+}
+</style>
 </head>
 <body>
 <%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
@@ -88,10 +110,11 @@ input.confirm:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>新增信件&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/member_mail/select_page.jsp">回首頁</a></h2>
+			<h2>新增會員站內信&nbsp;<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/listAllMember_mail.jsp">回會員信件列表</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<form method="post" action="<%=request.getContextPath()%>/member_mail/member_mail.do">
+			<h3>信件撰寫:</h3>
+			<form method="post" action="<%=request.getContextPath()%>/member_mail/member_mail.do" enctype="multipart/form-data">
 			<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService"/>
 			<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 			<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>
@@ -125,6 +148,7 @@ input.confirm:hover{
 						<c:forEach var="memberVO" items="${memberSvc.all}">
 							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.rcpt_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
 						</c:forEach>
+						<option value="90001">客服人員</option>
 						</select>
 					</td>
 				</tr>
@@ -134,9 +158,18 @@ input.confirm:hover{
 						<br><h5 style="color:#80c344;">${errorMsgs.mail_cont[0]}</h5>	
 					</td>
 					<td>
-						<textarea name="mail_cont" rows="10" cols="45" class="mail_cont">
-${param.mail_cont.trim().isEmpty()? '':param.mail_cont.trim()}
-						</textarea>
+						<textarea name="mail_cont" rows="10" cols="45" class="mail_cont">${param.mail_cont.trim().isEmpty()? '':param.mail_cont.trim()}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>附件照片</td>
+					<td>
+						<div id='container'>
+							<label>請上傳圖片檔案：</label>
+				            <input type="file" id='myFile' name='files' multiple>
+					        <div id='preview'>               
+					        </div>        
+					    </div>
 					</td>
 				</tr>
 			</table>
@@ -150,5 +183,37 @@ ${param.mail_cont.trim().isEmpty()? '':param.mail_cont.trim()}
 	</div>
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<script>
+        let myFile = document.getElementById('myFile');
+        let preview = document.getElementById('preview');
+	let imgs = document.getElementsByClassName('img');        
+
+        myFile.addEventListener('change', function(e) {
+	    while(imgs.length != 0){
+		imgs[0].remove();
+	    }
+        	let files = e.target.files;
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].type.indexOf('image') > -1) {
+                    fileName = files[i].name;
+                    //console.log(files[i]);
+                    let reader = new FileReader();
+                    reader.addEventListener('load', function(e) {
+                        let result = e.target.result;
+                        //console.log(result);
+                        let img = document.createElement('img');
+                        img.setAttribute('class', 'img');
+                        img.classList.add('align');
+                        img.src = result;
+                        preview.append(img);
+                    });
+                    reader.readAsDataURL(files[i]);
+                } else {
+                    alert('請上傳圖檔');
+                }
+            }
+        });
+
+    </script>
 </body>
 </html>

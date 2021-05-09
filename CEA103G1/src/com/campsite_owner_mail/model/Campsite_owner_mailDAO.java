@@ -18,7 +18,15 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.campsite_owner_mail_picture.model.Campsite_owner_mail_pictureDAO;
+import com.campsite_owner_mail_picture.model.Campsite_owner_mail_pictureVO;
+import com.member_mail.model.Member_mailDAO;
 import com.member_mail.model.Member_mailVO;
+import com.member_mail_picture.model.Member_mail_pictureDAO;
+import com.member_mail_picture.model.Member_mail_pictureVO;
+import com.service_mail.model.Service_mailDAO;
+import com.service_mail.model.Service_mailVO;
+import com.service_mail_picture.model.Service_mail_pictureVO;
 
 public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface {
 	
@@ -53,6 +61,9 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 		try {
 
 			con = ds.getConnection();
+
+			con.setAutoCommit(false);
+			
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			pstmt.setInt(1, campsite_owner_mailVO.getSend_no());
@@ -64,8 +75,43 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 
 			pstmt.executeUpdate();
 
+			if(campsite_owner_mailVO.getRcpt_no().toString().substring(0,1).equals("9")) {
+				Service_mailDAO service_mailDAO = new Service_mailDAO();
+				Integer mbr_no = campsite_owner_mailVO.getSend_no();
+				Integer emp_no = campsite_owner_mailVO.getRcpt_no();
+				Integer mail_read_stat = 0;
+				Integer mail_stat = 0;
+				String mail_cont = campsite_owner_mailVO.getMail_cont();
+				String mail_time = campsite_owner_mailVO.getMail_time();
+				Service_mailVO service_mailVO = new Service_mailVO(emp_no, mbr_no, mail_cont, mail_stat, mail_read_stat, mail_time); 
+				service_mailDAO.insertWithMbr(service_mailVO, con);
+			}else if(campsite_owner_mailVO.getRcpt_no().toString().substring(0,1).equals("1")) {
+				Member_mailDAO member_mailDAO = new Member_mailDAO();
+				Integer send_no = campsite_owner_mailVO.getSend_no();
+				Integer rcpt_no = campsite_owner_mailVO.getRcpt_no();
+				Integer mail_read_stat = 0;
+				Integer mail_stat = 0;
+				String mail_cont = campsite_owner_mailVO.getMail_cont();
+				String mail_time = campsite_owner_mailVO.getMail_time();
+				Member_mailVO member_mailVO = new Member_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
+				member_mailDAO.insertWithMbr(member_mailVO,con);
+			}
+			con.commit();
+			con.setAutoCommit(true);
+			
 			// Handle any SQL errors
 		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-campsite_owner_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
@@ -445,5 +491,315 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 			}
 		}
 		return set;
+	}
+	
+	@Override
+	public void insertWithSvc (Campsite_owner_mailVO campsite_owner_mailVO, Set<Service_mail_pictureVO> set, Connection con) {
+		PreparedStatement pstmt = null;
+		try {
+
+			String cols[] = {"mail_no"};
+			pstmt = con.prepareStatement(INSERT_STMT , cols);
+
+			pstmt.setInt(1, campsite_owner_mailVO.getSend_no());
+			pstmt.setInt(2, campsite_owner_mailVO.getRcpt_no());
+			pstmt.setInt(3, campsite_owner_mailVO.getMail_read_stat());
+			pstmt.setInt(4, campsite_owner_mailVO.getMail_stat());
+			pstmt.setString(5, campsite_owner_mailVO.getMail_cont());
+			pstmt.setString(6, campsite_owner_mailVO.getMail_time());
+
+			pstmt.executeUpdate();
+			
+			String next_mail_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+//			System.out.println("Res="+ rs);
+			if(rs.next()) {
+				next_mail_no = rs.getString(1);
+			}
+			rs.close();
+			
+			Set<Campsite_owner_mail_pictureVO> setCOwner = new LinkedHashSet<Campsite_owner_mail_pictureVO>();
+			for(Service_mail_pictureVO service_mail_pictureVO : set) {
+				Campsite_owner_mail_pictureVO campsite_owner_mail_pictureVO = new Campsite_owner_mail_pictureVO();
+				campsite_owner_mail_pictureVO.setMail_pic(service_mail_pictureVO.getMail_pic());
+				setCOwner.add(campsite_owner_mail_pictureVO);
+			}
+			
+			Campsite_owner_mail_pictureDAO campsite_owner_mail_pictureDAO = new Campsite_owner_mail_pictureDAO();
+			for(Campsite_owner_mail_pictureVO campsite_owner_mail_pictureVO : setCOwner) {
+				campsite_owner_mail_pictureVO.setMail_no(new Integer(next_mail_no));
+				campsite_owner_mail_pictureDAO.insertWithMail(campsite_owner_mail_pictureVO , con);
+			}
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-campsite_owner_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void insertWithSvc (Campsite_owner_mailVO campsite_owner_mailVO, Connection con) {
+		PreparedStatement pstmt = null;
+		try {
+
+			pstmt = con.prepareStatement(INSERT_STMT);
+			
+
+			pstmt.setInt(1, campsite_owner_mailVO.getSend_no());
+			pstmt.setInt(2, campsite_owner_mailVO.getRcpt_no());
+			pstmt.setInt(3, campsite_owner_mailVO.getMail_read_stat());
+			pstmt.setInt(4, campsite_owner_mailVO.getMail_stat());
+			pstmt.setString(5, campsite_owner_mailVO.getMail_cont());
+			pstmt.setString(6, campsite_owner_mailVO.getMail_time());
+
+			pstmt.executeUpdate();
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-campsite_owner_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void insertWithMbr (Campsite_owner_mailVO campsite_owner_mailVO, Set<Member_mail_pictureVO> set, Connection con) {
+		PreparedStatement pstmt = null;
+		try {
+
+			String cols[] = {"mail_no"};
+			pstmt = con.prepareStatement(INSERT_STMT , cols);
+
+			pstmt.setInt(1, campsite_owner_mailVO.getSend_no());
+			pstmt.setInt(2, campsite_owner_mailVO.getRcpt_no());
+			pstmt.setInt(3, campsite_owner_mailVO.getMail_read_stat());
+			pstmt.setInt(4, campsite_owner_mailVO.getMail_stat());
+			pstmt.setString(5, campsite_owner_mailVO.getMail_cont());
+			pstmt.setString(6, campsite_owner_mailVO.getMail_time());
+
+			pstmt.executeUpdate();
+			
+			String next_mail_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+//			System.out.println("Res="+ rs);
+			if(rs.next()) {
+				next_mail_no = rs.getString(1);
+			}
+			rs.close();
+			
+			Set<Campsite_owner_mail_pictureVO> setCOwner = new LinkedHashSet<Campsite_owner_mail_pictureVO>();
+			for(Member_mail_pictureVO member_mail_pictureVO : set) {
+				Campsite_owner_mail_pictureVO campsite_owner_mail_pictureVO = new Campsite_owner_mail_pictureVO();
+				campsite_owner_mail_pictureVO.setMail_pic(member_mail_pictureVO.getMail_pic());
+				setCOwner.add(campsite_owner_mail_pictureVO);
+			}
+			
+			Campsite_owner_mail_pictureDAO campsite_owner_mail_pictureDAO = new Campsite_owner_mail_pictureDAO();
+			for(Campsite_owner_mail_pictureVO campsite_owner_mail_pictureVO : setCOwner) {
+				campsite_owner_mail_pictureVO.setMail_no(new Integer(next_mail_no));
+				campsite_owner_mail_pictureDAO.insertWithMail(campsite_owner_mail_pictureVO , con);
+			}
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-campsite_owner_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void insertWithMbr (Campsite_owner_mailVO campsite_owner_mailVO, Connection con) {
+		PreparedStatement pstmt = null;
+		try {
+
+			pstmt = con.prepareStatement(INSERT_STMT);
+			
+
+			pstmt.setInt(1, campsite_owner_mailVO.getSend_no());
+			pstmt.setInt(2, campsite_owner_mailVO.getRcpt_no());
+			pstmt.setInt(3, campsite_owner_mailVO.getMail_read_stat());
+			pstmt.setInt(4, campsite_owner_mailVO.getMail_stat());
+			pstmt.setString(5, campsite_owner_mailVO.getMail_cont());
+			pstmt.setString(6, campsite_owner_mailVO.getMail_time());
+
+			pstmt.executeUpdate();
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-campsite_owner_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void insertWithPic(Campsite_owner_mailVO campsite_owner_mailVO, Set<Campsite_owner_mail_pictureVO> set) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			
+			con.setAutoCommit(false);
+			
+			String cols[] = {"mail_no"};
+			pstmt = con.prepareStatement(INSERT_STMT , cols);
+
+			pstmt.setInt(1, campsite_owner_mailVO.getSend_no());
+			pstmt.setInt(2, campsite_owner_mailVO.getRcpt_no());
+			pstmt.setInt(3, campsite_owner_mailVO.getMail_read_stat());
+			pstmt.setInt(4, campsite_owner_mailVO.getMail_stat());
+			pstmt.setString(5, campsite_owner_mailVO.getMail_cont());
+			pstmt.setString(6, campsite_owner_mailVO.getMail_time());
+			
+			pstmt.executeUpdate();
+			
+			String next_mail_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+//			System.out.println("Res="+ rs);
+			if(rs.next()) {
+				next_mail_no = rs.getString(1);
+			}
+			rs.close();
+			
+			Campsite_owner_mail_pictureDAO campsite_owner_mail_pictureDAO = new Campsite_owner_mail_pictureDAO();
+			for(Campsite_owner_mail_pictureVO campsite_owner_mail_pictureVO : set) {
+				campsite_owner_mail_pictureVO.setMail_no(new Integer(next_mail_no));
+				campsite_owner_mail_pictureDAO.insertWithMail(campsite_owner_mail_pictureVO , con);
+			}
+			
+			if(campsite_owner_mailVO.getRcpt_no().toString().substring(0,1).equals("9")) {
+				Service_mailDAO service_mailDAO = new Service_mailDAO();
+				Integer mbr_no = campsite_owner_mailVO.getSend_no();
+				Integer emp_no = campsite_owner_mailVO.getRcpt_no();
+				Integer mail_read_stat = 0;
+				Integer mail_stat = 0;
+				String mail_cont = campsite_owner_mailVO.getMail_cont();
+				String mail_time = campsite_owner_mailVO.getMail_time();
+				Service_mailVO service_mailVO = new Service_mailVO(emp_no, mbr_no, mail_cont, mail_stat, mail_read_stat, mail_time); 
+				service_mailDAO.insertWithCOwner(service_mailVO, set, con);
+			}else if(campsite_owner_mailVO.getRcpt_no().toString().substring(0,1).equals("1")) {
+				Member_mailDAO member_mailDAO = new Member_mailDAO();
+				Integer send_no = campsite_owner_mailVO.getSend_no();
+				Integer rcpt_no = campsite_owner_mailVO.getRcpt_no();
+				Integer mail_read_stat = 0;
+				Integer mail_stat = 0;
+				String mail_cont = campsite_owner_mailVO.getMail_cont();
+				String mail_time = campsite_owner_mailVO.getMail_time();
+				Member_mailVO member_mailVORcpt = new Member_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
+				member_mailDAO.insertWithCOwner(member_mailVORcpt, set,con);
+			}
+			
+			
+			con.commit();
+			con.setAutoCommit(true);
+			// Handle any SQL errors
+		}catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-campsite_owner_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
 	}
 }
