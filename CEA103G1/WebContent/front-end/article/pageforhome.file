@@ -4,7 +4,7 @@
     int pageNumber=0;     //總頁數      
     int whichPage=1;      //第幾頁
     int pageIndexArray[]=null;
-    int pageIndex=0; 
+    int pageIndex=0;
 %>
 
 <%  

@@ -111,7 +111,7 @@ clear: both;
 <br>
 <c:forEach var="articleVO" items="${articleVO}">
 <%-- <div class=released_articles><a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></div> --%>
-<div class=released_articles id="${articleVO.art_no}">${articleVO.art_title}<div class=released_articles_no style="display:none">${articleVO.art_no}</div></div>
+<div class=released_articles id="${articleVO.art_no}" data-toggle="modal" data-target="#exampleModal" data-whatever="${articleVO.art_no}">${articleVO.art_title}<div class=released_articles_no style="display:none">${articleVO.art_no}</div></div>
 	
 
 </c:forEach>
@@ -187,8 +187,7 @@ clear: both;
 
 
 
-		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
-			aria-labelledby="basicModal" aria-hidden="true">
+		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-body">
@@ -271,10 +270,6 @@ clear: both;
 		$("#basicModal").modal('show'); 
 		
     });
-    
-    $("#basicModal").on('hidden.bs.modal', function (e) {
-    	  document.querySelector("#basicModal").remove()
-    	})
     
 
 </script>

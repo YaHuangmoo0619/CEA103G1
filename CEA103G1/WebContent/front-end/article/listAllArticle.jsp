@@ -9,6 +9,7 @@
 <%
 	ArticleService articleSvc = new ArticleService();
 	List<ArticleVO> list = articleSvc.getAll_Front();
+	double max_page = Math.ceil(list.size()/5);
 	pageContext.setAttribute("list", list);
 %>
 
@@ -18,9 +19,6 @@
 	pageContext.setAttribute("bd_list", bd_list);
 %>
 
-<%
-	request.setAttribute("vEnter", "\n");
-%>
 
 <jsp:useBean id="bd_clSvc" scope="page"
 	class="com.board_class.model.Board_ClassService" />
@@ -414,10 +412,11 @@ ${articleVO.mbr_no}
 		<a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a>
 ${articleVO.likes}
 
+<%-- ${fn:replace(articleVO.art_cont,vEnter,"<br>")} --%>
 </div>
 		</c:forEach>
 
-	<%@ include file="page2.file"%>
+<%-- 	<%@ include file="page2.file"%> --%>
 
 
 
@@ -439,21 +438,23 @@ ${articleVO.likes}
 
 	</c:if>
 
+  	<!-- 捲軸狀態 -->
+  	<div class="scroller-status">
+  		<div class="infinite-scroll-request loader-ellips"></div>
+<!--   		<p class="infinite-scroll-last">開始加載</p> -->
+<!--   		<p class="infinite-scroll-error">沒有頁面可以讀取了</p> -->
+  	</div>
+
 </div>
 </div>
-
-<div class="pagination">
-    <a href="/CEA103G1/front-end/article/listAllArticle.jsp?whichPage=2" class="next">Next</a>
-</div>
-
-
 
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="https://unpkg.com/@webcreate/infinite-ajax-scroll@^3.0.0-beta.6/dist/infinite-ajax-scroll.min.js"></script>	
+	  <!-- Infinite Scroll v3.0.3 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.3/infinite-scroll.pkgd.min.js"></script>
 		
 		
 
@@ -497,6 +498,21 @@ ${articleVO.likes}
 			show : true
 		});
 	</script>
+	
+	  <script>
+  	var infScroll = new InfiniteScroll( ".scroll", {
+  		path: function() {
+  			// 頁面路徑
+  			if ( this.loadCount < <%=max_page%> ) {
+  				// 只讀取到最後一頁的資料
+  				var nextIndex = this.loadCount + 2; // 2
+  				return "http://localhost:8081/CEA103G1/front-end/article/listAllArticle.jsp?whichPage="+nextIndex;
+  			}
+  		},
+  		append: ".article", // 匯入物件類別
+  		status: ".scroller-status" // 捲軸狀態類別
+  	})
+  </script>
 
 </body>
 </html>
