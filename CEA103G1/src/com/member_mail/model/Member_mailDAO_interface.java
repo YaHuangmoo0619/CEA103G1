@@ -17,6 +17,8 @@ public interface Member_mailDAO_interface {
     public void insertWithSvc (Member_mailVO member_mailVO, Connection con);
     public void insertWithCOwner (Member_mailVO member_mailVO, Set<Campsite_owner_mail_pictureVO> set, Connection con);
     public void insertWithCOwner (Member_mailVO member_mailVO, Connection con);
+    public void insertWithMbr (Member_mailVO member_mailVO, Set<Member_mail_pictureVO> set, Connection con);
+    public void insertWithMbr (Member_mailVO member_mailVO, Connection con);
     public void update(Member_mailVO member_mailVO);
     public void delete(Integer mail_no);
     public Member_mailVO findByPrimaryKey(Integer mail_no);

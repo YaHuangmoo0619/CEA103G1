@@ -696,6 +696,113 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 	}
 	
 	@Override
+	public void insertWithMbr (Member_mailVO member_mailVO, Set<Member_mail_pictureVO> set, Connection con) {
+		PreparedStatement pstmt = null;
+		try {
+
+			String cols[] = {"mail_no"};
+			pstmt = con.prepareStatement(INSERT_STMT , cols);
+
+			pstmt.setInt(1, member_mailVO.getSend_no());
+			pstmt.setInt(2, member_mailVO.getRcpt_no());
+			pstmt.setInt(3, member_mailVO.getMail_read_stat());
+			pstmt.setInt(4, member_mailVO.getMail_stat());
+			pstmt.setString(5, member_mailVO.getMail_cont());
+			pstmt.setString(6, member_mailVO.getMail_time());
+
+			pstmt.executeUpdate();
+			
+			String next_mail_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+//			System.out.println("Res="+ rs);
+			if(rs.next()) {
+				next_mail_no = rs.getString(1);
+			}
+			rs.close();
+			
+			Set<Member_mail_pictureVO> setRcpt = new LinkedHashSet<Member_mail_pictureVO>();
+			for(Member_mail_pictureVO member_mail_pictureVO : set) {
+				Member_mail_pictureVO member_mail_pictureVORcpt = new Member_mail_pictureVO();
+				member_mail_pictureVORcpt.setMail_pic(member_mail_pictureVO.getMail_pic());
+				setRcpt.add(member_mail_pictureVORcpt);
+			}
+			
+			Member_mail_pictureDAO member_mail_pictureDAO = new Member_mail_pictureDAO();
+			for(Member_mail_pictureVO member_mail_pictureVO : setRcpt) {
+				member_mail_pictureVO.setMail_no(new Integer(next_mail_no));
+				member_mail_pictureDAO.insertWithMail(member_mail_pictureVO , con);
+			}
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-member_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void insertWithMbr (Member_mailVO member_mailVO, Connection con) {
+		PreparedStatement pstmt = null;
+		try {
+
+			pstmt = con.prepareStatement(INSERT_STMT);
+			
+
+			pstmt.setInt(1, member_mailVO.getSend_no());
+			pstmt.setInt(2, member_mailVO.getRcpt_no());
+			pstmt.setInt(3, member_mailVO.getMail_read_stat());
+			pstmt.setInt(4, member_mailVO.getMail_stat());
+			pstmt.setString(5, member_mailVO.getMail_cont());
+			pstmt.setString(6, member_mailVO.getMail_time());
+
+			pstmt.executeUpdate();
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-member_mail");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
 	public void insertWithPic(Member_mailVO member_mailVO, Set<Member_mail_pictureVO> set) {
 		System.out.println("member_mailDAO");
 		Connection con = null;
@@ -733,15 +840,28 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 				member_mail_pictureDAO.insertWithMail(member_mail_pictureVO , con);
 			}
 			
-			Service_mailDAO service_mailDAO = new Service_mailDAO();
-			Integer mbr_no = member_mailVO.getSend_no();
-			Integer emp_no = member_mailVO.getRcpt_no();
-			Integer mail_read_stat = 0;
-			Integer mail_stat = 0;
-			String mail_cont = member_mailVO.getMail_cont();
-			String mail_time = member_mailVO.getMail_time();
-			Service_mailVO service_mailVO = new Service_mailVO(emp_no, mbr_no, mail_cont, mail_stat, mail_read_stat, mail_time); 
-			service_mailDAO.insertWithMbr(service_mailVO, set, con);
+			if(member_mailVO.getRcpt_no().toString().substring(0,1).equals("9")) {
+				Service_mailDAO service_mailDAO = new Service_mailDAO();
+				Integer mbr_no = member_mailVO.getSend_no();
+				Integer emp_no = member_mailVO.getRcpt_no();
+				Integer mail_read_stat = 0;
+				Integer mail_stat = 0;
+				String mail_cont = member_mailVO.getMail_cont();
+				String mail_time = member_mailVO.getMail_time();
+				Service_mailVO service_mailVO = new Service_mailVO(emp_no, mbr_no, mail_cont, mail_stat, mail_read_stat, mail_time); 
+				service_mailDAO.insertWithMbr(service_mailVO, set, con);
+			}else if(member_mailVO.getRcpt_no().toString().substring(0,1).equals("1")) {
+				Member_mailDAO member_mailDAO = new Member_mailDAO();
+				Integer send_no = member_mailVO.getSend_no();
+				Integer rcpt_no = member_mailVO.getRcpt_no();
+				Integer mail_read_stat = 0;
+				Integer mail_stat = 0;
+				String mail_cont = member_mailVO.getMail_cont();
+				String mail_time = member_mailVO.getMail_time();
+				Member_mailVO member_mailVORcpt = new Member_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
+				member_mailDAO.insertWithMbr(member_mailVORcpt, set,con);
+			}
+			
 			
 			con.commit();
 			con.setAutoCommit(true);
