@@ -733,6 +733,16 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 				member_mail_pictureDAO.insertWithMail(member_mail_pictureVO , con);
 			}
 			
+			Service_mailDAO service_mailDAO = new Service_mailDAO();
+			Integer mbr_no = member_mailVO.getSend_no();
+			Integer emp_no = member_mailVO.getRcpt_no();
+			Integer mail_read_stat = 0;
+			Integer mail_stat = 0;
+			String mail_cont = member_mailVO.getMail_cont();
+			String mail_time = member_mailVO.getMail_time();
+			Service_mailVO service_mailVO = new Service_mailVO(emp_no, mbr_no, mail_cont, mail_stat, mail_read_stat, mail_time); 
+			service_mailDAO.insertWithMbr(service_mailVO, set, con);
+			
 			con.commit();
 			con.setAutoCommit(true);
 			// Handle any SQL errors

@@ -13,6 +13,7 @@ import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ import com.member_mail.model.Member_mailService;
 import com.member_mail.model.Member_mailVO;
 
 @WebServlet("/member_mail/member_mail.do")
+@MultipartConfig(fileSizeThreshold=1024*1024, maxFileSize=5*1024*1024, maxRequestSize=5*5*1024*1024)
 public class Member_mailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	String saveDirectory = "/images/member_mail_picture";
@@ -39,7 +41,7 @@ public class Member_mailServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		
+//		System.out.println("in");
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
@@ -84,11 +86,12 @@ public class Member_mailServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
-		
+		System.out.println(action);
 		if("insert".equals(action)){
 			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			try {
+//			System.out.println("in2");
+//			try {
 				
 				String send_noTest = req.getParameter("send_no");
 				if(send_noTest.equals("99")) {
@@ -125,7 +128,7 @@ public class Member_mailServlet extends HttpServlet {
 				
 				Collection<Part> parts = req.getParts();
 				System.out.println(parts.size());
-				if(parts.size() >= 8) {
+				if(parts.size() >= 7) {
 					for(Part part : parts) {
 //						System.out.println(part.getHeader("content-disposition"));
 //						System.out.println(part.getSubmittedFileName());
@@ -161,11 +164,11 @@ public class Member_mailServlet extends HttpServlet {
 				RequestDispatcher successView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");
 				successView.forward(req, res);
 				
-			}catch(Exception e) {
-				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/addMember_mail.jsp");
-				failureView.forward(req, res);
-			}
+//			}catch(Exception e) {
+//				errorMsgs.put("exception", new String[] {e.getMessage()});
+//				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/addMember_mail.jsp");
+//				failureView.forward(req, res);
+//			}
 		}
 		
 		if("getOne_For_Update".equals(action)) {
