@@ -177,7 +177,7 @@ System.out.println("營區名稱:" + camp_name);
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
 				req.setAttribute("campVO", campVO); // 含有輸入格式錯誤的campVO物件,也存入req
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite/addCamp.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite/addCamp.jsp");
 				failureView.forward(req, res);
 				return;
 			}
@@ -196,7 +196,7 @@ System.out.println("營區名稱:" + camp_name);
 					facility, operate_date, park, address, latitude, longitude, camp_featurelist, placelist, camp_picturelist);
 
 			/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
-			String forwardurl = "/back-end/campsite/listAllCamp.jsp";
+			String forwardurl = "/front-end/campsite/listAllCamp.jsp";
 			req.setAttribute("campVO", campVO);
 			RequestDispatcher successView = req.getRequestDispatcher(forwardurl); // 新增成功後轉交listAllEmp.jsp
 			successView.forward(req, res);
@@ -204,7 +204,7 @@ System.out.println("營區名稱:" + camp_name);
 			/*************************** 其他可能的錯誤處理 **********************************/
 		} catch (Exception e) {
 			errorMsgs.add(e.getMessage());
-			RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite/addCamp.jsp");
+			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite/addCamp.jsp");
 			failureView.forward(req, res);
 		}
 	}
