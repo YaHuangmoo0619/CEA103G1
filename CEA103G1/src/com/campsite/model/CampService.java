@@ -64,6 +64,16 @@ System.out.println("²Ä¤@¯¸");
 		dao.update(campVO);
 		return campVO;
 	}
+	public CampVO updateCamp2(Integer campsite_status, Integer review_status, Integer camp_no) {
+		
+		CampVO campVO = new CampVO();
+
+		campVO.setCamp_no(camp_no);
+		campVO.setCampsite_Status(campsite_status);
+		campVO.setReview_Status(review_status);
+		dao.update(campVO);
+		return campVO;
+	}
 
 	public void deleteCamp(Integer camp_no) {
 		dao.delete(camp_no);

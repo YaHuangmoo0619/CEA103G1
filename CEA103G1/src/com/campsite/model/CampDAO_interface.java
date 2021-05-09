@@ -19,4 +19,6 @@ public interface CampDAO_interface {
 	public List<CampVO> getAll();
 
 	public List<Integer> findByDist(Integer dist_no);
+
+	public void update2(CampVO campVO);
 }

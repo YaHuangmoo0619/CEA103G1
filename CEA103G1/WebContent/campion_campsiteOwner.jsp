@@ -133,11 +133,11 @@ div.backToTop{
 			<div class="left col-sm-3">
 				<ul>
 					<li><a
-						href="<%=request.getContextPath()%>/back-end/place_order/listAllPlace_order.jsp">預約訂單列表</a></li>
+						href="<%=request.getContextPath()%>/front-end/place_order/PresentPlace_order.jsp">預約訂單列表</a></li>
 					<li><a
-						href="<%=request.getContextPath()%>/back-end/campsite/listAllCamp.jsp">營區清單</a></li>
+						href="<%=request.getContextPath()%>/front-end/campsite/listAllCamp.jsp">營區清單</a></li>
 					<li><a
-						href="<%=request.getContextPath()%>/back-end/campsite/addCamp.jsp">新增營區申請</a></li>
+						href="<%=request.getContextPath()%>/front-end/campsite/addCamp.jsp">新增營區申請</a></li>
 					<li><a href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">站內信</a></li>
 					<li><a href="">修改營主資料</a></li>
 					<li><a href="">登出</a></li>
