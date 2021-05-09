@@ -1,10 +1,14 @@
 package com.campsite_owner_mail.model;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.campsite_owner_mail_picture.model.Campsite_owner_mail_pictureVO;
 import com.member_mail.model.Member_mailVO;
+import com.member_mail_picture.model.Member_mail_pictureVO;
+import com.service_mail_picture.model.Service_mail_pictureVO;
 
 public class Campsite_owner_mailService {
 	
@@ -70,5 +74,30 @@ public class Campsite_owner_mailService {
 	public Set<Campsite_owner_mailVO> getWhereCondition(Map<String,String[]> map){
 		return dao.getWhereCondition(map);
 	}
+	
+	public void insertWithPic(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time, Set<Campsite_owner_mail_pictureVO> set) {
+		
+		Campsite_owner_mailVO campsite_owner_mailVO = new Campsite_owner_mailVO();
+		
+		campsite_owner_mailVO.setSend_no(send_no);
+		campsite_owner_mailVO.setRcpt_no(rcpt_no);
+		campsite_owner_mailVO.setMail_read_stat(mail_read_stat);
+		campsite_owner_mailVO.setMail_stat(mail_stat);
+		campsite_owner_mailVO.setMail_cont(mail_cont);
+		campsite_owner_mailVO.setMail_time(mail_time);
 
+		dao.insertWithPic(campsite_owner_mailVO, set);
+	}
+//	public void insertWithSvc (Campsite_owner_mailVO campsite_owner_mailVO, Set<Service_mail_pictureVO> set, Connection con) {
+//		dao.insertWithSvc (campsite_owner_mailVO, set, con);
+//	}
+//    public void insertWithSvc (Campsite_owner_mailVO campsite_owner_mailVO, Connection con) {
+//    	dao.insertWithSvc (campsite_owner_mailVO, con);
+//    }
+//    public void insertWithMbr (Campsite_owner_mailVO campsite_owner_mailVO, Set<Member_mail_pictureVO> set, Connection con) {
+//    	dao.insertWithMbr (campsite_owner_mailVO, set, con);
+//    }
+//    public void insertWithMbr (Campsite_owner_mailVO campsite_owner_mailVO, Connection con) {
+//    	dao.insertWithMbr (campsite_owner_mailVO, con);
+//    }
 }

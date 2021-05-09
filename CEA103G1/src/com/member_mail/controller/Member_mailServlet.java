@@ -63,13 +63,13 @@ public class Member_mailServlet extends HttpServlet {
 				}
 				if("compositeSearchTop".equals(action) && map.get("mail_cont")[0].isEmpty()) {
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
-					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/listAllService_mail.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
 				if(checkCount == 8) {
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
-					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/listAllService_mail.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -82,16 +82,16 @@ public class Member_mailServlet extends HttpServlet {
 				
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/listAllService_mail.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/listAllMember_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}
-		System.out.println(action);
+//		System.out.println(action);
 		if("insert".equals(action)){
 			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
 			req.setAttribute("errorMsgs", errorMsgs);
 //			System.out.println("in2");
-//			try {
+			try {
 				
 				String send_noTest = req.getParameter("send_no");
 				if(send_noTest.equals("99")) {
@@ -127,7 +127,7 @@ public class Member_mailServlet extends HttpServlet {
 				}
 				
 				Collection<Part> parts = req.getParts();
-				System.out.println(parts.size());
+//				System.out.println(parts.size());
 				if(parts.size() >= 7) {
 					for(Part part : parts) {
 //						System.out.println(part.getHeader("content-disposition"));
@@ -164,11 +164,11 @@ public class Member_mailServlet extends HttpServlet {
 				RequestDispatcher successView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");
 				successView.forward(req, res);
 				
-//			}catch(Exception e) {
-//				errorMsgs.put("exception", new String[] {e.getMessage()});
-//				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/addMember_mail.jsp");
-//				failureView.forward(req, res);
-//			}
+			}catch(Exception e) {
+				errorMsgs.put("exception", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/addMember_mail.jsp");
+				failureView.forward(req, res);
+			}
 		}
 		
 		if("getOne_For_Update".equals(action)) {

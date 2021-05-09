@@ -18,6 +18,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.campsite_owner_mail.model.Campsite_owner_mailDAO;
+import com.campsite_owner_mail.model.Campsite_owner_mailVO;
 import com.campsite_owner_mail_picture.model.Campsite_owner_mail_pictureVO;
 import com.member_mail_picture.model.Member_mail_pictureDAO;
 import com.member_mail_picture.model.Member_mail_pictureVO;
@@ -74,15 +76,47 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 
 			pstmt.executeUpdate();
 
-			Service_mailDAO service_mailDAO = new Service_mailDAO();
-			Integer mbr_no = member_mailVO.getSend_no();
-			Integer emp_no = member_mailVO.getRcpt_no();
-			Integer mail_read_stat = 0;
-			Integer mail_stat = 0;
-			String mail_cont = member_mailVO.getMail_cont();
-			String mail_time = member_mailVO.getMail_time();
-			Service_mailVO service_mailVO = new Service_mailVO(emp_no, mbr_no, mail_cont, mail_stat, mail_read_stat, mail_time); 
-			service_mailDAO.insertWithMbr(service_mailVO, con);
+//			Service_mailDAO service_mailDAO = new Service_mailDAO();
+//			Integer mbr_no = member_mailVO.getSend_no();
+//			Integer emp_no = member_mailVO.getRcpt_no();
+//			Integer mail_read_stat = 0;
+//			Integer mail_stat = 0;
+//			String mail_cont = member_mailVO.getMail_cont();
+//			String mail_time = member_mailVO.getMail_time();
+//			Service_mailVO service_mailVO = new Service_mailVO(emp_no, mbr_no, mail_cont, mail_stat, mail_read_stat, mail_time); 
+//			service_mailDAO.insertWithMbr(service_mailVO, con);
+			
+			if(member_mailVO.getRcpt_no().toString().substring(0,1).equals("9")) {
+				Service_mailDAO service_mailDAO = new Service_mailDAO();
+				Integer mbr_no = member_mailVO.getSend_no();
+				Integer emp_no = member_mailVO.getRcpt_no();
+				Integer mail_read_stat = 0;
+				Integer mail_stat = 0;
+				String mail_cont = member_mailVO.getMail_cont();
+				String mail_time = member_mailVO.getMail_time();
+				Service_mailVO service_mailVO = new Service_mailVO(emp_no, mbr_no, mail_cont, mail_stat, mail_read_stat, mail_time); 
+				service_mailDAO.insertWithMbr(service_mailVO, con);
+			}else if(member_mailVO.getRcpt_no().toString().substring(0,1).equals("1")) {
+				Member_mailDAO member_mailDAO = new Member_mailDAO();
+				Integer send_no = member_mailVO.getSend_no();
+				Integer rcpt_no = member_mailVO.getRcpt_no();
+				Integer mail_read_stat = 0;
+				Integer mail_stat = 0;
+				String mail_cont = member_mailVO.getMail_cont();
+				String mail_time = member_mailVO.getMail_time();
+				Member_mailVO member_mailVORcpt = new Member_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
+				member_mailDAO.insertWithMbr(member_mailVORcpt,con);
+			}else if(member_mailVO.getRcpt_no().toString().substring(0,1).equals("7")) {
+				Campsite_owner_mailDAO campsite_owner_mailDAO = new Campsite_owner_mailDAO();
+				Integer send_no = member_mailVO.getSend_no();
+				Integer rcpt_no = member_mailVO.getRcpt_no();
+				Integer mail_read_stat = 0;
+				Integer mail_stat = 0;
+				String mail_cont = member_mailVO.getMail_cont();
+				String mail_time = member_mailVO.getMail_time();
+				Campsite_owner_mailVO campsite_owner_mailVO = new Campsite_owner_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
+				campsite_owner_mailDAO.insertWithMbr(campsite_owner_mailVO,con);
+			}
 			
 			con.commit();
 			con.setAutoCommit(true);
@@ -860,6 +894,16 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 				String mail_time = member_mailVO.getMail_time();
 				Member_mailVO member_mailVORcpt = new Member_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
 				member_mailDAO.insertWithMbr(member_mailVORcpt, set,con);
+			}else if(member_mailVO.getRcpt_no().toString().substring(0,1).equals("7")) {
+				Campsite_owner_mailDAO campsite_owner_mailDAO = new Campsite_owner_mailDAO();
+				Integer send_no = member_mailVO.getSend_no();
+				Integer rcpt_no = member_mailVO.getRcpt_no();
+				Integer mail_read_stat = 0;
+				Integer mail_stat = 0;
+				String mail_cont = member_mailVO.getMail_cont();
+				String mail_time = member_mailVO.getMail_time();
+				Campsite_owner_mailVO campsite_owner_mailVO = new Campsite_owner_mailVO(send_no, rcpt_no, mail_read_stat, mail_stat, mail_cont, mail_time); 
+				campsite_owner_mailDAO.insertWithMbr(campsite_owner_mailVO, set,con);
 			}
 			
 			
