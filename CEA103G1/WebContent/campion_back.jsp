@@ -1,6 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
+<%@ page import="com.employee.model.*" %>
+
+<!-- 測試登入狀態及畫面改變 -->
+<%
+EmployeeService employeeSvcLogin = new EmployeeService();
+EmployeeVO employeeVOLogin = employeeSvcLogin.getOneEmployee(90002);
+session.setAttribute("employeeVO",employeeVOLogin);
+%>
+
+<% EmployeeVO employeeVO = (EmployeeVO)session.getAttribute("employeeVO"); %>
+
 <!DOCTYPE html>
 <html lang="zh-tw">
 
@@ -61,8 +72,12 @@ img.logo {
 	max-height: 70px;
 }
 
-img.person {
-	max-width: 5%;
+div.login {
+	background-color: #80c344;
+	color: #4e5452;
+	margin-top:15%;
+	padding: 10px;
+	border-radius: 5px;
 }
 
 div.left {
@@ -114,22 +129,48 @@ p {
 	<div class="top">
 		<a href="<%=request.getContextPath()%>/campion_back.jsp"><img src="<%=request.getContextPath()%>/images/campionLogoLong.png"
 			class="logo"></a>
-		<img src="<%=request.getContextPath()%>/front-images/person-circle-outline.svg" class="person">
+		<c:if test="${employeeVO != null}">
+			<div style="margin-right:5px;"><a href="<%=request.getContextPath()%>/back-end/employee/listOneEmployee.jsp"><div class="login">${employeeVO.name}工作中</div></a></div>
+		</c:if>
+		<c:if test="${employeeVO == null}">
+			<div style="margin-right:5px;"><a href="<%=request.getContextPath()%>/front-end/login.html"><div class="login">登入</div></a></div>
+		</c:if>
 	</div>
-	<div class="content">
+	<div class="container">
 		<div class="row">
 			<div class="left col-3">
-				<ul>
-					<li><a
-						href="<%=request.getContextPath()%>/back-end/employee/select_page.jsp">員工管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/place_order/listAllPlace_order.jsp">營位訂購平台管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/announcement/select_page.jsp">公告管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">客服管理</a></li>
-					<li><a href="">即時小幫手管理</a></li>
-				</ul>
+				<c:if test="${employeeVO != null}">
+					<ul>
+						<jsp:useBean id="authoritySvc" class="com.authority.model.AuthorityService"/>
+						<c:forEach var="authorityVO" items="${authoritySvc.findByEmp_no(employeeVO.emp_no)}">
+						<c:if test="${authorityVO.fx_no == 1}">
+						<li><a href="<%=request.getContextPath()%>/back-end/employee/select_page.jsp">員工管理</a></li>
+						</c:if>
+						<c:if test="${authorityVO.fx_no == 3}">
+						<li><a href="<%=request.getContextPath() %>/back-end/place_order/listAllPlace_order.jsp">營位訂購平台管理</a></li>
+						</c:if>
+						<c:if test="${authorityVO.fx_no == 2}">
+						<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城管理</a></li>
+						</c:if>
+						<c:if test="${authorityVO.fx_no == 4}">
+						<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
+						</c:if>
+						<c:if test="${authorityVO.fx_no == 5}">
+						<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li>
+						</c:if>
+						<c:if test="${authorityVO.fx_no == 9}">
+						<li><a href="<%=request.getContextPath() %>/back-end/announcement/select_page.jsp">公告管理</a></li>
+						</c:if>
+						<c:if test="${authorityVO.fx_no == 6}">
+						<li><a href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">客服管理</a></li>
+						</c:if>
+						<c:if test="${authorityVO.fx_no == 7}">
+						<li><a href="">即時小幫手管理</a></li>
+						</c:if>
+						</c:forEach>
+					</ul>
+				</c:if>
+				<c:if test="${employeeVO == null}"><img style="max-width: 100%; margin-top: 30%;opacity:0.8;" src="<%=request.getContextPath()%>/images/campionLogoCircle.png"></c:if>
 			</div>
 			<div class="right col-9">
 				<div class="row">

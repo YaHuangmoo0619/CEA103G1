@@ -28,7 +28,7 @@
 			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu">
 			<c:if test="${memberVO != null}">
 				${memberVO.name}
-				<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
+				<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"><div class="person" style="display:inline;border-radius:50%;">${memberVO.sticker}</div> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
 			</c:if>
 		</div>
 	</div>
