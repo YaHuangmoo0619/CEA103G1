@@ -139,6 +139,7 @@ p {
 	<div class="container">
 		<div class="row">
 			<div class="left col-3">
+<<<<<<< HEAD
 				<c:if test="${employeeVO != null}">
 					<ul>
 						<jsp:useBean id="authoritySvc" class="com.authority.model.AuthorityService"/>
@@ -171,6 +172,19 @@ p {
 					</ul>
 				</c:if>
 				<c:if test="${employeeVO == null}"><img style="max-width: 100%; margin-top: 30%;opacity:0.8;" src="<%=request.getContextPath()%>/images/campionLogoCircle.png"></c:if>
+=======
+				<ul>
+					<li><a
+						href="<%=request.getContextPath()%>/back-end/employee/select_page.jsp">員工管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/place_order/PresentPlace_order.jsp">營位訂購平台管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/announcement/select_page.jsp">公告管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">客服管理</a></li>
+					<li><a href="">即時小幫手管理</a></li>
+				</ul>
+>>>>>>> 366c3466e30c80b55191fb07d09b7fa55a8ee222
 			</div>
 			<div class="right col-9">
 				<div class="row">
@@ -197,7 +211,7 @@ p {
 				<div class="row">
 					<div class="col">
 						<div class="countBox">
-							<h5>營位訂單</h5>
+							<a href="<%=request.getContextPath()%>/back-end/place_order/PresentPlace_order.jsp"><h5>營位訂單</h5></a>
 							<jsp:useBean id="place_orderSvc" class="com.place_order.model.Place_OrderService"/>
 							<p>累計共有${place_orderSvc.getAll().size()}筆</p>
 							<p>營位訂單</p>

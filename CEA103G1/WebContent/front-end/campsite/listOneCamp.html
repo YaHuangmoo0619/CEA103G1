@@ -384,7 +384,7 @@ td{
 		<FORM method="get" id="condition" onsubmit="return false"
 			accept-charset="big5">
 			<!-- 		縣市:<select id="county" name="county"></select> -->
-			縣市: <input type="text" name="c" id="c"> 入住日期: <input
+			縣市: <select name="c" id="c"><option value="不拘">不拘</option></select> 入住日期: <input
 				name="st" id="st" type="text"> 退房日期: <input
 				name="ed" id="ed" type="text"> 人數: <input
 				name="p" id="p" type="number"> <input
@@ -543,6 +543,21 @@ td{
 		 x[slideIndex-1].style.display = "block"; }
 	</script>
 	<script>
+		$.ajax({
+			type : "GET",
+			dataType : "json",
+			url : "http://localhost:8081/CEA103G1/district/district.do",
+			success : function(data) {
+				showDistrict(data);
+			}
+		});
+	
+		function showDistrict(data) {
+			for (i in data) {
+				var opt = $("<option>").val(data[i]).text(data[i]);
+				$("#c").append(opt);
+			}
+		}
 		const url = window.location.href;
 		const splitUrl = url.split('?');
 		const query = splitUrl[1];

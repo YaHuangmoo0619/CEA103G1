@@ -200,43 +200,31 @@ table {
 					</tr>
 				</table>
 				<br>
-				<c:if test="${place_orderVO.ckin_stat==0}">
+				<c:if test="${place_orderVO.ckin_stat==0 && place_orderVO.pay_stat==0}">
 					<div style="display: inline-block;">
 						<FORM METHOD="post"
 							ACTION="<%=request.getContextPath()%>/place_order/place_order.do">
-							<button class="not">
-								<c:out value="未出席" />
+							<button class="confirm">
+								<c:out value="確認收到訂金" />
 							</button>
-							<input type="hidden" name=action value="update"> <input
+							<input type="hidden" name=action value="updateFromBack"> <input
 								type="hidden" name="plc_ord_no"
 								value="${place_orderVO.plc_ord_no}"> <input
-								type="hidden" name="ckin_stat" value="1">
+								type="hidden" name="pay_stat" value="1">
 						</FORM>
 					</div>
 					<div style="display: inline-block;">
 						<FORM METHOD="post"
 							ACTION="<%=request.getContextPath()%>/place_order/place_order.do">
 							<button class="confirm">
-								<c:out value="CKECK IN" />
+								<c:out value="確認收到全額" />
 							</button>
-							<input type="hidden" name=action value="update"> <input
+							<input type="hidden" name=action value="updateFromBack"> <input
 								type="hidden" name="plc_ord_no"
 								value="${place_orderVO.plc_ord_no}"> <input
-								type="hidden" name="ckin_stat" value="2">
+								type="hidden" name="pay_stat" value="2">
 						</FORM>
 					</div>
-				</c:if>
-				<c:if test="${place_orderVO.ckin_stat==2}">
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/place_order/place_order.do">
-						<button class="confirm">
-							<c:out value="CKECK OUT" />
-						</button>
-						<input type="hidden" name=action value="update"> <input
-							type="hidden" name="plc_ord_no"
-							value="${place_orderVO.plc_ord_no}"> <input type="hidden"
-							name="ckin_stat" value="3">
-					</FORM>
 				</c:if>
 			</div>
 		</div>

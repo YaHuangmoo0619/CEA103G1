@@ -194,16 +194,7 @@ span {
 					</div>
 					<br>
 					<button type="button" onclick="showModal1()">穝糤犁</button>
-					<table id="container">
-						<tr>
-							<th>犁嘿</th>
-							<th>计秖</th>
-							<th>计</th>
-							<th>计</th>
-							<th>キら基</th>
-							<th>安ら基</th>
-						</tr>
-					</table>
+					<div id="container" disabled="disabled"></div>
 						<input id="plc_amt" type="hidden" name="plc_amt">
 					<!-- 					<button id="plc" type="button"> -->
 					<!-- 						<ion-icon name="add-circle" size="large"></ion-icon> -->
@@ -233,24 +224,26 @@ span {
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<table id="camp_plc">
-						<tr id="title">
-							<th>犁嘿</th>
-							<th>计秖</th>
-							<th>计</th>
-							<th>计</th>
-							<th>キら基</th>
-							<th>安ら基</th>
-						</tr>
-						<tr>
-							<td><input type="text"></td>
-							<td><input type="number" pattern="number"></td>
-							<td><input type="number" pattern="number"></td>
-							<td><input type="number" pattern="number"></td>
-							<td><input type="number" pattern="number"></td>
-							<td><input type="number" pattern="number"></td>
-						</tr>
-					</table>
+					<div id="edit">
+						<table id="camp_plc">
+							<tr id="title">
+								<th>犁嘿</th>
+								<th>计秖</th>
+								<th>计</th>
+								<th>计</th>
+								<th>キら基</th>
+								<th>安ら基</th>
+							</tr>
+							<tr>
+								<td><input type="text"></td>
+								<td><input type="number" pattern="number"></td>
+								<td><input type="number" pattern="number"></td>
+								<td><input type="number" pattern="number"></td>
+								<td><input type="number" pattern="number"></td>
+								<td><input type="number" pattern="number"></td>
+							</tr>
+						</table>
+					</div>
 					<button id="plc" type="button">
 						<ion-icon name="add-circle" size="large"></ion-icon>
 					</button>
@@ -265,14 +258,51 @@ span {
 	<script>
 		$("#done").click(function() {
 			let index = 0;
-			$("#title").nextAll().each(function(i, dom) {
-				$(dom).find('input').attr("name", "plc" + index);
-				index++;
-			});
-			$("#plc_amt").val(index - 1);
+			if($("#title").nextAll().length === 1){
+				let flag = true;
+				$("#title").nextAll().find('input').each(function() {
+					if($(this).val() === ""){
+						flag = false;
+					}			
+				});
+				if(flag === false){
+					$("#title").nextAll().find('input').val("");
+				}else{
+					if(!($("#title").nextAll().length === 0)){
+						$("#title").nextAll().each(function(i, dom) {
+							$(dom).find('input').attr("name", "plc" + index);
+							index++;
+						});
+						$("#plc_amt").val(index - 1);
+						$("#container").append($('#edit').children());
+						$("#container").find('input').attr("disabled",true);
+					}
+				}
+			}else{
+				$("#title").nextAll().find('input').each(function() {
+					if($(this).val() === ""){
+						$(this).parent().parent().remove();
+					}
+				});
+				$("#title").nextAll().each(function(i, dom) {
+					$(dom).find('input').attr("name", "plc" + index);
+					index++;
+				});
+				$("#plc_amt").val(index - 1);
+				$("#container").append($('#edit').children());
+				$("#container").find('input').attr("disabled",true);
+			}
 		});
 		$("#plc").click(function() {
-			let index = 0;
+			let flag = true;
+			$("#title").nextAll().find('input').each(function() {
+				if($(this).val() === ""){
+					flag = false;
+				}
+			});
+			if(flag === false){
+				return false;				
+			}
 			$("#title").next().clone().find('input').val("").end().appendTo("#camp_plc");
 		});
 
@@ -307,6 +337,8 @@ span {
 			}
 		}
 		function showModal1() {
+			$("#edit").append($("#container").children());
+			$("#edit").find('input').attr("disabled",false);
 			$('#test1').modal('show');
 		}
 	</script>

@@ -205,6 +205,18 @@ table {
 						<FORM METHOD="post"
 							ACTION="<%=request.getContextPath()%>/place_order/place_order.do">
 							<button class="not">
+								<c:out value="取消訂單" />
+							</button>
+							<input type="hidden" name=action value="update"> <input
+								type="hidden" name="plc_ord_no"
+								value="${place_orderVO.plc_ord_no}"> <input
+								type="hidden" name="ckin_stat" value="4">
+						</FORM>
+					</div>
+					<div style="display: inline-block;">
+						<FORM METHOD="post"
+							ACTION="<%=request.getContextPath()%>/place_order/place_order.do">
+							<button class="not">
 								<c:out value="未出席" />
 							</button>
 							<input type="hidden" name=action value="update"> <input

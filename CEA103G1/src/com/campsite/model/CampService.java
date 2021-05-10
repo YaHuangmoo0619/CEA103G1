@@ -71,7 +71,7 @@ System.out.println("²Ä¤@¯¸");
 		campVO.setCamp_no(camp_no);
 		campVO.setCampsite_Status(campsite_status);
 		campVO.setReview_Status(review_status);
-		dao.update(campVO);
+		dao.update2(campVO);
 		return campVO;
 	}
 
