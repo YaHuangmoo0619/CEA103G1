@@ -23,7 +23,7 @@ session.setAttribute("campsite_ownerVO",campsite_ownerVOLogin);
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" ></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<title>所有營主站內信列表</title>
+<title>營主寄件備份</title>
 <%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -168,9 +168,9 @@ tr:hover {
 		<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
 		<div class="right col-9">
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>營主站內信列表</h3>
-			<a href="<%=request.getContextPath()%>/back-end/campsite_owner_mail/addCampsite_owner_mail.jsp">寄信</a>
-			<a href="<%=request.getContextPath()%>/back-end/campsite_owner_mail/listAllCampsite_owner_mail_send.jsp">寄件備份</a>
+			<h3>營主寄件備份</h3>
+			<a href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/addCampsite_owner_mail.jsp">寄信</a>
+			<a href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">回到營主站內信列表</a>
 			<hr>
 			<div class="forSearch" id="forSearch">
 					<ul>
@@ -269,7 +269,7 @@ tr:hover {
 <!-- 				</tr> -->
 <%-- 				<jsp:useBean id="campsite_owner_mailSvc" class="com.campsite_owner_mail.model.Campsite_owner_mailService"/> --%>
 				<c:forEach var="campsite_owner_mailVO" items="${campsite_owner_mailSvc.all}">
-					<c:if test="${campsite_ownerVO.cso_no == campsite_owner_mailVO.rcpt_no}">
+					<c:if test="${campsite_ownerVO.cso_no == campsite_owner_mailVO.send_no}">
 					<tr>
 <%-- 						<c:if --%>
 <%-- 							test="${campsite_owner_mailVO.mail_no==param.mail_no}"> --%>

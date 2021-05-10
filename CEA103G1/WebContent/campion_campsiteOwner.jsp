@@ -142,7 +142,7 @@ div.backToTop{
 			</c:if>
 		</div>
 	</div>
-	<div class="content">
+	<div class="container">
 		<div class="row">
 			<div class="left col-sm-3">
 				<ul>
@@ -154,7 +154,7 @@ div.backToTop{
 						href="<%=request.getContextPath()%>/front-end/campsite/addCamp.jsp">新增營區申請</a></li>
 					<li><a href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">站內信</a></li>
 					<li><a href="">修改營主資料</a></li>
-					<li><a href="">登出</a></li>
+					<li><a href="<%=request.getContextPath()%>/campion_front.jsp">登出</a></li>
 				</ul>
 			</div>
 			<div class="right col-sm-9">

@@ -1,11 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*" %>
-<%@ page import="com.member_mail.model.*" %>
-<%@ page import="com.member.model.*" %>
+<%@ page import="com.campsite_owner_mail.model.*" %>
 
-<% Member_mailVO member_mailVO = (Member_mailVO)request.getAttribute("member_mailVO"); %>
-<% MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
+<% Campsite_owner_mailVO campsite_owner_mailVO = (Campsite_owner_mailVO)request.getAttribute("campsite_owner_mailVO"); %>
 
 <!DOCTYPE html>
 <html>
@@ -16,8 +14,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <title>信件內容</title>
-<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
-<%-- <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%> --%>
+<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
 body{
@@ -95,44 +93,44 @@ img.info{
 
 </head>
 <body>
-<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
 	<div class="row">
-<!-- 		<div class= "left col-3"> -->
-<%-- 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div> --%>
-		<div class="right col">
-			<h2>信件內容&nbsp;<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/listAllMember_mail.jsp">回會員站內信列表</a></h2>
+		<div class= "left col-3">
+		<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
+		<div class="right col-9">
+			<h2>信件內容&nbsp;<a class="content" href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">回營主站內信列表</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<div class="mail">
 			
-			<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService"/>
-			<jsp:useBean id="member_mail_pictureSvc" class="com.member_mail_picture.model.Member_mail_pictureService"/>
+			<jsp:useBean id="campsite_owner_mailSvc" class="com.campsite_owner_mail.model.Campsite_owner_mailService"/>
+			<jsp:useBean id="campsite_owner_mail_pictureSvc" class="com.campsite_owner_mail_picture.model.Campsite_owner_mail_pictureService"/>
 			<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 			<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
 			
-				<p>寄件人：&nbsp;${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</p>
+				<p>寄件人：&nbsp;${campsite_owner_mailVO.send_no}${employeeSvc.getOneEmployee(campsite_owner_mailVO.send_no).name}${memberSvc.getOneMember(campsite_owner_mailVO.send_no).name}</p>
 					
-				<p>收件人：&nbsp;${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</p>
+				<p>收件人：&nbsp;${campsite_owner_mailVO.rcpt_no}${memberSvc.getOneMember(campsite_owner_mailVO.rcpt_no).name}</p>
 					
 				<p>內容：</p>
-				<p>${member_mailVO.mail_cont.trim()}</p>
+				<p>${campsite_owner_mailVO.mail_cont.trim()}</p>
 
-				<p>${member_mail_pictureSvc.getByMail_no(member_mailVO.mail_no).size()!=0?'附件照片：':''}</p>
+				<p>${campsite_owner_mail_pictureSvc.getByMail_no(campsite_owner_mailVO.mail_no).size()!=0?'附件照片：':''}</p>
 				<p>
-				<c:forEach var="member_mail_pictureVO" items="${member_mail_pictureSvc.getByMail_no(member_mailVO.mail_no)}">
-					<img class="info" src="${member_mail_pictureVO.mail_pic}">
+				<c:forEach var="campsite_owner_mail_pictureVO" items="${campsite_owner_mail_pictureSvc.getByMail_no(campsite_owner_mailVO.mail_no)}">
+					<img class="info" src="${campsite_owner_mail_pictureVO.mail_pic}">
 				</c:forEach>
 				</p>
 				<hr>
-				<p style="font-size:0.5em">發信時間：&nbsp;${member_mailVO.mail_time}</p>
+				<p style="font-size:0.5em">發信時間：&nbsp;${campsite_owner_mailVO.mail_time}</p>
 						
 			</div>
-			<form method="post" action="<%=request.getContextPath()%>/back-end/member_mail/addMember_mail.jsp">		
-					<input type="hidden" name="mail_no" value="${member_mailVO.mail_no}">
-					<input type="hidden" name="send_no" value="${member_mailVO.send_no}">
-					<input type="hidden" name="rcpt_no" value="${member_mailVO.rcpt_no}">
+			<form method="post" action="<%=request.getContextPath()%>/front-end/campsite_owner_mail/addCampsite_owner_mail.jsp">		
+					<input type="hidden" name="mail_no" value="${campsite_owner_mailVO.mail_no}">
+					<input type="hidden" name="send_no" value="${campsite_owner_mailVO.send_no}">
+					<input type="hidden" name="rcpt_no" value="${campsite_owner_mailVO.rcpt_no}">
 					<input type="submit" value="回覆" class="confirm">
 			</form>
 			

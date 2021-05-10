@@ -5,9 +5,9 @@
 
 <!-- 測試登入狀態及畫面改變 -->
 <%
-MemberService memberSvc = new MemberService();
-MemberVO memberVOLogin = memberSvc.getOneMember(10010);
-session.setAttribute("memberVO",memberVOLogin);
+// MemberService memberSvc = new MemberService();
+// MemberVO memberVOLogin = memberSvc.getOneMember(10010);
+// session.setAttribute("memberVO",memberVOLogin);
 %>
 
 <% MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
@@ -399,12 +399,13 @@ section.footer {
 		<div>
 <%-- 			 <img src="<%=request.getContextPath() %>/front-images/search-circle-outline.svg" id="searchIcon" class="searchIcon"> --%>
 			<div class="btn-group" role="group" aria-label="Basic example">
-				<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">營區</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">露營</button></a>
 				<a class="button" href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
 				<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 			</div>
 			<img src="<%=request.getContextPath() %>/front-images/cart-outline.svg" class="cart">
 			<a href="<%=request.getContextPath() %>/front-end/announcement/listAllAnnouncement.jsp"><img src="<%=request.getContextPath() %>/front-images/megaphone-outline.svg" class="announcement"></a>
+			<c:if test="${memberVO == null}">
 			<div class="btn-group" role="group" aria-label="Basic example">
 				<a class="button" href="<%=request.getContextPath() %>/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
 				<a class="button" href="<%=request.getContextPath() %>/front-end/member/register.jsp"><button type="button" class="btn btn-outline-secondary">註冊</button></a>
@@ -412,8 +413,10 @@ section.footer {
 <!-- 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">FAQ</button></a> -->
 <!-- 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 			</div>
+			</c:if>
 			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu">
 			<c:if test="${memberVO != null}">
+			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp"><img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement"></a>
 				${memberVO.name}
 			<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"><div class="person" style="display:inline;border-radius:50%;">${memberVO.sticker}</div> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
 			</c:if>
@@ -429,10 +432,11 @@ section.footer {
 	</div>
 	<div class="menuForButton">
 		<div class="btn-group sec" role="group" aria-label="Basic example">
-			<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">營區</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">露營</button></a>
 			<a class="button" href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
 			<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 		</div>
+		<c:if test="${memberVO == null}">
 		<div class="btn-group sec" role="group" aria-label="Basic example">
 			<a class="button" href="<%=request.getContextPath() %>/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
 			<a class="button" href="<%=request.getContextPath() %>/front-end/member/register.jsp"><button type="button" class="btn btn-outline-secondary">註冊</button></a>
@@ -440,6 +444,7 @@ section.footer {
 <!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">FAQ</button></a> -->
 <!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 		</div>
+		</c:if>
 	</div>
 	<div class="backToTop">
 		<a href="#"><img src="<%=request.getContextPath() %>/front-images/arrow-up-circle-outline.svg"

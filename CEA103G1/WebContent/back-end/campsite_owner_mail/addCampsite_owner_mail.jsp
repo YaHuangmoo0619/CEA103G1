@@ -14,8 +14,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <title>新增營主站內信</title>
-<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
 body{
@@ -103,12 +103,12 @@ img{
 </style>
 </head>
 <body>
-<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
 	<div class="row">
 		<div class= "left col-3">
-		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
+		<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
 		<div class="right col-9">
 			<h2>新增營主站內信&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">回營主站內信列表</a></h2>
 			<hr>

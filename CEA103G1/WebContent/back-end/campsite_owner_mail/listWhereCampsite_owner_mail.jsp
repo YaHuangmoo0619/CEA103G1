@@ -12,8 +12,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 <title>營主站內信搜尋結果</title>
-<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
 body{
@@ -72,12 +72,12 @@ input.change:hover{
 
 </head>
 <body>
-<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
 	<div class="row">
 		<div class= "left col-3">
-		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
+		<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
 		<div class="right col-9">
 			<h2>營主站內信搜尋結果&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/campsite_owner_mail/select_page.jsp">回首頁</a></h2>
 			<hr>

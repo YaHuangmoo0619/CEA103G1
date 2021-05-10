@@ -3,18 +3,21 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.member_mail.model.*" %>
+<%@ page import="com.member.model.*" %>
+
+<% MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
 <title>所有會員站內信列表</title>
-<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
@@ -60,13 +63,13 @@ input.confirm:hover {
 	cursor: pointer;
 }
 
-div.forSearch{
+div.forSearchs{
 	margin: 0 auto;
 	width: 70%;
 	hieght: 50px;
 	position: relative;
 }
-div.forSearchMore{
+div.forSearchsMore{
 	top: 110%;
 	left: 15%;
 	width: 70%;
@@ -150,18 +153,19 @@ tr:hover {
 
 </head>
 <body>
-<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
 	<div class="row">
-		<div class= "left col-3">
-		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
-		<div class="right col-9">
+<!-- 		<div class= "left col-3"> -->
+<%-- 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div> --%>
+		<div class="right col">
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>會員站內信列表</h3><a href="<%=request.getContextPath()%>/back-end/member_mail/addMember_mail.jsp">寄信</a>
+			<h3>會員站內信列表</h3>
+			<a href="<%=request.getContextPath()%>/front-end/member_mail/addMember_mail.jsp">寄信</a>
+			<a href="<%=request.getContextPath()%>/front-end/member_mail/listAllMember_mail_send.jsp">寄件備份</a>
 			<hr>
-			${errorMsgs.Exception}
-			<div class="forSearch" id="forSearch">
+			<div class="forSearchs" id="forSearchs">
 					<ul>
 						<li>
 							<form method="post"	action="<%=request.getContextPath()%>/member_mail/member_mail.do">
@@ -172,7 +176,7 @@ tr:hover {
 							</form>
 					</li>
 					</ul>
-					<div class="forSearch forSearchMore" id="forSearchMore">
+					<div class="forSearchs forSearchsMore" id="forSearchsMore">
 					<ul>
 						<li>
 							<form method="post"	action="<%=request.getContextPath()%>/member_mail/member_mail.do">
@@ -239,20 +243,21 @@ tr:hover {
 					<div style="width: 150px;display:inline-block;">信件日期</div>
 				</div>
 			<table>
-				<tr>
-					<th style="width:50px">編號</th>
-					<th style="width:50px">寄件人</th>
-					<th style="width:50px">收件人</th>
-					<th style="width:200px">內容</th>
-					<th style="width:50px">信件狀態</th>
-					<th style="width:100px">信件閱讀狀態</th>
-					<th style="width:100px">發信時間</th>
+<!-- 				<tr> -->
+<!-- 					<th style="width:50px">編號</th> -->
+<!-- 					<th style="width:50px">寄件人</th> -->
+<!-- 					<th style="width:50px">收件人</th> -->
+<!-- 					<th style="width:200px">內容</th> -->
+<!-- 					<th style="width:50px">信件狀態</th> -->
+<!-- 					<th style="width:100px">信件閱讀狀態</th> -->
+<!-- 					<th style="width:100px">發信時間</th> -->
 <!-- 					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a -->
 <!-- 						id="first" style="text-decoration: none;"></a></th> -->
-				</tr>
+<!-- 				</tr> -->
 <%-- 				<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService"/> --%>
 				<c:forEach var="member_mailVO" items="${member_mailSvc.all}">
 <%-- 					<tr ${member_mailVO.mail_no == param.mail_no ? 'bgcolor=#eee':''}> --%>
+					<c:if test="${memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 0}">
 					<tr>
 <%-- 						<c:if test="${member_mailVO.mail_no==param.mail_no}"> --%>
 <%-- 							<td>${member_mailVO.mail_no}<a id="focus"></a></td> --%>
@@ -281,6 +286,7 @@ tr:hover {
 <!-- 							</form> -->
 <!-- 						</td> -->
 					</tr>
+					</c:if>
 				</c:forEach>
 			</table>
 		</div>
@@ -306,13 +312,13 @@ tr:hover {
 	$("span").click(function(e){
 		countSearch++;
 		if (countSearch % 2 == 1) {
-			$("#forSearchMore")[0].style.display="inline";
+			$("#forSearchsMore")[0].style.display="inline";
 			$("#confirmTop")[0].setAttribute("disabled","");
 			$("#confirmTop")[0].style.backgroundColor="#4B7F52";
 			$("#confirmTop")[0].style.color="#80c344";
 			$("#confirmTop")[0].style.cursor="context-menu";
 		} else {
-			$("#forSearchMore")[0].style.display="none";
+			$("#forSearchsMore")[0].style.display="none";
 			$("#confirmTop")[0].removeAttribute("disabled");
 			$("#confirmTop")[0].style.backgroundColor="#80c344";
 			$("#confirmTop")[0].style.color="#4e5452";
