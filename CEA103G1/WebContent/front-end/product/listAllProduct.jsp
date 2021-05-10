@@ -14,9 +14,11 @@
 
 <head>
 <title>所有商品 </title>
+
 <%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
+
 <style>
   table#table-1 {
 	background-color: #CCCCFF;
@@ -52,6 +54,32 @@
 
 </head>
 <body bgcolor='white'>
+
+<!-- <div style="background-color: #eee;">
+	<img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
+	<form class="form-inline my-2 my-lg-0">
+		<input class="form-control mr-sm-2" type="search"
+			placeholder="營位/商品/文章" aria-label="Search">
+		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
+	</form>
+	<img src="/CEA103G1/front-images/search-circle-outline.svg"
+		class="searchIcon" onclick="showSearch()">
+	<div class="btn-group" role="group" aria-label="Basic example">
+		<button type="button" class="btn btn-secondary">營區</button>
+		<button type="button" class="btn btn-secondary">商城</button>
+		<button type="button" class="btn btn-secondary">論壇</button>
+	</div>
+	<img src="/CEA103G1/front-images/cart-outline.svg" class="cart">
+	<div class="btn-group" role="group" aria-label="Basic example">
+		<button type="button" class="btn btn-outline-secondary">註冊</button>
+		<button type="button" class="btn btn-outline-secondary">登入</button>
+		<button type="button" class="btn btn-outline-secondary">FAQ</button>
+		<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
+	</div>
+	<img src="/CEA103G1/front-images/menu-outline.svg" class="menu"
+		onclick="showMenu()"> <img
+		src="/CEA103G1/front-images/person-circle-outline.svg" class="person">
+</div> -->
 
 <table id="table-1">
 	<tr><td>

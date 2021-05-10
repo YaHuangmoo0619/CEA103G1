@@ -11,6 +11,10 @@
 <head>
 <title>商品訂單 - listOneProduct_order.jsp</title>
 
+<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
+
 <style>
   table#table-1 {
 	background-color: #CCCCFF;
@@ -127,6 +131,11 @@
 			</c:if>
 			</td>
 			<td>${product_orderVO.rmk}</td>
+			<td>
+			<!-- <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">  -->
+			     <input type="submit" value="下訂">
+			     <input type="hidden" name="prod_ord_no"  value="${product_orderVO.prod_ord_no}">
+			</td>
 	</tr>
 </table>
 
