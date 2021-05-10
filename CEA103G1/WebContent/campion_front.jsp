@@ -5,9 +5,9 @@
 
 <!-- 測試登入狀態及畫面改變 -->
 <%
-// MemberService memberSvc = new MemberService();
-// MemberVO memberVOLogin = memberSvc.getOneMember(10010);
-// session.setAttribute("memberVO",memberVOLogin);
+MemberService memberSvc = new MemberService();
+MemberVO memberVOLogin = memberSvc.getOneMember(10010);
+session.setAttribute("memberVO",memberVOLogin);
 %>
 
 <% MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
