@@ -11,6 +11,10 @@
 <head>
 <title>°Ó«~ - listOneProduct.jsp</title>
 
+<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
+
 <style>
   table#table-1 {
 	background-color: #CCCCFF;
