@@ -641,7 +641,7 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 			
 			String next_mail_no = null;
 			ResultSet rs = pstmt.getGeneratedKeys();
-//			System.out.println("Res="+ rs);
+			System.out.println("Res="+ rs);
 			if(rs.next()) {
 				next_mail_no = rs.getString(1);
 			}
