@@ -28,9 +28,9 @@
 <head>
 <meta charset="BIG5">
 <link rel="stylesheet" type="text/css" href="/CEA103G1/profile.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 <style>
 .profile-stat-count{
     display: inline-block;
@@ -72,6 +72,7 @@ clear: both;
 }
 </style>
 <title>Profile</title>
+
 </head>
 <body>
 
@@ -109,12 +110,13 @@ clear: both;
 <div>發過的文章清單</div>
 <br>
 <br>
+
+<div class="posted_arts">
 <c:forEach var="articleVO" items="${articleVO}">
 <%-- <div class=released_articles><a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></div> --%>
-<div class=released_articles id="${articleVO.art_no}" data-toggle="modal" data-target="#exampleModal" data-whatever="${articleVO.art_no}">${articleVO.art_title}<div class=released_articles_no style="display:none">${articleVO.art_no}</div></div>
-	
-
+<div class=released_articles id="${articleVO.art_no}" data-toggle="modal" data-target="#basicModal">${articleVO.art_title}<div class=released_articles_no style="display:none">${articleVO.art_no}</div></div>	
 </c:forEach>
+</div>
 
 <br>
 <br>

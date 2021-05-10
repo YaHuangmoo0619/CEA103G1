@@ -3,35 +3,39 @@ package com.article.controller;
 import java.io.*;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.Map.Entry;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+
+import org.json.JSONObject;
 
 import com.article.model.ArticleDAO;
 import com.article.model.ArticleService;
 import com.article.model.ArticleVO;
 
 import redis.clients.jedis.Jedis;
-
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
 
 @WebServlet("/article/article.do")
 public class ArticleServlet extends HttpServlet {
 
-	public void doGet(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
 
-	public void doPost(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		req.setCharacterEncoding("UTF-8");
 
 		String action = req.getParameter("action");
 		
-		
-		if ("getOne_For_Display".equals(action)) { // ¨Ó¦Ûselect_page.jspªº½Ğ¨D
+		HttpSession session =  req.getSession();
+		session.getAttribute("memberVO");
+
+		if ("getOne_For_Display".equals(action)) { // ä¾†è‡ªselect_page.jspçš„è«‹æ±‚
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -40,153 +44,134 @@ public class ArticleServlet extends HttpServlet {
 
 			try {
 
-				
-				
-				/***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ - ¿é¤J®æ¦¡ªº¿ù»~³B²z**********************/
+				/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ - è¼¸å…¥æ ¼å¼çš„éŒ¯èª¤è™•ç† **********************/
 				String str2 = req.getParameter("art_no");
 				if (str2 == null || (str2.trim()).length() == 0) {
-					errorMsgs.add("½Ğ¿é¤J¤å³¹½s¸¹");
+					errorMsgs.add("è«‹è¼¸å…¥æ–‡ç« ç·¨è™Ÿ");
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/article/select_page.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/article/select_page.jsp");
 					failureView.forward(req, res);
-					return;//µ{¦¡¤¤Â_
+					return;// ç¨‹å¼ä¸­æ–·
 				}
-				
+
 				Integer art_no = null;
 				try {
 					art_no = new Integer(str2);
 				} catch (Exception e) {
-					errorMsgs.add("¤å³¹½s¸¹®æ¦¡¤£¥¿½T");
+					errorMsgs.add("æ–‡ç« ç·¨è™Ÿæ ¼å¼ä¸æ­£ç¢º");
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/article/select_page.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/article/select_page.jsp");
 					failureView.forward(req, res);
-					return;//µ{¦¡¤¤Â_
+					return;// ç¨‹å¼ä¸­æ–·
 				}
-				
-				/***************************2.¶}©l¬d¸ßSQL¸ê®Æ*****************************************/
+
+				/***************************
+				 * 2.é–‹å§‹æŸ¥è©¢SQLè³‡æ–™
+				 *****************************************/
 				ArticleService articleSvc = new ArticleService();
 				ArticleVO articleVO = articleSvc.getOneArticle(art_no);
 				if (articleVO == null) {
-					errorMsgs.add("¬dµL¸ê®Æ");
+					errorMsgs.add("æŸ¥ç„¡è³‡æ–™");
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/article/select_page.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/article/select_page.jsp");
 					failureView.forward(req, res);
-					return;//µ{¦¡¤¤Â_
+					return;// ç¨‹å¼ä¸­æ–·
 				}
-				
 
-
-				
-				/***************************3.¬d¸ß§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view)*************/
-				req.setAttribute("articleVO", articleVO); // ¸ê®Æ®w¨ú¥XªºarticleVOª«¥ó,¦s¤Jreq
+				/*************************** 3.æŸ¥è©¢å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) *************/
+				req.setAttribute("articleVO", articleVO); // è³‡æ–™åº«å–å‡ºçš„articleVOç‰©ä»¶,å­˜å…¥req
 				String url = "/back-end/article/listOneArticle.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // ¦¨¥\Âà¥æ listOneArticle.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); // æˆåŠŸè½‰äº¤ listOneArticle.jsp
 				successView.forward(req, res);
 
-				/***************************¨ä¥L¥i¯àªº¿ù»~³B²z*************************************/
+				/*************************** å…¶ä»–å¯èƒ½çš„éŒ¯èª¤è™•ç† *************************************/
 			} catch (Exception e) {
-				errorMsgs.add("µLªk¨ú±o¸ê®Æ:" + e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/article/select_page.jsp");
+				errorMsgs.add("ç„¡æ³•å–å¾—è³‡æ–™:" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/article/select_page.jsp");
 				failureView.forward(req, res);
 			}
 		}
-		
-		
-		
-		
-		
-		
-		if ("getOneArticle_ByBoard_Clss_For_Display".equals(action)) { // ¨Ó¦Ûfront-end listAllArticle.jspªº½Ğ¨D  
 
-				/***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ - ¿é¤J®æ¦¡ªº¿ù»~³B²z**********************/
-				String str = req.getParameter("bd_cl_no"); //¤£¥Î¿ù»~ÅçÃÒ ¦]¬°¬Oª½±µ¸õÂà ¤£¬O¥Ñ¨Ï¥ÎªÌ¿é¤J
-				Integer bd_cl_no = new Integer(str);
-				System.out.println(bd_cl_no);
-				
-				/***************************2.¶}©l¬d¸ß¸ê®Æ*****************************************/
-				ArticleService articleSvc = new ArticleService();
-				List<ArticleVO> articleVO = articleSvc.getByBoard_Class_Front(bd_cl_no);
-				
-				/***************************3.¬d¸ß§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view)*************/
-				req.setAttribute("articleVO", articleVO); // ¸ê®Æ®w¨ú¥XªºarticleVOª«¥ó,¦s¤Jreq
-				String url = "/front-end/article/listOneBoard_ClassArticle.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // ¦¨¥\Âà¥æ listOneBoard_ClassArticle.jsp
-				successView.forward(req, res);
+		if ("getOneArticle_ByBoard_Clss_For_Display".equals(action)) { // ä¾†è‡ªfront-end listAllArticle.jspçš„è«‹æ±‚
 
-		}
-		
-		
-		
-		if ("getOneArticle_ByBoard_Clss_For_Display".equals(action)) { // ¨Ó¦Ûback-end listAllArticle.jspªº½Ğ¨D  
-
-			/***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ - ¿é¤J®æ¦¡ªº¿ù»~³B²z**********************/
-			String str = req.getParameter("bd_cl_no"); //¤£¥Î¿ù»~ÅçÃÒ ¦]¬°¬Oª½±µ¸õÂà ¤£¬O¥Ñ¨Ï¥ÎªÌ¿é¤J
+			/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ - è¼¸å…¥æ ¼å¼çš„éŒ¯èª¤è™•ç† **********************/
+			String str = req.getParameter("bd_cl_no"); // ä¸ç”¨éŒ¯èª¤é©—è­‰ å› ç‚ºæ˜¯ç›´æ¥è·³è½‰ ä¸æ˜¯ç”±ä½¿ç”¨è€…è¼¸å…¥
 			Integer bd_cl_no = new Integer(str);
 			System.out.println(bd_cl_no);
-			
-			/***************************2.¶}©l¬d¸ß¸ê®Æ*****************************************/
+
+			/*************************** 2.é–‹å§‹æŸ¥è©¢è³‡æ–™ *****************************************/
 			ArticleService articleSvc = new ArticleService();
-			List<ArticleVO> articleVO = articleSvc.getByBoard_Class_Back(bd_cl_no);
-			
-			/***************************3.¬d¸ß§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view)*************/
-			req.setAttribute("articleVO", articleVO); // ¸ê®Æ®w¨ú¥XªºarticleVOª«¥ó,¦s¤Jreq
-			String url = "/back-end/article/listOneBoard_ClassArticle.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // ¦¨¥\Âà¥æ listOneBoard_ClassArticle.jsp
+			List<ArticleVO> articleVO = articleSvc.getByBoard_Class_Front(bd_cl_no);
+
+			/*************************** 3.æŸ¥è©¢å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) *************/
+			req.setAttribute("articleVO", articleVO); // è³‡æ–™åº«å–å‡ºçš„articleVOç‰©ä»¶,å­˜å…¥req
+			String url = "/front-end/article/listOneBoard_ClassArticle.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // æˆåŠŸè½‰äº¤ listOneBoard_ClassArticle.jsp
 			successView.forward(req, res);
 
-	}
-		
-		
-		if ("getArticlesByTagFor_Display".equals(action)) { // ¨Ó¦Ûfront-end listOneTagArticles.jspªº½Ğ¨D  
+		}
+
+		if ("getOneArticle_ByBoard_Clss_For_Display".equals(action)) { // ä¾†è‡ªback-end listAllArticle.jspçš„è«‹æ±‚
+
+			/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ - è¼¸å…¥æ ¼å¼çš„éŒ¯èª¤è™•ç† **********************/
+			String str = req.getParameter("bd_cl_no"); // ä¸ç”¨éŒ¯èª¤é©—è­‰ å› ç‚ºæ˜¯ç›´æ¥è·³è½‰ ä¸æ˜¯ç”±ä½¿ç”¨è€…è¼¸å…¥
+			Integer bd_cl_no = new Integer(str);
+			System.out.println(bd_cl_no);
+
+			/*************************** 2.é–‹å§‹æŸ¥è©¢è³‡æ–™ *****************************************/
+			ArticleService articleSvc = new ArticleService();
+			List<ArticleVO> articleVO = articleSvc.getByBoard_Class_Back(bd_cl_no);
+
+			/*************************** 3.æŸ¥è©¢å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) *************/
+			req.setAttribute("articleVO", articleVO); // è³‡æ–™åº«å–å‡ºçš„articleVOç‰©ä»¶,å­˜å…¥req
+			String url = "/back-end/article/listOneBoard_ClassArticle.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // æˆåŠŸè½‰äº¤ listOneBoard_ClassArticle.jsp
+			successView.forward(req, res);
+
+		}
+
+		if ("getArticlesByTagFor_Display".equals(action)) { // ä¾†è‡ªfront-end listOneTagArticles.jspçš„è«‹æ±‚
 			System.out.println(req.getParameter("tag"));
 
-			/***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ - ¿é¤J®æ¦¡ªº¿ù»~³B²z**********************/
-			Jedis jedis = new Jedis("localhost", 6379); //ªì©l¤Æredis
-			jedis.auth("123456"); 
-			jedis.select(6); //¿ï¾Ü6¸¹  ¦]¸ê®ÆÀx¦s¦bdb06
-			
-			
-			/***************************2.Redis¶}©l¬d¸ß¸ê®Æ*****************************************/
-			Set<String> tagged_article_list = jedis.smembers("tag:"+req.getParameter("tag")+":posts"); //±N©Ò¦³³Q¼Ğµù¦¹tagªº¤å³¹½s¸¹¦s¤J¤@­Óset
-			jedis.close(); //Ãö³¬
+			/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ - è¼¸å…¥æ ¼å¼çš„éŒ¯èª¤è™•ç† **********************/
+			Jedis jedis = new Jedis("localhost", 6379); // åˆå§‹åŒ–redis
+			jedis.auth("123456");
+			jedis.select(6); // é¸æ“‡6è™Ÿ å› è³‡æ–™å„²å­˜åœ¨db06
+
+			/***************************
+			 * 2.Redisé–‹å§‹æŸ¥è©¢è³‡æ–™
+			 *****************************************/
+			Set<String> tagged_article_list = jedis.smembers("tag:" + req.getParameter("tag") + ":posts"); // å°‡æ‰€æœ‰è¢«æ¨™è¨»æ­¤tagçš„æ–‡ç« ç·¨è™Ÿå­˜å…¥ä¸€å€‹set
+			jedis.close(); // é—œé–‰
 			System.out.println("hello");
-			/***************************3.MySQL¶}©l¬d¸ß¸ê®Æ*****************************************/
-			List<ArticleVO> articleVO = new ArrayList<>(); //«Ø¤@­Ó¤å³¹list
-			ArticleService articleSvc = new ArticleService(); //«Ø¤@­Óservice
+			/***************************
+			 * 3.MySQLé–‹å§‹æŸ¥è©¢è³‡æ–™
+			 *****************************************/
+			List<ArticleVO> articleVO = new ArrayList<>(); // å»ºä¸€å€‹æ–‡ç« list
+			ArticleService articleSvc = new ArticleService(); // å»ºä¸€å€‹service
 			System.out.println("hello2");
-			for (String str : tagged_article_list) { //±N©Ò¦³³Qtag¨ìªº¤å³¹vo  ©ñ¤J¤å³¹list¤¤
+			for (String str : tagged_article_list) { // å°‡æ‰€æœ‰è¢«tagåˆ°çš„æ–‡ç« vo æ”¾å…¥æ–‡ç« listä¸­
 				int i = Integer.parseInt(str);
 				articleVO.add(articleSvc.getOneArticle(i));
 			}
-			
+
 			System.out.println("hello3");
-			/***************************4.¬d¸ß§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view)*************/
+			/*************************** 4.æŸ¥è©¢å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) *************/
 			req.setAttribute("tag", req.getParameter("tag"));
-			req.setAttribute("articleVO", articleVO); // ¸ê®Æ®w¨ú¥XªºList<ArticleVO> articleVOª«¥ó,¦s¤Jreq
+			req.setAttribute("articleVO", articleVO); // è³‡æ–™åº«å–å‡ºçš„List<ArticleVO> articleVOç‰©ä»¶,å­˜å…¥req
 			String url = "/front-end/article/listOneTagArticles.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // ¦¨¥\Âà¥ælistOneTagArticles.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(url); // æˆåŠŸè½‰äº¤listOneTagArticles.jsp
 			successView.forward(req, res);
 
-	}
-		
-		
-		
-		
-		
-		
-		
-		
-//		if ("getOneArticle_ByBoard_Clss_For_Display".equals(action)) { // ¨Ó¦Ûback-end listAllArticle.jspªº½Ğ¨D
+		}
+
+//		if ("getOneArticle_ByBoard_Clss_For_Display".equals(action)) { // ä¾†è‡ªback-end listAllArticle.jspçš„è«‹æ±‚
 //
 //			List<String> errorMsgs = new LinkedList<String>();
 //			// Store this set in the request scope, in case we need to
@@ -194,17 +179,17 @@ public class ArticleServlet extends HttpServlet {
 //			req.setAttribute("errorMsgs", errorMsgs);
 //
 //			try {
-//				/***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ - ¿é¤J®æ¦¡ªº¿ù»~³B²z**********************/
+//				/***************************1.æ¥æ”¶è«‹æ±‚åƒæ•¸ - è¼¸å…¥æ ¼å¼çš„éŒ¯èª¤è™•ç†**********************/
 //				String str = req.getParameter("bd_cl_no");
 //				if (str == null || (str.trim()).length() == 0) {
-//					errorMsgs.add("½Ğ¿é¤J¬İªO½s¸¹");
+//					errorMsgs.add("è«‹è¼¸å…¥çœ‹æ¿ç·¨è™Ÿ");
 //				}
 //				// Send the use back to the form, if there were errors
 //				if (!errorMsgs.isEmpty()) {
 //					RequestDispatcher failureView = req
 //							.getRequestDispatcher("/back-end/article/select_page.jsp");
 //					failureView.forward(req, res);
-//					return;//µ{¦¡¤¤Â_
+//					return;//ç¨‹å¼ä¸­æ–·
 //				}
 //				
 //
@@ -212,151 +197,136 @@ public class ArticleServlet extends HttpServlet {
 //				try {
 //					bd_cl_no = new Integer(str);
 //				} catch (Exception e) {
-//					errorMsgs.add("¬İªO½s¸¹®æ¦¡¤£¥¿½T");
+//					errorMsgs.add("çœ‹æ¿ç·¨è™Ÿæ ¼å¼ä¸æ­£ç¢º");
 //				}
 //				// Send the use back to the form, if there were errors
 //				if (!errorMsgs.isEmpty()) {
 //					RequestDispatcher failureView = req
 //							.getRequestDispatcher("/back-end/article/select_page.jsp");
 //					failureView.forward(req, res);
-//					return;//µ{¦¡¤¤Â_
+//					return;//ç¨‹å¼ä¸­æ–·
 //				}
 //				
-//				/***************************2.¶}©l¬d¸ß¸ê®Æ*****************************************/
+//				/***************************2.é–‹å§‹æŸ¥è©¢è³‡æ–™*****************************************/
 //				ArticleService articleSvc = new ArticleService();
 //				List<ArticleVO> articleVO = articleSvc.getByBoard_Class(bd_cl_no);
 //				if (articleVO == null) {
-//					errorMsgs.add("¬dµL¸ê®Æ");
+//					errorMsgs.add("æŸ¥ç„¡è³‡æ–™");
 //				}
 //				// Send the use back to the form, if there were errors
 //				if (!errorMsgs.isEmpty()) {
 //					RequestDispatcher failureView = req
 //							.getRequestDispatcher("/back-end/article/select_page.jsp");
 //					failureView.forward(req, res);
-//					return;//µ{¦¡¤¤Â_
+//					return;//ç¨‹å¼ä¸­æ–·
 //				}
 //				
-//				/***************************3.¬d¸ß§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view)*************/
-//				req.setAttribute("articleVO", articleVO); // ¸ê®Æ®w¨ú¥Xªºarticle_replyVOª«¥ó,¦s¤Jreq
+//				/***************************3.æŸ¥è©¢å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view)*************/
+//				req.setAttribute("articleVO", articleVO); // è³‡æ–™åº«å–å‡ºçš„article_replyVOç‰©ä»¶,å­˜å…¥req
 //				String url = "/back-end/article/listOneBoard_ClassArticle.jsp";
-//				RequestDispatcher successView = req.getRequestDispatcher(url); // ¦¨¥\Âà¥æ listOneBoard_ClassArticle.jsp
+//				RequestDispatcher successView = req.getRequestDispatcher(url); // æˆåŠŸè½‰äº¤ listOneBoard_ClassArticle.jsp
 //				successView.forward(req, res);
 //
-//				/***************************¨ä¥L¥i¯àªº¿ù»~³B²z*************************************/
+//				/***************************å…¶ä»–å¯èƒ½çš„éŒ¯èª¤è™•ç†*************************************/
 //			} catch (Exception e) {
-//				errorMsgs.add("µLªk¨ú±o¸ê®Æ:" + e.getMessage());
+//				errorMsgs.add("ç„¡æ³•å–å¾—è³‡æ–™:" + e.getMessage());
 //				RequestDispatcher failureView = req
 //						.getRequestDispatcher("/back-end/article/select_page.jsp");
 //				failureView.forward(req, res);
 //			}
 //		}	
-		
-		
-		
-		
-		
-		if ("getOne_For_Update".equals(action)) { // ¨Ó¦ÛlistAllArticle.jspªº½Ğ¨D
+
+		if ("getOne_For_Update".equals(action)) { // ä¾†è‡ªlistAllArticle.jspçš„è«‹æ±‚
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
-			
+
 			try {
-				/***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ****************************************/
+				/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ ****************************************/
 				Integer art_no = new Integer(req.getParameter("art_no"));
-				
-				/***************************2.¶}©l¬d¸ß¸ê®Æ****************************************/
+
+				/*************************** 2.é–‹å§‹æŸ¥è©¢è³‡æ–™ ****************************************/
 				ArticleService articleSvc = new ArticleService();
 				ArticleVO articleVO = articleSvc.getOneArticle(art_no);
-								
-				/***************************3.¬d¸ß§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view)************/
-				req.setAttribute("articleVO", articleVO);         // ¸ê®Æ®w¨ú¥XªºarticleVOª«¥ó,¦s¤Jreq
+
+				/*************************** 3.æŸ¥è©¢å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) ************/
+				req.setAttribute("articleVO", articleVO); // è³‡æ–™åº«å–å‡ºçš„articleVOç‰©ä»¶,å­˜å…¥req
 				String url = "/front-end/article/update_article_input.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);// ¦¨¥\Âà¥æ update_article_input.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url);// æˆåŠŸè½‰äº¤ update_article_input.jsp
 				successView.forward(req, res);
 
-				/***************************¨ä¥L¥i¯àªº¿ù»~³B²z**********************************/
+				/*************************** å…¶ä»–å¯èƒ½çš„éŒ¯èª¤è™•ç† **********************************/
 			} catch (Exception e) {
-				errorMsgs.add("µLªk¨ú±o­n­×§ïªº¸ê®Æ:" + e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/article/listAllArticle.jsp");
+				errorMsgs.add("ç„¡æ³•å–å¾—è¦ä¿®æ”¹çš„è³‡æ–™:" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/article/listAllArticle.jsp");
 				failureView.forward(req, res);
 			}
 		}
-		
-		
-		if ("update".equals(action)) { // ¨Ó¦Ûupdate_article_input.jspªº½Ğ¨D
-			
+
+		if ("update".equals(action)) { // ä¾†è‡ªupdate_article_input.jspçš„è«‹æ±‚
+
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
-		
+
 			try {
-				/***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ - ¿é¤J®æ¦¡ªº¿ù»~³B²z**********************/
-			
+				/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ - è¼¸å…¥æ ¼å¼çš„éŒ¯èª¤è™•ç† **********************/
+
 				Integer art_no = new Integer(req.getParameter("art_no").trim());
-				System.out.println("art_no:"+art_no);
-
-				
-				
-
+				System.out.println("art_no:" + art_no);
 
 				Integer bd_cl_no = new Integer(req.getParameter("bd_cl_no").trim());
-					System.out.println("bd_cl_no"+bd_cl_no);
+				System.out.println("bd_cl_no" + bd_cl_no);
 
-				
 				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
-				System.out.println("mbr_no:"+mbr_no);
-				
-				
+				System.out.println("mbr_no:" + mbr_no);
+
 				Timestamp art_rel_time = new Timestamp(System.currentTimeMillis());
 				art_rel_time = Timestamp.valueOf(req.getParameter("art_rel_time"));
-				System.out.println("art_rel_time:"+art_rel_time);
+				System.out.println("art_rel_time:" + art_rel_time);
 
-				
 				String art_title = req.getParameter("art_title");
 				String art_titleReg = "^.{2,30}$";
 				if (art_title == null || art_title.trim().length() == 0) {
-					errorMsgs.add("¤å³¹¼ĞÃD: ½Ğ¤ÅªÅ¥Õ");
-				} 
-				else if(!art_title.trim().matches(art_titleReg)) { //¥H¤U½m²ß¥¿«h(³W)ªí¥Ü¦¡(regular-expression)
-					errorMsgs.add("¤å³¹¼ĞÃD: ªø«×¥²¶·¦b2¨ì30¤§¶¡");
-	            }
+					errorMsgs.add("æ–‡ç« æ¨™é¡Œ: è«‹å‹¿ç©ºç™½");
+				} else if (!art_title.trim().matches(art_titleReg)) { // ä»¥ä¸‹ç·´ç¿’æ­£å‰‡(è¦)è¡¨ç¤ºå¼(regular-expression)
+					errorMsgs.add("æ–‡ç« æ¨™é¡Œ: é•·åº¦å¿…é ˆåœ¨2åˆ°30ä¹‹é–“");
+				}
 				System.out.println(art_title);
-				
+
 				String art_cont = req.getParameter("art_cont");
-				
+
 				if (art_cont == null || art_cont.trim().length() == 0) {
-					errorMsgs.add("¤å³¹¤º®e: ½Ğ¤ÅªÅ¥Õ");
-				} 
+					errorMsgs.add("æ–‡ç« å…§å®¹: è«‹å‹¿ç©ºç™½");
+				}
 
 				System.out.println(art_cont);
-				
+
 				Integer likes = null;
 				try {
 					likes = new Integer(req.getParameter("likes").trim());
 				} catch (NumberFormatException e) {
 					likes = 0;
-					errorMsgs.add("Æg¼Æ½Ğ¶ñ¼Æ¦r.");
-				} 
+					errorMsgs.add("è®šæ•¸è«‹å¡«æ•¸å­—.");
+				}
 				System.out.println(likes);
-				
+
 				Integer art_stat = null;
 				try {
 					art_stat = new Integer(req.getParameter("art_stat").trim());
 				} catch (NumberFormatException e) {
 					art_stat = 0;
-					errorMsgs.add("¤å³¹ª¬ºA½Ğ¶ñ¼Æ¦r0 or 1.");
-				} 
-				
+					errorMsgs.add("æ–‡ç« ç‹€æ…‹è«‹å¡«æ•¸å­—0 or 1.");
+				}
+
 				System.out.println(art_stat);
-				
+
 				Integer replies = new Integer(req.getParameter("replies").trim());
 				System.out.println(replies);
-				
-				
+
 				ArticleVO articleVO = new ArticleVO();
 				articleVO.setArt_no(art_no);
 				articleVO.setBd_cl_no(bd_cl_no);
@@ -370,66 +340,58 @@ public class ArticleServlet extends HttpServlet {
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("articleVO",articleVO); // §t¦³¿é¤J®æ¦¡¿ù»~ªºarticleVOª«¥ó,¤]¦s¤Jreq
+					req.setAttribute("articleVO", articleVO); // å«æœ‰è¼¸å…¥æ ¼å¼éŒ¯èª¤çš„articleVOç‰©ä»¶,ä¹Ÿå­˜å…¥req
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/front-end/article/update_article_input.jsp");
 					failureView.forward(req, res);
-					return; //µ{¦¡¤¤Â_
+					return; // ç¨‹å¼ä¸­æ–·
 				}
-				
-				/***************************2.¶}©l­×§ï¸ê®Æ*****************************************/
+
+				/*************************** 2.é–‹å§‹ä¿®æ”¹è³‡æ–™ *****************************************/
 				ArticleService articleSvc = new ArticleService();
-				articleVO = articleSvc.updateArticle(art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies);
-				
-				/***************************3.­×§ï§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view)*************/
-				req.setAttribute("articleVO", articleVO); // ¸ê®Æ®wupdate¦¨¥\«á,¥¿½TªºªºarticleVOª«¥ó,¦s¤Jreq
+				articleVO = articleSvc.updateArticle(art_no, bd_cl_no, mbr_no, art_rel_time, art_title, art_cont, likes,
+						art_stat, replies);
+
+				/*************************** 3.ä¿®æ”¹å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) *************/
+				req.setAttribute("articleVO", articleVO); // è³‡æ–™åº«updateæˆåŠŸå¾Œ,æ­£ç¢ºçš„çš„articleVOç‰©ä»¶,å­˜å…¥req
 				String url = "/front-end/article/listOneArticle.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // ­×§ï¦¨¥\«á,Âà¥ælistOneArticle.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); // ä¿®æ”¹æˆåŠŸå¾Œ,è½‰äº¤listOneArticle.jsp
 				successView.forward(req, res);
 
-				/***************************¨ä¥L¥i¯àªº¿ù»~³B²z*************************************/
+				/*************************** å…¶ä»–å¯èƒ½çš„éŒ¯èª¤è™•ç† *************************************/
 			} catch (Exception e) {
-				errorMsgs.add("­×§ï¸ê®Æ¥¢±Ñ:"+e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/article/update_article_input.jsp");
+				errorMsgs.add("ä¿®æ”¹è³‡æ–™å¤±æ•—:" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/article/update_article_input.jsp");
 				failureView.forward(req, res);
 			}
 		}
 
-		
-		
-		if ("plus_like".equals(action)) { // ¨Ó¦ÛliesOneArticle.jspªº½Ğ¨D À°³o½g¤å³¹Æg¼Æ+1
+		if ("plus_like".equals(action)) { // ä¾†è‡ªliesOneArticle.jspçš„è«‹æ±‚ å¹«é€™ç¯‡æ–‡ç« è®šæ•¸+1
 
-				/***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ**********************/		
-				Integer art_no = new Integer(req.getParameter("art_no").trim());					
-				ArticleVO articleVO = new ArticleVO();
-				articleVO.setArt_no(art_no);	
-				/***************************2.¶}©l­×§ï¸ê®Æ*****************************************/
-				ArticleService articleSvc = new ArticleService();
-				articleVO = articleSvc.plus_like(art_no);
+			/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ **********************/
+			Integer art_no = new Integer(req.getParameter("art_no").trim());
+			ArticleVO articleVO = new ArticleVO();
+			articleVO.setArt_no(art_no);
+			/*************************** 2.é–‹å§‹ä¿®æ”¹è³‡æ–™ *****************************************/
+			ArticleService articleSvc = new ArticleService();
+			articleVO = articleSvc.plus_like(art_no);
 
 		}
-		
-		
-		
-		if ("minus_like".equals(action)) { // ¨Ó¦ÛliesOneArticle.jspªº½Ğ¨D À°³o½g¤å³¹Æg¼Æ+1		
-			    
-			    /***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ**********************/
-				Integer art_no = new Integer(req.getParameter("art_no").trim());						
-				ArticleVO articleVO = new ArticleVO();
-				articleVO.setArt_no(art_no);
-	            /***************************2.¶}©l­×§ï¸ê®Æ*****************************************/
-				ArticleService articleSvc = new ArticleService();
-				articleVO = articleSvc.plus_like(art_no);
+
+		if ("minus_like".equals(action)) { // ä¾†è‡ªliesOneArticle.jspçš„è«‹æ±‚ å¹«é€™ç¯‡æ–‡ç« è®šæ•¸+1
+
+			/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ **********************/
+			Integer art_no = new Integer(req.getParameter("art_no").trim());
+			ArticleVO articleVO = new ArticleVO();
+			articleVO.setArt_no(art_no);
+			/*************************** 2.é–‹å§‹ä¿®æ”¹è³‡æ–™ *****************************************/
+			ArticleService articleSvc = new ArticleService();
+			articleVO = articleSvc.plus_like(art_no);
 
 		}
-		
-		
-		
-		
-		
-        if ("insert".equals(action)) { // ¨Ó¦Û«eºİaddArticle.jspªº½Ğ¨D  
-			
+
+		if ("insert".equals(action)) { // ä¾†è‡ªå‰ç«¯addArticle.jspçš„è«‹æ±‚
+
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -437,57 +399,52 @@ public class ArticleServlet extends HttpServlet {
 
 			try {
 
-				/***********************1.±µ¦¬½Ğ¨D°Ñ¼Æ - ¿é¤J®æ¦¡ªº¿ù»~³B²z*************************/
+				/*********************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ - è¼¸å…¥æ ¼å¼çš„éŒ¯èª¤è™•ç† *************************/
 
-				String[] values = req.getParameterValues("tags");//¨ú±o©Ò¦³¤Ä¿ïªº¼ĞÅÒ
-				
-				
+				String[] values = req.getParameterValues("tags");// å–å¾—æ‰€æœ‰å‹¾é¸çš„æ¨™ç±¤
+
 				Integer bd_cl_no = null;
 				try {
 					bd_cl_no = new Integer(req.getParameter("bd_cl_no").trim());
 				} catch (NumberFormatException e) {
 					bd_cl_no = 0;
-					errorMsgs.add("¬İªO½s¸¹½Ğ¶ñ¼Æ¦r.");
+					errorMsgs.add("çœ‹æ¿ç·¨è™Ÿè«‹å¡«æ•¸å­—.");
 				}
-				
+
 				Integer mbr_no = null;
 				try {
 					mbr_no = new Integer(req.getParameter("mbr_no").trim());
 				} catch (NumberFormatException e) {
 					mbr_no = 0;
-					errorMsgs.add("·|­û½s¸¹½Ğ¶ñ¼Æ¦r.");
+					errorMsgs.add("æœƒå“¡ç·¨è™Ÿè«‹å¡«æ•¸å­—.");
 				}
-				
+
 				String art_title = req.getParameter("art_title");
 				String art_titleReg = "^.{2,30}$";
 				if (art_title == null || art_title.trim().length() == 0) {
-					errorMsgs.add("¤å³¹¼ĞÃD: ½Ğ¤ÅªÅ¥Õ");
-				} 
-				else if(!art_title.trim().matches(art_titleReg)) { //¥H¤U½m²ß¥¿«h(³W)ªí¥Ü¦¡(regular-expression)
-					errorMsgs.add("¤å³¹¼ĞÃD: ªø«×¥²¶·¦b2¨ì30¤§¶¡");
-	            }
-				
-				
-	
+					errorMsgs.add("æ–‡ç« æ¨™é¡Œ: è«‹å‹¿ç©ºç™½");
+				} else if (!art_title.trim().matches(art_titleReg)) { // ä»¥ä¸‹ç·´ç¿’æ­£å‰‡(è¦)è¡¨ç¤ºå¼(regular-expression)
+					errorMsgs.add("æ–‡ç« æ¨™é¡Œ: é•·åº¦å¿…é ˆåœ¨2åˆ°30ä¹‹é–“");
+				}
+
 				Timestamp art_rel_time = new Timestamp(System.currentTimeMillis());
-				
+
 				String art_cont = req.getParameter("art_cont");
 //				String art_contReg = "^.{10,1000000}$";
 //				System.out.println(art_cont);
 				if (art_cont == null || art_cont.trim().length() == 0) {
-					errorMsgs.add("¤å³¹¤º®e: ½Ğ¤ÅªÅ¥Õ");
+					errorMsgs.add("æ–‡ç« å…§å®¹: è«‹å‹¿ç©ºç™½");
 				}
 				System.out.println(art_cont);
-//				else if(!art_cont.trim().matches(art_contReg)) { //¥H¤U½m²ß¥¿«h(³W)ªí¥Ü¦¡(regular-expression)
-//					errorMsgs.add("¤å³¹¤º®e: ¥²¶·¦b10¨ì10000­Ó¦r¤§¶¡");
+//				else if(!art_cont.trim().matches(art_contReg)) { //ä»¥ä¸‹ç·´ç¿’æ­£å‰‡(è¦)è¡¨ç¤ºå¼(regular-expression)
+//					errorMsgs.add("æ–‡ç« å…§å®¹: å¿…é ˆåœ¨10åˆ°10000å€‹å­—ä¹‹é–“");
 //	            }
-				
-				Integer likes = 0;
-				Integer art_stat = 0;		
-				Integer replies = 0;
-				
 
-				ArticleVO articleVO = new ArticleVO(); //­n·s¼Wªº¤å³¹
+				Integer likes = 0;
+				Integer art_stat = 0;
+				Integer replies = 0;
+
+				ArticleVO articleVO = new ArticleVO(); // è¦æ–°å¢çš„æ–‡ç« 
 				articleVO.setBd_cl_no(bd_cl_no);
 				articleVO.setMbr_no(mbr_no);
 				articleVO.setArt_rel_time(art_rel_time);
@@ -496,121 +453,111 @@ public class ArticleServlet extends HttpServlet {
 				articleVO.setLikes(likes);
 				articleVO.setArt_stat(art_stat);
 				articleVO.setReplies(replies);
-				
-				ArticleVO articleVO2 = new ArticleVO(); //¬d¸ß³Ì«á¤@µ§¤å³¹ªº¸¹½X
+
+				ArticleVO articleVO2 = new ArticleVO(); // æŸ¥è©¢æœ€å¾Œä¸€ç­†æ–‡ç« çš„è™Ÿç¢¼
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("articleVO", articleVO); // §t¦³¿é¤J®æ¦¡¿ù»~ªºarticleVOª«¥ó,¤]¦s¤Jreq
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/article/addArticle.jsp");
+					req.setAttribute("articleVO", articleVO); // å«æœ‰è¼¸å…¥æ ¼å¼éŒ¯èª¤çš„articleVOç‰©ä»¶,ä¹Ÿå­˜å…¥req
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/article/addArticle.jsp");
 					failureView.forward(req, res);
 					return;
 				}
-				
-				/***************************2.¶}©l·s¼W¸ê®Æ***************************************/
+
+				/*************************** 2.é–‹å§‹æ–°å¢è³‡æ–™ ***************************************/
 
 				ArticleService articleSvc = new ArticleService();
 				articleVO2 = articleSvc.findLast();
-				Integer no = articleVO2.getArt_no()+1; //¨ú±o³Ì«á¤@µ§¤å³¹+1  §Y¥Ø«e©Ò­n·s¼W¤å³¹ªº¤å³¹¸¹½X
-				System.out.println("no:"+no); //¦L¥X´ú¸Õ
-				
-				
+				Integer no = articleVO2.getArt_no() + 1; // å–å¾—æœ€å¾Œä¸€ç­†æ–‡ç« +1 å³ç›®å‰æ‰€è¦æ–°å¢æ–‡ç« çš„æ–‡ç« è™Ÿç¢¼
+				System.out.println("no:" + no); // å°å‡ºæ¸¬è©¦
+
 				Jedis jedis = new Jedis("localhost", 6379);
 				jedis.auth("123456");
 				jedis.select(6);
-				for(String str : values) {//Redis·s¼W¶}©l
-				System.out.println(str); //¦L¥X´ú¸Õ
-				
-				jedis.sadd("post:"+no+":tags", str);
-			    }
-				jedis.close();//Redis·s¼Wµ²§ô
-				
-				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no,art_rel_time,art_title,art_cont, likes,art_stat,replies);
-				
-				/***************************3.·s¼W§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view)***********/
+				for (String str : values) {// Redisæ–°å¢é–‹å§‹
+					System.out.println(str); // å°å‡ºæ¸¬è©¦
+
+					jedis.sadd("post:" + no + ":tags", str);
+				}
+				jedis.close();// Redisæ–°å¢çµæŸ
+
+				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no, art_rel_time, art_title, art_cont, likes, art_stat,
+						replies);
+
+				/*************************** 3.æ–°å¢å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) ***********/
 				String url = "/front-end/article/listAllArticle.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // ·s¼W¦¨¥\«áÂà¥ælistAllArticle.jsp
-				successView.forward(req, res);				
-				
-				/***************************¨ä¥L¥i¯àªº¿ù»~³B²z**********************************/
+				RequestDispatcher successView = req.getRequestDispatcher(url); // æ–°å¢æˆåŠŸå¾Œè½‰äº¤listAllArticle.jsp
+				successView.forward(req, res);
+
+				/*************************** å…¶ä»–å¯èƒ½çš„éŒ¯èª¤è™•ç† **********************************/
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/article/addArticle.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/article/addArticle.jsp");
 				failureView.forward(req, res);
 			}
 		}
-		
-		
-		if ("delete".equals(action)) { // ¨Ó¦ÛlistAllArticle.jsp
-			
+
+		if ("delete".equals(action)) { // ä¾†è‡ªlistAllArticle.jsp
+
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
-	
+
 			try {
-				/***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ***************************************/
+				/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ ***************************************/
 				Integer art_no = new Integer(req.getParameter("art_no"));
-				
-				/***************************2.¶}©l§R°£¸ê®Æ***************************************/
+
+				/*************************** 2.é–‹å§‹åˆªé™¤è³‡æ–™ ***************************************/
 				ArticleService articleSvc = new ArticleService();
 				articleSvc.deleteArticle(art_no);
-				
-				/***************************3.§R°£§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view)***********/								
+
+				/*************************** 3.åˆªé™¤å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) ***********/
 				String url = "/back-end/article/listAllArticle.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);// §R°£¦¨¥\«á,Âà¥æ¦^°e¥X§R°£ªº¨Ó·½ºô­¶
+				RequestDispatcher successView = req.getRequestDispatcher(url);// åˆªé™¤æˆåŠŸå¾Œ,è½‰äº¤å›é€å‡ºåˆªé™¤çš„ä¾†æºç¶²é 
 				successView.forward(req, res);
-				
-				/***************************¨ä¥L¥i¯àªº¿ù»~³B²z**********************************/
+
+				/*************************** å…¶ä»–å¯èƒ½çš„éŒ¯èª¤è™•ç† **********************************/
 			} catch (Exception e) {
-				errorMsgs.add("§R°£¸ê®Æ¥¢±Ñ:"+e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/article/listAllArticle.jsp");
+				errorMsgs.add("åˆªé™¤è³‡æ–™å¤±æ•—:" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/article/listAllArticle.jsp");
 				failureView.forward(req, res);
 			}
 		}
-		
-		
 
-		
-		if ("hide".equals(action)) { // ¨Ó¦Û«e¥x¡A¨Ã¤£¬O¯uªº§R°£¡A¦Ó¬O±N¤å³¹ª¬ºA³]¬°¤£Åã¥Ü
-			
+		if ("hide".equals(action)) { // ä¾†è‡ªå‰å°ï¼Œä¸¦ä¸æ˜¯çœŸçš„åˆªé™¤ï¼Œè€Œæ˜¯å°‡æ–‡ç« ç‹€æ…‹è¨­ç‚ºä¸é¡¯ç¤º
+
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
-	
+
 			try {
-				/***************************1.±µ¦¬½Ğ¨D°Ñ¼Æ***************************************/
+				/*************************** 1.æ¥æ”¶è«‹æ±‚åƒæ•¸ ***************************************/
 				Integer art_no = new Integer(req.getParameter("art_no").trim());
 				ArticleVO articleVO = new ArticleVO();
 				articleVO.setArt_no(art_no);
-				System.out.println("1§Ú¤w¨Ó¨ì¦¹³Bartno¬°"+art_no);
-				/***************************2.¶}©lÁôÂÃ¸ê®Æ***************************************/
+				System.out.println("1æˆ‘å·²ä¾†åˆ°æ­¤è™•artnoç‚º" + art_no);
+				/*************************** 2.é–‹å§‹éš±è—è³‡æ–™ ***************************************/
 				ArticleService articleSvc = new ArticleService();
-				System.out.println("2§Ú¤w¨Ó¨ì¦¹³Bartno¬°"+art_no);
+				System.out.println("2æˆ‘å·²ä¾†åˆ°æ­¤è™•artnoç‚º" + art_no);
 				articleSvc.hide(art_no);
-				System.out.println("3§Ú¤w¨Ó¨ì¦¹³Bartno¬°"+art_no);
-				/***************************3.ÁôÂÃ§¹¦¨,·Ç³ÆÂà¥æ(Send the Success view)***********/			
-				System.out.println("4§Ú¤w¨Ó¨ì¦¹³Bartno¬°"+art_no);
+				System.out.println("3æˆ‘å·²ä¾†åˆ°æ­¤è™•artnoç‚º" + art_no);
+				/*************************** 3.éš±è—å®Œæˆ,æº–å‚™è½‰äº¤(Send the Success view) ***********/
+				System.out.println("4æˆ‘å·²ä¾†åˆ°æ­¤è™•artnoç‚º" + art_no);
 				String url = "/front-end/article/listAllArticle.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);// §R°£¦¨¥\«á,Âà¥æ¦^°e¥X§R°£ªº¨Ó·½ºô­¶
+				RequestDispatcher successView = req.getRequestDispatcher(url);// åˆªé™¤æˆåŠŸå¾Œ,è½‰äº¤å›é€å‡ºåˆªé™¤çš„ä¾†æºç¶²é 
 				successView.forward(req, res);
-				
-				/***************************¨ä¥L¥i¯àªº¿ù»~³B²z**********************************/
+
+				/*************************** å…¶ä»–å¯èƒ½çš„éŒ¯èª¤è™•ç† **********************************/
 			} catch (Exception e) {
-				errorMsgs.add("ÁôÂÃ¸ê®Æ¥¢±Ñ:"+e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/article/listAllArticle.jsp");
+				errorMsgs.add("éš±è—è³‡æ–™å¤±æ•—:" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/article/listAllArticle.jsp");
 				failureView.forward(req, res);
 			}
 		}
-		
-		
-		
-		if ("getOne_From".equals(action)) { //¦C¥X¬Y¤å³¹
+
+		if ("getOne_From".equals(action)) { // åˆ—å‡ºæŸæ–‡ç« 
 			System.out.println("I'm getOne_From");
 			try {
 				// Retrieve form parameters.
@@ -618,11 +565,10 @@ public class ArticleServlet extends HttpServlet {
 				com.article.model.ArticleDAO dao = new com.article.model.ArticleDAO();
 				ArticleVO articleVO = dao.findByPrimaryKey(art_no);
 
-				req.setAttribute("articleVO", articleVO); // ¸ê®Æ®w¨ú¥XªºarticleVOª«¥ó,¦s¤Jreq
+				req.setAttribute("articleVO", articleVO); // è³‡æ–™åº«å–å‡ºçš„articleVOç‰©ä»¶,å­˜å…¥req
 
-				// ¨ú¥XªºarticleVO°eµ¹listOneEmp.jsp
-				RequestDispatcher successView = req
-						.getRequestDispatcher("/front-end/article/listOneArticle.jsp");
+				// å–å‡ºçš„articleVOé€çµ¦listOneEmp.jsp
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/article/listOneArticle.jsp");
 				successView.forward(req, res);
 				return;
 
@@ -631,49 +577,45 @@ public class ArticleServlet extends HttpServlet {
 				throw new ServletException(e);
 			}
 		}
-		
-		
-		if ("getOne_From2".equals(action)) {  //¦^¨ì½×¾Â­º­¶ªº¿O½c
+
+		if ("getOne_From2".equals(action)) { // å›åˆ°è«–å£‡é¦–é çš„ç‡ˆç®±
 
 			try {
-				
-				String requestURL = req.getHeader("Referer");  
+
+				String requestURL = req.getHeader("Referer");
 				System.out.println(requestURL);
 				req.setAttribute("requestURL", requestURL);
 				Jedis jedis = new Jedis("localhost", 6379);
 				jedis.auth("123456");
 				jedis.select(6);
-				
+
 //				System.out.println(req.getParameter("art_no"));
 //				for (String str : jedis.smembers("post:"+req.getParameter("art_no")+":tags")) {
 //					System.out.println(str);
 //				}
-				Set<String> tag_list = jedis.smembers("post:"+req.getParameter("art_no")+":tags");
-				
-				
+				Set<String> tag_list = jedis.smembers("post:" + req.getParameter("art_no") + ":tags");
+
 				jedis.close();
-				
+
 //
 //				    for(String element : tag_list) {
 //				        System.out.println(element);
 //				    }
 //
-				req.setAttribute("tag_list", tag_list); // Redis¸ê®Æ®w¨ú¥Xªºtag_listª«¥ó,¦s¤Jreq
-				
-				
+				req.setAttribute("tag_list", tag_list); // Redisè³‡æ–™åº«å–å‡ºçš„tag_listç‰©ä»¶,å­˜å…¥req
+
 				// Retrieve form parameters.
 				Integer art_no = new Integer(req.getParameter("art_no"));
 
 				ArticleDAO dao = new ArticleDAO();
 				ArticleVO articleVO = dao.findByPrimaryKey(art_no);
 
-				req.setAttribute("articleVO", articleVO); // ¸ê®Æ®w¨ú¥XªºarticleVOª«¥ó,¦s¤Jreq
-				
-				//Bootstrap_modal
-				boolean openModal=true;
+				req.setAttribute("articleVO", articleVO); // è³‡æ–™åº«å–å‡ºçš„articleVOç‰©ä»¶,å­˜å…¥req
+
+				// Bootstrap_modal
+				boolean openModal = true;
 				System.out.println(openModal);
-				req.setAttribute("openModal",openModal );
-				
+				req.setAttribute("openModal", openModal);
 
 				RequestDispatcher successView = req.getRequestDispatcher("/front-end/article/listAllArticle.jsp");
 				successView.forward(req, res);
@@ -684,27 +626,25 @@ public class ArticleServlet extends HttpServlet {
 				throw new ServletException(e);
 			}
 		}
-		
-		
-		
-		if ("getOne_From3".equals(action)) {  //¦^¨ì¬İªO­º­¶ªº¿O½c
+
+		if ("getOne_From3".equals(action)) { // å›åˆ°çœ‹æ¿é¦–é çš„ç‡ˆç®±
 
 			try {
 				// Retrieve form parameters.
 				Integer art_no = new Integer(req.getParameter("art_no"));
 				Integer bd_cl_no = new Integer(req.getParameter("bd_cl_no"));
-				
+
 				ArticleDAO dao = new ArticleDAO();
 				ArticleVO articleVO = dao.findByPrimaryKey(art_no);
 
-				req.setAttribute("articleVO", articleVO); // ¸ê®Æ®w¨ú¥XªºarticleVOª«¥ó,¦s¤Jreq
+				req.setAttribute("articleVO", articleVO); // è³‡æ–™åº«å–å‡ºçš„articleVOç‰©ä»¶,å­˜å…¥req
 				req.setAttribute("bd_cl_no", articleVO.getBd_cl_no());
-				//Bootstrap_modal
-				boolean openModal=true;
+				// Bootstrap_modal
+				boolean openModal = true;
 				System.out.println(openModal);
-				req.setAttribute("openModal",openModal );
-				
-				// ¨ú¥XªºarticleVO°eµ¹listOneEmp.jsp
+				req.setAttribute("openModal", openModal);
+
+				// å–å‡ºçš„articleVOé€çµ¦listOneEmp.jsp
 				RequestDispatcher successView = req
 						.getRequestDispatcher("/front-end/article/listOneBoard_ClassArticle.jsp");
 				successView.forward(req, res);
@@ -715,37 +655,76 @@ public class ArticleServlet extends HttpServlet {
 				throw new ServletException(e);
 			}
 		}
+
 		
 		
 		
-		if ("search_tag".equals(action)) { 
+		
+		if ("search_tag".equals(action)) {
 
 			try {
 				System.out.println("hello");
-				// Retrieve parameters.
-				Integer art_no = new Integer(req.getParameter("art_no"));
-				Integer bd_cl_no = new Integer(req.getParameter("bd_cl_no"));
-				
-				ArticleDAO dao = new ArticleDAO();
-				ArticleVO articleVO = dao.findByPrimaryKey(art_no);
+				// å–å¾—è¦æœå°‹çš„tag
+				String target_tag = new String(req.getParameter("tag"));
+				System.out.println(target_tag);
 
-				req.setAttribute("articleVO", articleVO); // ¸ê®Æ®w¨ú¥XªºarticleVOª«¥ó,¦s¤Jreq
-				req.setAttribute("bd_cl_no", articleVO.getBd_cl_no());
-				
+				// ç”¨redisæŸ¥è©¢æœ‰æ²’æœ‰è·Ÿtarget_tagä¸€æ¨£æˆ–ç›¸ä¼¼çš„tags
+				Jedis jedis = new Jedis("localhost", 6379); // å»ºç«‹rediså¯¦é«”
+				jedis.auth("123456"); // å¯†ç¢¼
+				jedis.select(6); // db06
 
+//			                     æ¨¡ç³ŠæŸ¥è©¢
+				Map<String, Integer> tag_map = new HashMap<String, Integer>(); // é€™å€‹Mapçš„keyè£æ¨™ç±¤ valueè£è©²æ¨™ç±¤æœ‰å¤šå°‘æ–‡ç« 
+				String cursor = ScanParams.SCAN_POINTER_START;
+				String key = "tag:"+target_tag+"*";
+				String mapentry = new String(); // ç”¨ä¾†è£æŸæ¨™ç±¤ ä¾‹å¦‚ tag:å¿ƒæƒ…:posts
+				String tag_real_name = new String();
+				Long tag_real_name_art_num;
+				ScanParams scanParams = new ScanParams();
+				scanParams.match(key);// å°‹æ‰¾ä»¥tag:å¿ƒ* ç‚ºé–‹é ­ key
+				scanParams.count(1000);
+				while (true) {
+					// ä½¿ç”¨scanç²å–æ•¸æ“šï¼Œä½¿ç”¨cursoræ¸¸æ¨™è¨˜éŒ„ä½ç½®ï¼Œä¸‹æ¬¡å¾ªç¯ä½¿ç”¨
+					ScanResult<String> scanResult = jedis.scan(cursor, scanParams);
+					cursor = scanResult.getStringCursor();// è¿”å›0 èªªæ˜éæ­·å®Œæˆ
+					List<String> list = scanResult.getResult();
+					long t1 = System.currentTimeMillis();
+					for (int m = 0; m < list.size(); m++) {
+						mapentry = list.get(m);
+						System.out.println(mapentry);
+						String[] mapentry_split = mapentry.split(":"); // æŠŠtag:å¿ƒæƒ…:post åˆ‡æˆ ã€Œtagã€ã€ã€Œå¿ƒæƒ…ã€ã€ã€Œpostã€
+						tag_real_name = mapentry_split[1]; // å–ä¸­é–“çš„é‚£å€‹ï¼Œå³æ¨™ç±¤åç¨±
+						System.out.println("é€™å€‹æ¨™ç±¤æœ‰" + jedis.scard(mapentry) + "ç¯‡æ–‡ç« "); // å–å¾—é€™å€‹æ¨™ç±¤æœ‰å¤šå°‘ç¯‡æ–‡ç« 
+						tag_real_name_art_num = jedis.scard(mapentry); // é€™æ•¸å­—æ˜¯longå‹åˆ¥
+						tag_map.put(tag_real_name, tag_real_name_art_num.intValue()); // è¦å¾longè½‰int ç”¨intValue();
+					}
+
+					if ("0".equals(cursor)) {
+						break;
+					}
+
+					jedis.close();
+				}
+
+				for (Entry<String, Integer> e : tag_map.entrySet()) { // å°å‡ºæ¸¬è©¦
+					System.out.println(e.getKey() + ":" + e.getValue());
+				}
 				
-				// ¨ú¥XªºarticleVO°eµ¹listOneEmp.jsp
-				RequestDispatcher successView = req
-						.getRequestDispatcher("/front-end/article/listOneBoard_ClassArticle.jsp");
-				successView.forward(req, res);
-				return;
+				
+//		        HashMap returnData = new HashMap();
+		        
+//		        returnData.put("tag_map", tag_map);
+				
+		        JSONObject responseJSONObject = new JSONObject(tag_map);
+		        
+		        PrintWriter out = res.getWriter();
+		 
+		        out.println(responseJSONObject);
 
 				// Handle any unusual exceptions
 			} catch (Exception e) {
 				throw new ServletException(e);
 			}
 		}
-		
-		
 	}
 }

@@ -262,7 +262,7 @@ input#search-bar:focus:-ms-placeholder {
 
 
 						標籤:<font color=red><b>*</b></font>
-						<div class=tag_can_be_selected>
+						<div class=tag_can_be_selected id="tag_can_be_selected">
 							<c:if test="">
 							</c:if>
 							<%
@@ -292,7 +292,7 @@ input#search-bar:focus:-ms-placeholder {
 
 
 
-
+	<div class="test_for_tag"></div>
 
 	<script>
 		$('#art_cont').summernote(
@@ -308,7 +308,41 @@ input#search-bar:focus:-ms-placeholder {
 							[ 'para', [ 'paragraph' ] ],
 							[ 'insert', [ 'link', 'picture' ] ], ]
 				});
+		
+	
+		
+		
+		
+// 		$('#art_cont').summernote(
+// 			    { height: 300,
+// 			        callbacks: {
+// 			          onImageUpload: function(files) {
+// 			            imageUpload(files).done((data, textStatus, jqXHR)=>{ let url = "/uploads/"+data.imageUrl               
+// 			                $('#summernote').summernote('insertImage', url, 'newimage');
+// 			              })
+// 			          },
+// 			        }
+// 				});
 
+		
+// 		function imageUpload(files){
+// 		    let formData = new FormData();
+// 		    formData.append('upload', files[0]);
+// 		      return $.ajax({
+// 		              type: "POST", 
+// 		              url: '/upload',
+// 		              data:formData,
+// 		              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+// 		              cache       : false,
+// 		              contentType : false,
+// 		              processData : false,
+		        
+// 		            });
+// 		  }
+		
+		
+		
+		
 		// $(".tag_selected").click(function(){ //當標籤被點的時候，要加到預新增的標籤列表中並隱藏被點擊的標籤
 		// 	var tag_text = $(this).html();
 		// // 	alert("現在被點的是"+tag_text);
@@ -365,9 +399,26 @@ input#search-bar:focus:-ms-placeholder {
 				type : "POST",
 				url : "http://localhost:8081/CEA103G1/article/article.do",
 				data : {action: "search_tag",tag:x},
+				dataType: "json",
 				success : function(data) {
-					alert("取消某人對某人的追蹤成功");
-				}
+// 					$("#tag_can_be_selected").html=("我回來啦~");
+// 					var tagString = "";
+// 					for(var i = 0 ; i<data.tag_map.length; i++){
+//                         $("#tag_can_be_selected").append(data.tag_map[i]+"</br>");
+//                     }	
+					for(var key in data){
+
+						alert(key);//獲取json物件的key
+
+						alert(data[key]);//獲取json物件key對應的value值
+
+						}
+				},
+				 
+                error:function(xhr, ajaxOptions, thrownError){
+
+                    alert(xhr.status+"\n"+thrownError);
+                }
 			}); 
 		});
 
