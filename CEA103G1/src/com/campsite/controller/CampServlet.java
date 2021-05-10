@@ -90,6 +90,65 @@ public class CampServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		if ("getOne_For_DisplayFromBack".equals(action)) { // 來自select_page.jsp的請求
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+				String str = req.getParameter("camp_no");
+				if (str == null || (str.trim()).length() == 0) {
+					errorMsgs.add("請輸入編號");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite/listAllCamp.jsp");
+					failureView.forward(req, res);
+					return;// 程式中斷
+				}
+				
+				Integer camp_no = null;
+				try {
+					camp_no = new Integer(str);
+				} catch (Exception e) {
+					errorMsgs.add("編號格式不正確");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite/listAllCamp.jsp");
+					failureView.forward(req, res);
+					return;// 程式中斷
+				}
+				
+				/*************************** 2.開始查詢資料 *****************************************/
+				CampService campSvc = new CampService();
+				CampVO campVO = campSvc.getOneCamp(camp_no);
+				if (campVO == null) {
+					errorMsgs.add("查無資料");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite/listAllCamp.jsp");
+					failureView.forward(req, res);
+					return;// 程式中斷
+				}
+				
+				/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+				req.setAttribute("campVO", campVO); // 資料庫取出的empVO物件,存入req
+				String url = "/back-end/campsite/listOneCamp.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+				successView.forward(req, res);
+				
+				/*************************** 其他可能的錯誤處理 *************************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite/listAllCamp.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	
 		if ("getOne_For_Update".equals(action)) { // 來自listAllEmp.jsp的請求
 
@@ -256,6 +315,52 @@ public class CampServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite/updateCamp.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		if ("updatereview".equals(action)) {
+			try {
+				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+				Integer camp_no = new Integer(req.getParameter("camp_no").trim());
+				Integer review_status = new Integer(req.getParameter("review_status").trim());
+				
+				CampService campSvc = new CampService();
+				CampVO campVO = campSvc.getOneCamp(camp_no);
+				int campsite_status = campVO.getCampsite_Status();
+				
+				campSvc.updateCamp2(campsite_status, review_status, camp_no);
+				campVO = campSvc.getOneCamp(camp_no);
+				/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
+				req.setAttribute("campVO", campVO); // 資料庫update成功後,正確的的empVO物件,存入req
+				String url = "/back-end/campsite/listOneCamp.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				successView.forward(req, res);
+				
+				/*************************** 其他可能的錯誤處理 *************************************/
+			} catch (Exception e) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite/listOneCamp.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		if ("updatestatus".equals(action)) {
+			try {
+				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+				Integer camp_no = new Integer(req.getParameter("camp_no").trim());
+				Integer campsite_status = new Integer(req.getParameter("campsite_status").trim());
+				CampService campSvc = new CampService();
+				CampVO campVO = campSvc.getOneCamp(camp_no);
+				int review_status = campVO.getReview_Status();
+				campSvc.updateCamp2(campsite_status, review_status, camp_no);
+				campVO = campSvc.getOneCamp(camp_no);
+				/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
+				req.setAttribute("campVO", campVO); // 資料庫update成功後,正確的的empVO物件,存入req
+				String url = "/front-end/campsite/listOneCamp.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				successView.forward(req, res);
+				
+				/*************************** 其他可能的錯誤處理 *************************************/
+			} catch (Exception e) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite/listOneCamp.jsp");
 				failureView.forward(req, res);
 			}
 		}

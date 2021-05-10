@@ -115,10 +115,10 @@ span {
 							<td>${campVO.cso_no}</td>
 							<td>${campVO.camp_name}</td>
 							<c:if test="${campVO.campsite_Status==0}">
-								<td><c:out value="不隱藏" /></td>
+								<td><c:out value="營業 "/></td>
 							</c:if>
 							<c:if test="${campVO.campsite_Status==1}">
-								<td><c:out value="隱藏" /></td>
+								<td><c:out value="不營業" /></td>
 							</c:if>
 							<c:if test="${campVO.review_Status==0}">
 								<td><c:out value="待審核" /></td>
@@ -144,15 +144,6 @@ span {
 					</c:forEach>
 				</table>
 				<%@ include file="page2.file"%>
-				<ul>
-					<li><a href='addCamp.jsp'>刊登營區</a></li>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.do">
-						<b>輸入編號:</b> <input type="text" name="camp_no"> <input
-							type="hidden" name="action" value="getOne_For_Display"> <input
-							type="submit" value="送出">
-					</FORM>
-				</ul>
 			</div>
 		</div>
 	</div>

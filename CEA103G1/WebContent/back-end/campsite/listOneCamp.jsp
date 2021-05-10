@@ -88,7 +88,28 @@ table {
 			<div class="right col-9">
 				<div style="display: inline-block;">
 					<h3>營區資料</h3>
-<!-- 					<button>修改</button> -->
+					<c:if test="${campVO.review_Status==0}">
+						<FORM METHOD="post"
+							ACTION="<%=request.getContextPath()%>/camp/camp.do">
+							<button class="confirm">
+								<c:out value="通過" />
+							</button>
+							<input type="hidden" name=action value="updatereview"> <input
+								type="hidden" name="camp_no"
+								value="${campVO.camp_no}"> <input type="hidden"
+								name="review_status" value="1">
+						</FORM>
+						<FORM METHOD="post"
+							ACTION="<%=request.getContextPath()%>/camp/camp.do">
+							<button class="confirm">
+								<c:out value="不通過" />
+							</button>
+							<input type="hidden" name=action value="updatereview"> <input
+								type="hidden" name="camp_no"
+								value="${campVO.camp_no}"> <input type="hidden"
+								name="review_status" value="2">
+						</FORM>
+					</c:if>
 					<table>
 						<tr>
 							<th>營主編號</th>

@@ -339,7 +339,7 @@ img.person:hover {
 					accept-charset="big5">
 					<!-- 		縣市:<select id="county" name="county"></select> -->
 					縣市:<br>
-					<input type="type" name="county" id="county"><br> 入住日期:<br>
+					<select name="county" id="county"><option value="不拘">不拘</option></select><br> 入住日期:<br>
 					<input name="startdate" id="startdate" type="text"><br>
 					退房日期:<br>
 					<input name="enddate" id="enddate" type="text"><br>
@@ -357,6 +357,34 @@ img.person:hover {
 		</div>
 	</div>
 	<script>
+		const county = sessionStorage.getItem('county');
+		$.ajax({
+			type : "GET",
+			dataType : "json",
+			url : "http://localhost:8081/CEA103G1/district/district.do",
+			success : function(data) {
+				for (i in data) {
+					if(county === data[i]){
+						var opt = $(`<option selected="true">`).val(data[i]).text(data[i]);
+					}else{
+						var opt = $("<option>").val(data[i]).text(data[i]);
+					}
+					$("#county").append(opt);
+				}
+			}
+		});
+	
+// 		function showDistrict(data) {
+// 			const county = sessionStorage.getItem('county');
+// 			for (i in data) {
+// 				if(county === data[i]){
+// 					var opt = $(`<option selected="true">`).val(data[i]).text(data[i]);
+// 				}else{
+// 					var opt = $("<option>").val(data[i]).text(data[i]);
+// 				}
+// 				$("#county").append(opt);
+// 			}
+// 		}
 		$.ajax({
 			type : "GET",
 			dataType : "json",
@@ -399,22 +427,6 @@ img.person:hover {
 			$('#startdate').val(startdate[1]);
 			$('#enddate').val(enddate[1]);
 			$('#people').val(people[1]);
-			$('#county').val(county);
-			$.ajax({
-				type : "GET",
-				cache : "false",
-				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/ValidPlace.do",
-				data : $('#condition').serialize(), // serializes the form's elements.
-				success : function(data) {
-					window.history.pushState({}, document.title, url.substring(0,url.indexOf('?')));
-					showNames(data);
-				}
-			});
-		}
-		
-		
-	    $("#idForm").click(function(){
 			$('#all').children().remove();
 			$.ajax({
 				type : "GET",
@@ -423,8 +435,33 @@ img.person:hover {
 				url : "http://localhost:8081/CEA103G1/ValidPlace.do",
 				data : $('#condition').serialize(), // serializes the form's elements.
 				success : function(data) {
-					showNames(data);
+					if($('#startdate').val() === "" || $('#enddate').val() === ""){
+						showAll(data);						
+					}else{
+						showNames(data);	
+					}
 				}
+			});
+			window.history.pushState({}, document.title, url.substring(0,url.indexOf('?')));
+		}
+		
+		$(document).ready(function() {
+		    $("#idForm").click(function(){
+				$('#all').children().remove();
+				$.ajax({
+					type : "GET",
+					cache : "false",
+					dataType : "json",
+					url : "http://localhost:8081/CEA103G1/ValidPlace.do",
+					data : $('#condition').serialize(), // serializes the form's elements.
+					success : function(data) {
+						if($('#startdate').val() === "" || $('#enddate').val() === ""){
+							showAll(data);						
+						}else{
+							showNames(data);	
+						}
+					}
+				});
 			});
 		});// avoid to execute the actual submit of the form.
 		
@@ -451,10 +488,15 @@ img.person:hover {
 				let html;	
 				var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
 				html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="180" height="130" style="margin-right:15px;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
-					</a><ion-icon id="fav" name="bookmark-outline" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr></div>`;
+					</a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr></div>`;
 				$('#all').append(html);
 				$(`#${data[i].camp_no}`).attr("href",href);
 				$(`#${data[i].camp_no}`).attr("target","_blank");
+				if(`${data[i].collected}` == 0){
+					$(`#fav${data[i].camp_no}`).attr("name","bookmark");
+				} else {
+					$(`#fav${data[i].camp_no}`).attr("name","bookmark-outline");
+				}
 			}
 		}
 		function showNames(data) {
@@ -463,13 +505,18 @@ img.person:hover {
 				if (i) {	
 					var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&startdate=` + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val();
 					html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="180" height="130" style="margin-right:15px;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
-						</a><ion-icon id="fav" name="bookmark-outline" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr></div>`;
+						</a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr></div>`;
 				} else {
 					html = "<center>所有營區皆已滿</center>";
 				}
 				$('#all').append(html);
 				$(`#${data[i].camp_no}`).attr("href",href);
 				$(`#${data[i].camp_no}`).attr("target","_blank");
+				if(`${data[i].collected}` == 0){
+					$(`#fav${data[i].camp_no}`).attr("name","bookmark");
+				} else {
+					$(`#fav${data[i].camp_no}`).attr("name","bookmark-outline");
+				}
 			}
 		}
 	</script>

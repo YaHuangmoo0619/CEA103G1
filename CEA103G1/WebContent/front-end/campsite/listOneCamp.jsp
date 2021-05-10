@@ -86,7 +86,7 @@ table {
 			<div class="left col-3">
 				<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
 			<div class="right col-9">
-				<div style="display: inline-block;">
+				<div style="display: inline-block;" style="width:50%;">
 					<h3>營區資料</h3>
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/camp/camp.do"
@@ -95,6 +95,30 @@ table {
 							name="camp_no" value="${campVO.camp_no}"> <input
 							type="hidden" name="action" value="getOne_For_Update">
 					</FORM>
+					<c:if test="${campVO.campsite_Status==0}">
+						<FORM METHOD="post"
+							ACTION="<%=request.getContextPath()%>/camp/camp.do">
+							<button class="confirm">
+								<c:out value="不營業" />
+							</button>
+							<input type="hidden" name=action value="updatestatus"> <input
+								type="hidden" name="camp_no"
+								value="${campVO.camp_no}"> <input type="hidden"
+								name="campsite_status" value="1">
+						</FORM>
+					</c:if>
+					<c:if test="${campVO.campsite_Status==1}">
+						<FORM METHOD="post"
+							ACTION="<%=request.getContextPath()%>/camp/camp.do">
+							<button class="confirm">
+								<c:out value="營業" />
+							</button>
+							<input type="hidden" name=action value="updatestatus"> <input
+								type="hidden" name="camp_no"
+								value="${campVO.camp_no}"> <input type="hidden"
+								name="campsite_status" value="0">
+						</FORM>
+					</c:if>
 					<table>
 						<tr>
 							<th>營主編號</th>
@@ -156,7 +180,7 @@ table {
 						</tr>
 					</table>
 				</div>
-				<div style="display: inline-block; margin-left: 50px;">
+				<div style="display: inline-block; margin-left: 50px; width:50%;">
 					<h3>營位資料</h3>
 					<table>
 						<tr>

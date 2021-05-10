@@ -39,6 +39,7 @@ public class ValidPlace extends HttpServlet {
 		Gson gson = new Gson();
 
 		String county = req.getParameter("county").trim();
+System.out.println(county);
 		Integer people;
 		try {
 			people = new Integer(req.getParameter("people"));
@@ -124,9 +125,9 @@ public class ValidPlace extends HttpServlet {
 		for (int i = 0; i < placelist.size(); i++) {
 			int count = 0;// 統計營區剩餘營位可容納人數用
 			Integer camp_no = placelist.get(i).getCamp_no();
-			for (PlaceVO placeVO : placelist) {
-				if (placeVO.getCamp_no() == camp_no) {// 比對營區編號，一致則統計人數
-					count += placeVO.getPpl();
+			for (int j = 0; i < placelist.size(); j++) {
+				if (placelist.get(j).getCamp_no() == camp_no) {// 比對營區編號，一致則統計人數
+					count += placelist.get(j).getPpl();
 				}
 			}
 			if (count < people) {// 如果統計人數小於輸入人數則將該營區所有營位移除
@@ -189,15 +190,10 @@ public class ValidPlace extends HttpServlet {
 			}
 
 		}
-
-		for (PlaceVO placeVO : placelist) {
-			System.out.println(placeVO.getPlc_name());
-		}
 		
 		Set<Integer> campno = new HashSet();
 
 		for (PlaceVO placeVO : placelist) {
-			System.out.println(placeVO.getPlc_name());
 			campno.add(placeVO.getCamp_no());
 		}
 
@@ -241,7 +237,6 @@ public class ValidPlace extends HttpServlet {
 		MemberVO member = (MemberVO) session.getAttribute("member");
 		if(member == null) {
 			campVO.setCollected(1);
-System.out.println("測試1");
 			return campVO;
 		}
 System.out.println("測試2");
