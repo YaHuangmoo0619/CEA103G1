@@ -3,30 +3,36 @@
 		<div>
 			<a href="<%=request.getContextPath() %>/campion_front.jsp"> <img src="<%=request.getContextPath() %>/front-images/campionLogoLong.png" class="logo">
 			</a>
-			<form class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="search"
-					placeholder="營位/商品/文章" aria-label="Search">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
-			</form>
+<!-- 			<form class="form-inline my-2 my-lg-0"> -->
+<!-- 				<input class="form-control mr-sm-2" type="search" -->
+<!-- 					placeholder="營位/商品/文章" aria-label="Search"> -->
+<!-- 				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button> -->
+<!-- 			</form> -->
 		</div>
 		<div>
-			 <img src="<%=request.getContextPath() %>/front-images/search-circle-outline.svg" id="searchIcon" class="searchIcon">
+<%-- 			 <img src="<%=request.getContextPath() %>/front-images/search-circle-outline.svg" id="searchIcon" class="searchIcon"> --%>
 			<div class="btn-group" role="group" aria-label="Basic example">
-				<a class="button" href=""><button type="button" class="btn btn-secondary">營區</button></a>
-				<a class="button" href=""><button type="button" class="btn btn-secondary">論壇</button></a>
-				<a class="button" href=""><button type="button" class="btn btn-secondary">商城</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">露營</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 			</div>
 			<img src="<%=request.getContextPath() %>/front-images/cart-outline.svg" class="cart">
 			<a href="<%=request.getContextPath() %>/front-end/announcement/listAllAnnouncement.jsp"><img src="<%=request.getContextPath() %>/front-images/megaphone-outline.svg" class="announcement"></a>
+			<c:if test="${memberVO == null}">
 			<div class="btn-group" role="group" aria-label="Basic example">
 				<a class="button" href="<%=request.getContextPath() %>/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
-				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">註冊</button></a>
-				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">登入</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/member/register.jsp"><button type="button" class="btn btn-outline-secondary">註冊</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/member/login.jsp"><button type="button" class="btn btn-outline-secondary">登入</button></a>
 <!-- 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">FAQ</button></a> -->
 <!-- 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 			</div>
+			</c:if>
 			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu">
-			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp"> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
+			<c:if test="${memberVO != null}">
+				<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp"><img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement"></a>
+				${memberVO.name}
+				<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"><div class="person" style="display:inline;border-radius:50%;">${memberVO.sticker}</div> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
+			</c:if>
 		</div>
 	</div>
 
@@ -39,15 +45,17 @@
 	</div>
 	<div class="menuForButton">
 		<div class="btn-group sec" role="group" aria-label="Basic example">
-			<a class="button" href=""><button type="button" class="btn btn-secondary">營區</button></a>
-			<a class="button" href=""><button type="button" class="btn btn-secondary">論壇</button></a>
-			<a class="button" href=""><button type="button" class="btn btn-secondary">商城</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">露營</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 		</div>
+		<c:if test="${memberVO == null}">
 		<div class="btn-group sec" role="group" aria-label="Basic example">
 			<a class="button" href="<%=request.getContextPath() %>/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
-			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">註冊</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/member/register.jsp"><button type="button" class="btn btn-outline-secondary">註冊</button></a>
 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">登入</button></a>
 <!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">FAQ</button></a> -->
 <!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 		</div>
+		</c:if>
 	</div>

@@ -2,10 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.*" %>
-<%@ page import="com.member_mail.model.*" %>
-<%@ page import="com.member.model.*" %>
+<%@ page import="com.campsite_owner_mail.model.*" %>
+<%@ page import="com.campsite_owner.model.*" %>
 
-<% MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
+<!-- 測試登入狀態及畫面改變 -->
+<%
+Campsite_ownerService campsite_ownerSvcLogin = new Campsite_ownerService();
+Campsite_ownerVO campsite_ownerVOLogin = campsite_ownerSvcLogin.getOneCampsite_owner(70003);
+session.setAttribute("campsite_ownerVO",campsite_ownerVOLogin);
+%>
+
+<% Campsite_ownerVO campsite_ownerVO = (Campsite_ownerVO)session.getAttribute("campsite_ownerVO"); %>
 
 <!DOCTYPE html>
 <html>
@@ -13,12 +20,12 @@
 <meta charset="UTF-8">
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" ></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<title>所有會員站內信列表</title>
-<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<title>營主寄件備份</title>
+<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
 body{
@@ -63,13 +70,13 @@ input.confirm:hover {
 	cursor: pointer;
 }
 
-div.forSearchs{
+div.forSearch{
 	margin: 0 auto;
 	width: 70%;
 	hieght: 50px;
 	position: relative;
 }
-div.forSearchsMore{
+div.forSearchMore{
 	top: 110%;
 	left: 15%;
 	width: 70%;
@@ -153,23 +160,22 @@ tr:hover {
 
 </head>
 <body>
-<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
 	<div class="row">
-<!-- 		<div class= "left col-3"> -->
-<%-- 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div> --%>
-		<div class="right col">
+		<div class= "left col-3">
+		<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
+		<div class="right col-9">
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>會員站內信列表&nbsp;
-			<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/addMember_mail.jsp">寄信</a>&nbsp;
-			<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/listAllMember_mail_send.jsp">寄件備份列表</a>
-			</h3>
+			<h3>營主寄件備份</h3>
+			<a href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/addCampsite_owner_mail.jsp">寄信</a>
+			<a href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">回到營主站內信列表</a>
 			<hr>
-			<div class="forSearchs" id="forSearchs">
+			<div class="forSearch" id="forSearch">
 					<ul>
 						<li>
-							<form method="post"	action="<%=request.getContextPath()%>/member_mail/member_mail.do">
+							<form method="post"	action="<%=request.getContextPath()%>/campsite_owner_mail/campsite_owner_mail.do">
 								<label	for="mail_cont"></label>
 								<input type="text" name="mail_cont" id="mail_cont" placeholder="依信件內容查詢">
 								<input type="hidden" name="action"	value="compositeSearchTop">
@@ -177,11 +183,11 @@ tr:hover {
 							</form>
 					</li>
 					</ul>
-					<div class="forSearchs forSearchsMore" id="forSearchsMore">
+					<div class="forSearch forSearchMore" id="forSearchMore">
 					<ul>
 						<li>
-							<form method="post"	action="<%=request.getContextPath()%>/member_mail/member_mail.do">
-								<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService" />
+							<form method="post"	action="<%=request.getContextPath()%>/campsite_owner_mail/campsite_owner_mail.do">
+								<jsp:useBean id="campsite_owner_mailSvc" class="com.campsite_owner_mail.model.Campsite_owner_mailService" />
 								<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService" />
 								<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService" />
 								<jsp:useBean id="memberSvc"	class="com.member.model.MemberService" />
@@ -189,16 +195,19 @@ tr:hover {
 								<label for="mail_no">信件編號:</label>
 								<select size="1" name="mail_no" id="mail_no">
 									<option value="no">--請選擇--</option>
-									<c:forEach var="member_mailVO" items="${member_mailSvc.all}">
-										<option value="${member_mailVO.mail_no}">${member_mailVO.mail_no}</option>
+									<c:forEach var="campsite_owner_mailVO" items="${campsite_owner_mailSvc.all}">
+										<option value="${campsite_owner_mailVO.mail_no}">${campsite_owner_mailVO.mail_no}</option>
 									</c:forEach>
 								</select>
 								<br>
-								<label for="emp_no">回覆人員:</label>
-								<select size="1" name="emp_no" id="emp_no">
+								<label for="send_no">寄件人:</label>
+								<select size="1" name="send_no" id="send_no">
 									<option value="no">--請選擇--</option>
-									<c:forEach var="employeeVO" items="${employeeSvc.all}">
-										<option value="${employeeVO.emp_no}">${employeeVO.emp_no}${employeeVO.name}</option>
+									<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
+										<option value="${campsite_ownerVO.cso_no}">${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
+									</c:forEach>
+									<c:forEach var="memberVO" items="${memberSvc.all}">
+										<option value="${memberVO.mbr_no}">${memberVO.mbr_no}${memberVO.name}</option>
 									</c:forEach>
 								</select>
 								<br>
@@ -207,6 +216,9 @@ tr:hover {
 									<option value="no">--請選擇--</option>
 									<c:forEach var="memberVO" items="${memberSvc.all}">
 										<option value="${memberVO.mbr_no}">${memberVO.mbr_no}${memberVO.name}</option>
+									</c:forEach>
+									<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
+										<option value="${campsite_ownerVO.cso_no}">${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
 									</c:forEach>
 								</select>
 								<br>
@@ -246,8 +258,8 @@ tr:hover {
 			<table>
 <!-- 				<tr> -->
 <!-- 					<th style="width:50px">編號</th> -->
-<!-- 					<th style="width:50px">寄件人</th> -->
-<!-- 					<th style="width:50px">收件人</th> -->
+<!-- 					<th style="width:50px">寄件者</th> -->
+<!-- 					<th style="width:50px">收件者</th> -->
 <!-- 					<th style="width:200px">內容</th> -->
 <!-- 					<th style="width:50px">信件狀態</th> -->
 <!-- 					<th style="width:100px">信件閱讀狀態</th> -->
@@ -255,34 +267,35 @@ tr:hover {
 <!-- 					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a -->
 <!-- 						id="first" style="text-decoration: none;"></a></th> -->
 <!-- 				</tr> -->
-<%-- 				<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService"/> --%>
-				<c:forEach var="member_mailVO" items="${member_mailSvc.all}">
-<%-- 					<tr ${member_mailVO.mail_no == param.mail_no ? 'bgcolor=#eee':''}> --%>
-					<c:if test="${memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 0}">
+<%-- 				<jsp:useBean id="campsite_owner_mailSvc" class="com.campsite_owner_mail.model.Campsite_owner_mailService"/> --%>
+				<c:forEach var="campsite_owner_mailVO" items="${campsite_owner_mailSvc.all}">
+					<c:if test="${campsite_ownerVO.cso_no == campsite_owner_mailVO.send_no}">
 					<tr>
-<%-- 						<c:if test="${member_mailVO.mail_no==param.mail_no}"> --%>
-<%-- 							<td>${member_mailVO.mail_no}<a id="focus"></a></td> --%>
+<%-- 						<c:if --%>
+<%-- 							test="${campsite_owner_mailVO.mail_no==param.mail_no}"> --%>
+<%-- 							<td>${campsite_owner_mailVO.mail_no}<a id="focus"></a></td> --%>
 <%-- 						</c:if> --%>
-<%-- 						<c:if test="${member_mailVO.mail_no!=param.mail_no}"> --%>
-						<td>${member_mailVO.mail_no}</td>
+<%-- 						<c:if --%>
+<%-- 							test="${campsite_owner_mailVO.mail_no!=param.mail_no}"> --%>
+						<td>${campsite_owner_mailVO.mail_no}</td>
 <%-- 						</c:if> --%>
-						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
-						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
-						<c:set var="mail_cont" value="${member_mailVO.mail_cont}" />
+						<td>${campsite_owner_mailVO.send_no}${employeeSvc.getOneEmployee(campsite_owner_mailVO.send_no).name}${memberSvc.getOneMember(campsite_owner_mailVO.send_no).name}</td>
+						<td>${campsite_owner_mailVO.rcpt_no}${campsite_ownerSvc.getOneCampsite_owner(campsite_owner_mailVO.rcpt_no).name}</td>
+						<c:set var="mail_cont" value="${campsite_owner_mailVO.mail_cont}" />
 							<c:if test="${mail_cont.length() > 10}">
 								<td>${fn:substring(mail_cont, 0, 10)}...</td>
 							</c:if>
 							<c:if test="${mail_cont.length() <= 10}">
 								<td>${mail_cont}</td>
 							</c:if>
-						<td>${member_mailVO.mail_stat}</td>
-						<td class="mail_read_stat">${member_mailVO.mail_read_stat}</td>
-						<c:set var="mail_time" value="${member_mailVO.mail_time}" />
+						<td>${campsite_owner_mailVO.mail_stat}</td>
+						<td class="mail_read_stat">${campsite_owner_mailVO.mail_read_stat}</td>
+						<c:set var="mail_time" value="${campsite_owner_mailVO.mail_time}" />
 							<td>${fn:substring(mail_time, 0, 10)}</td>
 <!-- 						<td> -->
-<%-- 							<form method="post" action="<%=request.getContextPath()%>/member_mail/member_mail.do"> --%>
+<%-- 							<form method="post" action="<%=request.getContextPath()%>/campsite_owner_mail/campsite_owner_mail.do"> --%>
 <!-- 								<input class="change" type="submit" value="修改"> -->
-<%-- 								<input type="hidden" name="mail_no" value="${member_mailVO.mail_no}"> --%>
+<%-- 								<input type="hidden" name="mail_no" value="${campsite_owner_mailVO.mail_no}"> --%>
 <!-- 								<input type="hidden" name="action" value="getOne_For_Update"> -->
 <!-- 							</form> -->
 <!-- 						</td> -->
@@ -297,7 +310,7 @@ tr:hover {
 <script>
 	$("tr").click(function(e){
 		let mail_no = e.currentTarget.children[0].innerText;
-		window.location.href="<%=request.getContextPath()%>/member_mail/member_mail.do?mail_no="+ mail_no + "&action=read";
+		window.location.href="<%=request.getContextPath()%>/campsite_owner_mail/campsite_owner_mail.do?mail_no="+ mail_no + "&action=read";
 	});
 
 	for (let i = 0; i < $(".mail_read_stat").length; i++) {
@@ -313,13 +326,13 @@ tr:hover {
 	$("span").click(function(e){
 		countSearch++;
 		if (countSearch % 2 == 1) {
-			$("#forSearchsMore")[0].style.display="inline";
+			$("#forSearchMore")[0].style.display="inline";
 			$("#confirmTop")[0].setAttribute("disabled","");
 			$("#confirmTop")[0].style.backgroundColor="#4B7F52";
 			$("#confirmTop")[0].style.color="#80c344";
 			$("#confirmTop")[0].style.cursor="context-menu";
 		} else {
-			$("#forSearchsMore")[0].style.display="none";
+			$("#forSearchMore")[0].style.display="none";
 			$("#confirmTop")[0].removeAttribute("disabled");
 			$("#confirmTop")[0].style.backgroundColor="#80c344";
 			$("#confirmTop")[0].style.color="#4e5452";

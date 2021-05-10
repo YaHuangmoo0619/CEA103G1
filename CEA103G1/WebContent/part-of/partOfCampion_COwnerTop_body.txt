@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
 	<div class="colorPic">
 		<div class="top">
-			<a href="<%=request.getContextPath()%>/campion_campsiteOwner.jsp"><img
-				src="<%=request.getContextPath()%>/images/campionLogoLong.png"
-				class="logo"></a> <img
-				src="<%=request.getContextPath()%>/front-images/person-circle-outline.svg"
-				class="person">
+			<a href="<%=request.getContextPath()%>/campion_campsiteOwner.jsp">
+			<img src="<%=request.getContextPath()%>/images/campionLogoLong.png"	class="logo"></a>
+			<c:if test="${campsite_ownerVO != null}">
+				<div>${campsite_ownerVO.name}
+				<a href="" style="display:inline;"><img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
+				</div>
+			</c:if>
 		</div>
 	</div>

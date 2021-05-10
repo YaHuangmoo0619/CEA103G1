@@ -14,8 +14,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <title>新增營主站內信</title>
-<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
 body{
@@ -103,14 +103,14 @@ img{
 </style>
 </head>
 <body>
-<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_COwnerTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
 	<div class="row">
 		<div class= "left col-3">
-		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
+		<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>新增營主站內信&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/campsite_owner_mail/campsite_owner_mail.jsp">回營主站內信列表</a></h2>
+			<h2>新增營主站內信&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">回營主站內信列表</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<form method="post" action="<%=request.getContextPath()%>/campsite_owner_mail/campsite_owner_mail.do" enctype="multipart/form-data">
@@ -127,11 +127,8 @@ img{
 					<td>
 						<select size="1" name="send_no" id="send_no">
 						<option value="99">--請選擇--</option>
-						<c:forEach var="memberVO" items="${memberSvc.all}">
-							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.send_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
-						</c:forEach>
-						<c:forEach var="employeeVO" items="${employeeSvc.all}">
-							<option value="${employeeVO.emp_no}" ${employeeVO.emp_no == param.rcpt_no? 'selected':''}>${employeeVO.emp_no}${employeeVO.name}</option>
+						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
+							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.rcpt_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
 						</c:forEach>
 						</select>
 					</td>
@@ -144,8 +141,11 @@ img{
 					<td>
 						<select size="1" name="rcpt_no" id="rcpt_no">
 						<option value="99">--請選擇--</option>
-						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
-							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.rcpt_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
+						<c:forEach var="memberVO" items="${memberSvc.all}">
+							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.send_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
+						</c:forEach>
+						<c:forEach var="employeeVO" items="${employeeSvc.all}">
+							<option value="${employeeVO.emp_no}" ${employeeVO.emp_no == param.rcpt_no? 'selected':''}>${employeeVO.emp_no}${employeeVO.name}</option>
 						</c:forEach>
 						</select>
 					</td>

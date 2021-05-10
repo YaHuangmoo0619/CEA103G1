@@ -1,4 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.campsite_owner.model.*" %>
+
+<!-- 測試登入狀態及畫面改變 -->
+<%
+Campsite_ownerService campsite_ownerSvcLogin = new Campsite_ownerService();
+Campsite_ownerVO campsite_ownerVOLogin = campsite_ownerSvcLogin.getOneCampsite_owner(70003);
+session.setAttribute("campsite_ownerVO",campsite_ownerVOLogin);
+%>
+
+<% Campsite_ownerVO campsite_ownerVO = (Campsite_ownerVO)session.getAttribute("campsite_ownerVO"); %>
+
 <!DOCTYPE html>
 <html lang="zh-tw">
 
@@ -121,14 +133,16 @@ div.backToTop{
 <body>
 	<div class="colorPic">
 		<div class="top">
-			<a href="<%=request.getContextPath()%>/campion_campsiteOwner.jsp"><img
-				src="<%=request.getContextPath()%>/images/campionLogoLong.png"
-				class="logo"></a> <img
-				src="<%=request.getContextPath()%>/front-images/person-circle-outline.svg"
-				class="person">
+			<a href="<%=request.getContextPath()%>/campion_campsiteOwner.jsp">
+			<img src="<%=request.getContextPath()%>/images/campionLogoLong.png"	class="logo"></a>
+			<c:if test="${campsite_ownerVO != null}">
+				<div>${campsite_ownerVO.name}
+				<a href="" style="display:inline;"><img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
+				</div>
+			</c:if>
 		</div>
 	</div>
-	<div class="content">
+	<div class="container">
 		<div class="row">
 			<div class="left col-sm-3">
 				<ul>
@@ -140,7 +154,7 @@ div.backToTop{
 						href="<%=request.getContextPath()%>/front-end/campsite/addCamp.jsp">新增營區申請</a></li>
 					<li><a href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">站內信</a></li>
 					<li><a href="">修改營主資料</a></li>
-					<li><a href="">登出</a></li>
+					<li><a href="<%=request.getContextPath()%>/campion_front.jsp">登出</a></li>
 				</ul>
 			</div>
 			<div class="right col-sm-9">

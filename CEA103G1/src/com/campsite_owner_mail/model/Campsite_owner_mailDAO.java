@@ -44,7 +44,7 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 	private static final String INSERT_STMT = 
 		"INSERT INTO campion.campsite_owner_mail (send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
-		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.campsite_owner_mail order by mail_no";
+		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.campsite_owner_mail order by mail_time desc";
 	private static final String GET_ONE_STMT = 
 		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.campsite_owner_mail where mail_no = ?";
 	private static final String DELETE = 

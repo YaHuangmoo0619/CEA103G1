@@ -82,7 +82,7 @@ public class Member_mailServlet extends HttpServlet {
 				
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/member_mail/listAllMember_mail.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}

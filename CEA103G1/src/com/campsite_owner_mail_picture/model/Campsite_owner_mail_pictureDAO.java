@@ -30,17 +30,17 @@ public class Campsite_owner_mail_pictureDAO implements Campsite_owner_mail_pictu
 	}
 	
 	private static final String INSERT_STMT = 
-			"INSERT INTO campion.member_mail_picture (mail_no,mail_pic) VALUES (?, ?)";
+			"INSERT INTO campion.campsite_owner_mail_picture (mail_no,mail_pic) VALUES (?, ?)";
 		private static final String GET_ALL_STMT = 
-			"SELECT mail_pic_no,mail_no,mail_pic FROM campion.member_mail_picture order by mail_pic_no";
+			"SELECT mail_pic_no,mail_no,mail_pic FROM campion.campsite_owner_mail_picture order by mail_pic_no";
 		private static final String GET_ByMail_no_STMT = 
-				"SELECT mail_pic_no,mail_no,mail_pic FROM campion.member_mail_picture where mail_no = ?";
+				"SELECT mail_pic_no,mail_no,mail_pic FROM campion.campsite_owner_mail_picture where mail_no = ?";
 		private static final String GET_ONE_STMT = 
-			"SELECT mail_pic_no,mail_no,mail_pic FROM campion.member_mail_picture where mail_pic_no = ?";
+			"SELECT mail_pic_no,mail_no,mail_pic FROM campion.campsite_owner_mail_picture where mail_pic_no = ?";
 		private static final String DELETE = 
-			"DELETE FROM campion.member_mail_picture where mail_pic_no = ?";
+			"DELETE FROM campion.campsite_owner_mail_picture where mail_pic_no = ?";
 		private static final String UPDATE = 
-			"UPDATE campion.member_mail_picture set mail_pic_no=?, mail_no=?, mail_pic=? where mail_pic_no = ?";
+			"UPDATE campion.campsite_owner_mail_picture set mail_pic_no=?, mail_no=?, mail_pic=? where mail_pic_no = ?";
 	
 	
 	@Override

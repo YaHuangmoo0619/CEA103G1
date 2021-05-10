@@ -62,13 +62,13 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 				}
 				if("compositeSearchTop".equals(action) && map.get("mail_cont")[0].isEmpty()) {
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
 				if(checkCount == 8) {
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -76,12 +76,12 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 				Campsite_owner_mailService campsite_owner_mailSvc = new Campsite_owner_mailService();
 				Set<Campsite_owner_mailVO> campsite_owner_mailVOSet = campsite_owner_mailSvc.getWhereCondition(map);
 				req.setAttribute("campsite_owner_mailVOSet", campsite_owner_mailVOSet);
-				RequestDispatcher successView = req.getRequestDispatcher("/back-end/campsite_owner_mail/listWhereCampsite_owner_mail.jsp");
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/campsite_owner_mail/listWhereCampsite_owner_mail.jsp");
 				successView.forward(req, res);
 		
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -112,7 +112,7 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 				}
 
 				if(!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite_owner_mail/addCampsite_owner_mail.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite_owner_mail/addCampsite_owner_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -159,12 +159,12 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 					campsite_owner_mailSvc.insertWithPic(send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time, set);
 				}
 				
-				RequestDispatcher successView = req.getRequestDispatcher("/back-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
 				successView.forward(req, res);
 				
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite_owner_mail/addCampsite_owner_mail.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite_owner_mail/addCampsite_owner_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -180,7 +180,7 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 				successView.forward(req, res);
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite_owner_mail/listAllCampsite_owner_mail_mail.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/bafront-endampsite_owner_mail/listAllCampsite_owner_mail_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -209,7 +209,7 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 				}
 
 				if(!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite_owner_mail/update_campsite_owner_mail_input.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite_owner_mail/update_campsite_owner_mail_input.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -224,7 +224,7 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 				Campsite_owner_mailService campsite_owner_mailSvc = new Campsite_owner_mailService();
 				Campsite_owner_mailVO campsite_owner_mailVO = campsite_owner_mailSvc.updateCampsite_owner_mail(mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time);
 				req.setAttribute("campsite_owner_mailVO", campsite_owner_mailVO);
-				RequestDispatcher successView = req.getRequestDispatcher("/back-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
 				successView.forward(req, res);
 				
 			}catch(Exception e) {
@@ -254,11 +254,11 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 				Campsite_owner_mailVO campsite_owner_mailVO2 = campsite_owner_mailSvc.updateCampsite_owner_mail(mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time);
 				
 				req.setAttribute("campsite_owner_mailVO", campsite_owner_mailVO2);
-				RequestDispatcher successView = req.getRequestDispatcher("/back-end/campsite_owner_mail/listOneCampsite_owner_mail.jsp");
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/campsite_owner_mail/listOneCampsite_owner_mail.jsp");
 				successView.forward(req, res);
 			}catch(Exception e) {
 				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
 				failureView.forward(req, res);
 			}
 		}

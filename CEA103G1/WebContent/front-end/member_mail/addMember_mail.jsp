@@ -2,8 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.member_mail.model.*" %>
+<%@ page import="com.member.model.*" %>
 
 <% Member_mailVO member_mailVO = (Member_mailVO)request.getAttribute("member_mailVO"); %>
+<% MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
 
 <!DOCTYPE html>
 <html>
@@ -14,8 +16,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <title>新增信件</title>
-<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
+<%-- <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%> --%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
 body{
@@ -103,13 +105,13 @@ img{
 </style>
 </head>
 <body>
-<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
 	<div class="row">
-		<div class= "left col-3">
-		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
-		<div class="right col-9">
+<!-- 		<div class= "left col-3"> -->
+<%-- 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div> --%>
+		<div class="right col">
 			<h2>新增會員站內信&nbsp;<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/listAllMember_mail.jsp">回會員信件列表</a></h2>
 			<hr>
 			<h5 style="color:#80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
@@ -149,6 +151,9 @@ img{
 							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.rcpt_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
 						</c:forEach>
 						<option value="90001">客服人員</option>
+						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
+							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.rcpt_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
+						</c:forEach>
 						</select>
 					</td>
 				</tr>

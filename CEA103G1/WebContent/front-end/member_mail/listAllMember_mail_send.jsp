@@ -161,10 +161,9 @@ tr:hover {
 <%-- 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div> --%>
 		<div class="right col">
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>會員站內信列表&nbsp;
-			<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/addMember_mail.jsp">寄信</a>&nbsp;
-			<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/listAllMember_mail_send.jsp">寄件備份列表</a>
-			</h3>
+			<h3>會員站內信列表</h3>
+			<a href="<%=request.getContextPath()%>/front-end/member_mail/addMember_mail.jsp">寄信</a>
+			<a href="<%=request.getContextPath()%>/front-end/member_mail/listAllMember_mail.jsp">回到營主站內信列表</a>
 			<hr>
 			<div class="forSearchs" id="forSearchs">
 					<ul>
@@ -258,7 +257,7 @@ tr:hover {
 <%-- 				<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService"/> --%>
 				<c:forEach var="member_mailVO" items="${member_mailSvc.all}">
 <%-- 					<tr ${member_mailVO.mail_no == param.mail_no ? 'bgcolor=#eee':''}> --%>
-					<c:if test="${memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 0}">
+					<c:if test="${memberVO.mbr_no == member_mailVO.send_no && member_mailVO.mail_stat == 1}">
 					<tr>
 <%-- 						<c:if test="${member_mailVO.mail_no==param.mail_no}"> --%>
 <%-- 							<td>${member_mailVO.mail_no}<a id="focus"></a></td> --%>

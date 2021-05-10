@@ -1,4 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import="com.member.model.*" %>
+
+<!-- 測試登入狀態及畫面改變 -->
+<%
+MemberService memberSvc = new MemberService();
+MemberVO memberVOLogin = memberSvc.getOneMember(10010);
+session.setAttribute("memberVO",memberVOLogin);
+%>
+
+<% MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
+
 <!DOCTYPE html>
 <html lang="zh-tw">
 
@@ -377,30 +390,36 @@ section.footer {
 		<div>
 			<a href="<%=request.getContextPath() %>/campion_front.jsp"> <img src="<%=request.getContextPath() %>/front-images/campionLogoLong.png" class="logo">
 			</a>
-			<form class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="search"
-					placeholder="營位/商品/文章" aria-label="Search">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
-			</form>
+<!-- 			<form class="form-inline my-2 my-lg-0"> -->
+<!-- 				<input class="form-control mr-sm-2" type="search" -->
+<!-- 					placeholder="營位/商品/文章" aria-label="Search"> -->
+<!-- 				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button> -->
+<!-- 			</form> -->
 		</div>
 		<div>
-			 <img src="<%=request.getContextPath() %>/front-images/search-circle-outline.svg" id="searchIcon" class="searchIcon">
+<%-- 			 <img src="<%=request.getContextPath() %>/front-images/search-circle-outline.svg" id="searchIcon" class="searchIcon"> --%>
 			<div class="btn-group" role="group" aria-label="Basic example">
-				<a class="button" href=""><button type="button" class="btn btn-secondary">營區</button></a>
-				<a class="button" href=""><button type="button" class="btn btn-secondary">論壇</button></a>
-				<a class="button" href=""><button type="button" class="btn btn-secondary">商城</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">露營</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 			</div>
 			<img src="<%=request.getContextPath() %>/front-images/cart-outline.svg" class="cart">
 			<a href="<%=request.getContextPath() %>/front-end/announcement/listAllAnnouncement.jsp"><img src="<%=request.getContextPath() %>/front-images/megaphone-outline.svg" class="announcement"></a>
+			<c:if test="${memberVO == null}">
 			<div class="btn-group" role="group" aria-label="Basic example">
 				<a class="button" href="<%=request.getContextPath() %>/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
-				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">註冊</button></a>
-				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">登入</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/member/register.jsp"><button type="button" class="btn btn-outline-secondary">註冊</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/member/login.jsp"><button type="button" class="btn btn-outline-secondary">登入</button></a>
 <!-- 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">FAQ</button></a> -->
 <!-- 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 			</div>
+			</c:if>
 			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu">
-			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp"> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
+			<c:if test="${memberVO != null}">
+			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp"><img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement"></a>
+				${memberVO.name}
+			<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"><div class="person" style="display:inline;border-radius:50%;">${memberVO.sticker}</div> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
+			</c:if>
 		</div>
 	</div>
 
@@ -413,17 +432,19 @@ section.footer {
 	</div>
 	<div class="menuForButton">
 		<div class="btn-group sec" role="group" aria-label="Basic example">
-			<a class="button" href=""><button type="button" class="btn btn-secondary">營區</button></a>
-			<a class="button" href=""><button type="button" class="btn btn-secondary">論壇</button></a>
-			<a class="button" href=""><button type="button" class="btn btn-secondary">商城</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">露營</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 		</div>
+		<c:if test="${memberVO == null}">
 		<div class="btn-group sec" role="group" aria-label="Basic example">
 			<a class="button" href="<%=request.getContextPath() %>/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
-			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">註冊</button></a>
-			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">登入</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/member/register.jsp"><button type="button" class="btn btn-outline-secondary">註冊</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/member/login.jsp"><button type="button" class="btn btn-outline-secondary">登入</button></a>
 <!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">FAQ</button></a> -->
 <!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 		</div>
+		</c:if>
 	</div>
 	<div class="backToTop">
 		<a href="#"><img src="<%=request.getContextPath() %>/front-images/arrow-up-circle-outline.svg"
@@ -470,136 +491,113 @@ section.footer {
 			</div>
 		</div>
 	</section>
+	
+	<jsp:useBean id="campsiteSvc" class="com.campsite.model.CampService"/>
 	<section class="campsites">
 		<div class="container">
 			<div class="row">
+				<c:forEach var="campsiteVO" items="${campsiteSvc.all}" begin="0" end="2">
 				<div class="col-sm-4">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
-					<a class="text" href="">將會是營區</a>
+					<a href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html">
+					<img src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60">
+					</a>
+					<a class="text" href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html">${campsiteVO.camp_name}</a>
 				</div>
-				<div class="col-sm-4">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1465418138967-67a3d24f8085?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OTF8fGNhbXBzaXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
-					<a class="text" href="">將會是營區</a>
-				</div>
-				<div class="col-sm-4">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
-					<a class="text" href="">將會是營區</a>
-				</div>
+				</c:forEach>
 			</div>
 			<div class="row">
+				<c:forEach var="campsiteVO" items="${campsiteSvc.all}" begin="3" end="5">
 				<div class="col-sm-4">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1593093735059-eaf60625e6e2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzZ8fGNhbXBzaXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
-					<a class="text" href="">將會是營區</a>
+					<a href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html">
+					<img src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60">
+					</a>
+					<a class="text" href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html">${campsiteVO.camp_name}</a>
 				</div>
-				<div class="col-sm-4">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
-					<a class="text" href="">將會是營區</a>
-				</div>
-				<div class="col-sm-4">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1593093735059-eaf60625e6e2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzZ8fGNhbXBzaXRlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60"></a>
-					<a class="text" href="">將會是營區</a>
-				</div>
+				</c:forEach>
 			</div>
+			
 			<div class="row">
 				<div class="col-sm">
-					<a href=""><div class="more">> 更多營區</div></a>
+					<a href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><div class="more">> 更多營區</div></a>
 				</div>
 			</div>
 		</div>
 	</section>
-
+	
+	<jsp:useBean id="productSvc" class="com.product.model.ProductService"/>
 	<section class="products">
 		<div class="container">
 			<div class="row">
+				<c:forEach var="productVO" items="${productSvc.all}" begin="0" end="3">
 				<div class="col-sm-3">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1444012104069-996724bf4a0a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=632&q=80"></a>
-					<a class="text" href="">將會是商品</a>
+					<a href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">
+					<img src="https://images.unsplash.com/photo-1444012104069-996724bf4a0a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=632&q=80">
+					</a>
+					<a class="text" href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">${productVO.prod_name}</a>
 				</div>
-				<div class="col-sm-3">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1609168867437-3f09a1f04b8a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDN8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=600&q=60"></a>
-					<a class="text" href="">將會是商品</a>
-				</div>
-				<div class="col-sm-3">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1474376962954-d8a681cc53b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=634&q=80"></a>
-					<a class="text" href="">將會是商品</a>
-				</div>
-				<div class="col-sm-3">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1520963959303-a5cc3bdf9260?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=701&q=80"></a>
-					<a class="text" href="">將會是商品</a>
-				</div>
+				</c:forEach>
 			</div>
 			<div class="row">
+				<c:forEach var="productVO" items="${productSvc.all}" begin="4" end="7">
 				<div class="col-sm-3">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1444012104069-996724bf4a0a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=632&q=80"></a>
-					<a class="text" href="">將會是商品</a>
+					<a href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">
+					<img src="https://images.unsplash.com/photo-1444012104069-996724bf4a0a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=632&q=80">
+					</a>
+					<a class="text" href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">${productVO.prod_name}</a>
 				</div>
-				<div class="col-sm-3">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1503469519549-4415016d57a3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"></a>
-					<a class="text" href="">將會是商品</a>
-				</div>
-				<div class="col-sm-3">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1474376962954-d8a681cc53b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=634&q=80"></a>
-					<a class="text" href="">將會是商品</a>
-				</div>
-				<div class="col-sm-3">
-					<a href=""><img
-						src="https://images.unsplash.com/photo-1605620622858-ea62b0a2059c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDF8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=600&q=60"></a>
-					<a class="text" href="">將會是商品</a>
-				</div>
+				</c:forEach>
 			</div>
 			<div class="row">
 				<div class="col-sm">
-					<a href=""><div class="more">> 更多商品</div></a>
+					<a href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><div class="more">> 更多商品</div></a>
 				</div>
 			</div>
 		</div>
 	</section>
 
+	<jsp:useBean id="articleSvc" class="com.article.model.ArticleService"/>
 	<section class="articles">
 		<div class="container">
+			<c:forEach var="articleVO" items="${articleSvc.all_Front}" begin="0" end="2">
 			<div class="row">
 				<div class="col-sm">
-					<a href=""><div class="article">
-							<h5>Title標題標題</h5>
-							<p>One column內文部分內容，可能可以放100字...</p>
+					<a href="<%=request.getContextPath() %>/front-end/article/listOneArticle.jsp?art_no=${articleVO.art_no}">
+						<div class="article">
+							<h5>${articleVO.art_title}</h5>
+							<c:set var="art_cont" value="${articleVO.art_cont}" />
+							<c:if test="${art_cont.length() > 50}">
+								<p>${fn:substring(art_cont, 0, 50)}...</p>
+							</c:if>
+							<c:if test="${art_cont.length() <= 50}">
+								<p>${art_cont}</p>
+							</c:if>
 							<p>> 看更多</p>
-						</div></a>
+						</div>
+					</a>
 				</div>
 			</div>
+			</c:forEach>
+<!-- 			<div class="row"> -->
+<!-- 				<div class="col-sm"> -->
+<!-- 					<a href=""><div class="article"> -->
+<!-- 							<h5>Title標題標題</h5> -->
+<!-- 							<p>One column內文部分內容，可能可以放100字...</p> -->
+<!-- 							<p>> 看更多</p> -->
+<!-- 						</div></a> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 			<div class="row"> -->
+<!-- 				<div class="col-sm"> -->
+<!-- 					<a href=""><div class="article"> -->
+<!-- 							<h5>Title標題標題</h5> -->
+<!-- 							<p>One column內文部分內容，可能可以放100字...</p> -->
+<!-- 							<p>> 看更多</p> -->
+<!-- 						</div></a> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 			<div class="row">
 				<div class="col-sm">
-					<a href=""><div class="article">
-							<h5>Title標題標題</h5>
-							<p>One column內文部分內容，可能可以放100字...</p>
-							<p>> 看更多</p>
-						</div></a>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm">
-					<a href=""><div class="article">
-							<h5>Title標題標題</h5>
-							<p>One column內文部分內容，可能可以放100字...</p>
-							<p>> 看更多</p>
-						</div></a>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm">
-					<a href=""><div class="more">> 更多文章</div></a>
+					<a href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><div class="more">> 更多文章</div></a>
 				</div>
 			</div>
 		</div>

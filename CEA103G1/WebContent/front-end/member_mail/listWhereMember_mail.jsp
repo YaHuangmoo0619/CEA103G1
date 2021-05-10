@@ -3,6 +3,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.member_mail.model.*" %>
+<%@ page import="com.member.model.*" %>
+
+<% MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
 
 <!DOCTYPE html>
 <html>
@@ -13,8 +16,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 <title>會員站內信搜尋結果</title>
-<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
+<%-- <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%> --%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
 body{
@@ -84,15 +87,15 @@ tr:hover {
 
 </head>
 <body>
-<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
 	<div class="row">
-		<div class= "left col-3">
-		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
-		<div class="right col-9">
+<!-- 		<div class= "left col-3"> -->
+<%-- 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div> --%>
+		<div class="right col">
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>查詢的會員站內信列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/service_mail/listAllService_mail.jsp">回會員站內信列表</a></h3>
+			<h3>查詢的會員站內信列表&nbsp;<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/listAllMember_mail.jsp">回會員站內信列表</a></h3>
 			<hr>
 			<div style="text-align:center;font-weight:555;">
 				<div style="width: 150px;display:inline-block;">回覆人員</div>
@@ -115,6 +118,7 @@ tr:hover {
 				<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 				<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>
 				<c:forEach var="member_mailVO" items="${member_mailVOSet}">
+					<c:if test="${(memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 1) || (memberVO.mbr_no == member_mailVO.send_no && member_mailVO.mail_stat == 0)}">
 					<tr>
 						<td>${member_mailVO.mail_no}</td>
 						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
@@ -138,6 +142,7 @@ tr:hover {
 <!-- 							</form> -->
 <!-- 						</td> -->
 					</tr>
+					</c:if>
 				</c:forEach>
 			</table>
 		</div>
