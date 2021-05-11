@@ -561,7 +561,7 @@ section.footer {
 			<c:forEach var="articleVO" items="${articleSvc.all_Front}" begin="0" end="2">
 			<div class="row">
 				<div class="col-sm">
-					<a href="<%=request.getContextPath() %>/front-end/article/listOneArticle.jsp?art_no=${articleVO.art_no}">
+					<a href="<%=request.getContextPath() %>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">
 						<div class="article">
 							<h5>${articleVO.art_title}</h5>
 							<c:set var="art_cont" value="${articleVO.art_cont}" />
