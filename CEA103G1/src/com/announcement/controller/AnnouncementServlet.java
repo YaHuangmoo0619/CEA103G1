@@ -3,8 +3,10 @@ package com.announcement.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +19,8 @@ import javax.servlet.http.Part;
 
 import com.announcement.model.AnnouncementService;
 import com.announcement.model.AnnouncementVO;
+import com.member_mail.model.Member_mailService;
+import com.member_mail.model.Member_mailVO;
 
 
 @WebServlet("/announcement/announcement.do")
@@ -362,6 +366,38 @@ public class AnnouncementServlet extends HttpServlet {
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/back-end/announcement/listAllAnnouncement.jsp");
 				failureView.forward(req, res);
+			}
+		}
+		
+		if("read".equals(action) || "readBack".equals(action)) {
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				AnnouncementService announcementSvc = new AnnouncementService();
+				AnnouncementVO announcementVO = announcementSvc.getOneAnnouncement(Integer.valueOf(req.getParameter("an_no")));
+				
+				if("read".equals(action)){
+					req.setAttribute("announcementVO", announcementVO);
+					RequestDispatcher successView = req.getRequestDispatcher("/front-end/announcement/listOneAnnouncement.jsp");
+					successView.forward(req, res);
+				}else {
+					req.setAttribute("announcementVO", announcementVO);
+					RequestDispatcher successView = req.getRequestDispatcher("/back-end/announcement/listOneAnnouncement.jsp");
+					successView.forward(req, res);
+				}
+				
+			}catch(Exception e) {
+				if("read".equals(action)){
+					errorMsgs.add("查看資料失敗:"+e.getMessage());;
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/announcement/listAllAnnouncement.jsp");
+					failureView.forward(req, res);
+				}else {
+					errorMsgs.add("查看資料失敗:"+e.getMessage());;
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/announcement/listAllAnnouncement.jsp");
+					failureView.forward(req, res);
+				}
+				
 			}
 		}
 	}

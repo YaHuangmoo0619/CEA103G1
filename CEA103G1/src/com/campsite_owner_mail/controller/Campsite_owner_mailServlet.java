@@ -31,7 +31,7 @@ import com.member_mail_picture.model.Member_mail_pictureVO;
 @MultipartConfig(fileSizeThreshold=1024*1024, maxFileSize=5*1024*1024, maxRequestSize=5*5*1024*1024)
 public class Campsite_owner_mailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	String saveDirectory = "/images/member_mail_picture";
+	String saveDirectory = "/images/campsite_owner_mail_picture";
 	int count = 1;
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -135,6 +135,7 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 							
 							File f = new File(fsaveDirectory, "campsite_owner_mail_picture"+count+fileType);
 							part.write(f.toString());
+//							System.out.println("save");
 							
 							String mail_pic = req.getContextPath()+"/images/campsite_owner_mail_picture/campsite_owner_mail_picture"+count+fileType;
 							Campsite_owner_mail_pictureVO campsite_owner_mail_pictureVO = new Campsite_owner_mail_pictureVO();

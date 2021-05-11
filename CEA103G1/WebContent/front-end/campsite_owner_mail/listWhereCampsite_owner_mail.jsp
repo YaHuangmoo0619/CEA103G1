@@ -95,9 +95,10 @@ tr:hover {
 		<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
 		<div class="right col-9">
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>營主站內信搜尋結果</h3>
-			<a href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/addCampsite_owner_mail.jsp">寄信</a>
-			<a href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">回到營主站內信列表</a>
+			<h3>營主站內信搜尋結果&nbsp;
+			<a class="content" href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/addCampsite_owner_mail.jsp">寄信</a>&nbsp;
+			<a class="content" href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">回到營主站內信列表</a>
+			</h3>
 			<hr>
 				<div style="text-align:center;font-weight:555;">
 					<div style="width: 150px;display:inline-block;">寄件人</div>
@@ -120,7 +121,7 @@ tr:hover {
 				<c:forEach var="campsite_owner_mailVO" items="${campsite_owner_mailVOSet}">
 					<c:if test="${campsite_ownerVO.cso_no == campsite_owner_mailVO.send_no}">
 					<tr>
-						<td>${campsite_owner_mailVO.mail_no}</td>
+						<td style="display:none;">${campsite_owner_mailVO.mail_no}</td>
 						<td>${campsite_owner_mailVO.send_no}${memberSvc.getOneMember(campsite_owner_mailVO.send_no).name}</td>
 						<td>${campsite_owner_mailVO.rcpt_no}${memberSvc.getOneMember(campsite_owner_mailVO.rcpt_no).name}</td>
 						<c:set var="mail_cont" value="${campsite_owner_mailVO.mail_cont}" />
@@ -130,18 +131,18 @@ tr:hover {
 							<c:if test="${mail_cont.length() <= 10}">
 								<td>${mail_cont}</td>
 							</c:if>
-						<td>${campsite_owner_mailVO.mail_stat}</td>
-						<td class="mail_read_stat">${campsite_owner_mailVO.mail_read_stat}</td>
+						<td style="display:none;">${campsite_owner_mailVO.mail_stat}</td>
+						<td class="mail_read_stat" style="display:none;">${campsite_owner_mailVO.mail_read_stat}</td>
 						<c:set var="mail_time" value="${campsite_owner_mailVO.mail_time}" />
 							<td>${fn:substring(mail_time, 0, 10)}</td>
-						<td>
-							<form method="post" action="<%=request.getContextPath()%>/authority/authority.do">
-								<input class="change" type="submit" value="修改">
-								<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}">
-								<input type="hidden" name="action" value="getOne_For_Update">
-							</form>
-						</td>
-					</tr>
+<!-- 						<td> -->
+<%-- 							<form method="post" action="<%=request.getContextPath()%>/authority/authority.do"> --%>
+<!-- 								<input class="change" type="submit" value="修改"> -->
+<%-- 								<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}"> --%>
+<!-- 								<input type="hidden" name="action" value="getOne_For_Update"> -->
+<!-- 							</form> -->
+<!-- 						</td> -->
+<!-- 					</tr> -->
 					</c:if>
 				</c:forEach>
 			</table>

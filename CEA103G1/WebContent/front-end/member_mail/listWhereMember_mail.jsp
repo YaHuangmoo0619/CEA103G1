@@ -120,7 +120,7 @@ tr:hover {
 				<c:forEach var="member_mailVO" items="${member_mailVOSet}">
 					<c:if test="${(memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 1) || (memberVO.mbr_no == member_mailVO.send_no && member_mailVO.mail_stat == 0)}">
 					<tr>
-						<td>${member_mailVO.mail_no}</td>
+						<td style="display:none;">${member_mailVO.mail_no}</td>
 						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
 						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
 						<c:set var="mail_cont" value="${member_mailVO.mail_cont}" />
@@ -130,8 +130,8 @@ tr:hover {
 							<c:if test="${mail_cont.length() <= 10}">
 								<td>${mail_cont}</td>
 							</c:if>
-						<td>${member_mailVO.mail_stat}</td>
-						<td class="mail_read_stat" >${member_mailVO.mail_read_stat}</td>
+						<td style="display:none;">${member_mailVO.mail_stat}</td>
+						<td class="mail_read_stat" style="display:none;">${member_mailVO.mail_read_stat}</td>
 						<c:set var="mail_time" value="${member_mailVO.mail_time}" />
 						<td>${fn:substring(mail_time, 0, 10)}</td>
 <!-- 						<td> -->

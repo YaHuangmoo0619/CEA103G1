@@ -2,9 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.campsite_owner_mail.model.*" %>
+<%@ page import="com.campsite_owner.model.*" %>
+
 
 <% Campsite_owner_mailVO campsite_owner_mailVO = (Campsite_owner_mailVO)request.getAttribute("campsite_owner_mailVO"); %>
 
+<% Campsite_ownerVO campsite_ownerVO = (Campsite_ownerVO)session.getAttribute("campsite_ownerVO"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -119,18 +122,19 @@ img{
 			<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 			<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
 			<table>
-				<tr>
+				<tr style="display:none;">
 					<td>
 						<label for="send_no">寄件人</label>
 						<br><h5 style="color:#80c344;">${errorMsgs.send_no[0]}</h5>
 					</td>
 					<td>
-						<select size="1" name="send_no" id="send_no">
-						<option value="99">--請選擇--</option>
-						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
-							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.rcpt_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
-						</c:forEach>
-						</select>
+						<input type="text" name="send_no" value="${campsite_ownerVO.cso_no}">
+<!-- 						<select size="1" name="send_no" id="send_no"> -->
+<!-- 						<option value="99">--請選擇--</option> -->
+<%-- 						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}"> --%>
+<%-- 							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.rcpt_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option> --%>
+<%-- 						</c:forEach> --%>
+<!-- 						</select> -->
 					</td>
 				</tr>
 				<tr>
@@ -144,9 +148,7 @@ img{
 						<c:forEach var="memberVO" items="${memberSvc.all}">
 							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.send_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
 						</c:forEach>
-						<c:forEach var="employeeVO" items="${employeeSvc.all}">
-							<option value="${employeeVO.emp_no}" ${employeeVO.emp_no == param.rcpt_no? 'selected':''}>${employeeVO.emp_no}${employeeVO.name}</option>
-						</c:forEach>
+						<option value="90001" ${employeeVO.emp_no == param.rcpt_no? 'selected':''}>客服信箱</option>
 						</select>
 					</td>
 				</tr>
@@ -174,7 +176,7 @@ img{
 					<input type="hidden" name="mail_stat" value="0">
 					<input type="hidden" name="mail_read_stat" value="0">
 					<input type="hidden" name="action" value="insert">
-					<input type="submit" value="送出新增" class="confirm">
+					<input type="submit" value="發送" class="confirm">
 <!-- 					<input type="submit" value="存入草稿" class="confirm"> -->
 			</form>
 		</div>

@@ -129,7 +129,7 @@ img.info{
 				<p style="font-size:0.5em">發信時間：&nbsp;${member_mailVO.mail_time}</p>
 						
 			</div>
-			<form method="post" action="<%=request.getContextPath()%>/back-end/member_mail/addMember_mail.jsp">		
+			<form method="post" action="<%=request.getContextPath()%>/front-end/member_mail/addMember_mail.jsp">		
 					<input type="hidden" name="mail_no" value="${member_mailVO.mail_no}">
 					<input type="hidden" name="send_no" value="${member_mailVO.send_no}">
 					<input type="hidden" name="rcpt_no" value="${member_mailVO.rcpt_no}">

@@ -122,21 +122,22 @@ img{
 			<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>
 			<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
 			<table>
-				<tr>
+				<tr style="display:none">
 					<td>
 						<label for="send_no">寄件人</label>
 						<br><h5 style="color:#80c344;">${errorMsgs.send_no[0]}</h5>
 					</td>
 					<td>
-						<select size="1" name="send_no" id="send_no">
-						<option value="99">--請選擇--</option>
-						<c:forEach var="memberVO" items="${memberSvc.all}">
-							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.send_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
-						</c:forEach>
-						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
-							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.rcpt_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
-						</c:forEach>
-						</select>
+						<input type="text" name="send_no" value="${memberVO.mbr_no}">
+<!-- 						<select size="1" name="send_no" id="send_no"> -->
+<!-- 						<option value="99">--請選擇--</option> -->
+<%-- 						<c:forEach var="memberVO" items="${memberSvc.all}"> --%>
+<%-- 							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.send_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option> --%>
+<%-- 						</c:forEach> --%>
+<%-- 						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}"> --%>
+<%-- 							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.rcpt_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option> --%>
+<%-- 						</c:forEach> --%>
+<!-- 						</select> -->
 					</td>
 				</tr>
 				<tr>
@@ -148,11 +149,11 @@ img{
 						<select size="1" name="rcpt_no" id="rcpt_no">
 						<option value="99">--請選擇--</option>
 						<c:forEach var="memberVO" items="${memberSvc.all}">
-							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.rcpt_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
+							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.send_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
 						</c:forEach>
 						<option value="90001">客服人員</option>
 						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
-							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.rcpt_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
+							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.send_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
 						</c:forEach>
 						</select>
 					</td>

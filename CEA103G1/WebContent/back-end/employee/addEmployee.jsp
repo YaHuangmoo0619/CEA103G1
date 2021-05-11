@@ -13,54 +13,165 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="BIG5">
+<meta charset="UTF-8">
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <title>新增網站管理員 - addEmployee.jsp</title>
-
+<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
-  table#table-1 {
-	background-color: #FFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
+body {
+	background-color: #4e5452;
+	color: #4e5452;
+}
 
-<style>
-  table {
-	width: 450px;
-	background-color: white;
-	margin-top: 1px;
-	margin-bottom: 1px;
-  }
-  table, th, td {
-    border: 0px solid #CCCCFF;
-  }
-  th, td {
-    padding: 1px;
-  }
+div.left {
+	margin-top: 20px;
+}
 
+div.right {
+	background-color: #fff;
+	margin-top: 40px;
+	padding: 50px 50px;
+	border-radius: 5px;
+}
+
+a.content {
+	color: #80c344;
+	font-size: 0.6em;
+}
+
+a.content:hover {
+	color: #4B7F52;
+}
+
+input.confirm {
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+
+input.confirm:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+
+#confirmTop:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+
+div.forSearch{
+	margin: 0 auto;
+	width: 70%;
+	hieght: 50px;
+	position: relative;
+}
+div.forSearchMore{
+	top: 110%;
+	left: 15%;
+	width: 70%;
+	position: absolute;
+	background-color: #fff;
+	box-shadow: 0 1px 5px 0 #4e5452;
+	display: none
+}
+
+#mail_cont{
+	border-radius:5px;
+	background-color:#eee;
+	border:none;
+	padding:5px 15px;
+	width:50%;
+}
+
+span{
+	 font-size:0.8em;
+	 font-weight:444;
+	 padding: 7px;
+	 background-color: #eee;
+	 border-radius:5px;
+}
+span:hover{
+	cursor: pointer;
+	background-color: #4e5452;
+	color: #eee;
+}
+
+label, select, input {
+	font-size: 0.8em;
+}
+
+table {
+	width: 700px;
+	margin: 30px auto;
+	/* 	border: 1px solid #4e5452; */
+}
+
+th, td {
+	text-align: left;
+	/* 	border: 1px solid #4e5452; */
+	padding: 10px 15px;
+}
+
+td.function {
+	text-align: justify;
+}
+
+label.spotlight {
+	background-color: #80c344;
+	padding: 2px 5px;
+	border-radius: 5px;
+	color: #fff;
+}
+
+input.change {
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+
+input.change:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+
+#focus {
+	margin-right: -5px;
+}
+
+tr {
+/* 	border-top: 1px solid #eee; */
+	border-bottom: 2px solid #eee;
+}
+
+tr:hover {
+ 	box-shadow: 0 1px 5px 0 #4e5452 inset; 
+/* 	cursor: pointer; */
+}
 </style>
 
 </head>
-<body bgcolor='white'>
-
-<table id="table-1">
-	<tr><td>
-		 <h3>新增網站管理員 - addEmployee.jsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back-end/employee/select_page.jsp"><img src="<%=request.getContextPath()%>/images/logo.png" width="50" height="50" border="0"><br>回首頁</a></h4>
-	</td></tr>
-</table>
-
-<h3>資料新增:</h3>
+<body>
+<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+	<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
+	<div class="container">
+		<div class="row">
+			<div class="left col-3">
+				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
+			<div class="right col-9">
 
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
@@ -71,7 +182,10 @@
 		</c:forEach>
 	</ul>
 </c:if>
-
+<h3>新增網站管理員&nbsp;
+			<a class="content" href="<%=request.getContextPath()%>/back-end/employee/listAllEmployee.jsp">回到網站管理員列表</a>&nbsp;
+			</h3>
+			<hr>
 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/employee/employee.do" name="form1">
 <table>
 	<tr>
@@ -94,9 +208,11 @@
 </table>
 <br>
 <input type="hidden" name="action" value="insert">
-<input type="submit" value="送出新增"></FORM>
+<input type="submit" value="送出新增" class="change"></FORM>
+</div>
+</div>
+</div>
 
-
-
+<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 </body>
 </html>
