@@ -14,9 +14,9 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <title>公告列表 - listAllAnnouncement.jsp</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
@@ -206,7 +206,7 @@ tr:hover {
 <!-- 	</tr> -->
 	<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService" />
 	<c:forEach var="announcementVO" items="${list}" >	
-		<tr ${(announcementVO.an_no==param.an_no || announcementVO.an_no==an_no) ? 'bgcolor=#98FB98' : '' }>
+		<tr ${(announcementVO.an_no==param.an_no || announcementVO.an_no==an_no) ? 'bgcolor=#eee' : '' }>
 				<c:if test="${announcementVO.an_no==param.an_no || announcementVO.an_no==an_no}">
 					<td id="focus">${announcementVO.an_no}<a  style="display: none;"></a></td>
 				</c:if>
@@ -217,14 +217,14 @@ tr:hover {
 			<c:set var="an_cont" value="${announcementVO.an_cont}"/>
 			<td class="cont" >
 			${fn:substring(an_cont, 0, 30)}<br>
-			<button onclick="showModal${announcementVO.an_no}()">看全文</button>
+			<input type="button" onclick="showModal${announcementVO.an_no}()" value="看全文" class="change">
 			</td>
-			<td>${announcementVO.an_skd_date}</td>
-			<td><img src="<%=request.getContextPath()%>/announcement/GetPhoto?an_no=${announcementVO.an_no}" style="width:200px"></td>
+			<td style="width:150px;">${announcementVO.an_skd_date}</td>
+			<td><img src="<%=request.getContextPath()%>/announcement/GetPhoto?an_no=${announcementVO.an_no}" style="width:150px"></td>
 		
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/announcement/announcement.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改">
+			     <input type="submit" value="修改" class="change">
 			     <input type="hidden" name="an_no"  value="${announcementVO.an_no}">
 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
 			</td>

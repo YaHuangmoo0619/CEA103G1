@@ -130,7 +130,7 @@ p {
 		<a href="<%=request.getContextPath()%>/campion_back.jsp"><img src="<%=request.getContextPath()%>/images/campionLogoLong.png"
 			class="logo"></a>
 		<c:if test="${employeeVO != null}">
-			<div style="margin-right:5px;"><a href="<%=request.getContextPath()%>/back-end/employee/listOneEmployee.jsp"><div class="login">${employeeVO.name}工作中</div></a></div>
+			<div style="margin-right:5px;"><a href="<%=request.getContextPath()%>/back-end/employee/listOneEmployee_person.jsp?emp_no=${employeeVO.emp_no}"><div class="login">${employeeVO.name}工作中</div></a></div>
 		</c:if>
 		<c:if test="${employeeVO == null}">
 			<div style="margin-right:5px;"><a href="<%=request.getContextPath()%>/front-end/login.html"><div class="login">登入</div></a></div>
@@ -144,7 +144,7 @@ p {
 						<jsp:useBean id="authoritySvc" class="com.authority.model.AuthorityService"/>
 						<c:forEach var="authorityVO" items="${authoritySvc.findByEmp_no(employeeVO.emp_no)}">
 						<c:if test="${authorityVO.fx_no == 1}">
-						<li><a href="<%=request.getContextPath()%>/back-end/employee/select_page.jsp">員工管理</a></li>
+						<li><a href="<%=request.getContextPath()%>/back-end/employee/listAllEmployee.jsp">員工管理</a></li>
 						</c:if>
 						<c:if test="${authorityVO.fx_no == 3}">
 						<li><a href="<%=request.getContextPath() %>/back-end/place_order/PresentPlace_order.jsp">營位訂購平台管理</a></li>
@@ -171,17 +171,17 @@ p {
 					</ul>
 				</c:if>
 				<c:if test="${employeeVO == null}"><img style="max-width: 100%; margin-top: 30%;opacity:0.8;" src="<%=request.getContextPath()%>/images/campionLogoCircle.png"></c:if>
-				<ul>
-					<li><a
-						href="<%=request.getContextPath()%>/back-end/employee/select_page.jsp">員工管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/place_order/PresentPlace_order.jsp">營位訂購平台管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/announcement/select_page.jsp">公告管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">客服管理</a></li>
-					<li><a href="">即時小幫手管理</a></li>
-				</ul>
+<!-- 				<ul> -->
+<!-- 					<li><a -->
+<%-- 						href="<%=request.getContextPath()%>/back-end/employee/select_page.jsp">員工管理</a></li> --%>
+<%-- 					<li><a href="<%=request.getContextPath() %>/back-end/place_order/PresentPlace_order.jsp">營位訂購平台管理</a></li> --%>
+<%-- 					<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城管理</a></li> --%>
+<%-- 					<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li> --%>
+<%-- 					<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li> --%>
+<%-- 					<li><a href="<%=request.getContextPath() %>/back-end/announcement/select_page.jsp">公告管理</a></li> --%>
+<%-- 					<li><a href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">客服管理</a></li> --%>
+<!-- 					<li><a href="">即時小幫手管理</a></li> -->
+<!-- 				</ul> -->
 			</div>
 			<div class="right col-9">
 				<div class="row">

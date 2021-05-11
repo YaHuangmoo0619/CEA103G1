@@ -86,7 +86,7 @@ tr {
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>${employeeVO.name}資料&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/employee/listAllEmployee.jsp">回網站管理員列表</a></h2>
+			<h2>${employeeVO.name}資料</h2>
 			<hr>
 <%-- 錯誤列表 --%>
 <c:if test="${not empty errorMsgs}">

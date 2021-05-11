@@ -1,8 +1,10 @@
 package com.employee.controller;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.json.*;
@@ -484,6 +486,24 @@ public class EmployeeServlet extends HttpServlet {
 				errorMsgs.add("刪除資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/back-end/employee/listAllEmployee.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if("read".equals(action)) {
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				EmployeeService employeeSvc = new EmployeeService();
+				EmployeeVO employeeVO = employeeSvc.getOneEmployee(Integer.valueOf(req.getParameter("emp_no")));
+				
+				req.setAttribute("employeeVO", employeeVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/employee/listOneEmployee.jsp");
+				successView.forward(req, res);
+			}catch(Exception e) {
+				errorMsgs.add("查看資料失敗:"+e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/employee/listAllEmployee.jsp");
 				failureView.forward(req, res);
 			}
 		}

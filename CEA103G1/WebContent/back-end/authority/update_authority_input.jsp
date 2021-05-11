@@ -8,9 +8,9 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <title>修改網站管理員權限</title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
@@ -31,6 +31,7 @@ div.right{
 }
 a.content{
 	color: #80c344;
+	font-size: 0.6em;
 }
 a.content:hover {
 	color: #4B7F52;
@@ -39,11 +40,11 @@ a.content:hover {
 table{
 	width: 700px;
 	margin: 30px auto;
-	border: 1px solid #4e5452;
+/* 	border: 1px solid #4e5452; */
 }
 th, td{
 	text-align: center;
-	border: 1px solid #4e5452;
+/* 	border: 1px solid #4e5452; */
 	padding: 10px 15px;
 }
 td.function{
@@ -64,6 +65,10 @@ input.change:hover{
 	color: #80c344;
 	cursor: pointer;
 }
+tr {
+/* 	border-top: 1px solid #eee; */
+	border-bottom: 2px solid #eee;
+}
 </style>
 
 </head>
@@ -75,9 +80,8 @@ input.change:hover{
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>修改網站管理員權限&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/authority/select_page.jsp">回首頁</a></h2>
+			<h2>修改網站管理員權限&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/authority/listAllAuthority.jsp">回網站管理員權限列表</a></h2>
 			<hr>
-			<h3>資料列表:</h3>
 			<table>
 				<tr>
 					<th style="width:50px">編號</th>
