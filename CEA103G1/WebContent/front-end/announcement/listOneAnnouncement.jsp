@@ -16,126 +16,107 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 <title>公告列表 - listOneAnnouncement.jsp</title>
-
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
-  table#table-1 {
-	background-color: #FFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
+body{
+	background-color: #4e5452;
+	color: #4e5452;
+}
+div.left{
+	margin-top: 20px;
+}
+div.right{
+	background-color: #fff;
+	margin-top: 40px;
+	padding: 50px 50px;
+	border-radius: 5px;
+}
+a.content{
+	color: #80c344;
+	font-size: 0.6em;
+}
+a.content:hover {
+	color: #4B7F52;
+}
 
-<style>
-  table {
-	width: 800px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  } 
-  td.cont{
-  	text-align: left;
-  }
-  .seeMoreBox{
-  	border-radius: 5%;
-  	background-color: #333;
-  	position: absolute;
-  	width: 500px;
-  	display: none;
-  	opacity: 0.9;
-  }
-  .seeMoreWord{
-  	border-radius: 5%;
-  	background-color: #fff;
-	width: 300px;
-	color: black;
-	padding: 30px;
-	margin: 75px;
-  }
+/* table{ */
+/* 	width: 700px; */
+/* 	margin: 30px auto; */
+/* 	border: 1px solid #4e5452; */
+/* } */
+/* th, td{ */
+/* 	text-align: center; */
+/* 	border: 1px solid #4e5452; */
+/* 	padding: 10px 15px; */
+/* } */
+/* td.function{ */
+/* 	text-align: justify;	 */
+/* } */
+label.spotlight{
+	background-color: #80c344;
+	padding: 2px 5px;
+	border-radius: 5px;
+	color: #fff;
+}
+form{
+	text-align: center;
+}
+/* textarea{ */
+/* 	resize: none; */
+/* } */
+
+div.mail{
+	text-align: left;
+	margin: 50px auto;
+	width: 60%;
+	font-size:1.2em;
+}
+
+input.confirm{
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+	margin: 0px 10px;
+}
+input.confirm:hover{
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+img.info{
+	max-width:30%;
+	margin: 3px;
+}
 </style>
 
 </head>
-<body bgcolor='white'>
+<body>
+<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
+<div class="container">
+	<div class="row">
+		<div class="right col">
+			<h2>公告內容&nbsp;<a class="content" href="<%=request.getContextPath()%>/front-end/announcement/listAllAnnouncement.jsp">回公告列表</a></h2>
+		<hr>
+		<div class="mail">
+		<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService" />
 
-<table id="table-1">
-	<tr><td>
-		 <h3>公告列表 - listOneAnnouncement.jsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back-end/announcement/select_page.jsp"><img src="<%=request.getContextPath()%>/images/logo.png" width="50" height="50" border="0"><br>回首頁</a></h4>
-	</td></tr>
-</table>
-
-<table>
-	<tr>
-		<th style="width:50px">編號</th>
-		<th style="width:100px">發文者</th>
-		<th style="width:200px">部分發文內容</th>
-		<th style="width:100px">更新日期</th>
-		<th style="width:200px">照片</th>
-	
-	</tr>
-	<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService" />
-		<tr>
-			<td>${announcementVO.an_no}</td>
-			<td>${employeeSvc.getOneEmployee(announcementVO.emp_no).name}</td>
-			<c:set var="an_cont" value="${announcementVO.an_cont}"/>
-			<td class="cont" >${fn:substring(an_cont, 0, 30)}<br>
-			<button onclick="showModal${announcementVO.an_no}()">看全文</button>
-			</td>
-			<td>${announcementVO.an_skd_date}</td>
-			<td><img src="<%=request.getContextPath()%>/announcement/GetPhoto?an_no=${announcementVO.an_no}" style="width:200px"></td>
-		
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/announcement/announcement.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改">
-			     <input type="hidden" name="an_no"  value="${announcementVO.an_no}">
-			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/announcement/announcement.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="刪除">
-			     <input type="hidden" name="an_no"  value="${announcementVO.an_no}">
-			     <input type="hidden" name="action" value="delete"></FORM>
-			</td>
-		</tr>
-		<div class="modal" tabindex="-1" role="dialog" id="Modal${announcementVO.an_no}">
-		     <div class="modal-dialog" role="document"> 
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <h5 class="modal-title">公告全文</h5>
-		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
-		            </div>
-		            <div class="modal-body">
-		            					<% request.setAttribute("line", "\n"); %>
-		                                <p>${fn:replace(an_cont, line, '<br>')}</p> 
-		            </div>
-		            <div class="modal-footer">
-		                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		            </div>
-		       </div>
-		   </div>
-		</div>
-		<script>
-			function showModal${announcementVO.an_no}() {
-			    $('#Modal${announcementVO.an_no}').modal('show'); 
-			}
-		</script>
-</table>
-
-
+<%-- 				<p>${announcementVO.an_no}</p> --%>
+<%-- 				<p>${employeeSvc.getOneEmployee(announcementVO.emp_no).name}</p> --%>
+				<c:set var="an_cont" value="${announcementVO.an_cont}"/>
+				<% request.setAttribute("line", "\n"); %>
+		        <p>${fn:replace(an_cont, line, '<br>')}</p><br>
+				<img src="<%=request.getContextPath()%>/announcement/GetPhoto?an_no=${announcementVO.an_no}" style="width:200px">
+				<p>${announcementVO.an_skd_date}</p>
+			
+</div>
+</div>
+</div>
+</div>
+<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 </body>
 </html>

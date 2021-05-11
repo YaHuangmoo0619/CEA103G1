@@ -18,164 +18,230 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
 <title>所有公告列表 - listAllAnnouncement.jsp</title>
-
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
-  table#table-1 {
-	background-color: #FFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
+body{
+	background-color: #4e5452;
+	color: #4e5452;
+}
+div.left{
+	margin-top: 20px;
+}
+div.right{
+	background-color: #fff;
+	margin-top: 40px;
+	padding: 50px 50px;
+	border-radius: 5px;
+}
+a.content{
+	color: #80c344;
+	font-size: 0.6em;
+}
+a.content:hover {
+	color: #4B7F52;
+}
 
-<style>
-  table {
-	width: 800px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
+input.confirm {
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+
+input.confirm:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+
+#confirmTop:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+
+div.forSearchs{
+	margin: 0 auto;
+	width: 70%;
+	hieght: 50px;
 	position: relative;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  } 
-  td.cont{
-  	text-align: left;
-  }
-  .seeMoreBox{
-  	border-radius: 5%;
-  	background-color: #333;
-  	position: absolute;
-  	width: 500px;
-  	display: none;
-  	opacity: 0.9;
-  }
-  .seeMoreWord{
-  	border-radius: 5%;
-  	background-color: #fff;
-	width: 300px;
-	color: black;
-	padding: 30px;
-	margin: 75px;
-  }
-  #focusButton{
-  	width:230px;
-  	margin-left: 250px;
-  	padding: 10px;
-  	border: 1px solid #ccc;
-  	text-align: center;
-  }
-  #focusButton:hover{
-  	background-color: #98FB98;
-  	cursor: pointer;
-  }
-  a:hover{
-  	text-decoration: none;
-  }
-  #back:hover{
- 	background-color: #98FB98;
-  	cursor: pointer;
-  }
+}
+div.forSearchsMore{
+	top: 110%;
+	left: 15%;
+	width: 70%;
+	position: absolute;
+	background-color: #fff;
+	box-shadow: 0 1px 5px 0 #4e5452;
+	display: none
+}
+
+#mail_cont{
+	border-radius:5px;
+	background-color:#eee;
+	border:none;
+	padding:5px 15px;
+	width:50%;
+}
+
+span{
+	 font-size:0.8em;
+	 font-weight:444;
+	 padding: 7px;
+	 background-color: #eee;
+	 border-radius:5px;
+}
+span:hover{
+	cursor: pointer;
+	background-color: #4e5452;
+	color: #eee;
+}
+
+label, select, input {
+	font-size: 0.8em;
+}
+
+table{
+	width: 700px;
+	margin: 30px auto;
+/* 	border: 1px solid #4e5452; */
+}
+th, td{
+	text-align: left;
+/* 	border: 1px solid #4e5452; */
+	padding: 10px 15px;
+}
+td.function{
+	text-align: justify;	
+}
+label.spotlight{
+	background-color: #80c344;
+	padding: 2px 5px;
+	border-radius: 5px;
+	color: #fff;
+}
+input.change{
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+input.change:hover{
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+#focus{
+	margin-right: -5px;
+}
+
+tr {
+/* 	border-top: 1px solid #eee; */
+	border-bottom: 2px solid #eee;
+}
+
+tr:hover {
+	box-shadow: 0 1px 5px 0 #4e5452 inset;
+	cursor: pointer;
+}
 </style>
 
 </head>
-<body bgcolor='white'>
-<table id="table-1">	
-	<tr><td>
-		 <h3>所有公告列表 - listAllAnnouncement.jsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back-end/announcement/select_page.jsp"><img src="<%=request.getContextPath()%>/images/logo.png" width="50" height="50" border="0"><br>回首頁</a></h4>
-	</td></tr>
-</table>
+<body>
+<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
+<div class="container">
+	<div class="row">
+		<div class="right col">
+			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
+			<h3>公告列表</h3>
+			<hr>
+			
+			<%-- 錯誤列表 --%>
+			<c:if test="${not empty errorMsgs}">
+				<font style="color:red">請修正以下錯誤:</font>
+				<ul>
+					<c:forEach var="message" items="${errorMsgs}">
+						<li style="color:red">${message}</li>
+					</c:forEach>
+				</ul>
+			</c:if>
+			<!-- <div id="focusButton"><a href="#focus">查看當筆新增或修改的資料</a><a id="first"></a></div> -->
 
-<%-- 錯誤列表 --%>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">請修正以下錯誤:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
-<div id="focusButton"><a href="#focus">查看當筆新增或修改的資料</a><a id="first"></a></div>
-<table>
-	<tr>
-		<th style="width:50px">編號</th>
-		<th style="width:80px">發文者</th>
-		<th style="width:170px">部分發文內容</th>
-		<th style="width:100px">公告日期</th>
-		<th style="width:200px">照片</th>
-	
-	</tr>
-	<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService" />
-	<c:forEach var="announcementVO" items="${list}" >	
-		<tr ${(announcementVO.an_no==param.an_no || announcementVO.an_no==an_no) ? 'bgcolor=#98FB98' : '' }>
-				<c:if test="${announcementVO.an_no==param.an_no || announcementVO.an_no==an_no}">
-					<td id="focus">${announcementVO.an_no}<a  style="display: none;"></a></td>
-				</c:if>
-				<c:if test="${announcementVO.an_no!=param.an_no && announcementVO.an_no!=an_no}">
-					<td>${announcementVO.an_no}</td>
-				</c:if>
-			<td>${employeeSvc.getOneEmployee(announcementVO.emp_no).name}</td>
-			<c:set var="an_cont" value="${announcementVO.an_cont}"/>
-			<td class="cont" >
-			${fn:substring(an_cont, 0, 30)}<br>
-			<button onclick="showModal${announcementVO.an_no}()">看全文</button>
-			</td>
-			<td>${announcementVO.an_skd_date}</td>
-			<td><img src="<%=request.getContextPath()%>/announcement/GetPhoto?an_no=${announcementVO.an_no}" style="width:200px"></td>
-		
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/announcement/announcement.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改">
-			     <input type="hidden" name="an_no"  value="${announcementVO.an_no}">
-			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/announcement/announcement.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="刪除">
-			     <input type="hidden" name="an_no"  value="${announcementVO.an_no}">
-			     <input type="hidden" name="action" value="delete"></FORM>
-			</td>
-			<td id="back" style="width: 80px;"><a href="#first" style="font-size: 0.5em;">回到第一筆</a></td>
-		</tr>
-		<div class="modal" tabindex="-1" role="dialog" id="Modal${announcementVO.an_no}">
-		     <div class="modal-dialog" role="document"> 
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <h5 class="modal-title">公告全文</h5>
-		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
-		            </div>
-		            <div class="modal-body">
-		            					<% request.setAttribute("line", "\n"); %>
-		                                <p>${fn:replace(an_cont, line, '<br>')}</p> 
-		            </div>
-		            <div class="modal-footer">
-		                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		            </div>
-		       </div>
-		   </div>
+			<table>
+<!-- 				<tr> -->
+<!-- 					<th style="width:50px">編號</th> -->
+<!-- 					<th style="width:80px">發文者</th> -->
+<!-- 					<th style="width:170px">部分發文內容</th> -->
+<!-- 					<th style="width:100px">公告日期</th> -->
+<!-- 					<th style="width:200px">照片</th> -->
+				
+<!-- 				</tr> -->
+				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService" />
+				<c:forEach var="announcementVO" items="${list}" >	
+					<tr>
+<%-- 							<c:if test="${announcementVO.an_no==param.an_no || announcementVO.an_no==an_no}"> --%>
+<%-- 								<td id="focus">${announcementVO.an_no}<a  style="display: none;"></a></td> --%>
+<%-- 							</c:if> --%>
+<%-- 							<c:if test="${announcementVO.an_no!=param.an_no && announcementVO.an_no!=an_no}"> --%>
+								<td style="display:none;">${announcementVO.an_no}</td>
+<%-- 							</c:if> --%>
+<%-- 						<td>${employeeSvc.getOneEmployee(announcementVO.emp_no).name}</td> --%>
+						<c:set var="an_cont" value="${announcementVO.an_cont}"/>
+						<td class="cont" >
+							<c:if test="${an_cont.length() > 30}">
+								<td>${fn:substring(an_cont, 0, 30)}...</td>
+							</c:if>
+							<c:if test="${an_cont.length() <= 30}">
+								<td>${an_cont}</td>
+							</c:if>
+<%-- 						<button onclick="showModal${announcementVO.an_no}()">看全文</button> --%>
+						</td>
+						<td><img src="<%=request.getContextPath()%>/announcement/GetPhoto?an_no=${announcementVO.an_no}" style="width:200px"></td>
+						<td style="width:150px;">${announcementVO.an_skd_date}</td>
+					
+			<!-- 			<td> -->
+			<%-- 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/announcement/announcement.do" style="margin-bottom: 0px;"> --%>
+			<!-- 			     <input type="submit" value="修改"> -->
+			<%-- 			     <input type="hidden" name="an_no"  value="${announcementVO.an_no}"> --%>
+			<!-- 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM> -->
+			<!-- 			</td> -->
+			<!-- 			<td> -->
+			<%-- 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/announcement/announcement.do" style="margin-bottom: 0px;"> --%>
+			<!-- 			     <input type="submit" value="刪除"> -->
+			<%-- 			     <input type="hidden" name="an_no"  value="${announcementVO.an_no}"> --%>
+			<!-- 			     <input type="hidden" name="action" value="delete"></FORM> -->
+			<!-- 			</td> -->
+			<!-- 			<td id="back" style="width: 80px;"><a href="#first" style="font-size: 0.5em;">回到第一筆</a></td> -->
+					</tr>
+				</c:forEach>
+			</table>
 		</div>
-		<script>
-			function showModal${announcementVO.an_no}() {
-			    $('#Modal${announcementVO.an_no}').modal('show'); 
-			}
-		</script>
-	</c:forEach>
-</table>
+	</div>
+</div>
+<script>
+	$("tr").click(function(e){
+		let an_no = e.currentTarget.children[0].innerText;
+		window.location.href="<%=request.getContextPath()%>/announcement/announcement.do?an_no="+ an_no + "&action=read";
+	});
 
+	let backToTop = document.getElementsByClassName("backToTop");
+	$(window).scroll(function(e) {
+		if ($(window).scrollTop() <= 1) {
+			backToTop[1].style.display = "none";
+		} else {
+			backToTop[1].style.display = "block";
+		}
+	});
+</script>
 
 </body>
 </html>

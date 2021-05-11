@@ -10,58 +10,112 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
 <script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
 <script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
-<title>公告列表修改 - update_announcement_input.jsp</title>
-
+<title>修改公告 - update_announcement_input.jsp</title>
+<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
-  table#table-1 {
-	background-color: #FFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
+body{
+	background-color: #4e5452;
+	color: #4e5452;
+}
+div.left{
+	margin-top: 20px;
+}
+div.right{
+	background-color: #fff;
+	margin-top: 40px;
+	padding: 50px 50px;
+	border-radius: 5px;
+}
+a.content{
+	color: #80c344;
+	font-size: 0.6em;
+}
+a.content:hover {
+	color: #4B7F52;
+}
+
+table{
+	width: 700px;
+	margin: 30px auto;
+	border: 1px solid #4e5452;
+}
+th, td{
+	text-align: center;
+	border: 1px solid #4e5452;
+	padding: 10px 15px;
+}
+td.function{
+	text-align: justify;	
+}
+label.spotlight{
+	background-color: #80c344;
+	padding: 2px 5px;
+	border-radius: 5px;
+	color: #fff;
+}
+form{
+	text-align: center;
+}
+textarea{
+	resize: none;
+}
+input.confirm{
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+	margin: 0px 10px;
+}
+input.confirm:hover{
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
 </style>
-
 <style>
-  table {
-	width: 450px;
-	background-color: white;
-	margin-top: 1px;
-	margin-bottom: 1px;
-  }
-  table, th, td {
-    border: 0px solid #CCCCFF;
-  }
-  th, td {
-    padding: 1px;
-  }
-  textarea { 
-  	resize: none; 
-  }
+#container {
+	padding: 10px;
+	max-width: 250px;
+	margin: 0px auto;
+}
+.align{
+	display: inline;
+	vertical-align: text-top;
+}
+#preview, .change{
+	margin: 10px 0px;
+	
+}
+img{
+	max-width: 100%;
+	margin: 10px;
+}
+.delete{
+	display: none;
+}
 </style>
 
 </head>
-<body bgcolor='white'>
-
-<table id="table-1">
-	<tr><td>
-		 <h3>公告列表修改 - update_announcement_input.jsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back-end/announcement/select_page.jsp"><img src="<%=request.getContextPath()%>/images/logo.png" width="50" height="50" border="0"><br>回首頁</a></h4>
-	</td></tr>
-</table>
-
-<h3>資料修改:</h3>
-
+<body>
+<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
+<div class="container">
+	<div class="row">
+		<div class= "left col-3">
+		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
+		<div class="right col-9">
+			<h2>修改公告&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/announcement/listAllAnnouncement.jsp">回公告列表</a></h2>
+			<hr>
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
 	<font style="color:red">請修正以下錯誤:</font>
@@ -129,7 +183,9 @@
 <input type="hidden" name="an_no" value="<%=announcementVO.getAn_no()%>">
 <input type="hidden" name="action" value="update">
 <input type="submit" value="送出修改"></FORM>
-
+</div>
+</div>
+</div>
 
 <script>
 let myFile = document.getElementById('myFile');

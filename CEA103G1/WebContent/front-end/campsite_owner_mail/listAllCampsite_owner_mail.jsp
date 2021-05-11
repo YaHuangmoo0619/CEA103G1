@@ -168,9 +168,10 @@ tr:hover {
 		<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
 		<div class="right col-9">
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>營主站內信列表</h3>
-			<a href="<%=request.getContextPath()%>/back-end/campsite_owner_mail/addCampsite_owner_mail.jsp">寄信</a>
-			<a href="<%=request.getContextPath()%>/back-end/campsite_owner_mail/listAllCampsite_owner_mail_send.jsp">寄件備份</a>
+			<h3>營主站內信列表&nbsp;
+			<a class="content" href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/addCampsite_owner_mail.jsp">寄信</a>&nbsp;
+			<a class="content" href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/listAllCampsite_owner_mail_send.jsp">寄件備份</a>
+			</h3>
 			<hr>
 			<div class="forSearch" id="forSearch">
 					<ul>
@@ -277,7 +278,7 @@ tr:hover {
 <%-- 						</c:if> --%>
 <%-- 						<c:if --%>
 <%-- 							test="${campsite_owner_mailVO.mail_no!=param.mail_no}"> --%>
-						<td>${campsite_owner_mailVO.mail_no}</td>
+						<td style="display:none;">${campsite_owner_mailVO.mail_no}</td>
 <%-- 						</c:if> --%>
 						<td>${campsite_owner_mailVO.send_no}${employeeSvc.getOneEmployee(campsite_owner_mailVO.send_no).name}${memberSvc.getOneMember(campsite_owner_mailVO.send_no).name}</td>
 						<td>${campsite_owner_mailVO.rcpt_no}${campsite_ownerSvc.getOneCampsite_owner(campsite_owner_mailVO.rcpt_no).name}</td>
@@ -288,8 +289,8 @@ tr:hover {
 							<c:if test="${mail_cont.length() <= 10}">
 								<td>${mail_cont}</td>
 							</c:if>
-						<td>${campsite_owner_mailVO.mail_stat}</td>
-						<td class="mail_read_stat">${campsite_owner_mailVO.mail_read_stat}</td>
+						<td style="display:none;">${campsite_owner_mailVO.mail_stat}</td>
+						<td class="mail_read_stat" style="display:none;">${campsite_owner_mailVO.mail_read_stat}</td>
 						<c:set var="mail_time" value="${campsite_owner_mailVO.mail_time}" />
 							<td>${fn:substring(mail_time, 0, 10)}</td>
 <!-- 						<td> -->

@@ -10,7 +10,7 @@
 					<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城管理</a></li>
 					<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
 					<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li>
-					<li><a href="<%=request.getContextPath() %>/back-end/announcement/select_page.jsp">公告管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/announcement/listAllAnnouncement.jsp">公告管理</a></li>
 					<li><a href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">客服管理</a></li>
 					<li><a href="">即時小幫手管理</a></li>
 				</ul>

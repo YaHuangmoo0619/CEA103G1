@@ -16,7 +16,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<title>所有會員站內信列表</title>
+<title>會員寄件備份列表</title>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -161,9 +161,10 @@ tr:hover {
 <%-- 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div> --%>
 		<div class="right col">
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>會員站內信列表</h3>
-			<a href="<%=request.getContextPath()%>/front-end/member_mail/addMember_mail.jsp">寄信</a>
-			<a href="<%=request.getContextPath()%>/front-end/member_mail/listAllMember_mail.jsp">回到營主站內信列表</a>
+			<h3>會員寄件備份列表&nbsp;
+			<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/addMember_mail.jsp">寄信</a>&nbsp;
+			<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/listAllMember_mail.jsp">回到會員信件列表</a>
+			</h3>
 			<hr>
 			<div class="forSearchs" id="forSearchs">
 					<ul>
@@ -263,7 +264,7 @@ tr:hover {
 <%-- 							<td>${member_mailVO.mail_no}<a id="focus"></a></td> --%>
 <%-- 						</c:if> --%>
 <%-- 						<c:if test="${member_mailVO.mail_no!=param.mail_no}"> --%>
-						<td>${member_mailVO.mail_no}</td>
+						<td style="display:none;">${member_mailVO.mail_no}</td>
 <%-- 						</c:if> --%>
 						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
 						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
@@ -274,8 +275,8 @@ tr:hover {
 							<c:if test="${mail_cont.length() <= 10}">
 								<td>${mail_cont}</td>
 							</c:if>
-						<td>${member_mailVO.mail_stat}</td>
-						<td class="mail_read_stat">${member_mailVO.mail_read_stat}</td>
+						<td style="display:none;">${member_mailVO.mail_stat}</td>
+						<td class="mail_read_stat" style="display:none;">${member_mailVO.mail_read_stat}</td>
 						<c:set var="mail_time" value="${member_mailVO.mail_time}" />
 							<td>${fn:substring(mail_time, 0, 10)}</td>
 <!-- 						<td> -->
