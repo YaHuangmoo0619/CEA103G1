@@ -8,7 +8,7 @@
 	type="image/png">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<title>搜尋營區</title>
+<title>收藏營區</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 <style>
@@ -306,7 +306,7 @@ img.person:hover {
 </style>
 </head>
 <body>
-	<div style="background-color: #eee;">
+<div style="background-color: #eee;">
 		<img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
 		<form class="form-inline my-2 my-lg-0">
 			<input class="form-control mr-sm-2" type="search"
@@ -332,150 +332,20 @@ img.person:hover {
 			src="/CEA103G1/front-images/person-circle-outline.svg" class="person">
 
 	</div>
-	<div class="container" style="margin-left: 0; margin-right: 0;">
-		<div class="row">
-			<div class="left col-3">
-				<FORM method="get" id="condition" onsubmit="return false"
-					accept-charset="big5">
-					<!-- 		縣市:<select id="county" name="county"></select> -->
-					縣市:<br>
-					<select name="county" id="county"><option value="不拘">不拘</option></select><br> 入住日期:<br>
-					<input name="startdate" id="startdate" type="text"><br>
-					退房日期:<br>
-					<input name="enddate" id="enddate" type="text"><br>
-					人數:<br>
-					<input name="people" id="people" type="number"><br>
-					<input type="hidden" name="action" value="search"><br>
-					<input type="button" id="idForm" value="搜尋" class="btn btn-outline-success my-2 my-sm-0">
-				</FORM>
-				<FORM id="feature"></FORM>
-			</div>
-			<div class="right col-9">
-				<div id="featurelist"></div>
-				<div id="all"></div>
-			</div>
-		</div>
-	</div>
+	<div id="all"></div>
 	<script>
-		const county = sessionStorage.getItem('county');
 		$.ajax({
 			type : "GET",
 			dataType : "json",
-			url : "http://localhost:8081/CEA103G1/district/district.do",
+			url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=getAll",
 			success : function(data) {
-				for (i in data) {
-					if(county === data[i]){
-						var opt = $(`<option selected="true">`).val(data[i]).text(data[i]);
-					}else{
-						var opt = $("<option>").val(data[i]).text(data[i]);
-					}
-					$("#county").append(opt);
-				}
+				showAll(data);
 			}
 		});
-	
-		$.ajax({
-			type : "GET",
-			dataType : "json",
-			url : "http://localhost:8081/CEA103G1/feature_list/featurelist.do?action=getAll",
-			success : function(data) {
-				showFeature(data);
-			}
-		});
-		const url = window.location.href;
-		if(!url.includes("?")){
-			$.ajax({
-				type : "GET",
-				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/campsite/CampInfo.do?action=getall",
-				success : function(data) {
-					showAll(data);
-				}
-			});
-		}else if(url.includes("camp_fl_no")){
-			const splitUrl = url.split('?');
-			const query = splitUrl[1];
-			$('#all').children().remove();
-			$.ajax({
-				type : "GET",
-				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/feature_list/featurelist.do?action=getCamp&" + query,
-				success : function(data) {
-					window.history.pushState({}, document.title, url.substring(0,url.indexOf('?')));
-					showAll(data);
-				}
-			});
-		}else if(url.includes("&")){
-			const splitUrl = url.split('?');
-			const query = splitUrl[1];
-			const eachQuery = query.split('&');
-			const startdate = eachQuery[0].split('=');
-			const enddate = eachQuery[1].split('=');
-			const people = eachQuery[2].split('=');
-			const county = sessionStorage.getItem('county');
-			$('#startdate').val(startdate[1]);
-			$('#enddate').val(enddate[1]);
-			$('#people').val(people[1]);
-			$('#all').children().remove();
-			$.ajax({
-				type : "GET",
-				cache : "false",
-				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/ValidPlace.do",
-				data: {county: county, startdate: startdate[1], enddate: enddate[1], people: people[1]},
-				success : function(data) {
-					if($('#startdate').val() === "" || $('#enddate').val() === ""){
-						showAll(data);						
-					}else{
-						showNames(data);	
-					}
-				}
-			});
-			window.history.pushState({}, document.title, url.substring(0,url.indexOf('?')));
-		}
-		
-		$(document).ready(function() {
-		    $("#idForm").click(function(){
-				$('#all').children().remove();
-				$.ajax({
-					type : "GET",
-					cache : "false",
-					dataType : "json",
-					url : "http://localhost:8081/CEA103G1/ValidPlace.do",
-					data : $('#condition').serialize(), // serializes the form's elements.
-					success : function(data) {
-						if($('#startdate').val() === "" || $('#enddate').val() === ""){
-							showAll(data);						
-						}else{
-							showNames(data);	
-						}
-					}
-				});
-			});
-		});// avoid to execute the actual submit of the form.
-		
-		function showFeature(data){
-			for (i in data) {
-				let html;
-				html =`<button value="${data[i].camp_fl_no}" onclick="findWithFeature(this.value)" class="confirm">${data[i].camp_fl_name}</button>`;
-				$('#featurelist').append(html);
-			}
-		}
-		function findWithFeature(e) {
-			$('#all').children().remove();
-			$.ajax({
-				type : "GET",
-				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/feature_list/featurelist.do?action=getCamp&camp_fl_no=" + e,
-				success : function(data) {
-					showAll(data);
-				}
-			});
-		}
 		function showAll(data) {
 			for (i in data) {
 				let html;	
-				var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
+				var href=`http://localhost:8081/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
 				html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="180" height="130" style="margin-right:15px;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
 					</a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr></div>`;
 				$('#all').append(html);
@@ -488,27 +358,6 @@ img.person:hover {
 				}
 			}
 		}
-		function showNames(data) {
-			for (i in data) {
-				let html;
-				if (i) {	
-					var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&startdate=` + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val();
-					html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="180" height="130" style="margin-right:15px;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
-						</a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr></div>`;
-				} else {
-					html = "<center>所有營區皆已滿</center>";
-				}
-				$('#all').append(html);
-				$(`#${data[i].camp_no}`).attr("href",href);
-				$(`#${data[i].camp_no}`).attr("target","_blank");
-				if(`${data[i].collected}` == 0){
-					$(`#fav${data[i].camp_no}`).attr("name","bookmark");
-				} else {
-					$(`#fav${data[i].camp_no}`).attr("name","bookmark-outline");
-				}
-			}
-		}
-		
 		function fav(e){
 			let icon = document.getElementById(e);
 			let camp_no = e.split("v")[1];
@@ -516,7 +365,7 @@ img.person:hover {
 				$.ajax({
 					type : "GET",
 					url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + camp_no,
-					success : function() {
+					success : function(data) {
 						alert(data);
 						icon.setAttribute("name","bookmark");
 					}
@@ -525,7 +374,7 @@ img.person:hover {
 				$.ajax({
 					type : "GET",
 					url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + camp_no,
-					success : function() {
+					success : function(data) {
 						alert(data);
 						icon.setAttribute("name","bookmark-outline");
 					}

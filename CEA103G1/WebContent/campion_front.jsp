@@ -399,7 +399,7 @@ section.footer {
 		<div>
 <%-- 			 <img src="<%=request.getContextPath() %>/front-images/search-circle-outline.svg" id="searchIcon" class="searchIcon"> --%>
 			<div class="btn-group" role="group" aria-label="Basic example">
-				<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">露營</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.html"><button type="button" class="btn btn-secondary">露營</button></a>
 				<a class="button" href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
 				<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 			</div>
@@ -498,27 +498,27 @@ section.footer {
 			<div class="row">
 				<c:forEach var="campsiteVO" items="${campsiteSvc.all}" begin="0" end="2">
 				<div class="col-sm-4">
-					<a href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html">
+					<a href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">
 					<img src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60">
 					</a>
-					<a class="text" href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html">${campsiteVO.camp_name}</a>
+					<a class="text" href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">${campsiteVO.camp_name}</a>
 				</div>
 				</c:forEach>
 			</div>
 			<div class="row">
 				<c:forEach var="campsiteVO" items="${campsiteSvc.all}" begin="3" end="5">
 				<div class="col-sm-4">
-					<a href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html">
+					<a href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">
 					<img src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60">
 					</a>
-					<a class="text" href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html">${campsiteVO.camp_name}</a>
+					<a class="text" href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">${campsiteVO.camp_name}</a>
 				</div>
 				</c:forEach>
 			</div>
 			
 			<div class="row">
 				<div class="col-sm">
-					<a href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><div class="more">> 更多營區</div></a>
+					<a href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.html"><div class="more">> 更多營區</div></a>
 				</div>
 			</div>
 		</div>
