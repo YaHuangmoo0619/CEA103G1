@@ -67,7 +67,7 @@ public class Member_mailServlet extends HttpServlet {
 					failureView.forward(req, res);
 					return;
 				}
-				if(checkCount == 8) {
+				if(checkCount == 9) {
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
 					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");
 					failureView.forward(req, res);

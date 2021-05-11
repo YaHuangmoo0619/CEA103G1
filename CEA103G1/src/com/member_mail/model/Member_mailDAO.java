@@ -387,6 +387,7 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 				nextColumn:
 				//屬於特定sql型別做特定動作
 				for(String key : keys) {
+					System.out.println(key);
 					if(partOfsqlWhere.length() == 0) {
 						if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
 							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
@@ -435,18 +436,21 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 				}
 			}
 			//問號放入對應的值
+			System.out.println(partOfsqlWhere.toString());
 			pstmt = con.prepareStatement(partOfsqlWhere.toString());
 			Set<Integer> keysPstmt = forPstmt.keySet();//上一個步驟存的資料
 			
 			int index = 1;
 			for(Integer keyPstmt : keysPstmt) {
 				if(rm.getColumnTypeName(keyPstmt) == "INT") {
+					System.out.println(Integer.valueOf(map.get(forPstmt.get(keyPstmt))[0]));
 					pstmt.setInt(index, Integer.valueOf(map.get(forPstmt.get(keyPstmt))[0]));
 					index++;
 				}else if(rm.getColumnTypeName(keyPstmt) == "BIT") {
 					pstmt.setInt(index, Integer.valueOf(map.get(forPstmt.get(keyPstmt))[0]));
 					index++;
 				}else if(rm.getColumnTypeName(keyPstmt) == "VARCHAR") {
+					System.out.println("%"+map.get(forPstmt.get(keyPstmt))[0]+"%");
 					pstmt.setString(index, "%"+map.get(forPstmt.get(keyPstmt))[0]+"%");
 					index++;
 				}else if(rm.getColumnTypeName(keyPstmt) == "DATETIME") {

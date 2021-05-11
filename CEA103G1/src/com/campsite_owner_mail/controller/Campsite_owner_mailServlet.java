@@ -53,6 +53,8 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 				Set<String> keys = map.keySet();
 				int checkCount = 0;
 				for(String key: keys) {
+					
+//					System.out.print(map.get(key)[0].equals("compositeSearchTop"));
 					switch (map.get(key)[0]) {
 					case "no":
 					case "":
@@ -61,20 +63,24 @@ public class Campsite_owner_mailServlet extends HttpServlet {
 					}
 				}
 				if("compositeSearchTop".equals(action) && map.get("mail_cont")[0].isEmpty()) {
+//					System.out.print("searchTop");
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
 					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
-				if(checkCount == 8) {
+				if(checkCount == 9) {
 					errorMsgs.put("notFound", new String[] {"請選擇或輸入查詢關鍵字"});
 					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
-			
+				
 				Campsite_owner_mailService campsite_owner_mailSvc = new Campsite_owner_mailService();
 				Set<Campsite_owner_mailVO> campsite_owner_mailVOSet = campsite_owner_mailSvc.getWhereCondition(map);
+				for(Campsite_owner_mailVO vo : campsite_owner_mailVOSet) {
+//					System.out.println(vo.getMail_cont());
+				}
 				req.setAttribute("campsite_owner_mailVOSet", campsite_owner_mailVOSet);
 				RequestDispatcher successView = req.getRequestDispatcher("/front-end/campsite_owner_mail/listWhereCampsite_owner_mail.jsp");
 				successView.forward(req, res);

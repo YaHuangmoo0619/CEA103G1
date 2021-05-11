@@ -12,9 +12,9 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <title>營主站內信搜尋結果</title>
 <%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
@@ -118,8 +118,34 @@ tr:hover {
 <!-- 					<th style="width:100px"></th> -->
 <!-- 				</tr> -->
 				<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
+				
 				<c:forEach var="campsite_owner_mailVO" items="${campsite_owner_mailVOSet}">
-					<c:if test="${campsite_ownerVO.cso_no == campsite_owner_mailVO.send_no}">
+					<c:if test="${param.where.equals('rcpt') && campsite_ownerVO.cso_no == campsite_owner_mailVO.rcpt_no}">
+					<tr>
+						<td style="display:none;">${campsite_owner_mailVO.mail_no}</td>
+						<td>${campsite_owner_mailVO.send_no}${memberSvc.getOneMember(campsite_owner_mailVO.send_no).name}</td>
+						<td>${campsite_owner_mailVO.rcpt_no}${memberSvc.getOneMember(campsite_owner_mailVO.rcpt_no).name}</td>
+						<c:set var="mail_cont" value="${campsite_owner_mailVO.mail_cont}" />
+							<c:if test="${mail_cont.length() > 10}">
+								<td>${fn:substring(mail_cont, 0, 10)}...</td>
+							</c:if>
+							<c:if test="${mail_cont.length() <= 10}">
+								<td>${mail_cont}</td>
+							</c:if>
+						<td style="display:none;">${campsite_owner_mailVO.mail_stat}</td>
+						<td class="mail_read_stat" style="display:none;">${campsite_owner_mailVO.mail_read_stat}</td>
+						<c:set var="mail_time" value="${campsite_owner_mailVO.mail_time}" />
+							<td>${fn:substring(mail_time, 0, 10)}</td>
+<!-- 						<td> -->
+<%-- 							<form method="post" action="<%=request.getContextPath()%>/authority/authority.do"> --%>
+<!-- 								<input class="change" type="submit" value="修改"> -->
+<%-- 								<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}"> --%>
+<!-- 								<input type="hidden" name="action" value="getOne_For_Update"> -->
+<!-- 							</form> -->
+<!-- 						</td> -->
+<!-- 					</tr> -->
+					</c:if>
+					<c:if test="${param.where.equals('send')&&campsite_ownerVO.cso_no == campsite_owner_mailVO.send_no}">
 					<tr>
 						<td style="display:none;">${campsite_owner_mailVO.mail_no}</td>
 						<td>${campsite_owner_mailVO.send_no}${memberSvc.getOneMember(campsite_owner_mailVO.send_no).name}</td>
@@ -150,5 +176,20 @@ tr:hover {
 	</div>
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<script>
+$("tr").click(function(e){
+	let mail_no = e.currentTarget.children[0].innerText;
+	window.location.href="<%=request.getContextPath()%>/campsite_owner_mail/campsite_owner_mail.do?mail_no="+ mail_no + "&action=read";
+});
+
+for (let i = 0; i < $(".mail_read_stat").length; i++) {
+	if ($(".mail_read_stat")[i].innerText === '1') {
+		$($(".mail_read_stat")[i]).parent()[0].style.backgroundColor = '#eee';
+	}
+	if ($(".mail_read_stat")[i].innerText === '0') {
+		$($(".mail_read_stat")[i]).parent()[0].style.fontWeight = '555';
+	}
+}
+</script>
 </body>
 </html>

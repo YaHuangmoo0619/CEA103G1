@@ -173,6 +173,7 @@ tr:hover {
 								<label	for="mail_cont"></label>
 								<input type="text" name="mail_cont" id="mail_cont" placeholder="依信件內容查詢">
 								<input type="hidden" name="action"	value="compositeSearchTop">
+								<input type="hidden" name="where"	value="rcpt">
 								<input type="submit" value="送出查詢" class="confirm" id="confirmTop">&nbsp;<span>進階查詢</span>
 							</form>
 					</li>
@@ -194,16 +195,16 @@ tr:hover {
 									</c:forEach>
 								</select>
 								<br>
-								<label for="emp_no">回覆人員:</label>
-								<select size="1" name="emp_no" id="emp_no">
+								<label for="send_no">寄件人:</label>
+								<select size="1" name="send_no" id="send_no">
 									<option value="no">--請選擇--</option>
 									<c:forEach var="employeeVO" items="${employeeSvc.all}">
 										<option value="${employeeVO.emp_no}">${employeeVO.emp_no}${employeeVO.name}</option>
 									</c:forEach>
 								</select>
 								<br>
-								<label for="mbr_no">發信會員:</label> 
-								<select size="1" name="mbr_no" id="mbr_no">
+								<label for="rcpt_no">收件人:</label> 
+								<select size="1" name="rcpt_no" id="rcpt_no">
 									<option value="no">--請選擇--</option>
 									<c:forEach var="memberVO" items="${memberSvc.all}">
 										<option value="${memberVO.mbr_no}">${memberVO.mbr_no}${memberVO.name}</option>
@@ -231,6 +232,7 @@ tr:hover {
 								</select>
 								<br>
 								<input type="hidden" name="action" value="compositeSearch">
+								<input type="hidden" name="where"	value="rcpt">
 								<input type="submit" value="送出查詢" class="confirm">
 							</form>
 						</li>

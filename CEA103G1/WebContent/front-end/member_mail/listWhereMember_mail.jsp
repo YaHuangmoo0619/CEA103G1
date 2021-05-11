@@ -118,6 +118,7 @@ tr:hover {
 				<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 				<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>
 				<c:forEach var="member_mailVO" items="${member_mailVOSet}">
+				<c:if test="${param.where.equals('rcpt') && memberVO.mbr_no == member_mailVO.rcpt_no}">
 					<c:if test="${(memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 1) || (memberVO.mbr_no == member_mailVO.send_no && member_mailVO.mail_stat == 0)}">
 					<tr>
 						<td style="display:none;">${member_mailVO.mail_no}</td>
@@ -142,6 +143,34 @@ tr:hover {
 <!-- 							</form> -->
 <!-- 						</td> -->
 					</tr>
+					</c:if>
+					</c:if>
+					<c:if test="${param.where.equals('send') && memberVO.mbr_no == member_mailVO.send_no}">
+					<c:if test="${(memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 1) || (memberVO.mbr_no == member_mailVO.send_no && member_mailVO.mail_stat == 0)}">
+					<tr>
+						<td style="display:none;">${member_mailVO.mail_no}</td>
+						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
+						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
+						<c:set var="mail_cont" value="${member_mailVO.mail_cont}" />
+							<c:if test="${mail_cont.length() > 10}">
+								<td>${fn:substring(mail_cont, 0, 10)}...</td>
+							</c:if>
+							<c:if test="${mail_cont.length() <= 10}">
+								<td>${mail_cont}</td>
+							</c:if>
+						<td style="display:none;">${member_mailVO.mail_stat}</td>
+						<td class="mail_read_stat" style="display:none;">${member_mailVO.mail_read_stat}</td>
+						<c:set var="mail_time" value="${member_mailVO.mail_time}" />
+						<td>${fn:substring(mail_time, 0, 10)}</td>
+<!-- 						<td> -->
+<%-- 							<form method="post" action="<%=request.getContextPath()%>/authority/authority.do"> --%>
+<!-- 								<input class="change" type="submit" value="н╫зя"> -->
+<%-- 								<input type="hidden" name="mail_no" value="${service_mailVO.mail_no}"> --%>
+<!-- 								<input type="hidden" name="action" value="getOne_For_Update"> -->
+<!-- 							</form> -->
+<!-- 						</td> -->
+					</tr>
+					</c:if>
 					</c:if>
 				</c:forEach>
 			</table>
