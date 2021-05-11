@@ -252,31 +252,24 @@ input#search-bar:focus:-ms-placeholder {
 						<br>
 
 
-<!--         <div class="search-container"> -->
-<!--             <input type="text" id="search-bar" placeholder="What can I help you with today?"> -->
-<!--             <a href="#"><img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"></a> -->
-<!--         </div> -->
-
-
-
 
 
 						標籤:<font color=red><b>*</b></font>
 						<div class=tag_can_be_selected id="tag_can_be_selected">
-							<c:if test="">
-							</c:if>
-							<%
-								int tag_count = 1;
-							%>
+<%-- 							<% --%>
+<!--  								int tag_count = 1; -->
+<%-- 							%> --%>
 							<c:forEach var="tag_list" items="${tag_list}">
 								<div class=tag_selected_parent>
-									<div class="tag_selected tag_num" id=tag <%=tag_count%>>${tag_list.key}</div>
+									<div class="tag_selected tag_num" id=tag${tag_list.key}>${tag_list.key}</div>
 									<div class=tag_num>${tag_list.value}篇文章</div>
 								</div>
-								<div style="display: none">
-									<div style="display: none"><%=tag_count++%></div>
-								</div>
+<!-- 								<div style="display: none"> -->
+<%-- 									<div style="display: none"><%=tag_count++%></div> --%>
+<!-- 								</div> -->
 							</c:forEach>
+							
+							
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -292,8 +285,6 @@ input#search-bar:focus:-ms-placeholder {
 
 
 
-	<div class="test_for_tag"></div>
-
 	<script>
 		$('#art_cont').summernote(
 				{
@@ -308,70 +299,30 @@ input#search-bar:focus:-ms-placeholder {
 							[ 'para', [ 'paragraph' ] ],
 							[ 'insert', [ 'link', 'picture' ] ], ]
 				});
-		
-	
-		
-		
-		
-// 		$('#art_cont').summernote(
-// 			    { height: 300,
-// 			        callbacks: {
-// 			          onImageUpload: function(files) {
-// 			            imageUpload(files).done((data, textStatus, jqXHR)=>{ let url = "/uploads/"+data.imageUrl               
-// 			                $('#summernote').summernote('insertImage', url, 'newimage');
-// 			              })
-// 			          },
-// 			        }
-// 				});
 
-		
-// 		function imageUpload(files){
-// 		    let formData = new FormData();
-// 		    formData.append('upload', files[0]);
-// 		      return $.ajax({
-// 		              type: "POST", 
-// 		              url: '/upload',
-// 		              data:formData,
-// 		              beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-// 		              cache       : false,
-// 		              contentType : false,
-// 		              processData : false,
-		        
-// 		            });
-// 		  }
-		
-		
-		
-		
-		// $(".tag_selected").click(function(){ //當標籤被點的時候，要加到預新增的標籤列表中並隱藏被點擊的標籤
-		// 	var tag_text = $(this).html();
-		// // 	alert("現在被點的是"+tag_text);
-		// 	$("#tags_add_list").prepend("<div class=tag_prepared_to_add >"+tag_text+"</div>");
-		// 	$(this).hide();
-		// });
 
-		// $("body").on("click",".tag_selected",function(){ //當標籤被點的時候，要加到預新增的標籤列表中並隱藏被點擊的標籤
-		// 	var tag_text1 = $(this).html();
-		// // 	alert("現在被點的是"+tag_text1);
-		// 	var new_tag = $('<div style="border: solid; border-color:black" class=tag_prepared_to_add >'+tag_text1+'</div>');
-		// 	$("#tags_add_list").prepend(new_tag);
-		// 	$(this).hide();
-		// 	$(this).next().hide();
-		// });
-
-		$("body")
-				.on(
-						"click",
-						".tag_selected_parent",
-						function() { //當標籤被點的時候，要加到預新增的標籤列表中並隱藏被點擊的標籤
-							var tag_text1 = $(this).children(":first").html();
-							// 	alert("現在被點的是"+tag_text1);
-							var new_tag = $('<div style="border: solid; border-color:black" class=tag_prepared_to_add display:flex>'
-									+ tag_text1 + '</div>');
-							$("#tags_add_list").prepend(new_tag);
-							$(this).children(":first").hide();
-							$(this).children(":first").next().hide();
-						});
+		$("body").on("click",".tag_selected_parent",function() { //當標籤被點的時候，要加到預新增的標籤列表中並隱藏被點擊的標籤
+			if($(this).children("div:first") >0){ //如果.tag_selected_parent底下有div的話
+	            var tag_text1 = $(this).children("div:first").html(); //將div html設為空
+				var new_tag = $('<div style="border: solid; border-color:black" class=tag_prepared_to_add display:flex>'
+						+ tag_text1 + '</div>');
+				$("#tags_add_list").prepend(new_tag);
+				$(this).children("div:first").hide();
+				$(this).children("div:first").next().hide();
+				
+	        }else{
+	        	console.log("該元素不存在"); //如果不存在則不作為
+	        	var x = document.getElementById("tags_input").value;
+				var new_tag = $('<div style="border: solid; border-color:black" class=tag_prepared_to_add display:flex>'
+						+ x + '</div>');
+				console.log("x="+x);
+	        	$(this).children("button:first").hide(); //點選button一樣會隱藏該選項，並新增xx標籤至new_tag
+	        	$("#tags_add_list").prepend(new_tag);
+	        	$(this).children("button:first").next().hide();
+	        }
+			
+							
+			});
 
 		$("#tags_add_list").on("click", ".tag_prepared_to_add", function() { //當列表中的標籤被點，會被移除，並把原本隱藏的標籤再度顯示
 			var tag_text2 = $(this).html();
@@ -381,38 +332,50 @@ input#search-bar:focus:-ms-placeholder {
 
 		});
 
-		// $(function(){
-		// 	$("input[id*='tags_input']").bind('input porpertychange',function(){
-		// 	alert("hi");
-		// 	});
-		// 	});
 
-		// $("#input").bind("input propertychange",function(){
-		// 	alert("hi");
-		// });
 
 		$("input[name*='tags_input']").on("input propertychange", function() { //實時監聽輸入框變化
 			console.log("正在輸入中");
 			var x = document.getElementById("tags_input").value;
 			console.log(x);
+// 			var document.getElementById(".tag_selected_parent");//抓已經在標籤列表中的標籤
+			
 			$.ajax({ //負責傳到articleServlet 回傳
 				type : "POST",
 				url : "http://localhost:8081/CEA103G1/article/article.do",
-				data : {action: "search_tag",tag:x},
+				data : {action: "search_tag",tag:x}, //要傳的參數 action、要新增的標籤、「目前已經在待新增的標籤列表中的標籤」
 				dataType: "json",
 				success : function(data) {
-// 					$("#tag_can_be_selected").html=("我回來啦~");
+					$("#tag_can_be_selected").html(""); //將標籤選單清空
+// 					console.log($.isEmptyObject(data)); //測試用
+					if($.isEmptyObject(data)){ //如果資料庫還沒有這個標籤
+						$("#tag_can_be_selected").append(
+								`<div class=tag_selected_parent>`+`
+								<button type="button">新增`+x+`標籤</button>`	
+								 +`</div>`
+								);
+					}
+					
 // 					var tagString = "";
-// 					for(var i = 0 ; i<data.tag_map.length; i++){
-//                         $("#tag_can_be_selected").append(data.tag_map[i]+"</br>");
-//                     }	
+// 					for(var i = 0 ; i<data.length; i++){
+//                         $("#tag_can_be_selected").append(data[i]+"</br>");
+//                     }
+						
+//還要添加判斷式 如果這些資料中沒有與input中輸入的值完全匹配的標籤，就要有一個選項是「新增xxx標籤」
 					for(var key in data){
+// 						$("#tag_can_be_selected").append(key+":"+data[key]+"</br>");
+// 						alert(key);//獲取json物件的key
 
-						alert(key);//獲取json物件的key
-
-						alert(data[key]);//獲取json物件key對應的value值
-
+// 						alert(data[key]);//獲取json物件key對應的value值
+						$("#tag_can_be_selected").append(
+						`<div class=tag_selected_parent>
+							<div class="tag_selected tag_num" id="tag`+key+`">`+key+`</div>
+							<div class=tag_num>`+data[key]+`篇文章</div>
+						 </div>`
+						);
 						}
+						
+						
 				},
 				 
                 error:function(xhr, ajaxOptions, thrownError){
@@ -431,10 +394,8 @@ input#search-bar:focus:-ms-placeholder {
 	
 	    <script>
         window.console = window.console || function(t) {};
-</script>
-    <script>
         if (document.location.search.match(/type=embed/gi)) {
-    window.parent.postMessage("resize", "*");
+    	window.parent.postMessage("resize", "*");
   }
 </script>
 

@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.article.model.ArticleDAO;
 import com.article.model.ArticleService;
 import com.article.model.ArticleVO;
+import com.member.model.MemberVO;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ScanParams;
@@ -32,8 +33,9 @@ public class ArticleServlet extends HttpServlet {
 
 		String action = req.getParameter("action");
 		
-		HttpSession session =  req.getSession();
-		session.getAttribute("memberVO");
+		//for session
+//		HttpSession session =  req.getSession(); //建立session
+//		session.getAttribute("memberVO"); //拿到該會員的會員資料
 
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
@@ -663,6 +665,7 @@ public class ArticleServlet extends HttpServlet {
 		if ("search_tag".equals(action)) {
 
 			try {
+				res.setContentType("text/html;charset=UTF-8");
 				System.out.println("hello");
 				// 取得要搜尋的tag
 				String target_tag = new String(req.getParameter("tag"));
@@ -676,7 +679,7 @@ public class ArticleServlet extends HttpServlet {
 //			                     模糊查詢
 				Map<String, Integer> tag_map = new HashMap<String, Integer>(); // 這個Map的key裝標籤 value裝該標籤有多少文章
 				String cursor = ScanParams.SCAN_POINTER_START;
-				String key = "tag:"+target_tag+"*";
+				String key = "tag:*"+target_tag+"*";
 				String mapentry = new String(); // 用來裝某標籤 例如 tag:心情:posts
 				String tag_real_name = new String();
 				Long tag_real_name_art_num;
@@ -718,7 +721,7 @@ public class ArticleServlet extends HttpServlet {
 		        JSONObject responseJSONObject = new JSONObject(tag_map);
 		        
 		        PrintWriter out = res.getWriter();
-		 
+		        
 		        out.println(responseJSONObject);
 
 				// Handle any unusual exceptions

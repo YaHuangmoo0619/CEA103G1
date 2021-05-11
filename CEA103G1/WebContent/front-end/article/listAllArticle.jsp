@@ -418,7 +418,7 @@ ${articleVO.likes}
 
 <%-- 	<%@ include file="page2.file"%> --%>
 
-
+<a href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp">¼¶¼g¤å³¹</a>
 
 	<c:if test="${openModal!=null}">
 
