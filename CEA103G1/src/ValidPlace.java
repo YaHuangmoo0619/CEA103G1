@@ -39,7 +39,7 @@ public class ValidPlace extends HttpServlet {
 		Gson gson = new Gson();
 
 		String county = req.getParameter("county").trim();
-System.out.println(county);
+		System.out.println(county);
 		Integer people;
 		try {
 			people = new Integer(req.getParameter("people"));
@@ -50,10 +50,11 @@ System.out.println(county);
 		Place_Order_DetailsService place_order_detailsSvc = new Place_Order_DetailsService();
 		Place_OrderService place_orderSvc = new Place_OrderService();
 		List<Place_Order_DetailsVO> place_order_detailslist = place_order_detailsSvc.getAll();// 把所有訂單明細取出來
-		
-		for(int i = 0; i < place_order_detailslist.size(); i++) { //把歷史訂單移除
-			int ckin_stat = place_orderSvc.getOnePlace_Order(place_order_detailslist.get(i).getPlc_ord_no()).getCkin_stat();
-			if(ckin_stat == 1 || ckin_stat == 3 || ckin_stat == 4) {
+
+		for (int i = 0; i < place_order_detailslist.size(); i++) { // 把歷史訂單移除
+			int ckin_stat = place_orderSvc.getOnePlace_Order(place_order_detailslist.get(i).getPlc_ord_no())
+					.getCkin_stat();
+			if (ckin_stat == 1 || ckin_stat == 3 || ckin_stat == 4) {
 				place_order_detailslist.remove(i);
 				if (!(i == 0)) {
 					i--;
@@ -63,7 +64,7 @@ System.out.println(county);
 				}
 			}
 		}
-		
+
 		LinkedHashSet<Integer> plc_no_set = new LinkedHashSet();// new一個放已被下訂之營位編號的set
 
 		for (Place_Order_DetailsVO place_order_detailsVO : place_order_detailslist) {
@@ -89,10 +90,10 @@ System.out.println(county);
 				break;
 			}
 		}
-		
+
 		List<Place_OrderVO> place_orderlist;
 		Set<Integer> plc_ord_no_set = new LinkedHashSet();
-		
+
 		try {
 			java.sql.Date startdate = java.sql.Date.valueOf(req.getParameter("startdate").trim());
 			java.sql.Date enddate = java.sql.Date.valueOf(req.getParameter("enddate").trim());
@@ -105,7 +106,8 @@ System.out.println(county);
 					place_orderlist.add(place_orderSvc.getOnePlace_Order(plc_ord_no));
 				}
 				for (Place_OrderVO place_orderVO : place_orderlist) {// 比對一筆訂單，入住日在訂單checkout日之後或退房日在訂單checkin日之前
-					if (startdate.after(place_orderVO.getCkout_date()) || startdate.equals(place_orderVO.getCkout_date())
+					if (startdate.after(place_orderVO.getCkout_date())
+							|| startdate.equals(place_orderVO.getCkout_date())
 							|| enddate.before(place_orderVO.getCkin_date())
 							|| enddate.equals(place_orderVO.getCkin_date())) {
 						flag = true;
@@ -121,30 +123,27 @@ System.out.println(county);
 			}
 		} catch (Exception e) {
 		}
-
+		
+		Set<PlaceVO> newplacelist = new HashSet();
 		for (int i = 0; i < placelist.size(); i++) {
 			int count = 0;// 統計營區剩餘營位可容納人數用
 			Integer camp_no = placelist.get(i).getCamp_no();
-			for (int j = 0; i < placelist.size(); j++) {
+			for (int j = 0; j < placelist.size(); j++) {
 				if (placelist.get(j).getCamp_no() == camp_no) {// 比對營區編號，一致則統計人數
 					count += placelist.get(j).getPpl();
 				}
 			}
-			if (count < people) {// 如果統計人數小於輸入人數則將該營區所有營位移除
-				for (int j = 0; i < placelist.size(); j++) {
-					if (placelist.get(j).getCamp_no() == camp_no) {
-						placelist.remove(placelist.get(j));
-						if (!(j == 0)) {
-							j--;
-						}
-					}
-				}
-				if (!(i == 0)) {
-					i--;
-				} // 第i位也會跟著被移除，所以要把i維持原來數字
+			for (int j = 0; j < placelist.size(); j++) {
+				if (placelist.get(j).getCamp_no() == camp_no && count > people) {
+					newplacelist.add(placelist.get(j));
+				}else {
+					continue;
+				}			
 			}
 		}
-
+		placelist = new ArrayList();
+		placelist.addAll(newplacelist);
+		
 		CampService campSvc = new CampService();
 		List<CampVO> camplist = campSvc.getAll();
 
@@ -170,7 +169,7 @@ System.out.println(county);
 				}
 			}
 			System.out.println(camp_no_list);
-			
+
 			for (int i = 0; i < placelist.size(); i++) {
 				Boolean flag = false;// 立個旗子
 				for (Integer camp_no : camp_no_list) {
@@ -190,7 +189,7 @@ System.out.println(county);
 			}
 
 		}
-		
+
 		Set<Integer> campno = new HashSet();
 
 		for (PlaceVO placeVO : placelist) {
@@ -205,15 +204,15 @@ System.out.println(county);
 			campVO.setAddress(campSvc.getOneCamp(camp_no).getAddress());
 			camplist.add(campVO);
 		}
-		
-		for(CampVO campVO : camplist) {
+
+		for (CampVO campVO : camplist) {
 			List<String> firstPic = camp_pictureSvc.getCamp_Picture(campVO.getCamp_no());
 			if (firstPic.size() == 0) {// 暫時
 				firstPic.add("/CEA103G1/front-images/campionLogoShort.png");
 			}
 			campVO.setFirst_pic(firstPic.get(0));
 		}
-		
+
 		for (CampVO campVO : camplist) {
 			List<Integer> low_pc = new ArrayList();
 			List<PlaceVO> plclist = placeSvc.getByCamp(campVO.getCamp_no());
@@ -223,36 +222,35 @@ System.out.println(county);
 			Collections.sort(low_pc);
 			campVO.setLow_pc(low_pc.get(0));
 		}
-		
+
 		for (CampVO campVO : camplist) {
 			campVO = seeIfCollect(req, campVO);
 		}
-		
+
 		String jsonObject = gson.toJson(camplist);
 		out.println(jsonObject);
 	}
-	
+
 	public CampVO seeIfCollect(HttpServletRequest req, CampVO campVO) {
 		HttpSession session = req.getSession();
 		MemberVO member = (MemberVO) session.getAttribute("member");
-		if(member == null) {
+		if (member == null) {
 			campVO.setCollected(1);
 			return campVO;
 		}
-System.out.println("測試2");
+		System.out.println("測試2");
 		Camp_CollectionService collectionSvc = new Camp_CollectionService();
 		List<Camp_CollectionVO> collectionlist = collectionSvc.getAll();
 
 		for (Camp_CollectionVO camp_collectionVO : collectionlist) {
-System.out.println(camp_collectionVO.getCamp_no() + " " + camp_collectionVO.getMbr_no());
-			if ((int)campVO.getCamp_no() == (int)camp_collectionVO.getCamp_no()
-					&& (int)member.getMbr_no() == (int)camp_collectionVO.getMbr_no()) {
+			if ((int) campVO.getCamp_no() == (int) camp_collectionVO.getCamp_no()
+					&& (int) member.getMbr_no() == (int) camp_collectionVO.getMbr_no()) {
 				campVO.setCollected(0);
 				return campVO;
 			}
 		}
 		campVO.setCollected(1);
-		
+
 		return campVO;
 	}
 }

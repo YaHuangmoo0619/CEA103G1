@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<META http-equiv="Content-Type" content="text/html; charset=BIG5">
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <link rel="icon" href="/CEA103G1/images/campionLogoIcon.png"
 	type="image/png">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<title>·j´MÀç°Ï</title>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<title>æœå°‹ç‡Ÿå€</title>
+<link   rel="stylesheet" type="text/css" href="/CEA103G1/datetimepicker/jquery.datetimepicker.css" />
+<script src="/CEA103G1/datetimepicker/jquery.js"></script>
+<script type="text/javascript" language="javascript" src="/CEA103G1/datetimepicker/jquery.datetimepicker.full.js" charset="UTF-8"></script>
+<!-- <script type="text/javascript" language="javascript" src="output.js" charset="big5"> -->
+</script>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <style>
+  .xdsoft_datetimepicker .xdsoft_datepicker {
+           width:  300px;   /* width:  300px; */
+  }
+  .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+           height: 151px;   /* height:  151px; */
+  }
 .confirm {
 	margin: 2px;
 	background-color: #80c344;
@@ -310,22 +322,22 @@ img.person:hover {
 		<img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
 		<form class="form-inline my-2 my-lg-0">
 			<input class="form-control mr-sm-2" type="search"
-				placeholder="Àç¦ì/°Ó«~/¤å³¹" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">·j´M</button>
+				placeholder="ç‡Ÿä½/å•†å“/æ–‡ç« " aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">æœå°‹</button>
 		</form>
 		<img src="/CEA103G1/front-images/search-circle-outline.svg"
 			class="searchIcon" onclick="showSearch()">
 		<div class="btn-group" role="group" aria-label="Basic example">
-			<button type="button" class="btn btn-secondary">Àç°Ï</button>
-			<button type="button" class="btn btn-secondary">°Ó«°</button>
-			<button type="button" class="btn btn-secondary">½×¾Â</button>
+			<button type="button" class="btn btn-secondary">ç‡Ÿå€</button>
+			<button type="button" class="btn btn-secondary">å•†åŸ</button>
+			<button type="button" class="btn btn-secondary">è«–å£‡</button>
 		</div>
 		<img src="/CEA103G1/front-images/cart-outline.svg" class="cart">
 		<div class="btn-group" role="group" aria-label="Basic example">
-			<button type="button" class="btn btn-outline-secondary">µù¥U</button>
-			<button type="button" class="btn btn-outline-secondary">µn¤J</button>
+			<button type="button" class="btn btn-outline-secondary">è¨»å†Š</button>
+			<button type="button" class="btn btn-outline-secondary">ç™»å…¥</button>
 			<button type="button" class="btn btn-outline-secondary">FAQ</button>
-			<button type="button" class="btn btn-outline-secondary">Ápµ¸§Ú­Ì</button>
+			<button type="button" class="btn btn-outline-secondary">è¯çµ¡æˆ‘å€‘</button>
 		</div>
 		<img src="/CEA103G1/front-images/menu-outline.svg" class="menu"
 			onclick="showMenu()"> <img
@@ -337,16 +349,16 @@ img.person:hover {
 			<div class="left col-3">
 				<FORM method="get" id="condition" onsubmit="return false"
 					accept-charset="big5">
-					<!-- 		¿¤¥«:<select id="county" name="county"></select> -->
-					¿¤¥«:<br>
-					<select name="county" id="county"><option value="¤£©ë">¤£©ë</option></select><br> ¤J¦í¤é´Á:<br>
+					<!-- 		ç¸£å¸‚:<select id="county" name="county"></select> -->
+					ç¸£å¸‚:<br>
+					<select name="county" id="county"><option value="ä¸æ‹˜">ä¸æ‹˜</option></select><br> å…¥ä½æ—¥æœŸ:<br>
 					<input name="startdate" id="startdate" type="text"><br>
-					°h©Ğ¤é´Á:<br>
+					é€€æˆ¿æ—¥æœŸ:<br>
 					<input name="enddate" id="enddate" type="text"><br>
-					¤H¼Æ:<br>
+					äººæ•¸:<br>
 					<input name="people" id="people" type="number"><br>
 					<input type="hidden" name="action" value="search"><br>
-					<input type="button" id="idForm" value="·j´M" class="btn btn-outline-success my-2 my-sm-0">
+					<input type="button" id="idForm" value="æœå°‹" class="btn btn-outline-success my-2 my-sm-0">
 				</FORM>
 				<FORM id="feature"></FORM>
 			</div>
@@ -357,6 +369,34 @@ img.person:hover {
 		</div>
 	</div>
 	<script>
+		var default1 = new Date();
+		default1.setTime(default1.getTime()+24*60*60*1000); 
+	    $.datetimepicker.setLocale('zh'); // kr ko ja en
+	    $('#startdate').datetimepicker({
+	       theme: '',          //theme: 'dark',
+	       timepicker: false,   //timepicker: false,
+	       step: 1,            //step: 60 (é€™æ˜¯timepickerçš„é è¨­é–“éš”60åˆ†é˜)
+	       format: 'Y-m-d',
+	       value: default1,
+	//        disabledDates:    ['2017/06/08','2017/06/09','2017/06/10'], // å»é™¤ç‰¹å®šä¸å«
+	       startDate:	        default1,  // èµ·å§‹æ—¥
+	       minDate:           '-1969-12-31', // å»é™¤ä»Šæ—¥(ä¸å«)ä¹‹å‰
+	       //maxDate:           '+1970-01-01'  // å»é™¤ä»Šæ—¥(ä¸å«)ä¹‹å¾Œ
+	    });
+		
+		default1.setTime(default1.getTime()+24*60*60*1000); 
+	    $.datetimepicker.setLocale('zh'); // kr ko ja en
+	    $('#enddate').datetimepicker({
+	       theme: '',          //theme: 'dark',
+	       timepicker: false,   //timepicker: false,
+	       step: 1,            //step: 60 (é€™æ˜¯timepickerçš„é è¨­é–“éš”60åˆ†é˜)
+	       format: 'Y-m-d',
+	       value: default1,
+	//        disabledDates:    ['2017/06/08','2017/06/09','2017/06/10'], // å»é™¤ç‰¹å®šä¸å«
+	       startDate:	        default1,  // èµ·å§‹æ—¥
+	       minDate:           '-1969-12-30', // å»é™¤ä»Šæ—¥(ä¸å«)ä¹‹å‰
+	       //maxDate:           '+1970-01-01'  // å»é™¤ä»Šæ—¥(ä¸å«)ä¹‹å¾Œ
+	    });
 		const county = sessionStorage.getItem('county');
 		$.ajax({
 			type : "GET",
@@ -475,9 +515,9 @@ img.person:hover {
 		function showAll(data) {
 			for (i in data) {
 				let html;	
-				var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
+				var href=`listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
 				html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="180" height="130" style="margin-right:15px;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
-					</a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>¦a§}:${data[i].address}</p><p class="pc">¨C±ß³Ì§C»ù:${data[i].low_pc}</p></div><hr></div>`;
+					</a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>åœ°å€:${data[i].address}</p><p class="pc">æ¯æ™šæœ€ä½åƒ¹:${data[i].low_pc}</p></div><hr></div>`;
 				$('#all').append(html);
 				$(`#${data[i].camp_no}`).attr("href",href);
 				$(`#${data[i].camp_no}`).attr("target","_blank");
@@ -492,11 +532,11 @@ img.person:hover {
 			for (i in data) {
 				let html;
 				if (i) {	
-					var href=`campsite/listOneCamp.html?camp_no=${data[i].camp_no}&startdate=` + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val();
+					var href=`listOneCamp.html?camp_no=${data[i].camp_no}&startdate=` + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val();
 					html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="180" height="130" style="margin-right:15px;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
-						</a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>¦a§}:${data[i].address}</p><p class="pc">¨C±ß³Ì§C»ù:${data[i].low_pc}</p></div><hr></div>`;
+						</a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>åœ°å€:${data[i].address}</p><p class="pc">æ¯æ™šæœ€ä½åƒ¹:${data[i].low_pc}</p></div><hr></div>`;
 				} else {
-					html = "<center>©Ò¦³Àç°Ï¬Ò¤wº¡</center>";
+					html = "<center>æ‰€æœ‰ç‡Ÿå€çš†å·²æ»¿</center>";
 				}
 				$('#all').append(html);
 				$(`#${data[i].camp_no}`).attr("href",href);

@@ -742,9 +742,23 @@ td{
 		}
 		$("#fav").click(function(){
 			if($("#fav").attr("name") === "bookmark-outline"){
-				$("#fav").attr("name","bookmark");
+				$.ajax({
+					type : "GET",
+					url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + $('#camp_no').val(),
+					success : function(data) {
+						alert(data);
+						$("#fav").attr("name","bookmark");
+					}
+				});
 			}else{
-				$("#fav").attr("name","bookmark-outline");
+				$.ajax({
+					type : "GET",
+					url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + $('#camp_no').val(),
+					success : function(data) {
+						alert(data);
+						$("#fav").attr("name","bookmark-outline");
+					}
+				});
 			}
 		});
 
@@ -774,7 +788,7 @@ td{
 			let p = $('#p').val();
 			let c = $('#c').val();
 			sessionStorage.setItem('county',c)
-			window.location.href="http://localhost:8081/CEA103G1/front-end/NewFile.html?startdate=" + st + "&enddate=" + ed + "&people=" + p;
+			window.location.href="http://localhost:8081/CEA103G1/front-end/campsite/listAllCamp.html?startdate=" + st + "&enddate=" + ed + "&people=" + p;
 		});
 		
 		function showPlace(data){
