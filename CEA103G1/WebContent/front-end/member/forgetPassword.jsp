@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-success!
+forget Password
 </body>
 </html>

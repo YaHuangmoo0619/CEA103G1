@@ -1,7 +1,6 @@
 package com.member.model;
 
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 import javax.naming.Context;
@@ -31,8 +30,12 @@ public class MemberDAO implements MemberDAO_interface {
 	private static final String DELETE = 
 		"DELETE FROM campion.member where mbr_no = ?";
 	private static final String UPDATE = 
-		"UPDATE campion.member set rank_no=?, acc=?, pwd=?, id=?, name=?, bday=?, sex=?, mobile=?, mail=?, city=?, dist=?, add=?, join_time=?, card=?, pt=?, acc_stat=?, exp=?, sticker=?, rmk=? where mbr_no=?";
-
+		"UPDATE campion.member set rank_no=?, acc=?, pwd=?, id=?, `name`=?, bday=?, sex=?, mobile=?, mail=?, city=?, dist=?, `add`=?, join_time=?, card=?, pt=?, acc_stat=?, exp=?, sticker=?, rmk=? where mbr_no=?";
+	private static final String LOGIN_MEMBER =
+		"SELECT mbr_no,rank_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,card,pt,acc_stat,exp,sticker,rmk FROM campion.member where acc = ? and pwd = ?";
+	private static final String REGISTER_MEMBER = 
+		"INSERT INTO campion.member (rank_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,card,pt,acc_stat,exp,sticker,rmk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	//新增會員
 	@Override
 	public void insert(MemberVO memberVO) {
 
@@ -44,7 +47,6 @@ public class MemberDAO implements MemberDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			
 			pstmt.setInt(1, memberVO.getRank_no());
 			pstmt.setString(2, memberVO.getAcc());
 			pstmt.setString(3, memberVO.getPwd());
@@ -88,9 +90,8 @@ public class MemberDAO implements MemberDAO_interface {
 				}
 			}
 		}
-
 	}
-
+	//修改會員
 	@Override
 	public void update(MemberVO memberVO) {
 
@@ -102,7 +103,6 @@ public class MemberDAO implements MemberDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
-			
 			pstmt.setInt(1, memberVO.getRank_no());
 			pstmt.setString(2, memberVO.getAcc());
 			pstmt.setString(3, memberVO.getPwd());
@@ -147,9 +147,8 @@ public class MemberDAO implements MemberDAO_interface {
 				}
 			}
 		}
-
 	}
-
+	//刪除會員
 	@Override
 	public void delete(Integer mbr_no) {
 
@@ -188,7 +187,7 @@ public class MemberDAO implements MemberDAO_interface {
 		}
 
 	}
-
+	//查詢(單一)會員
 	@Override
 	public MemberVO findByPrimaryKey(Integer mbr_no) {
 
@@ -261,7 +260,7 @@ public class MemberDAO implements MemberDAO_interface {
 		}
 		return memberVO;
 	}
-
+	//查詢(所有)會員
 	@Override
 	public List<MemberVO> getAll() {
 		List<MemberVO> list = new ArrayList<MemberVO>();
@@ -272,7 +271,6 @@ public class MemberDAO implements MemberDAO_interface {
 		ResultSet rs = null;
 
 		try {
-
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 			rs = pstmt.executeQuery();
@@ -333,16 +331,132 @@ public class MemberDAO implements MemberDAO_interface {
 		}
 		return list;
 	}
-
+	//登入會員
 	@Override
-	public List<MemberVO> getDateMbr_no(Date bday) {
-		// TODO Auto-generated method stub
-		return null;
+	public MemberVO findByPrimaryKey_login(String acc, String pwd) {
+		MemberVO memberVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(LOGIN_MEMBER);
+
+			pstmt.setString(1, acc);
+			pstmt.setString(2, pwd);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// memberVO 也稱為 Domain objects
+				memberVO = new MemberVO();
+				memberVO.setMbr_no(rs.getInt("mbr_no"));
+				memberVO.setRank_no(rs.getInt("rank_no"));
+				memberVO.setAcc(rs.getString("acc"));
+				memberVO.setPwd(rs.getString("pwd"));
+				memberVO.setId(rs.getString("id"));
+				memberVO.setName(rs.getString("name"));
+				memberVO.setBday(rs.getDate("bday"));
+				memberVO.setSex(rs.getInt("sex"));
+				memberVO.setMobile(rs.getString("mobile"));
+				memberVO.setMail(rs.getString("mail"));
+				memberVO.setCity(rs.getString("city"));
+				memberVO.setDist(rs.getString("dist"));
+				memberVO.setAdd(rs.getString("add"));
+				memberVO.setJoin_time(rs.getTimestamp("join_time"));
+				memberVO.setCard(rs.getString("card"));
+				memberVO.setPt(rs.getInt("pt"));
+				memberVO.setAcc_stat(rs.getInt("acc_stat"));
+				memberVO.setExp(rs.getInt("exp"));
+				memberVO.setSticker(rs.getBytes("sticker"));
+				memberVO.setRmk(rs.getString("rmk"));
+			}
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return memberVO;
 	}
-
+	//註冊會員
 	@Override
-	public List<MemberVO> getTimestampMbr_no(Timestamp join_time) {
-		// TODO Auto-generated method stub
-		return null;
+	public void register_member(MemberVO memberVO) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(REGISTER_MEMBER);
+
+			
+			pstmt.setInt(1, memberVO.getRank_no());
+			pstmt.setString(2, memberVO.getAcc());
+			pstmt.setString(3, memberVO.getPwd());
+			pstmt.setString(4, memberVO.getId());
+			pstmt.setString(5, memberVO.getName());
+			pstmt.setDate(6, memberVO.getBday());
+			pstmt.setInt(7, memberVO.getSex());
+			pstmt.setString(8, memberVO.getMobile());
+			pstmt.setString(9, memberVO.getMail());
+			pstmt.setString(10, memberVO.getCity());
+			pstmt.setString(11, memberVO.getDist());
+			pstmt.setString(12, memberVO.getAdd());
+			pstmt.setTimestamp(13, memberVO.getJoin_time());
+			pstmt.setString(14, memberVO.getCard());
+			pstmt.setInt(15, memberVO.getPt());
+			pstmt.setInt(16, memberVO.getAcc_stat());
+			pstmt.setInt(17, memberVO.getExp());
+			pstmt.setBytes(18, memberVO.getSticker());
+			pstmt.setString(19, memberVO.getRmk());
+
+			pstmt.executeUpdate();
+
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
 	}
 }

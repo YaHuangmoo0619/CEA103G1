@@ -77,7 +77,6 @@ public class MemberService {
 		dao.delete(mbr_no);
 	}
 
-	
 	public MemberVO getOneMember(Integer mbr_no) {
 		return dao.findByPrimaryKey(mbr_no);
 	}
@@ -85,11 +84,8 @@ public class MemberService {
 	public List<MemberVO> getAll() {
 		return dao.getAll();
 	}
-
-	public List<MemberVO> getDateMbr_no(Date bday) {
-		return dao.getDateMbr_no(bday);
-	}
-
 	
-
+	public MemberVO loginMember(String acc, String pwd) {
+		return dao.findByPrimaryKey_login(acc, pwd);
+	}
 }
