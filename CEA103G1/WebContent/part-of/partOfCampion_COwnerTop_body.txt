@@ -5,7 +5,7 @@
 			<img src="<%=request.getContextPath()%>/images/campionLogoLong.png"	class="logo"></a>
 			<c:if test="${campsite_ownerVO != null}">
 				<div>${campsite_ownerVO.name}
-				<a href="" style="display:inline;"><img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
+				<a href="" style="display:inline;"><img src="<%=request.getContextPath() %>/campsite_owner/GetPhoto?cso_no=${campsite_ownerVO.cso_no}" class="person"></a>
 				</div>
 			</c:if>
 		</div>

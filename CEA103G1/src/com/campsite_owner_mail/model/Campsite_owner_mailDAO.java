@@ -343,7 +343,7 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 		StringBuffer partOfsqlWhere = new StringBuffer();
 		Campsite_owner_mailVO campsite_owner_mailVO = null;
 		Set<String> keys = map.keySet();
-		
+//		System.out.print("in");
 		Connection con = null;
 		Statement stmt = null;
 		PreparedStatement pstmt = null;
@@ -365,6 +365,7 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 				nextColumn:
 				//屬於特定sql型別做特定動作
 				for(String key : keys) {
+//					System.out.println(key);
 					if(partOfsqlWhere.length() == 0) {
 						if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
 							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
@@ -413,6 +414,7 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 				}
 			}
 			//問號放入對應的值
+			System.out.print(partOfsqlWhere.toString());
 			pstmt = con.prepareStatement(partOfsqlWhere.toString());
 			Set<Integer> keysPstmt = forPstmt.keySet();//上一個步驟存的資料
 			
@@ -425,6 +427,7 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 					pstmt.setInt(index, Integer.valueOf(map.get(forPstmt.get(keyPstmt))[0]));
 					index++;
 				}else if(rm.getColumnTypeName(keyPstmt) == "VARCHAR") {
+//					System.out.print("%"+map.get(forPstmt.get(keyPstmt))[0]+"%");
 					pstmt.setString(index, "%"+map.get(forPstmt.get(keyPstmt))[0]+"%");
 					index++;
 				}else if(rm.getColumnTypeName(keyPstmt) == "DATETIME") {
@@ -437,6 +440,7 @@ public class Campsite_owner_mailDAO implements Campsite_owner_mailDAO_interface 
 			
 			while (rs_p.next()) {
 				campsite_owner_mailVO = new Campsite_owner_mailVO();
+//				System.out.print(rs_p.getString("mail_cont"));
 				campsite_owner_mailVO.setMail_no(rs_p.getInt("mail_no"));
 				campsite_owner_mailVO.setSend_no(rs_p.getInt("send_no"));
 				campsite_owner_mailVO.setRcpt_no(rs_p.getInt("rcpt_no"));

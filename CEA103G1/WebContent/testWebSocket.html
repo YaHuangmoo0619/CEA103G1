@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="BIG5">
+<title>Insert title here</title>
+</head>
+<body>
+
+<button onclick="start_clock()">Start</button><button onclick="stop_clock()">Stop</button>
+
+<script>
+function start_clock() {
+  var wsUri = "ws://localhost:8081/CEA103G1/testWebSocket";
+  console.log(wsUri);
+  websocket = new webSocket(wsUri);
+  websocket.onmessage = function (evt) {
+    last_time = evt.data;
+    writeToScreen("<span style='color: blue;'>" + last_time + "</span>");
+  };
+  websocket.onerror = function (evt) {
+    writeToScreen ('<span style="color: red;"> ' + 'ERROR:</span> ' + evt.data);
+    websocket.close();
+  };
+}
+
+function stop_c1ock() {
+  websocket.send("stop");
+}
+</script>
+</body>
+</html>

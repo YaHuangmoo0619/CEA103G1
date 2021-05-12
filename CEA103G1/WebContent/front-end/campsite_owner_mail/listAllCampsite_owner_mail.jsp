@@ -180,6 +180,7 @@ tr:hover {
 								<label	for="mail_cont"></label>
 								<input type="text" name="mail_cont" id="mail_cont" placeholder="ㄌ獺ンず甧琩高">
 								<input type="hidden" name="action"	value="compositeSearchTop">
+								<input type="hidden" name="where"	value="rcpt">
 								<input type="submit" value="癳琩高" class="confirm" id="confirmTop">&nbsp;<span>秈顶琩高</span>
 							</form>
 					</li>
@@ -212,8 +213,8 @@ tr:hover {
 									</c:forEach>
 								</select>
 								<br>
-								<label for="mbr_no">祇獺穦:</label> 
-								<select size="1" name="mbr_no" id="mbr_no">
+								<label for="rcpt_no">Μン:</label> 
+								<select size="1" name="rcpt_no" id="rcpt_no">
 									<option value="no">--叫匡拒--</option>
 									<c:forEach var="memberVO" items="${memberSvc.all}">
 										<option value="${memberVO.mbr_no}">${memberVO.mbr_no}${memberVO.name}</option>
@@ -244,6 +245,7 @@ tr:hover {
 								</select>
 								<br>
 								<input type="hidden" name="action" value="compositeSearch">
+								<input type="hidden" name="where"	value="rcpt">
 								<input type="submit" value="癳琩高" class="confirm">
 							</form>
 						</li>

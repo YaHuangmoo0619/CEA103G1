@@ -418,7 +418,7 @@ section.footer {
 			<c:if test="${memberVO != null}">
 			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp"><img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement"></a>
 				${memberVO.name}
-			<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"><div class="person" style="display:inline;border-radius:50%;">${memberVO.sticker}</div> <img src="<%=request.getContextPath() %>/front-images/person-circle-outline.svg" class="person"></a>
+			<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"><div class="person" style="display:inline;border-radius:50%;"> <img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="person"></div></a>
 			</c:if>
 		</div>
 	</div>
@@ -561,7 +561,7 @@ section.footer {
 			<c:forEach var="articleVO" items="${articleSvc.all_Front}" begin="0" end="2">
 			<div class="row">
 				<div class="col-sm">
-					<a href="<%=request.getContextPath() %>/front-end/article/listOneArticle.jsp?art_no=${articleVO.art_no}">
+					<a href="<%=request.getContextPath() %>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">
 						<div class="article">
 							<h5>${articleVO.art_title}</h5>
 							<c:set var="art_cont" value="${articleVO.art_cont}" />

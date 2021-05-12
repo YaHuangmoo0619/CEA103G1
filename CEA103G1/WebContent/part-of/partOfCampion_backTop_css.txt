@@ -11,7 +11,11 @@ img.logo {
 	max-height: 70px;
 }
 
-img.person {
-	max-width: 5%;
+div.login {
+	background-color: #80c344;
+	color: #4e5452;
+	margin-top:15%;
+	padding: 10px;
+	border-radius: 5px;
 }
 </style>

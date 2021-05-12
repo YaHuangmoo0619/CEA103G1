@@ -52,6 +52,7 @@ public class Service_mailServlet extends HttpServlet {
 				Set<String> keys = map.keySet();
 				int checkCount = 0;
 				for(String key: keys) {
+					System.out.print(key+":"+map.get(key)[0]);
 					switch (map.get(key)[0]) {
 					case "no":
 					case "":
