@@ -15,7 +15,7 @@ public class Feature_ListService {
 		Feature_ListVO feature_listVO = new Feature_ListVO();
 
 		feature_listVO.setCamp_fl_name(camp_fl_name);
-		dao.insert(feature_listVO);
+		feature_listVO = dao.insert(feature_listVO);
 
 		return feature_listVO;
 	}

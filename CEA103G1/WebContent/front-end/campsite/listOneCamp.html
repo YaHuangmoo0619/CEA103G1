@@ -10,7 +10,7 @@
 	crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
-
+<link   rel="stylesheet" type="text/css" href="/CEA103G1/datetimepicker/jquery.datetimepicker.css" />
 <style>
 .w3-content{position:relative;margin-top:0em;}
 .w3-btn,.w3-button{border:none;display:inline-block;outline:0;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}
@@ -516,6 +516,8 @@ td{
 			</div>
 		</div>
 	</div>
+	<script src="/CEA103G1/datetimepicker/jquery.js"></script>
+	<script type="text/javascript" language="javascript" src="/CEA103G1/datetimepicker/jquery.datetimepicker.full.js" charset="UTF-8"></script>
 	<script
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS3FFLkorvfSYZ9kblu3kplAs2a1H8dO8"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -543,6 +545,56 @@ td{
 		 x[slideIndex-1].style.display = "block"; }
 	</script>
 	<script>
+		var default1 = new Date();
+		default1.setTime(default1.getTime()+24*60*60*1000); 
+	    $.datetimepicker.setLocale('zh'); // kr ko ja en
+	    $('#st').datetimepicker({
+	       theme: '',          //theme: 'dark',
+	       timepicker: false,   //timepicker: false,
+	       step: 1,            //step: 60 (這是timepicker的預設間隔60分鐘)
+	       format: 'Y-m-d',
+	//	       value: default1,
+	//        disabledDates:    ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+	       startDate:	        default1,  // 起始日
+	       minDate:           '-1969-12-31', // 去除今日(不含)之前
+	       //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+	    });
+	    $('#startdate').datetimepicker({
+	       theme: '',          //theme: 'dark',
+	       timepicker: false,   //timepicker: false,
+	       step: 1,            //step: 60 (這是timepicker的預設間隔60分鐘)
+	       format: 'Y-m-d',
+	//	       value: default1,
+	//        disabledDates:    ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+	       startDate:	        default1,  // 起始日
+	       minDate:           '-1969-12-31', // 去除今日(不含)之前
+	       //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+	    });
+		
+		default1.setTime(default1.getTime()+24*60*60*1000); 
+	    $.datetimepicker.setLocale('zh'); // kr ko ja en
+	    $('#ed').datetimepicker({
+	       theme: '',          //theme: 'dark',
+	       timepicker: false,   //timepicker: false,
+	       step: 1,            //step: 60 (這是timepicker的預設間隔60分鐘)
+	       format: 'Y-m-d',
+	//	       value: default1,
+	//        disabledDates:    ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+	       startDate:	        default1,  // 起始日
+	       minDate:           '-1969-12-30', // 去除今日(不含)之前
+	       //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+	    });
+	    $('#enddate').datetimepicker({
+	       theme: '',          //theme: 'dark',
+	       timepicker: false,   //timepicker: false,
+	       step: 1,            //step: 60 (這是timepicker的預設間隔60分鐘)
+	       format: 'Y-m-d',
+	//	       value: default1,
+	//        disabledDates:    ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+	       startDate:	        default1,  // 起始日
+	       minDate:           '-1969-12-30', // 去除今日(不含)之前
+	       //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+	    });
 		$.ajax({
 			type : "GET",
 			dataType : "json",
@@ -678,6 +730,12 @@ td{
 			});
 		}
 		$("#search").click(function(){
+			let start = Date.parse($('#startdate').val()).valueOf();
+	    	let end = Date.parse($('#enddate').val()).valueOf();
+	    	if (start >= end) {
+				alert("入住日期不得大於或等於退房日期");
+				return false;
+			};
 			$('#placeInfo').empty();
 			$('#order').css("display","none");
 				$.ajax({
@@ -698,6 +756,12 @@ td{
 				window.history.pushState({}, document.title, split[0] + "startdate=" + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val());
 		});
 		$("#restart").click(function(){
+			let start = Date.parse($('#startdate').val()).valueOf();
+	    	let end = Date.parse($('#enddate').val()).valueOf();
+	    	if (start >= end) {
+				alert("入住日期不得大於或等於退房日期");
+				return false;
+			};
 				$('#placeInfo').empty();
 				$('#order').css("display","none");
 				$.ajax({
@@ -779,10 +843,16 @@ td{
 		}
 		
 		function findWithFeature(e) {
-			window.location.href="http://localhost:8081/CEA103G1/front-end/NewFile.html?camp_fl_no=" + e;
+			window.location.href="http://localhost:8081/CEA103G1/front-end/campsite/listAllCamp.html?camp_fl_no=" + e;
 		}
 
 		$("#backtobrowse").click(function(){
+			let start = Date.parse($('#st').val()).valueOf();
+	    	let end = Date.parse($('#ed').val()).valueOf();
+	    	if (start >= end) {
+				alert("入住日期不得大於或等於退房日期");
+				return false;
+			};
 			let st = $('#st').val();
 			let ed = $('#ed').val();
 			let p = $('#p').val();
@@ -793,7 +863,7 @@ td{
 		
 		function showPlace(data){
 			let html;
-			$('#placeInfo').append(`<tr class=><th>名稱</th><th>人數</th><th>人數上限</th><th>平日價格</th><th>假日價格</th><th>選取</th><th>入住金額</th></tr>`);
+			$('#placeInfo').append(`<tr><th>名稱</th><th>人數</th><th>人數上限</th><th>平日價格</th><th>假日價格</th><th>選取</th><th>入住金額</th></tr>`);
 			if(data[1]){
 				for(i in data[1]){
 					html = `<tr class="checkBoxChecked"><td>${data[1][i].plc_name}</td><td>${data[1][i].ppl}</td><td>${data[1][i].max_ppl}</td>

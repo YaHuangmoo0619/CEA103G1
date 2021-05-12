@@ -19,6 +19,8 @@
 %>
 <jsp:useBean id="campSvc" scope="page"
 	class="com.campsite.model.CampService" />
+<jsp:useBean id="memberSvc" scope="page"
+	class="com.member.model.MemberService" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,6 +76,12 @@ input.confirm:hover{
 	color: #80c344;
 	cursor: pointer;
 }
+th, td {
+	text-align: left;
+	/* 	border: 1px solid #4e5452; */
+	padding: 10px 10px;
+	border-bottom:solid 1px;
+}
 </style>
 </head>
 <body>
@@ -85,6 +93,7 @@ input.confirm:hover{
 			<div class="left col-3">
 				<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
 			<div class="right col-9">
+			<h3>歷史訂單</h3>
 				<div style="display: inline-block;">
 					<a href="PresentPlace_order.jsp">現有訂單</a>
 				</div>
@@ -104,12 +113,10 @@ input.confirm:hover{
 						<th>使用點數</th>
 						<th>入住狀態</th>
 					</tr>
-					<%@ include file="page1.file"%>
-					<c:forEach var="place_orderVO" items="${list}"
-						begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+					<c:forEach var="place_orderVO" items="${list}">
 						<tr>
 							<td>${place_orderVO.plc_ord_no}</td>
-							<td>${place_orderVO.mbr_no}</td>
+							<td>${memberSvc.getOneMember(place_orderVO.mbr_no).name}</td>
 							<td><c:forEach var="campVO" items="${campSvc.all}">
 									<c:if test="${place_orderVO.camp_no==campVO.camp_no}">
 	                    ${campVO.camp_name}
@@ -162,7 +169,6 @@ input.confirm:hover{
 						</tr>
 					</c:forEach>
 				</table>
-				<%@ include file="page2.file"%>
 			</div>
 		</div>
 	</div>

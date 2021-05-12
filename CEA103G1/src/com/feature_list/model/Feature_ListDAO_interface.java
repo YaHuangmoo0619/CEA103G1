@@ -5,7 +5,7 @@ import java.util.Map;
 
 
 public interface Feature_ListDAO_interface {
-	public void insert(Feature_ListVO feature_listVO);
+	public Feature_ListVO insert(Feature_ListVO feature_listVO);
 
 	public void update(Feature_ListVO feature_listVO);
 

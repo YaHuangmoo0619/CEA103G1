@@ -162,19 +162,30 @@ public class Feature_ListDAO implements Feature_ListDAO_interface {
 	}
 
 	@Override
-	public void insert(Feature_ListVO feature_listVO) {
+	public Feature_ListVO insert(Feature_ListVO feature_listVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
 		try {
-
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(INSERT_STMT);
-
+			
+			String cols[] = { "CAMP_FL_NO" };
+			pstmt = con.prepareStatement(INSERT_STMT, cols);
 			pstmt.setString(1, feature_listVO.getCamp_fl_name());
-
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("set auto_increment_offset=1;"); // 自增主鍵-初始值
+			stmt.executeUpdate("set auto_increment_increment=1;"); // 自增主鍵-遞增
 			pstmt.executeUpdate();
-
+			
+			String next_camp_fl_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+			if (rs.next()) {
+				next_camp_fl_no = rs.getString(1);
+			} else {
+				System.out.println("未取得自增主鍵值");
+			}
+			rs.close();
+			feature_listVO.setCamp_fl_no(new Integer(next_camp_fl_no));
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
@@ -196,7 +207,7 @@ public class Feature_ListDAO implements Feature_ListDAO_interface {
 				}
 			}
 		}
-
+		return feature_listVO;
 	}
 
 	@Override

@@ -21,16 +21,48 @@
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>營區資料</title>
-<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
-table, th, td {
-	border: 0.1px solid black;
-	background-color: white;
-	text-align: center;
+.confirm {
+	background-color: #5599FF;
+	color: #000088;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
 }
 
+.confirm:hover {
+	background-color: #000088;
+	color: #5599FF;
+	cursor: pointer;
+}
+
+.not {
+	background-color: #FF3333;
+	color: #880000;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+
+.not:hover {
+	background-color: #AA0000;
+	color: #FF0000;
+	cursor: pointer;
+}
+th{
+	width: 100px;
+}
+th, td {
+	text-align: left;
+	/* 	border: 1px solid #4e5452; */
+	padding: 10px 10px;
+	border-bottom:solid 1px;
+}
 #config {
 	width: 150px;
 	height: 100px;
@@ -78,18 +110,18 @@ table {
 </style>
 </head>
 <body bgcolor='white'>
-	<%@ include file="/part-of/partOfCampion_COwnerTop_body.txt"%>
+	<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
 
 	<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 	<div class="container">
 		<div class="row">
 			<div class="left col-3">
-				<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
+				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 			<div class="right col-9">
-				<div style="display: inline-block;">
+				<div style="display: inline-block; width:60%;">
 					<h3>營區資料</h3>
 					<c:if test="${campVO.review_Status==0}">
-						<FORM METHOD="post"
+						<div style="display:inline-block;"><FORM METHOD="post"
 							ACTION="<%=request.getContextPath()%>/camp/camp.do">
 							<button class="confirm">
 								<c:out value="通過" />
@@ -98,17 +130,17 @@ table {
 								type="hidden" name="camp_no"
 								value="${campVO.camp_no}"> <input type="hidden"
 								name="review_status" value="1">
-						</FORM>
-						<FORM METHOD="post"
+						</FORM></div>
+						<div style="display:inline-block;"><FORM METHOD="post"
 							ACTION="<%=request.getContextPath()%>/camp/camp.do">
-							<button class="confirm">
+							<button class="not">
 								<c:out value="不通過" />
 							</button>
 							<input type="hidden" name=action value="updatereview"> <input
 								type="hidden" name="camp_no"
 								value="${campVO.camp_no}"> <input type="hidden"
 								name="review_status" value="2">
-						</FORM>
+						</FORM></div>
 					</c:if>
 					<table>
 						<tr>
@@ -169,35 +201,6 @@ table {
 							<th>緯經度</th>
 							<td>${campVO.latitude},${campVO.longitude}</td>
 						</tr>
-					</table>
-				</div>
-				<div style="display: inline-block; margin-left: 50px;">
-					<h3>營位資料</h3>
-					<table>
-						<tr>
-							<th>營位名稱</th>
-							<th>人數</th>
-							<th>人數上限</th>
-							<th>平日價格</th>
-							<th>假日價格</th>
-							<th>狀態</th>
-						</tr>
-						<c:forEach var="placeVO"
-							items="${placeSvc.getByCamp(campVO.camp_no)}">
-							<tr>
-								<td>${placeVO.plc_name}</td>
-								<td>${placeVO.ppl}</td>
-								<td>${placeVO.max_ppl}</td>
-								<td>${placeVO.pc_wkdy}</td>
-								<td>${placeVO.pc_wknd}</td>
-								<c:if test="${placeVO.open_stat==0}">
-									<td><c:out value="不開放" /></td>
-								</c:if>
-								<c:if test="${placeVO.open_stat==1}">
-									<td><c:out value="開放" /></td>
-								</c:if>
-							</tr>
-						</c:forEach>
 					</table>
 				</div>
 			</div>

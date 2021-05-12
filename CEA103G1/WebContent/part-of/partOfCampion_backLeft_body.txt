@@ -3,6 +3,7 @@
 	<div class="content">
 		<div class="row">
 			<div class="left col">
+<<<<<<< HEAD
 				<c:if test="${employeeVO != null}">
 					<ul>
 						<jsp:useBean id="authoritySvc" class="com.authority.model.AuthorityService"/>
@@ -35,6 +36,19 @@
 					</ul>
 				</c:if>
 				<c:if test="${employeeVO == null}"><img style="max-width: 100%; margin-top: 30%;opacity:0.8;" src="<%=request.getContextPath()%>/images/campionLogoCircle.png"></c:if>
+=======
+				<ul>
+					<li><a
+						href="<%=request.getContextPath()%>/back-end/employee/listAllEmployee.jsp">員工管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/campsite/UnreviewCamp.jsp">營位訂購平台管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/announcement/listAllAnnouncement.jsp">公告管理</a></li>
+					<li><a href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">客服管理</a></li>
+					<li><a href="">即時小幫手管理</a></li>
+				</ul>
+>>>>>>> 760c0b018caf00bf9effc000c72d98ece514cdc8
 			</div>
 		</div>
 	</div>
