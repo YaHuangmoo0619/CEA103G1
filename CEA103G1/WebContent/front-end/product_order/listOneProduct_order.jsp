@@ -132,10 +132,6 @@
 			</td>
 			<td>${product_orderVO.rmk}</td>
 			<td>
-			<!-- <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">  -->
-			     <input type="submit" value="¤U­q">
-			     <input type="hidden" name="prod_ord_no"  value="${product_orderVO.prod_ord_no}">
-			</td>
 	</tr>
 </table>
 
