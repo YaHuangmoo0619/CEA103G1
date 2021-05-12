@@ -284,13 +284,14 @@ input#search-bar:focus:-ms-placeholder {
 	</FORM>
 
 
-
+		<div onclick="upload()">測試是否可以同步圖片</div>
 	<script>
 		$('#art_cont').summernote(
 				{
 					placeholder : '請輸入文字',
 					tabsize : 2,
 					height : 100,
+					maxHeight: 100, //固定，不寫的話就可隨意拉開
 					toolbar : [
 					// [groupName, [list of button]]
 					[ 'style', [ 'bold', 'italic', 'underline' ] ],
@@ -302,24 +303,25 @@ input#search-bar:focus:-ms-placeholder {
 
 
 		$("body").on("click",".tag_selected_parent",function() { //當標籤被點的時候，要加到預新增的標籤列表中並隱藏被點擊的標籤
-			if($(this).children("div:first") >0){ //如果.tag_selected_parent底下有div的話
-	            var tag_text1 = $(this).children("div:first").html(); //將div html設為空
+// 			if($(this).children("div:first") >0){ //如果.tag_selected_parent底下有div的話
+	            var tag_text1 = $(this).children("div:first").html(); 
 				var new_tag = $('<div style="border: solid; border-color:black" class=tag_prepared_to_add display:flex>'
-						+ tag_text1 + '</div>');
-				$("#tags_add_list").prepend(new_tag);
-				$(this).children("div:first").hide();
-				$(this).children("div:first").next().hide();
+						+ tag_text1 + '</div>'); //要放到預新增的標籤列表中的內容
+				$("#tags_add_list").prepend(new_tag); //放入預新增的標籤列表
+				$(this).children("div:first").hide(); //原本的隱藏
+				$(this).children("div:first").next().hide(); 
+
 				
-	        }else{
-	        	console.log("該元素不存在"); //如果不存在則不作為
-	        	var x = document.getElementById("tags_input").value;
-				var new_tag = $('<div style="border: solid; border-color:black" class=tag_prepared_to_add display:flex>'
-						+ x + '</div>');
-				console.log("x="+x);
-	        	$(this).children("button:first").hide(); //點選button一樣會隱藏該選項，並新增xx標籤至new_tag
-	        	$("#tags_add_list").prepend(new_tag);
-	        	$(this).children("button:first").next().hide();
-	        }
+// 	        }else{
+// 	        	console.log("該元素不存在"); //如果不存在則不作為
+// 	        	var x = document.getElementById("tags_input").value;
+// 				var new_tag = $('<div style="border: solid; border-color:black" class=tag_prepared_to_add display:flex>'
+// 						+ x + '</div>');
+// 				console.log("x="+x);
+// 	        	$(this).children("button:first").hide(); //點選button一樣會隱藏該選項，並新增xx標籤至new_tag
+// 	        	$("#tags_add_list").prepend(new_tag);
+// 	        	$(this).children("button:first").next().hide();
+// 	        }
 			
 							
 			});
@@ -397,6 +399,10 @@ input#search-bar:focus:-ms-placeholder {
         if (document.location.search.match(/type=embed/gi)) {
     	window.parent.postMessage("resize", "*");
   }
+        
+        function upload(){
+        	$("button[name='Picture]'").click();
+        }
 </script>
 
 </body>

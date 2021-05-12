@@ -27,7 +27,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 	private static final String INSERT_STMT = 
 			"INSERT INTO ARTICLE (bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies) VALUES (?,?, ?, ?, ?, ?,?,?)";
 		private static final String GET_ALL_STMT_FRONT = 
-			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies FROM ARTICLE where art_stat = 0 order by art_no ";
+			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies FROM ARTICLE where art_stat = 0 order by art_no desc";
 		private static final String GET_ALL_STMT_BACK = 
 			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies FROM ARTICLE order by art_no";
 		private static final String GET_ONE_STMT = 

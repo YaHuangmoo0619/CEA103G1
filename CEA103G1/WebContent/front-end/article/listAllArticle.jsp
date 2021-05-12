@@ -308,14 +308,6 @@ img.person:hover {
 	}
 }
 
-#sidebar-wrapper {
-	width: 208px;
-	height: 2195px;
-	padding: 0px;
-	border: 0px;
-	margin: 0px;
-	position: fixed;
-}
 
 /* -----------------------------以下為側欄css------------------------------ */
 #sidebar {
@@ -346,12 +338,19 @@ img.person:hover {
 	  
 }
 
+/* --------------------------------------------------------------------- */
+.write{
+  position: fixed;
+  bottom: 100px;
+  right: 75px;
+}
+
 </style>
 
 </head>
 <body>
-
-
+	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
+	<%@ include file="/article_css/article_css.txt"%>
 
 	<div style="background-color: #eee;">
 		<img src="/CEA103G1/images/campionLogoLong.png" class="logo">
@@ -394,31 +393,102 @@ img.person:hover {
 <div class="scroll"> 
 	<%@ include file="pageforhome.file"%>
 
-	<c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>"
-		end="<%=pageIndex+rowsPerPage-1%>">
-<div class=article>
-
-${articleVO.art_no}
-<c:forEach var="bd_clVO" items="${bd_clDAO.all}">
+    <div class="contain">
+        <div class="container">
+            <div class="body">
+                <div style='padding-top: 0px;padding-bottom: 0px;'>
+                    <div data-index="1">
+                    <c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+                    <div class=article>
+                        <article class="content" role="article" data-post-list-viewed-cell-no="2">
+                            <div class="top_in">
+                                <div class="top_in1">
+                                    <div class="genre_uni">
+                                        <div class="genre_0">
+                                            <div class="genre"><c:forEach var="bd_clVO" items="${bd_clDAO.all}">
 			<c:if test="${articleVO.bd_cl_no==bd_clVO.bd_cl_no}">
 	                    ${bd_clVO.bd_name}
                     </c:if>
-		</c:forEach>
+		</c:forEach></div>
+                                            <div class="date"><fmt:formatDate value="${articleVO.art_rel_time}"
+			pattern="MM月dd日  HH:mm" /></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 class="title_box">
+                                <a class="title" href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></h2>
+                            <div class="post">
+                                <div class="post_0">
+                                    <span>#會計</span><span>#交換</span></div>
+                            </div>
+                            <div class="bottom_in">
+                                <div class="emoji">
+                                    <div class="emoji_inner">
+                                        <div class="emoji_pic">
+                                            <img src="https://megapx-assets.dcard.tw/images/52057289-337a-4f2f-88c0-cb8a77ee422a/orig.png" title="愛心" style="z-index:3" class=" icon_size icon_pic"></div>
+                                        <div class=" amount">${articleVO.likes}</div>
+                                    </div>
+                                </div>
+                                <div class="response_box">
+                                    <span class="response">回應</span><span>283</span>
+                                </div>
+                                <div class="archieve">
+                                    <div class="archieve_0">
+                                        <svg viewBox="0 0 24 24" focusable="false" role="img" aria-hidden="true" class="icon_size archieve_pic">
+                                            <path d="M17.65 21.39L12 17.5l-5.65 3.88A1.5 1.5 0 014 20.15V5a2.5 2.5 0 012.5-2.5h11A2.5 2.5 0 0120 5v15.15a1.5 1.5 0 01-2.35 1.24z"></path>
+                                        </svg>
+                                        <span>收藏</span></div>
+                                </div>
+                            </div>
+                            <img class="pic" src="https://imgur.dcard.tw/GFvQZ7Gb.jpg" width="84px" height="84px" alt="" loading="lazy" referrerpolicy="no-referrer">
+                        </article>
+                        </div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-${articleVO.mbr_no}
-<fmt:formatDate value="${articleVO.art_rel_time}"
-			pattern="MM月dd日  HH:mm" />
-		<a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a>
-${articleVO.likes}
 
-<%-- ${fn:replace(articleVO.art_cont,vEnter,"<br>")} --%>
-</div>
-		</c:forEach>
 
-<%-- 	<%@ include file="page2.file"%> --%>
 
-<a href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp">撰寫文章</a>
+
+
+
+
+
+
+
+
+
+
+
+
+<%-- 	<c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>"> --%>
+<!-- <div class=article> -->
+
+<%-- ${articleVO.art_no} --%>
+<%-- <c:forEach var="bd_clVO" items="${bd_clDAO.all}"> --%>
+<%-- 			<c:if test="${articleVO.bd_cl_no==bd_clVO.bd_cl_no}"> --%>
+<%-- 	                    ${bd_clVO.bd_name} --%>
+<%--                     </c:if> --%>
+<%-- 		</c:forEach> --%>
+
+
+<%-- ${articleVO.mbr_no} --%>
+<%-- <fmt:formatDate value="${articleVO.art_rel_time}" --%>
+<%-- 			pattern="MM月dd日  HH:mm" /> --%>
+<%-- 		<a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a> --%>
+<%-- ${articleVO.likes} --%>
+
+<!-- </div> -->
+<%-- 		</c:forEach> --%>
+
+
+
 
 	<c:if test="${openModal!=null}">
 
@@ -441,8 +511,6 @@ ${articleVO.likes}
   	<!-- 捲軸狀態 -->
   	<div class="scroller-status">
   		<div class="infinite-scroll-request loader-ellips"></div>
-<!--   		<p class="infinite-scroll-last">開始加載</p> -->
-<!--   		<p class="infinite-scroll-error">沒有頁面可以讀取了</p> -->
   	</div>
 
 </div>

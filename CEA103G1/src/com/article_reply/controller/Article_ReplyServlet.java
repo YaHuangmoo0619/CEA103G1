@@ -302,6 +302,15 @@ public class Article_ReplyServlet extends HttpServlet{
 
 				String rep_cont = req.getParameter("rep_cont");
 				
+//				標註樓層實作開始
+//				Step1:查看目前這篇文章共有幾篇留言 (從資料庫取留言數+1，因為要算上即將加入的這一筆)
+//				ArticleVO articleVO = new ArticleVO();
+//				ArticleService articleSvc = new ArticleService();
+//				articleVO = articleSvc.getOneArticle(art_no);
+//				int replies_num = articleVO.getReplies()+1; //取得留言數
+				
+//				Step2:設定檢查格式  必須符合 #B數字 . 數字只能從1~留言數  不在這個範圍內則無效				
+//				標註樓層實作結束				
 				String rep_contReg = "^.{10,10000}$";
 				
 				if (rep_cont == null || rep_cont.trim().length() == 0) {

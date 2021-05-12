@@ -403,7 +403,7 @@ public class ArticleServlet extends HttpServlet {
 
 				/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 
-				String[] values = req.getParameterValues("tags");// 取得所有勾選的標籤
+//				String[] values = req.getParameterValues("tags");// 取得所有勾選的標籤
 
 				Integer bd_cl_no = null;
 				try {
@@ -441,7 +441,9 @@ public class ArticleServlet extends HttpServlet {
 //				else if(!art_cont.trim().matches(art_contReg)) { //以下練習正則(規)表示式(regular-expression)
 //					errorMsgs.add("文章內容: 必須在10到10000個字之間");
 //	            }
-
+				
+				
+				
 				Integer likes = 0;
 				Integer art_stat = 0;
 				Integer replies = 0;
@@ -473,15 +475,15 @@ public class ArticleServlet extends HttpServlet {
 				Integer no = articleVO2.getArt_no() + 1; // 取得最後一筆文章+1 即目前所要新增文章的文章號碼
 				System.out.println("no:" + no); // 印出測試
 
-				Jedis jedis = new Jedis("localhost", 6379);
-				jedis.auth("123456");
-				jedis.select(6);
-				for (String str : values) {// Redis新增開始
-					System.out.println(str); // 印出測試
-
-					jedis.sadd("post:" + no + ":tags", str);
-				}
-				jedis.close();// Redis新增結束
+//				Jedis jedis = new Jedis("localhost", 6379);
+//				jedis.auth("123456");
+//				jedis.select(6);
+//				for (String str : values) {// Redis新增開始
+//					System.out.println(str); // 印出測試
+//
+//					jedis.sadd("post:" + no + ":tags", str);
+//				}
+//				jedis.close();// Redis新增結束
 
 				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no, art_rel_time, art_title, art_cont, likes, art_stat,
 						replies);

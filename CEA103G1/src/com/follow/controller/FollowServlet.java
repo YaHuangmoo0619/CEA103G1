@@ -1,6 +1,7 @@
 package com.follow.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -222,8 +223,12 @@ public class FollowServlet extends HttpServlet {
 				System.out.println("follows_num:"+follows_num);
 				
 				
-				List<FollowVO> followVO_mine = followSvc.findbyflw(mbr_no_self); //取得我追蹤那些人
-				
+				List<FollowVO> followVO_mine = followSvc.findbyflw(mbr_no_self); //取得我追蹤那些人的VO
+				List<Integer>  followVO_mine1 = new ArrayList<Integer>(); //VO轉成純數字的arrayList儲存  放入req
+			    for(FollowVO element : followVO_mine) {
+			        followVO_mine1.add(element.getFlwed_mbr_no());
+			    }
+			    
 				// Send the use back to the form, if there were errors
 //				if (!errorMsgs.isEmpty()) {
 //					RequestDispatcher failureView = req
@@ -243,7 +248,7 @@ public class FollowServlet extends HttpServlet {
 				req.setAttribute("followVO_follows", followVO_follows); //某人的追蹤者
 				req.setAttribute("follows_num",follows_num); //追蹤數量
 				
-				req.setAttribute("followVO_mine", followVO_mine); //我追蹤的人
+				req.setAttribute("followVO_mine", followVO_mine1); //我追蹤的人
 				
 				req.setAttribute("mbr_no",mbr_no);
 				String url = "/front-end/follow/listOneProfile.jsp";
