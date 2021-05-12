@@ -130,7 +130,7 @@ public class ValidPlace extends HttpServlet {
 			Integer camp_no = placelist.get(i).getCamp_no();
 			for (int j = 0; j < placelist.size(); j++) {
 				if (placelist.get(j).getCamp_no() == camp_no) {// 比對營區編號，一致則統計人數
-					count += placelist.get(j).getPpl();
+					count += placelist.get(j).getMax_ppl();
 				}
 			}
 			for (int j = 0; j < placelist.size(); j++) {

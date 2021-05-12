@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +46,13 @@ public class CampInfo extends HttpServlet {
 		CampService campSvc = new CampService();
 		Camp_PictureService camp_pictureSvc = new Camp_PictureService();
 		List<Object> list = new LinkedList<Object>();
-
+		Integer people;
+		try {
+			people = new Integer(req.getParameter("people"));
+		} catch (Exception e) {
+			people = 1;
+		}
+		
 		if (!req.getQueryString().contains("action") || !(req.getParameter("startdate") == null)) {
 			Integer camp_no = new Integer(req.getParameter("camp_no"));
 
@@ -57,6 +64,26 @@ public class CampInfo extends HttpServlet {
 			List<PlaceVO> placelist = placeSvc.getByCamp(camp_no);
 
 			Set<Integer> plc_ord_set = new LinkedHashSet<Integer>();
+			
+			Set<PlaceVO> newplacelist = new HashSet();
+			for (int i = 0; i < placelist.size(); i++) {
+				int count = 0;// 統計營區剩餘營位可容納人數用
+				Integer camp_no2 = placelist.get(i).getCamp_no();
+				for (int j = 0; j < placelist.size(); j++) {
+					if (placelist.get(j).getCamp_no() == camp_no2) {// 比對營區編號，一致則統計人數
+						count += placelist.get(j).getMax_ppl();
+					}
+				}
+				for (int j = 0; j < placelist.size(); j++) {
+					if (placelist.get(j).getCamp_no() == camp_no2 && count > people) {
+						newplacelist.add(placelist.get(j));
+					}else {
+						continue;
+					}			
+				}
+			}
+			placelist = new ArrayList();
+			placelist.addAll(newplacelist);
 			
 			try {
 				java.sql.Date startdate = java.sql.Date.valueOf(req.getParameter("startdate"));

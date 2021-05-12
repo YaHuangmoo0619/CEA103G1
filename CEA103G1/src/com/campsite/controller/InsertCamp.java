@@ -31,6 +31,8 @@ import com.campsite_picture.model.Camp_PictureService;
 import com.campsite_picture.model.Camp_PictureVO;
 import com.district.model.DistrictService;
 import com.district.model.DistrictVO;
+import com.feature_list.model.Feature_ListService;
+import com.feature_list.model.Feature_ListVO;
 import com.place.model.PlaceService;
 import com.place.model.PlaceVO;
 import com.place_order_details.model.Place_Order_DetailsService;
@@ -40,10 +42,11 @@ import com.place_order_details.model.Place_Order_DetailsService;
 public class InsertCamp extends HttpServlet {
 	private static final long serialVersionUID = 2L;
 	String saveDirectory = "/images";
-	
+
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		doPost(req, res);
 	}
+
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		req.setCharacterEncoding("UTF-8");
 		List<String> errorMsgs = new LinkedList<String>();
@@ -67,8 +70,8 @@ public class InsertCamp extends HttpServlet {
 				errorMsgs.add("營主編號: 只能是數字,第一個數字為7且長度必需為5");
 			}
 			Integer cso_no = Integer.parseInt(str);
-System.out.println("營主編號:" + cso_no);
-			
+			System.out.println("營主編號:" + cso_no);
+
 			String camp_name = req.getParameter("camp_name");
 			String camp_nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{1,10}$";
 			if (camp_name == null || camp_name.trim().length() == 0) {
@@ -76,7 +79,7 @@ System.out.println("營主編號:" + cso_no);
 			} else if (!camp_name.trim().matches(camp_nameReg)) { // 以下練習正則(規)表示式(regular-expression)
 				errorMsgs.add("營區名稱: 只能是中、英文字母、數字和_ , 且長度必需在1到10之間");
 			}
-System.out.println("營區名稱:" + camp_name);
+			System.out.println("營區名稱:" + camp_name);
 			String campInfo = req.getParameter("campInfo");
 			String note = req.getParameter("note");
 
@@ -127,15 +130,15 @@ System.out.println("營區名稱:" + camp_name);
 			} else if (!address.trim().matches(addressReg)) { // 以下練習正則(規)表示式(regular-expression)
 				errorMsgs.add("地址: 只能是中文、數字");
 			}
-			
+
 			List<String> fileDirectory = savePictureAtLocal(req, camp_name);
 			List<Camp_PictureVO> camp_picturelist = new ArrayList();
-			for(String camp_pic : fileDirectory) {
+			for (String camp_pic : fileDirectory) {
 				Camp_PictureVO camp_pictureVO = new Camp_PictureVO();
 				camp_pictureVO.setCamp_pic(camp_pic);
 				camp_picturelist.add(camp_pictureVO);
 			}
-			
+
 			CampVO campVO = new CampVO();
 			campVO.setCso_no(cso_no);
 			campVO.setCamp_name(camp_name);
@@ -152,18 +155,29 @@ System.out.println("營區名稱:" + camp_name);
 			campVO.setAddress(address);
 
 			String[] feature_list = req.getParameterValues("feature_list");
+			String other = req.getParameter("otherornot");
 			List<Camp_FeatureVO> camp_featurelist = new ArrayList();
-				for(int i = 0; i < feature_list.length; i++) {
-					Camp_FeatureVO camp_featureVO = new Camp_FeatureVO();
-					camp_featureVO .setCamp_fl_no(new Integer(feature_list[i]));
-					camp_featurelist.add(camp_featureVO);
-				}
-				
+			Camp_FeatureVO camp_featureVO = new Camp_FeatureVO();
+
+			if ("yes".equals(other) && !("".equals(feature_list[feature_list.length - 1]))) {
+				other = feature_list[feature_list.length - 1];
+				Feature_ListService featureSvc = new Feature_ListService();
+				Feature_ListVO featureVO = featureSvc.addFeature_List(other);
+				camp_featureVO.setCamp_fl_no(featureVO.getCamp_fl_no());
+				camp_featurelist.add(camp_featureVO);
+			}
+			
+			for (int i = 0; i < feature_list.length; i++) {
+				camp_featureVO = new Camp_FeatureVO();
+				camp_featureVO.setCamp_fl_no(new Integer(feature_list[i]));
+				camp_featurelist.add(camp_featureVO);
+			}
+
 			Integer plc_amt = new Integer(req.getParameter("plc_amt"));
 			List<PlaceVO> placelist = new ArrayList();
-			for(int i = 0; i <= plc_amt; i++) {
+			for (int i = 0; i <= plc_amt; i++) {
 				String[] plc = req.getParameterValues("plc" + i);
-				for(int j = 1; j <= new Integer(plc[1]); j++) {
+				for (int j = 1; j <= new Integer(plc[1]); j++) {
 					PlaceVO placeVO = new PlaceVO();
 					placeVO.setPlc_name(plc[0] + j);
 					placeVO.setPpl(new Integer(plc[2]));
@@ -173,7 +187,7 @@ System.out.println("營區名稱:" + camp_name);
 					placelist.add(placeVO);
 				}
 			}
-			
+
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
 				req.setAttribute("campVO", campVO); // 含有輸入格式錯誤的campVO物件,也存入req
@@ -193,7 +207,8 @@ System.out.println("營區名稱:" + camp_name);
 			Integer dist_no = districtSvc.addDistrict(district, county).getDist_no();
 			CampService campSvc = new CampService();
 			campVO = campSvc.addCamp(cso_no, dist_no, camp_name, campInfo, note, config, height, wireless, pet,
-					facility, operate_date, park, address, latitude, longitude, camp_featurelist, placelist, camp_picturelist);
+					facility, operate_date, park, address, latitude, longitude, camp_featurelist, placelist,
+					camp_picturelist);
 
 			/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 			String forwardurl = "/front-end/campsite/listAllCamp.jsp";
@@ -236,12 +251,13 @@ System.out.println("營區名稱:" + camp_name);
 		Double elevation = campsite.getDouble("elevation");
 		return elevation;
 	}
-	
+
 	public String getFileNameFromPart(Part part) {
 		String header = part.getHeader("content-disposition");
 
-		String[] filename = (new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName()).split("\\.");
-		for(int i = 0; i < filename.length; i++) {
+		String[] filename = (new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName())
+				.split("\\.");
+		for (int i = 0; i < filename.length; i++) {
 
 		}
 		String extension = filename[1];
@@ -251,8 +267,9 @@ System.out.println("營區名稱:" + camp_name);
 		}
 		return extension;
 	}
-	
-	public List<String> savePictureAtLocal(HttpServletRequest req, String camp_name) throws IOException, ServletException{
+
+	public List<String> savePictureAtLocal(HttpServletRequest req, String camp_name)
+			throws IOException, ServletException {
 		List<String> fileDirectory = new ArrayList();
 		String realPath = getServletContext().getRealPath(saveDirectory);// 阿飄路徑
 		File fsaveDirectory = new File(realPath);
@@ -260,7 +277,7 @@ System.out.println("營區名稱:" + camp_name);
 		int count = 1;
 		Collection<Part> parts = req.getParts();
 		for (Part part : parts) {
-			if(!("photo".equals(part.getName()))) {
+			if (!("photo".equals(part.getName()))) {
 				continue;
 			}
 			String extension = getFileNameFromPart(part);
@@ -275,7 +292,7 @@ System.out.println("營區名稱:" + camp_name);
 			filename = req.getContextPath() + saveDirectory + "/" + filename;
 			fileDirectory.add(filename);
 		}
-		
-		return fileDirectory;		
+
+		return fileDirectory;
 	}
 }

@@ -7,6 +7,7 @@ public class DistrictVO implements Serializable{
 	private String dist_name;
 	private String cty;
 	private String area;
+	private Integer order;
 
 	public DistrictVO() {
 		super();
@@ -50,6 +51,14 @@ public class DistrictVO implements Serializable{
 
 	public void setArea(String area) {
 		this.area = area;
+	}
+
+	public Integer getOrder() {
+		return order;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
 	}
 
 }

@@ -120,7 +120,7 @@ span {
 								type="hidden" name="image"
 								value="<%=(campVO == null) ? "無" : campVO.getConfig()%>">
 								<div class="container">
-									<img id="showconfig">
+									<img id="showconfig" style="width:200px;height:100px;">
 								</div></td>
 						</tr>
 						<tr>
@@ -187,9 +187,11 @@ span {
 								<input type="checkbox" name="feature_list"
 									value="${feature_listVO.camp_fl_no}">${feature_listVO.camp_fl_name}</div>
 						</c:forEach>
+						<br>
 						<div style="display: inline-block;">
-							<input type="checkbox" name="feature_list" value="other">其他:<input
-								type="text">
+							<input id="otherornot" type="hidden" name="otherornot">
+							<input type="checkbox" name="feature_list" id="otherfeature">其他:<input
+								type="text" id="other" style=" border:1px; border-bottom-style: solid;border-top-style: none;border-left-style:none;border-right-style:none;" disabled="true">
 						</div>
 					</div>
 					<br>
@@ -256,6 +258,18 @@ span {
 		</div>
 	</div>
 	<script>
+		$('#otherfeature').change(function(){
+		   if($(this).prop('checked')){
+			   $('#otherornot').val("yes");
+			   $('#other').attr("disabled",false);
+		   }else{
+			   $('#otherornot').val("no");
+			   $('#other').attr("disabled",true);
+		   }
+		});
+		$('#other').change(function(){
+			$('#otherfeature').val($(this).val());
+		});
 		$("#done").click(function() {
 			let index = 0;
 			if($("#title").nextAll().length === 1){
