@@ -9,15 +9,17 @@
 	List<Place_OrderVO> order_list = place_orderSvc.getAll();
 	List<Place_OrderVO> list = new ArrayList();
 	for (Place_OrderVO place_orderVO : order_list) {
-		if (place_orderVO.getCkin_stat() == 0 || place_orderVO.getCkin_stat() == 2) {
+		if (!(place_orderVO.getPay_stat() == 0) || !(place_orderVO.getCkin_stat() == 0)) {
 			list.add(place_orderVO);
 		}
 	}
-	pageContext.setAttribute("list", list);
+	request.setAttribute("list", list);
 	Place_OrderVO place_orderVO = (Place_OrderVO) request.getAttribute("place_orderVO");
 %>
 <jsp:useBean id="campSvc" scope="page"
 	class="com.campsite.model.CampService" />
+<jsp:useBean id="memberSvc" scope="page"
+	class="com.member.model.MemberService" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,8 +27,8 @@
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <title>營位訂單管理</title>
-<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
 body {
@@ -73,22 +75,34 @@ input.confirm:hover{
 	color: #80c344;
 	cursor: pointer;
 }
+th, td {
+	text-align: left;
+	/* 	border: 1px solid #4e5452; */
+	padding: 10px 15px;
+}
 </style>
 </head>
 <body>
-<%@ include file="/part-of/partOfCampion_COwnerTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
 
 	<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 	<div class="container">
 		<div class="row">
 			<div class="left col-3">
-				<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
+				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 			<div class="right col-9">
+			<h3>已付款訂單</h3>
 				<div style="display: inline-block;">
-					<a href="PresentPlace_order.jsp">現有訂單</a>
+					<a href="<%=request.getContextPath()%>/back-end/campsite/UnreviewCamp.jsp">未審核營區</a>
 				</div>
 				<div style="display: inline-block;">
-					<a href="HistoryPlace_order.jsp">歷史訂單</a>
+					<a href="<%=request.getContextPath()%>/back-end/campsite/ReviewedCamp.jsp">已審核營區</a>
+				</div>
+				<div style="display: inline-block;">
+					<a href="UnpayPlace_order.jsp">未付款訂單</a>
+				</div>
+				<div style="display: inline-block;">
+					<a href="PaidPlace_order.jsp">已付款訂單</a>
 				</div>
 				<table>
 					<tr>
@@ -100,15 +114,12 @@ input.confirm:hover{
 						<th>入住金額</th>
 						<th>付款方式</th>
 						<th>付款狀態</th>
-						<th>使用點數</th>
 						<th>入住狀態</th>
 					</tr>
-					<%@ include file="page1.file"%>
-					<c:forEach var="place_orderVO" items="${list}"
-						begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+					<c:forEach var="place_orderVO" items="${list}">
 						<tr>
 							<td>${place_orderVO.plc_ord_no}</td>
-							<td>${place_orderVO.mbr_no}</td>
+							<td>${memberSvc.getOneMember(place_orderVO.mbr_no).name}</td>
 							<td><c:forEach var="campVO" items="${campSvc.all}">
 									<c:if test="${place_orderVO.camp_no==campVO.camp_no}">
 	                    ${campVO.camp_name}
@@ -132,7 +143,6 @@ input.confirm:hover{
 							<c:if test="${place_orderVO.pay_stat==2}">
 								<td><c:out value="已付全額" /></td>
 							</c:if>
-							<td>${place_orderVO.used_pt}</td>
 							<c:if test="${place_orderVO.ckin_stat==0}">
 								<td><c:out value="未入住" /></td>
 							</c:if>
@@ -144,6 +154,9 @@ input.confirm:hover{
 							</c:if>
 							<c:if test="${place_orderVO.ckin_stat==3}">
 								<td><c:out value="已退房" /></td>
+							</c:if>
+							<c:if test="${place_orderVO.ckin_stat==4}">
+								<td><c:out value="已取消" /></td>
 							</c:if>
 							<td>
 								<FORM METHOD="post"
@@ -158,7 +171,6 @@ input.confirm:hover{
 						</tr>
 					</c:forEach>
 				</table>
-				<%@ include file="page2.file"%>
 			</div>
 		</div>
 	</div>

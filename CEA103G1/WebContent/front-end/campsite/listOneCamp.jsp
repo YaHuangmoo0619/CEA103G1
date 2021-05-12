@@ -25,10 +25,43 @@
 <%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
-table, th, td {
-	border: 0.1px solid black;
-	background-color: white;
-	text-align: center;
+.confirm {
+	background-color: #5599FF;
+	color: #000088;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+
+.confirm:hover {
+	background-color: #000088;
+	color: #5599FF;
+	cursor: pointer;
+}
+
+.not {
+	background-color: #FF3333;
+	color: #880000;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+
+.not:hover {
+	background-color: #AA0000;
+	color: #FF0000;
+	cursor: pointer;
+}
+th{
+	width: 100px;
+}
+th, td {
+	text-align: left;
+	/* 	border: 1px solid #4e5452; */
+	padding: 10px 10px;
+	border-bottom:solid 1px;
 }
 
 #config {
@@ -88,27 +121,27 @@ table {
 			<div class="right col-9">
 				<div style="display: inline-block;" style="width:50%;">
 					<h3>營區資料</h3>
-					<FORM METHOD="post"
+					<div style="display:inline-block;"><FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/camp/camp.do"
 						style="margin-bottom: 0px;">
-						<input type="submit" value="修改"> <input type="hidden"
+						<input type="submit" value="修改" class="confirm"> <input type="hidden"
 							name="camp_no" value="${campVO.camp_no}"> <input
 							type="hidden" name="action" value="getOne_For_Update">
-					</FORM>
+					</FORM></div>
 					<c:if test="${campVO.campsite_Status==0}">
-						<FORM METHOD="post"
+						<div style="display:inline-block;"><FORM METHOD="post"
 							ACTION="<%=request.getContextPath()%>/camp/camp.do">
-							<button class="confirm">
+							<button class="not">
 								<c:out value="不營業" />
 							</button>
 							<input type="hidden" name=action value="updatestatus"> <input
 								type="hidden" name="camp_no"
 								value="${campVO.camp_no}"> <input type="hidden"
 								name="campsite_status" value="1">
-						</FORM>
+						</FORM></div>
 					</c:if>
 					<c:if test="${campVO.campsite_Status==1}">
-						<FORM METHOD="post"
+						<div style="display:inline-block;"><FORM METHOD="post"
 							ACTION="<%=request.getContextPath()%>/camp/camp.do">
 							<button class="confirm">
 								<c:out value="營業" />
@@ -117,7 +150,7 @@ table {
 								type="hidden" name="camp_no"
 								value="${campVO.camp_no}"> <input type="hidden"
 								name="campsite_status" value="0">
-						</FORM>
+						</FORM></div>
 					</c:if>
 					<table>
 						<tr>

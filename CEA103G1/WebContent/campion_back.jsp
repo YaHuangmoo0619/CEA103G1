@@ -147,7 +147,7 @@ p {
 						<li><a href="<%=request.getContextPath()%>/back-end/employee/listAllEmployee.jsp">員工管理</a></li>
 						</c:if>
 						<c:if test="${authorityVO.fx_no == 3}">
-						<li><a href="<%=request.getContextPath() %>/back-end/place_order/PresentPlace_order.jsp">營位訂購平台管理</a></li>
+						<li><a href="<%=request.getContextPath() %>/back-end/campsite/UnreviewCamp.jsp">營位訂購平台管理</a></li>
 						</c:if>
 						<c:if test="${authorityVO.fx_no == 2}">
 						<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城管理</a></li>
@@ -208,7 +208,7 @@ p {
 				<div class="row">
 					<div class="col">
 						<div class="countBox">
-							<a href="<%=request.getContextPath()%>/back-end/place_order/PresentPlace_order.jsp"><h5>營位訂單</h5></a>
+							<a href="<%=request.getContextPath()%>/back-end/place_order/UnpayPlace_order.jsp"><h5>營位訂單</h5></a>
 							<jsp:useBean id="place_orderSvc" class="com.place_order.model.Place_OrderService"/>
 							<p>累計共有${place_orderSvc.getAll().size()}筆</p>
 							<p>營位訂單</p>
