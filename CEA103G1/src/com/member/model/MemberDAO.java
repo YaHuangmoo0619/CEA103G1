@@ -30,11 +30,11 @@ public class MemberDAO implements MemberDAO_interface {
 	private static final String DELETE = 
 		"DELETE FROM campion.member where mbr_no = ?";
 	private static final String UPDATE = 
-		"UPDATE campion.member set rank_no=?, acc=?, pwd=?, id=?, name=?, bday=?, sex=?, mobile=?, mail=?, city=?, dist=?, add=?, join_time=?, card=?, pt=?, acc_stat=?, exp=?, sticker=?, rmk=? where mbr_no=?";
+		"UPDATE campion.member set rank_no=?, acc=?, pwd=?, id=?, `name`=?, bday=?, sex=?, mobile=?, mail=?, city=?, dist=?, `add`=?, join_time=?, card=?, pt=?, acc_stat=?, exp=?, sticker=?, rmk=? where mbr_no=?";
 	private static final String LOGIN_MEMBER =
-		"SELECT mbr_no,rank_no,acc,pwd,id,name,bday,sex,mobile,mail,city,dist,add,join_time,card,pt,acc_stat,exp,sticker,rmk FROM campion.member where acc = ? pwd = ?";
+		"SELECT mbr_no,rank_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,card,pt,acc_stat,exp,sticker,rmk FROM campion.member where acc = ? and pwd = ?";
 	private static final String REGISTER_MEMBER = 
-		"INSERT INTO campion.member (rank_no,acc,pwd,id,name,bday,sex,mobile,mail,city,dist,add,join_time,card,pt,acc_stat,exp,sticker,rmk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		"INSERT INTO campion.member (rank_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,card,pt,acc_stat,exp,sticker,rmk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	//新增會員
 	@Override
 	public void insert(MemberVO memberVO) {
@@ -47,7 +47,6 @@ public class MemberDAO implements MemberDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			
 			pstmt.setInt(1, memberVO.getRank_no());
 			pstmt.setString(2, memberVO.getAcc());
 			pstmt.setString(3, memberVO.getPwd());
@@ -91,7 +90,6 @@ public class MemberDAO implements MemberDAO_interface {
 				}
 			}
 		}
-
 	}
 	//修改會員
 	@Override
@@ -105,7 +103,6 @@ public class MemberDAO implements MemberDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
-			
 			pstmt.setInt(1, memberVO.getRank_no());
 			pstmt.setString(2, memberVO.getAcc());
 			pstmt.setString(3, memberVO.getPwd());
@@ -150,7 +147,6 @@ public class MemberDAO implements MemberDAO_interface {
 				}
 			}
 		}
-
 	}
 	//刪除會員
 	@Override
@@ -275,7 +271,6 @@ public class MemberDAO implements MemberDAO_interface {
 		ResultSet rs = null;
 
 		try {
-
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 			rs = pstmt.executeQuery();
@@ -336,10 +331,9 @@ public class MemberDAO implements MemberDAO_interface {
 		}
 		return list;
 	}
-	
+	//登入會員
 	@Override
 	public MemberVO findByPrimaryKey_login(String acc, String pwd) {
-
 		MemberVO memberVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -352,7 +346,6 @@ public class MemberDAO implements MemberDAO_interface {
 
 			pstmt.setString(1, acc);
 			pstmt.setString(2, pwd);
-
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -379,7 +372,6 @@ public class MemberDAO implements MemberDAO_interface {
 				memberVO.setSticker(rs.getBytes("sticker"));
 				memberVO.setRmk(rs.getString("rmk"));
 			}
-
 			// Handle any driver errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
@@ -410,7 +402,7 @@ public class MemberDAO implements MemberDAO_interface {
 		}
 		return memberVO;
 	}
-	
+	//註冊會員
 	@Override
 	public void register_member(MemberVO memberVO) {
 

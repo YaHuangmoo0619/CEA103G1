@@ -1,15 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.*" %>
-<%@ page import="com.member.model.*" %>
-
-<%MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="BIG5">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style type="text/css">
@@ -97,33 +94,36 @@
 </head>
 
 <body>
-<%-- 錯誤表列 --%>
-<c:if test="${not empty errorMsgs}">
-	<font color='red'>請修正以下錯誤:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
     <div class="login">
-        <form class="form" METHOD="post" ACTION="<%=request.getContextPath()%>/member/member.do">
+        <form class="form" method="post" action="<%=request.getContextPath()%>/member/member.do">
             <h2>會員登入</h2>
             <div class="group">
                 <label for="id">帳號</label>
-                <input type="text" name="id" id="id">
+                <input type="text" name="acc" id="acc">
+                <input type="hidden" name="action" value="login_Member">
             </div>
             <div class="group">
                 <label for="pwd">密碼</label>
                 <input type="password" name="pwd" id="pwd">
+                <input type="hidden" name="action" value="login_Member">
             </div>
             <div class="btn-group">
-                <button class="btn">登入</button>
+                <button class="btn">登入</button>  
+                <input type="hidden" name="action" value="login_Member">
             </div>
+           
             <div>
             	<input type="checkbox" name="remember" id="remember">
             	<label for="remember">記住帳號</label>
             </div>
+             <%-- 錯誤表列 --%>
+			<c:if test="${not empty errorMsgs}">
+				<ul>
+					<c:forEach var="message" items="${errorMsgs}">
+						<li style="color:red">${message}</li>
+					</c:forEach>
+				</ul>
+			</c:if>
             <br>
             <div>
     			<a href='<%=request.getContextPath()%>/front-end/member/forgetAccount.jsp'>忘記帳號</a>
