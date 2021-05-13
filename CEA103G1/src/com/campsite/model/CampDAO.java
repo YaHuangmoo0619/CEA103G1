@@ -370,23 +370,22 @@ public class CampDAO implements CampDAO_interface {
 			}
 			rs.close();
 			// 再同時新增員工
-System.out.println("第二站");	
 			PlaceDAO dao1 = new PlaceDAO();
 			for (PlaceVO aPlace : placelist) {
 				aPlace.setCamp_no(new Integer(next_camp_no));
 				dao1.insert2(aPlace, con);
 			}
-System.out.println("第三站");
 			Camp_FeatureDAO dao2 = new Camp_FeatureDAO();
 			for (Camp_FeatureVO aCamp_Feature : camp_featurelist) {
 				aCamp_Feature.setCamp_no(new Integer(next_camp_no));
 				dao2.insert2(aCamp_Feature, con);
 			}
-System.out.println("第四站");
 			Camp_PictureDAO dao3 = new Camp_PictureDAO();
-			for (Camp_PictureVO aCamp_Picture : camp_picturelist) {
-				aCamp_Picture.setCamp_no(new Integer(next_camp_no));
-				dao3.insert2(aCamp_Picture, con);
+			if(!(camp_picturelist == null) && !(camp_picturelist.size()==0)) {
+				for (Camp_PictureVO aCamp_Picture : camp_picturelist) {
+					aCamp_Picture.setCamp_no(new Integer(next_camp_no));
+					dao3.insert2(aCamp_Picture, con);
+				}
 			}
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();

@@ -182,7 +182,7 @@ img{
 					<input type="hidden" name="mail_stat" value="0">
 					<input type="hidden" name="mail_read_stat" value="0">
 					<input type="hidden" name="action" value="insert">
-					<input type="submit" value="發送" class="confirm">
+					<input type="submit" value="發送" class="confirm" onclick="connection()">
 <!-- 					<input type="submit" value="存入草稿" class="confirm"> -->
 			</form>
 		</div>
@@ -221,5 +221,22 @@ img{
         });
 
     </script>
+    <script>
+		function writeToScreen(input){
+			var countNoRead = document.getElementById('countNoRead');
+			countNoRead.innerText = input;
+		}
+		function connection(){
+<%-- 			alert('ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify.do'); --%>
+			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
+			websocket = new WebSocket(wsUri);
+			websocket.onmessage = function(event){
+				let noRead = event.data;
+				alert(noRead);
+				writeToScreen(noRead);
+			};
+		}
+		
+	</script>
 </body>
 </html>
