@@ -595,6 +595,166 @@ public class MemberServlet extends HttpServlet {
 		}
 		//雅凰改的
 		
-		
+		if ("register_Member".equals(action)) { // 來自register.jsp的請求  
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
+				
+				Integer rank_no = new Integer(req.getParameter("rank_no").trim());
+				
+				Part pic = req.getPart("sticker");
+				InputStream in = pic.getInputStream();
+				byte[] sticker = new byte[in.available()];
+				in.read(sticker);
+				
+				String acc = req.getParameter("acc");
+				String accReg = "^[(a-zA-Z0-9_)]{2,20}$";
+				if (acc == null || acc.trim().length() == 0) {
+					errorMsgs.add("會員帳號: 請勿空白");
+				} else if(!acc.trim().matches(accReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.add("會員帳號: 只能是英文字母、數字和_ , 且長度必需在2到20之間");
+	            }
+				
+				String pwd = new String(req.getParameter("pwd").trim());
+				
+				String name = req.getParameter("name");
+				String nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,60}$";
+				if (name == null || name.trim().length() == 0) {
+					errorMsgs.add("會員姓名: 請勿空白");
+				} else if(!name.trim().matches(nameReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.add("會員姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到60之間");
+	            }
+					
+				SimpleDateFormat dsf = new SimpleDateFormat("yyyy-MM-dd");
+				java.util.Date dateU = dsf.parse(req.getParameter("bday"));
+				java.sql.Date bday = new java.sql.Date(dateU.getTime());
+				
+				Integer sex = new Integer(req.getParameter("sex"));
+				if(sex == 0) {
+					errorMsgs.add("請選擇性別");
+				}
+				
+				String id = req.getParameter("id");
+				String idReg = "^[(\u4e00-\u9fa5)(A-Z0-9)]{10}$";
+				if (id == null || id.trim().length() == 0) {
+					errorMsgs.add("身分證字號: 請勿空白");
+				} else if(!id.trim().matches(idReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.add("身分證字號: 只能是大寫英文字母、數字 , 且長度必需是10");
+	            }
+				
+				String mobile = req.getParameter("mobile");
+				String mobileReg = "^[(0-9)]{10}$";
+				if (mobile == null || mobile.trim().length() == 0) {
+					errorMsgs.add("手機號碼: 請勿空白");
+				} else if(!mobile.trim().matches(mobileReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.add("手機號碼: 只能是數字 , 且長度必需是10");
+	            }
+				
+				String mail = req.getParameter("mail");
+				String mailReg = "^[(a-zA-Z0-9_)]{2,100}$";
+				if (mail == null || mail.trim().length() == 0) {
+					errorMsgs.add("會員信箱: 請勿空白");
+				} else if(!mail.trim().matches(mailReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.add("會員信箱: 只能是英文字母、數字和_ , 且長度必需在2到100之間");
+				}
+				
+				String city = new String(req.getParameter("city").trim());
+				
+				String dist = new String(req.getParameter("dist").trim());
+				
+				String add = req.getParameter("add").trim();
+				if (add == null || add.trim().length() == 0) {
+					errorMsgs.add("地址請勿空白");
+				}
+				
+				SimpleDateFormat dsf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				java.util.Date dateU1 = dsf1.parse(req.getParameter("join_time"));
+				java.sql.Timestamp join_time = new java.sql.Timestamp(dateU1.getTime());
+					
+				String card = req.getParameter("card");
+				String cardReg = "^[(A-Z0-9)]{2,100}$";
+				if (card == null || card.trim().length() == 0) {
+					errorMsgs.add("信用卡號: 請勿空白");
+				} else if(!card.trim().matches(cardReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.add("信用卡號: 只能是英文字母、數字, 且長度必需在2到100之間");
+	            }
+				
+				Integer pt = new Integer(req.getParameter("pt").trim());
+				
+				Integer acc_stat = new Integer(req.getParameter("acc_stat").trim());
+				
+				Integer exp = new Integer(req.getParameter("exp").trim());
+				
+				String rmk = req.getParameter("rmk");
+				if(rmk == null || rmk.trim().isEmpty()) {
+					errorMsgs.add("請撰寫內文");
+				}
+				
+
+				MemberVO memberVO = new MemberVO();
+				memberVO.setMbr_no(mbr_no);
+				memberVO.setRank_no(rank_no);
+				memberVO.setAcc(acc);
+				memberVO.setPwd(pwd);
+				memberVO.setName(name);
+				memberVO.setBday(bday);
+				memberVO.setSex(sex);
+				memberVO.setId(id);
+				memberVO.setMobile(mobile);
+				memberVO.setMail(mail);
+				memberVO.setCity(city);
+				memberVO.setDist(dist);
+				memberVO.setAdd(add);
+				memberVO.setJoin_time(join_time);
+				memberVO.setCard(card);
+				memberVO.setPt(pt);
+				memberVO.setPt(acc_stat);
+				memberVO.setExp(exp);
+				memberVO.setSticker(sticker);
+				memberVO.setRmk(rmk);
+				
+				byte[] sticker_database = new byte[0];
+				if(sticker.length == 0) {
+					System.out.println("in");
+					MemberService memberSvc = new MemberService();
+					MemberVO memberVOPic = memberSvc.getOneMember(mbr_no);
+					sticker_database = memberVOPic.getSticker();
+					memberVO.setSticker(sticker_database);
+				}else {
+					memberVO.setSticker(sticker);
+				}
+
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的member_rankVO物件,也存入req
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/member/register.jsp");
+					failureView.forward(req, res);
+					return; //程式中斷
+				}
+				
+				/***************************2.開始新增資料***************************************/
+				MemberService memberSvc = new MemberService();
+				memberVO = memberSvc.registerMember(mbr_no, acc, pwd, id, name, bday, sex, mobile, mail, city, dist, add, join_time, card, pt, acc_stat, exp, sticker, rmk);
+				
+				/***************************3.新增完成,準備轉交(Send the Success view)***********/
+				String url = "/front-end/member/success.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllMember_rank.jsp
+				successView.forward(req, res);				
+				
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/member/register.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 }
