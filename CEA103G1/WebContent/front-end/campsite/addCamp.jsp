@@ -188,9 +188,26 @@ span {
 					<br>
 					<div>
 						<c:forEach var="feature_listVO" items="${list}">
-							<div style="display: inline-block;">
-								<input type="checkbox" name="feature_list"
-									value="${feature_listVO.camp_fl_no}">${feature_listVO.camp_fl_name}</div>
+							<c:if test="${empty camp_featurelist}">
+								<div style="display: inline-block;"><input type="checkbox" name="feature_list"
+												value="${feature_listVO.camp_fl_no}">${feature_listVO.camp_fl_name}</div>
+							</c:if>
+							<%Boolean flag = false;pageContext.setAttribute("flag",flag);%>
+							<c:if test="${not empty camp_featurelist}">
+								<c:forEach var="camp_featureVO" items="${camp_featurelist}">
+									<c:if test="${camp_featureVO.camp_fl_no==feature_listVO.camp_fl_no}">
+										<%flag = true;pageContext.setAttribute("flag",flag);%>
+									</c:if>
+								</c:forEach>
+								<c:if test="${flag == true}">
+									<div style="display: inline-block;"><input type="checkbox" name="feature_list"
+													value="${feature_listVO.camp_fl_no}" checked>${feature_listVO.camp_fl_name}</div>		
+								</c:if>					
+								<c:if test="${flag == false}">
+									<div style="display: inline-block;"><input type="checkbox" name="feature_list"
+													value="${feature_listVO.camp_fl_no}">${feature_listVO.camp_fl_name}</div>		
+								</c:if>					
+							</c:if>					
 						</c:forEach>
 						<br>
 						<div style="display: inline-block;">
