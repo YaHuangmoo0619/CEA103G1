@@ -405,7 +405,7 @@ section.footer {
 </style>
 </head>
 
-<body>
+<body onload="connection()">
 	<div class="fixedTop">
 		<div>
 			<a href="<%=request.getContextPath() %>/campion_front.jsp"> <img src="<%=request.getContextPath() %>/front-images/campionLogoLong.png" class="logo">
@@ -436,7 +436,13 @@ section.footer {
 			</c:if>
 			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu">
 			<c:if test="${memberVO != null}">
-			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp"><img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement"></a>
+			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp">
+				<div style="position:relative;display:inline;">
+					<img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement">
+					<div style="background-color: red; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoRead"></div>
+				</div>
+			</a>
+			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp"><img src="<%=request.getContextPath() %>/front-images/notifications-outline.svg" class="announcement"></a>
 			<a class="button" href="<%=request.getContextPath()%>/member/member.do?action=logout"><button type="button" class="btn btn-outline-secondary">µn¥X</button></a>
 				${memberVO.name}
 			<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"><div class="person" style="display:inline;border-radius:50%;"> <img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="person"></div></a>
@@ -732,6 +738,23 @@ section.footer {
 				backToTop[1].style.display = "block";
 			}
 		});
+	</script>
+	<script>
+		function writeToScreen(input){
+			var countNoRead = document.getElementById('countNoRead');
+			countNoRead.innerText = input;
+		}
+		function connection(){
+<%-- 			alert('ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify.do'); --%>
+			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
+			websocket = new WebSocket(wsUri);
+			websocket.onmessage = function(event){
+				let noRead = event.data;
+				alert(noRead);
+				writeToScreen(noRead);
+			};
+		}
+		
 	</script>
 </body>
 
