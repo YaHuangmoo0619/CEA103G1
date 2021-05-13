@@ -543,11 +543,11 @@ public class MemberServlet extends HttpServlet {
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
-				/***************************2.開始查詢資料*****************************************/
+				/***************************2.開始(登入)查詢資料*****************************************/
 				MemberService memberSvc = new MemberService();
 				MemberVO memberVO = memberSvc.loginMember(acc, pwd);
 				if (memberVO == null) {
-					errorMsgs.add("查無會員資料");
+					errorMsgs.add("請確認輸入的帳號密碼是否正確");
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
@@ -557,7 +557,7 @@ public class MemberServlet extends HttpServlet {
 					return;//程式中斷
 				}
 		
-				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				/***************************3.查詢(登入)完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("MemberVO", memberVO); // 資料庫取出的member_rankVO物件,存入req
 				String url = "/front-end/member/success.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 campion_front.jsp
@@ -571,5 +571,8 @@ public class MemberServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		
+		
 	}
 }

@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class MemberService {
+	
 
 	private MemberDAO_interface dao;
 
