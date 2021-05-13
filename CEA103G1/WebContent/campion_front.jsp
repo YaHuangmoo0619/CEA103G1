@@ -20,6 +20,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <link rel="icon" href="<%=request.getContextPath() %>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<link   rel="stylesheet" type="text/css" href="/CEA103G1/datetimepicker/jquery.datetimepicker.css" />
 <title>營家Campion</title>
 <style>
 html, body {
@@ -458,33 +459,26 @@ section.footer {
 			</div>
 			<div class="row header">
 				<div class="col-sm">
-					<form class="search">
+					<form class="search" method="get" id="condition" onsubmit="return false">
 						<div class="row">
 							<div class="where col-sm">
-								<label for="county1"> 縣　　市: <select id="county1"
-									name="county"><option>中壢區</option></select></label>
-							</div>
-							<div class="where col-sm">
-								<label for="county2"> 縣　　市: <input type="type"
-									id="county2" name="county" size="8"></label>
+								<label for="county2"> 縣　　市: <select name="c" id="c"><option value="不拘">不拘</option></select></label>
 							</div>
 							<br>
 							<div class="where col-sm">
-								<label for="f_date1"> 入住日期: <input name="startdate"
-									id="f_date1" type="text" size="8"></label>
+								<label for="f_date1"> 入住日期: <input name="st" id="st" type="text"></label>
 							</div>
 
 							<div class="where col-sm">
-								<label for="f_date2"> 退房日期: <input name="enddate"
-									id="f_date2" type="text" size="8"></label>
+								<label for="f_date2"> 退房日期: <input name="ed" id="ed" type="text"></label>
 							</div>
 
 							<div class="where col-sm">
-								<label for="people"> 人　　數: <input name="people"
-									id="people" type="text" maxlength="4" size="4"></label>
+								<label for="people"> 人　　數: <input name="p" id="p" type="number"></label>
 							</div>
 							<div class="where col-sm" style="padding-top: 15px;">
-								<input type="submit" value="搜尋">
+								<input type="hidden" name="action" value="search"> 
+								<input type="button" id="backtobrowse" value="重新查詢">
 							</div>
 						</div>
 					</form>
@@ -614,14 +608,57 @@ section.footer {
 	</section>
 
 
-
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
+	<script src="/CEA103G1/datetimepicker/jquery.js"></script>
+	<script type="text/javascript" language="javascript" src="/CEA103G1/datetimepicker/jquery.datetimepicker.full.js" charset="UTF-8"></script>
 	<script>
+	var default1 = new Date();
+	default1.setTime(default1.getTime()+24*60*60*1000); 
+    $.datetimepicker.setLocale('zh'); // kr ko ja en
+    $('#st').datetimepicker({
+       theme: '',          //theme: 'dark',
+       timepicker: false,   //timepicker: false,
+       step: 1,            //step: 60 (這是timepicker的預設間隔60分鐘)
+       format: 'Y-m-d',
+//	       value: default1,
+//        disabledDates:    ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+       startDate:	        default1,  // 起始日
+       minDate:           '-1969-12-31', // 去除今日(不含)之前
+       //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+    });
+	default1.setTime(default1.getTime()+24*60*60*1000); 
+    $.datetimepicker.setLocale('zh'); // kr ko ja en
+    $('#ed').datetimepicker({
+       theme: '',          //theme: 'dark',
+       timepicker: false,   //timepicker: false,
+       step: 1,            //step: 60 (這是timepicker的預設間隔60分鐘)
+       format: 'Y-m-d',
+//	       value: default1,
+//        disabledDates:    ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+       startDate:	        default1,  // 起始日
+       minDate:           '-1969-12-30', // 去除今日(不含)之前
+       //maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+    });
+	$.ajax({
+		type : "GET",
+		dataType : "json",
+		url : "http://localhost:8081/CEA103G1/district/district.do",
+		success : function(data) {
+			showDistrict(data);
+		}
+	});
+
+	function showDistrict(data) {
+		for (i in data) {
+			var opt = $("<option>").val(data[i]).text(data[i]);
+			$("#c").append(opt);
+		}
+	}
 		let countMenu = 0;
 		$("#menu").click(function() {
 			countMenu++;
@@ -637,7 +674,20 @@ section.footer {
 				}
 			}
 		});
-
+		$("#backtobrowse").click(function(){
+			let start = Date.parse($('#st').val()).valueOf();
+	    	let end = Date.parse($('#ed').val()).valueOf();
+	    	if (start >= end) {
+				alert("入住日期不得大於或等於退房日期");
+				return false;
+			};
+			let st = $('#st').val();
+			let ed = $('#ed').val();
+			let p = $('#p').val();
+			let c = $('#c').val();
+			sessionStorage.setItem('county',c)
+			window.location.href="http://localhost:8081/CEA103G1/front-end/campsite/listAllCamp.html?startdate=" + st + "&enddate=" + ed + "&people=" + p;
+		});
 		let countSearch = 0;
 		$("#searchIcon").click(function() {
 			countSearch++;

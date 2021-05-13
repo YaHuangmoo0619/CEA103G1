@@ -102,7 +102,7 @@ public class InsertCamp extends HttpServlet {
 			Integer operate_date = Integer.parseInt(str);
 
 			String park = req.getParameter("park");
-			String parkReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
+			String parkReg = "^[(\u4e00-\u9fa5)]{1,10}$";
 			if (park == null || park.trim().length() == 0) {
 				errorMsgs.add("停車方式: 請勿空白");
 			} else if (!park.trim().matches(parkReg)) { // 以下練習正則(規)表示式(regular-expression)
@@ -131,12 +131,16 @@ public class InsertCamp extends HttpServlet {
 				errorMsgs.add("地址: 只能是中文、數字");
 			}
 
-			List<String> fileDirectory = savePictureAtLocal(req, camp_name);
-			List<Camp_PictureVO> camp_picturelist = new ArrayList();
-			for (String camp_pic : fileDirectory) {
-				Camp_PictureVO camp_pictureVO = new Camp_PictureVO();
-				camp_pictureVO.setCamp_pic(camp_pic);
-				camp_picturelist.add(camp_pictureVO);
+			List<Camp_PictureVO> camp_picturelist = null;
+			try {
+				List<String> fileDirectory = savePictureAtLocal(req, camp_name);
+				camp_picturelist = new ArrayList();
+				for (String camp_pic : fileDirectory) {
+					Camp_PictureVO camp_pictureVO = new Camp_PictureVO();
+					camp_pictureVO.setCamp_pic(camp_pic);
+					camp_picturelist.add(camp_pictureVO);
+				}
+			} catch (Exception e1) {
 			}
 
 			CampVO campVO = new CampVO();
@@ -164,33 +168,46 @@ public class InsertCamp extends HttpServlet {
 				Feature_ListService featureSvc = new Feature_ListService();
 				Feature_ListVO featureVO = featureSvc.addFeature_List(other);
 				camp_featureVO.setCamp_fl_no(featureVO.getCamp_fl_no());
+				System.out.println(featureVO.getCamp_fl_no());
 				camp_featurelist.add(camp_featureVO);
-			}
-			
-			for (int i = 0; i < feature_list.length; i++) {
-				camp_featureVO = new Camp_FeatureVO();
-				camp_featureVO.setCamp_fl_no(new Integer(feature_list[i]));
-				camp_featurelist.add(camp_featureVO);
-			}
 
-			Integer plc_amt = new Integer(req.getParameter("plc_amt"));
-			List<PlaceVO> placelist = new ArrayList();
-			for (int i = 0; i <= plc_amt; i++) {
-				String[] plc = req.getParameterValues("plc" + i);
-				for (int j = 1; j <= new Integer(plc[1]); j++) {
-					PlaceVO placeVO = new PlaceVO();
-					placeVO.setPlc_name(plc[0] + j);
-					placeVO.setPpl(new Integer(plc[2]));
-					placeVO.setMax_ppl(new Integer(plc[3]));
-					placeVO.setPc_wkdy(new Integer(plc[4]));
-					placeVO.setPc_wknd(new Integer(plc[5]));
-					placelist.add(placeVO);
+				for (int i = 0; i < feature_list.length - 1; i++) {
+					camp_featureVO = new Camp_FeatureVO();
+					camp_featureVO.setCamp_fl_no(new Integer(feature_list[i]));
+					camp_featurelist.add(camp_featureVO);
+				}
+			} else {
+				for (int i = 0; i < feature_list.length; i++) {
+					camp_featureVO = new Camp_FeatureVO();
+					camp_featureVO.setCamp_fl_no(new Integer(feature_list[i]));
+					camp_featurelist.add(camp_featureVO);
 				}
 			}
-
+			
+			List<PlaceVO> placelist = null;
+			try {
+				Integer plc_amt = new Integer(req.getParameter("plc_amt"));
+				placelist = new ArrayList<PlaceVO>();
+				for (int i = 0; i <= plc_amt; i++) {
+					String[] plc = req.getParameterValues("plc" + i);
+					for (int j = 1; j <= new Integer(plc[1]); j++) {
+						PlaceVO placeVO = new PlaceVO();
+						placeVO.setPlc_name(plc[0] + j);
+						placeVO.setPpl(new Integer(plc[2]));
+						placeVO.setMax_ppl(new Integer(plc[3]));
+						placeVO.setPc_wkdy(new Integer(plc[4]));
+						placeVO.setPc_wknd(new Integer(plc[5]));
+						placelist.add(placeVO);
+					}
+				}
+			} catch (NumberFormatException e) {
+				errorMsgs.add("營位: 至少一個");
+			}
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
 				req.setAttribute("campVO", campVO); // 含有輸入格式錯誤的campVO物件,也存入req
+				req.setAttribute("camp_featurelist", camp_featurelist);
+				req.setAttribute("placelist", placelist);
 				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite/addCamp.jsp");
 				failureView.forward(req, res);
 				return;
