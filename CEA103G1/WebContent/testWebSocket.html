@@ -4,15 +4,21 @@
 <meta charset="BIG5">
 <title>Insert title here</title>
 </head>
-<body>
+<body onload="start_clock();">
 
-<button onclick="start_clock()">Start</button><button onclick="stop_clock()">Stop</button>
-
+<button onclick="start_clock();">Start</button><button onclick="stop_clock();">Stop</button>
+<div id="time"></div>
 <script>
+function writeToScreen(input){
+	var time = document.getElementById('time');
+	time.innerHTML = input;
+}
+
 function start_clock() {
   var wsUri = "ws://localhost:8081/CEA103G1/testWebSocket";
   console.log(wsUri);
-  websocket = new webSocket(wsUri);
+  websocket = new WebSocket(wsUri);
+  console.log(websocket);
   websocket.onmessage = function (evt) {
     last_time = evt.data;
     writeToScreen("<span style='color: blue;'>" + last_time + "</span>");
@@ -23,7 +29,7 @@ function start_clock() {
   };
 }
 
-function stop_c1ock() {
+function stop_clock() {
   websocket.send("stop");
 }
 </script>

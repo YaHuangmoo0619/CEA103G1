@@ -5,9 +5,9 @@
 
 <!-- 測試登入狀態及畫面改變 -->
 <%
-MemberService memberSvc = new MemberService();
-MemberVO memberVOLogin = memberSvc.getOneMember(10010);
-session.setAttribute("memberVO",memberVOLogin);
+// MemberService memberSvc = new MemberService();
+// MemberVO memberVOLogin = memberSvc.getOneMember(10010);
+// session.setAttribute("memberVO",memberVOLogin);
 %>
 
 <% MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
@@ -417,6 +417,7 @@ section.footer {
 			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu">
 			<c:if test="${memberVO != null}">
 			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp"><img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement"></a>
+			<a class="button" href="<%=request.getContextPath()%>/member/member.do?action=logout"><button type="button" class="btn btn-outline-secondary">登出</button></a>
 				${memberVO.name}
 			<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"><div class="person" style="display:inline;border-radius:50%;"> <img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="person"></div></a>
 			</c:if>

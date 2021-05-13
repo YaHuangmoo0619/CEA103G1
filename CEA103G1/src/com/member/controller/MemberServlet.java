@@ -558,10 +558,24 @@ public class MemberServlet extends HttpServlet {
 				}
 		
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("MemberVO", memberVO); // 資料庫取出的member_rankVO物件,存入req
-				String url = "/front-end/member/success.jsp";
+				//雅凰改的
+				HttpSession session = req.getSession();
+				session.setAttribute("memberVO",memberVO);
+				String location = (String)session.getAttribute("location");
+				if(location != null) {
+					session.removeAttribute("location");
+					res.sendRedirect(location);
+					return;
+				}
+				String url = "/campion_front.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 campion_front.jsp
 				successView.forward(req, res);
+				//雅凰改的
+				
+//				req.setAttribute("MemberVO", MemberVO); // 資料庫取出的member_rankVO物件,存入req
+//				String url = "/front-end/member/success.jsp";
+//				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 campion_front.jsp
+//				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
 			} catch (Exception e) {
@@ -571,5 +585,14 @@ public class MemberServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		//雅凰改的
+		if ("logout".equals(action)) {
+			HttpSession session = req.getSession();
+			session.removeAttribute("memberVO");
+			System.out.println("remove");
+			res.sendRedirect(req.getContextPath()+"/campion_front.jsp");
+		}
+		//雅凰改的
 	}
 }
