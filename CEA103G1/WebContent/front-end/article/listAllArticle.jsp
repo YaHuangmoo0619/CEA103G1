@@ -35,21 +35,11 @@
 <meta name="author" content="">
 
 <title>列出所有文章</title>
-
-
+<%@ include file="/article_css/article_css.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <link rel="icon" href="campionLogoIcon.png" type="image/png">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<!-- Bootstrap core CSS -->
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<!-- Custom styles for this template -->
-<link href="css/simple-sidebar.css" rel="stylesheet">
-
-
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <style>
 html, body {
@@ -64,255 +54,13 @@ section {
 	text-align: center;
 }
 
-img.logo {
-	width: 100px;
-	margin: 10px;
-	margin-left: 100px;
-}
 
-a {
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: none;
-}
-
-form.form-inline {
-	display: inline;
-	border: none;
-}
-
-img.searchIcon {
-	display: none;
-}
-
-img.cart {
-	width: 30px;
-	margin: 10px;
-}
-
-img.cart:hover {
-	cursor: pointer;
-}
-
-img.menu {
-	width: 40px;
-	margin: 10px;
-	display: none;
-}
-
-img.menu:hover {
-	cursor: pointer;
-}
-
-img.person {
-	width: 40px;
-	margin: 10px;
-}
-
-img.person:hover {
-	cursor: pointer;
-}
-
-@media screen and (max-width: 575px) {
-	container {
-		width: 100%;
-	}
-	form.form-inline {
-		display: none;
-	}
-	form.secSearch {
-		display: none;
-	}
-	img.searchIcon {
-		display: inline;
-		width: 30px;
-		margin: 0px;
-	}
-	img.searchIcon:hover {
-		cursor: pointer;
-	}
-	div.btn-group {
-		display: none;
-	}
-	img.menu {
-		width: 30px;
-		margin: 10px;
-		display: inline-block;
-	}
-	div.sec {
-		display: none;
-		background-color: #eee;
-	}
-	div.where {
-		display: block;
-		padding: 5px 100px;
-		text-align: left;
-	}
-	div.slogan h1 {
-		color: #fff;
-		font-size: 2em;
-		font-weight: 999;
-		margin: 50px auto;
-	}
-	div.photo {
-		width: 200px;
-		height: 100px;
-		margin: 20px auto;
-		background-color: #eee;
-		overflow: hidden;
-	}
-	div.row {
-		margin-top: 0px;
-	}
-	div.article {
-		width: 90%;
-		margin: 20px auto;
-		text-align: left;
-		background-color: #eee;
-		border-radius: 5px;
-		padding: 10px 50px 20px 50px;
-	}
-	div.more {
-		display: inline;
-	}
-	section.footer {
-		background-color: #4B7F52;
-		color: #80c344;
-		height: 100px;
-		padding-top: 30px;
-	}
-}
-
-@media ( min-width : 576px) and (max-width: 767px) {
-	container {
-		width: 540px;
-		margin: 0px auto;
-	}
-	form.form-inline {
-		display: none;
-	}
-	form.secSearch {
-		display: none;
-	}
-	img.searchIcon {
-		display: inline;
-		width: 30px;
-		margin: 0px;
-	}
-	img.searchIcon:hover {
-		cursor: pointer;
-	}
-	div.btn-group {
-		display: none;
-	}
-	img.menu {
-		width: 30px;
-		margin: 10px;
-		display: inline-block;
-	}
-	div.sec {
-		display: none;
-		background-color: #eee;
-	}
-	div.where {
-		display: block;
-		padding: 5px 130px;
-		text-align: left;
-	}
-}
-
-@media ( min-width : 768px) and (max-width: 991px) {
-	container {
-		width: 720px;
-		margin: 0px auto;
-	}
-	form.form-inline {
-		display: none;
-	}
-	form.secSearch {
-		display: none;
-	}
-	img.searchIcon {
-		display: inline;
-		width: 30px;
-		margin: 0px;
-	}
-	img.searchIcon:hover {
-		cursor: pointer;
-	}
-	div.btn-group {
-		display: none;
-	}
-	img.menu {
-		width: 30px;
-		margin: 10px;
-		display: inline-block;
-	}
-	div.sec {
-		display: none;
-		background-color: #eee;
-	}
-	div.where {
-		display: block;
-		padding: 5px 220px;
-		text-align: left;
-	}
-	div.photo {
-		width: 300px;
-		height: 150px;
-		margin: 20px auto;
-		background-color: #eee;
-		overflow: hidden;
-	}
-}
-
-@media ( min-width : 992px) and (max-width: 1199px) {
-	container {
-		width: 960px;
-		margin: 0px auto;
-	}
-	div.menuForButton {
-		display: none;
-	}
-	div.forSearch {
-		display: none;
-	}
-	div.photo {
-		width: 400px;
-		height: 200px;
-		margin: 20px auto;
-		background-color: #eee;
-		overflow: hidden;
-	}
-}
-
-@media ( min-width : 1200px) {
-	container {
-		width: 1140px;
-		margin: 0px auto;
-	}
-	div.menuForButton {
-		display: none;
-	}
-	div.forSearch {
-		display: none;
-	}
-	div.photo {
-		width: 400px;
-		height: 200px;
-		margin: 20px auto;
-		background-color: #eee;
-		overflow: hidden;
-	}
-}
 
 
 /* -----------------------------以下為側欄css------------------------------ */
 #sidebar {
   position:absolute;
-  top:60px;
+  top:100px;
   left:0px;
   width:208px;
   height:100%;
@@ -332,7 +80,8 @@ img.person:hover {
   div.main_content{
   	  top:60px;
   	  position:absolute;
-	  left:230px;
+	  left:150px;
+	  right:150px;
 	  padding:20px 20px 20px 20px;
 
 	  
@@ -349,35 +98,10 @@ img.person:hover {
 
 </head>
 <body>
+	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
-	<%@ include file="/article_css/article_css.txt"%>
+	
 
-	<div style="background-color: #eee;">
-		<img src="/CEA103G1/images/campionLogoLong.png" class="logo">
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search"
-				placeholder="營位/商品/文章" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
-		</form>
-		<img src="/CEA103G1/images/search-circle-outline.svg" class="searchIcon"
-			onclick="showSearch()">
-		<div class="btn-group" role="group" aria-label="Basic example">
-			<button type="button" class="btn btn-secondary">營區</button>
-			<button type="button" class="btn btn-secondary">商城</button>
-			<button type="button" class="btn btn-secondary">論壇</button>
-		</div>
-		<img src="/CEA103G1/images/cart-outline.svg" class="cart">
-		<div class="btn-group" role="group" aria-label="Basic example">
-			<button type="button" class="btn btn-outline-secondary">註冊</button>
-			<button type="button" class="btn btn-outline-secondary">登入</button>
-			<button type="button" class="btn btn-outline-secondary">FAQ</button>
-			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
-		</div>
-		<img src="/CEA103G1/menu-outline.svg" class="menu"
-			onclick="showMenu()"> <img
-			src="/CEA103G1/person-circle-outline.svg" class="person">
-
-	</div>
 
 
 <div id="sidebar">
@@ -393,11 +117,9 @@ img.person:hover {
 <div class="scroll"> 
 	<%@ include file="pageforhome.file"%>
 
-    <div class="contain">
+
         <div class="container">
             <div class="body">
-                <div style='padding-top: 0px;padding-bottom: 0px;'>
-                    <div data-index="1">
                     <c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
                     <div class=article>
                         <article class="content" role="article" data-post-list-viewed-cell-no="2">
@@ -446,48 +168,8 @@ img.person:hover {
                         </div>
                         </c:forEach>
                     </div>
-                </div>
-            </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<%-- 	<c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>"> --%>
-<!-- <div class=article> -->
-
-<%-- ${articleVO.art_no} --%>
-<%-- <c:forEach var="bd_clVO" items="${bd_clDAO.all}"> --%>
-<%-- 			<c:if test="${articleVO.bd_cl_no==bd_clVO.bd_cl_no}"> --%>
-<%-- 	                    ${bd_clVO.bd_name} --%>
-<%--                     </c:if> --%>
-<%-- 		</c:forEach> --%>
-
-
-<%-- ${articleVO.mbr_no} --%>
-<%-- <fmt:formatDate value="${articleVO.art_rel_time}" --%>
-<%-- 			pattern="MM月dd日  HH:mm" /> --%>
-<%-- 		<a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a> --%>
-<%-- ${articleVO.likes} --%>
-
-<!-- </div> -->
-<%-- 		</c:forEach> --%>
-
-
 
 
 	<c:if test="${openModal!=null}">
@@ -514,13 +196,12 @@ img.person:hover {
   	</div>
 
 </div>
-</div>
 
 
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	  <!-- Infinite Scroll v3.0.3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.3/infinite-scroll.pkgd.min.js"></script>
 		
@@ -577,7 +258,7 @@ img.person:hover {
   				return "http://localhost:8081/CEA103G1/front-end/article/listAllArticle.jsp?whichPage="+nextIndex;
   			}
   		},
-  		append: ".article", // 匯入物件類別
+  		append: ".container", // 匯入物件類別
   		status: ".scroller-status" // 捲軸狀態類別
   	})
   </script>
