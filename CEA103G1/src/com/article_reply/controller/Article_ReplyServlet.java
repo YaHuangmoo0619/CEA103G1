@@ -99,6 +99,30 @@ public class Article_ReplyServlet extends HttpServlet{
 		
 		
 		
+		if ("getOneReply_For_Display_front".equals(action)) { // 來自select_page.jsp的請求，列出特定的單一留言
+				
+				System.out.println("我來啦");
+
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String str = req.getParameter("art_rep_no");
+				System.out.println(str);
+				Integer art_rep_no = new Integer(str);
+
+				/***************************2.開始查詢資料*****************************************/
+				Article_ReplyService article_replySvc = new Article_ReplyService();
+				Article_ReplyVO article_replyVO = article_replySvc.getOneArticle_Reply(art_rep_no);
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("article_replyVO", article_replyVO); // 資料庫取出的article_replyVO物件,存入req
+				String url = "/back-end/article_reply/listOneArticle_Reply.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneArticle_reply.jsp
+				successView.forward(req, res);
+		}
+		
+		
+		
+		
+		
 		if ("getOneArticle_Replies_For_Display".equals(action)) { // 來自select_page.jsp的請求，列出單一文章的所有留言
 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -301,24 +325,38 @@ public class Article_ReplyServlet extends HttpServlet{
 				Timestamp rep_time = new Timestamp(System.currentTimeMillis());
 
 				String rep_cont = req.getParameter("rep_cont");
+				System.out.println("rep_cont"+rep_cont);
+
 				
+
 //				標註樓層實作開始
 //				Step1:查看目前這篇文章共有幾篇留言 (從資料庫取留言數+1，因為要算上即將加入的這一筆)
-//				ArticleVO articleVO = new ArticleVO();
-//				ArticleService articleSvc = new ArticleService();
-//				articleVO = articleSvc.getOneArticle(art_no);
-//				int replies_num = articleVO.getReplies()+1; //取得留言數
-				
-//				Step2:設定檢查格式  必須符合 #B數字 . 數字只能從1~留言數  不在這個範圍內則無效				
-//				標註樓層實作結束				
-				String rep_contReg = "^.{10,10000}$";
+				ArticleVO articleVO_for_search = new ArticleVO();
+				ArticleService articleSvc = new ArticleService();
+				articleVO_for_search = articleSvc.getOneArticle(art_no);
+				int replies_num = articleVO_for_search.getReplies()+1; //取得留言數
+
+//				Step2: 然後for迴圈去replaceAll文章內容裡符合「#B1 」、「#B2 」......「#Bn 」的字              為「<a src="查看B1留言的路徑">#B1</a>」				
+//				標註樓層實作結束
+				int i;
+				for(i=1;i<=replies_num;i++) {
+					//如果原本的rep_cont含有特定的字符
+					if(rep_cont.contains("#B"+i+" ")) {
+						//就進行查詢，被tag的這樓留言，真實的留言編號為何，準備進行替換
+
+						rep_cont=rep_cont.replace("#B"+i+" ","<div class=oneReply>#B"+i+" </div>" );
+//						rep_cont=rep_cont.replace("#B"+i+" ","<a href=\"https://www.google.com/\">#B"+i+" </a>" );	
+					}
+					
+				}
+//				String rep_contReg = "^B{1}[1-9]{1}[0-9]{0,} {1}$";
 				
 				if (rep_cont == null || rep_cont.trim().length() == 0) {
 					errorMsgs.add("留言內容: 請勿空白");
 				} 
-				else if(!rep_cont.trim().matches(rep_contReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("留言內容: 必須在10到10000個字之間");
-	            }
+//				else if(!rep_cont.trim().matches(rep_contReg)) { //以下練習正則(規)表示式(regular-expression)
+//					errorMsgs.add("留言內容: 必須在10到10000個字之間");
+//	            }
 
 				Integer likes = 0; //讚數預設就是0
 
@@ -348,7 +386,7 @@ public class Article_ReplyServlet extends HttpServlet{
 				Article_ReplyService article_replySvc = new Article_ReplyService();
 				article_replyVO = article_replySvc.addArticle_Reply(art_no, mbr_no,rep_cont,rep_time,rep_stat,likes);
 				//新增一筆留言數量到Article
-				ArticleService articleSvc = new ArticleService();
+//				ArticleService articleSvc = new ArticleService();
 				articleVO = articleSvc.plus_reply(art_no);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/

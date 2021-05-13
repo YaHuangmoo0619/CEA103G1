@@ -90,7 +90,7 @@ th, td {
 }
 
 #tags_add_list {
-	width: 300px;
+	width: 500px;
 	height: 54;
 	padding: 6px 0px 6px 8px;
 	border: 1px;
@@ -284,7 +284,7 @@ input#search-bar:focus:-ms-placeholder {
 	</FORM>
 
 
-		<div onclick="upload()">測試是否可以同步圖片</div>
+
 	<script>
 		$('#art_cont').summernote(
 				{
