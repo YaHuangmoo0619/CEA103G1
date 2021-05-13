@@ -557,7 +557,6 @@ public class MemberServlet extends HttpServlet {
 					return;//程式中斷
 				}
 		
-<<<<<<< HEAD
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				//雅凰改的
 				HttpSession session = req.getSession();
@@ -569,11 +568,6 @@ public class MemberServlet extends HttpServlet {
 					return;
 				}
 				String url = "/campion_front.jsp";
-=======
-				/***************************3.查詢(登入)完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("MemberVO", memberVO); // 資料庫取出的member_rankVO物件,存入req
-				String url = "/front-end/member/success.jsp";
->>>>>>> 8ba7d92ee682ea6bb5aecfaa4d356e935428f1aa
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 campion_front.jsp
 				successView.forward(req, res);
 				//雅凰改的
@@ -592,7 +586,6 @@ public class MemberServlet extends HttpServlet {
 			}
 		}
 		
-<<<<<<< HEAD
 		//雅凰改的
 		if ("logout".equals(action)) {
 			HttpSession session = req.getSession();
@@ -601,9 +594,7 @@ public class MemberServlet extends HttpServlet {
 			res.sendRedirect(req.getContextPath()+"/campion_front.jsp");
 		}
 		//雅凰改的
-=======
 		
 		
->>>>>>> 8ba7d92ee682ea6bb5aecfaa4d356e935428f1aa
 	}
 }
