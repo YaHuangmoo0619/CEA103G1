@@ -30,6 +30,24 @@ html, body {
 	color: #80c344;
 }
 
+#backtobrowse{
+ 	margin-top: -5px;
+	padding: 10px;
+	color: white;
+	border: 1px solid white;
+	background-color: transparent;
+	border-radius: 8%;
+}
+#backtobrowse:hover{
+/* 	margin-top: 10px; */
+	padding: 10px;
+	color: white;
+	border: 2px solid white;
+	background-color: transparent;
+	cursor: pointer;
+	border-radius: 8%;
+}
+
 section {
 	text-align: center;
 }
@@ -152,6 +170,7 @@ div.header:hover {
 }
 
 form {
+	width:95%;
 	border: solid 1px #fff;
 	padding: 15px;
 }
@@ -478,7 +497,7 @@ section.footer {
 							</div>
 							<div class="where col-sm" style="padding-top: 15px;">
 								<input type="hidden" name="action" value="search"> 
-								<input type="button" id="backtobrowse" value="­«·s¬d¸ß">
+								<input type="button" id="backtobrowse" value="·j      ´M">
 							</div>
 						</div>
 					</form>
