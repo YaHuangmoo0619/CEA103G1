@@ -5,12 +5,31 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.article.model.*"%>
 <%@ page import="com.board_class.model.*"%>
-
+<%@ page import="com.member.model.*" %>
+<%@ page import="redis.clients.jedis.Jedis"%>
 <%
 	ArticleService articleSvc = new ArticleService();
 	List<ArticleVO> list = articleSvc.getAll_Front();
+// 	Map<Integer,String> article_first_img_map = new HashMap<Integer,String>(); //這是一個存有「有首圖」的Map，key為該文章號碼，value為base64編碼
+// 	int start_index;
+// 	int end_index;
+// 	String first_img_base64;
+// 	for(ArticleVO x : list){
+// 		start_index = x.getArt_cont().indexOf("<p><img");
+// 		if(start_index>=0){ //有首圖的話
+// 		System.out.println("start_index:"+start_index);
+// 		end_index   = x.getArt_cont().indexOf("</p>", start_index)+4; //從第一張圖片<p><img的位置以後開始搜尋到的第一個 </p>，即為第一張圖的結束
+// 			first_img_base64 = x.getArt_cont().substring(start_index, end_index); //擷取到第一張圖片的base64編碼
+// 			System.out.println("i'm here");
+// 			System.out.println(first_img_base64);
+// 			article_first_img_map.put(x.getArt_no(), first_img_base64); //放入Map中	
+// 		}
+// 	}
+
+
 	double max_page = Math.ceil(list.size()/5);
 	pageContext.setAttribute("list", list);
+// 	pageContext.setAttribute("article_first_img_map", article_first_img_map);
 %>
 
 <%
@@ -19,20 +38,29 @@
 	pageContext.setAttribute("bd_list", bd_list);
 %>
 
+<% 
+	MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); 
+%>
 
-<jsp:useBean id="bd_clSvc" scope="page"
-	class="com.board_class.model.Board_ClassService" />
+
+<%
+	Jedis jedis = new Jedis("localhost", 6379);
+	jedis.auth("123456");
+	jedis.select(6);
+	
+
+%>
+
 <jsp:useBean id="bd_clDAO" scope="page"
 	class="com.board_class.model.Board_ClassDAO" />
-
+<jsp:useBean id="memberDAO" scope="page"
+	class="com.member.model.MemberDAO" />
 
 <html>
 <head>
 <meta charset="Big5">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
 
 <title>列出所有文章</title>
 <%@ include file="/article_css/article_css.txt"%>
@@ -54,6 +82,9 @@ section {
 	text-align: center;
 }
 
+.author{
+	color:black;
+}
 
 
 
@@ -94,10 +125,21 @@ section {
   right: 75px;
 }
 
+.pic img{
+width: 90px !important;
+height: 90px !important;
+}
+
+.pic{
+margin: 0px !important;
+border: 0px !important;
+}
+
 </style>
 
 </head>
 <body>
+	<div>目前登入的人是: ${memberVO.mbr_no}</div>
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
 	
@@ -131,9 +173,13 @@ section {
 			<c:if test="${articleVO.bd_cl_no==bd_clVO.bd_cl_no}">
 	                    ${bd_clVO.bd_name}
                     </c:if>
+		</c:forEach></div>					
+<%--                                             <div class="date"><fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm" /></div> --%>
+                                            <div class="author"><c:forEach var="memberVO_loop" items="${memberDAO.all}">
+			<c:if test="${articleVO.mbr_no==memberVO_loop.mbr_no}">
+	                    ${memberVO_loop.acc}
+                    </c:if>
 		</c:forEach></div>
-                                            <div class="date"><fmt:formatDate value="${articleVO.art_rel_time}"
-			pattern="MM月dd日  HH:mm" /></div>
                                         </div>
                                     </div>
                                 </div>
@@ -142,7 +188,11 @@ section {
                                 <a class="title" href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></h2>
                             <div class="post">
                                 <div class="post_0">
-                                    <span>#會計</span><span>#交換</span></div>
+                                <c:set var="cont_test" value="${fn:substring(articleVO.art_cont, 0, 35)}"></c:set> 
+                                <c:if test="${not fn:contains(cont_test, '<im')}">
+                                <p>${fn:substring(articleVO.art_cont, 0, 35)}...</p>
+                                </c:if>
+                                </div>
                             </div>
                             <div class="bottom_in">
                                 <div class="emoji">
@@ -153,7 +203,7 @@ section {
                                     </div>
                                 </div>
                                 <div class="response_box">
-                                    <span class="response">回應</span><span>283</span>
+                                    <span class="response">回應</span><span>${articleVO.replies}</span>
                                 </div>
                                 <div class="archieve">
                                     <div class="archieve_0">
@@ -163,7 +213,9 @@ section {
                                         <span>收藏</span></div>
                                 </div>
                             </div>
-                            <img class="pic" src="https://imgur.dcard.tw/GFvQZ7Gb.jpg" width="84px" height="84px" alt="" loading="lazy" referrerpolicy="no-referrer">
+								<c:if test="${not empty articleVO.art_first_img}">
+								<div class=pic>${articleVO.art_first_img}</div>
+								</c:if>             
                         </article>
                         </div>
                         </c:forEach>
@@ -198,7 +250,9 @@ section {
 </div>
 
 
-
+<%
+jedis.close();
+%>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
@@ -246,6 +300,11 @@ section {
 		$("#basicModal").modal({
 			show : true
 		});
+		
+		
+		$('.article').click(function(){
+			
+		})
 	</script>
 	
 	  <script>

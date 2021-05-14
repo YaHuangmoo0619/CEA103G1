@@ -581,7 +581,7 @@ section.footer {
 			<c:forEach var="articleVO" items="${articleSvc.all_Front}" begin="0" end="2">
 			<div class="row">
 				<div class="col-sm">
-					<a href="<%=request.getContextPath() %>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">
+					<a href="<%=request.getContextPath() %>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From4">
 						<div class="article">
 							<h5>${articleVO.art_title}</h5>
 							<c:set var="art_cont" value="${articleVO.art_cont}" />
@@ -633,7 +633,26 @@ section.footer {
 	</section>
 
 
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<c:if test="${openModal!=null}">
+
+		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
+			aria-labelledby="basicModal" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-body">
+						<!-- =========================================以下為原listOneArticle.jsp的內容========================================== -->
+						<jsp:include page="front-end/article/listOneArticle.jsp" />
+						
+						<!-- =========================================以上為原listOneArticle.jsp的內容========================================== -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</c:if>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
 	<script
@@ -756,6 +775,13 @@ section.footer {
 		}
 		
 	</script>
+	
+		<script>
+		$("#basicModal").modal({
+			show : true
+		});
+	</script>
+	
 </body>
 
 </html>

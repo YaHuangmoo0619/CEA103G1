@@ -17,7 +17,7 @@ public class ArticleVO implements Serializable {
 	private Integer likes;
 	private Integer art_stat;
 	private Integer replies;
-	
+	private String art_first_img;
 	
 	public ArticleVO() {
 		super();
@@ -137,6 +137,16 @@ public class ArticleVO implements Serializable {
 
 	public void setReplies(Integer replies) {
 		this.replies = replies;
+	}
+
+
+	public String getArt_first_img() {
+		return art_first_img;
+	}
+
+
+	public void setArt_first_img(String art_first_img) {
+		this.art_first_img = art_first_img;
 	}
 	}
 
