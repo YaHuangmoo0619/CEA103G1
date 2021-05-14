@@ -750,7 +750,7 @@ section.footer {
 			websocket = new WebSocket(wsUri);
 			websocket.onmessage = function(event){
 				let noRead = event.data;
-				alert(noRead);
+// 				alert(noRead);
 				writeToScreen(noRead);
 			};
 		}

@@ -157,8 +157,10 @@ public class Member_mailServlet extends HttpServlet {
 				if(set.size() == 0) {
 				Member_mailVO member_mailVO = member_mailSvc.addMember_mail(send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time);
 				req.setAttribute("member_mailVO", member_mailVO);
+//				req.setAttribute("mail_no", member_mailVO.getMail_no());
 				}else {
-					member_mailSvc.insertWithPic(send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time, set);
+					Member_mailVO member_mailVO = member_mailSvc.insertWithPic(send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time, set);
+					req.setAttribute("member_mailVO", member_mailVO);
 				}
 				
 				RequestDispatcher successView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");

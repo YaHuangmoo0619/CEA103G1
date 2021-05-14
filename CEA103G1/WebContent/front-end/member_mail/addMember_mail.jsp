@@ -104,7 +104,7 @@ img{
 }
 </style>
 </head>
-<body>
+<body onload="connection()">
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
@@ -146,6 +146,7 @@ img{
 						<br><h5 style="color:#80c344;">${errorMsgs.rcpt_no[0]}</h5>
 					</td>
 					<td>
+<!-- 						<input type="text" name="rcpt_no" id="rcpt_no"> -->
 						<select size="1" name="rcpt_no" id="rcpt_no">
 						<option value="99">--請選擇--</option>
 						<c:forEach var="memberVO" items="${memberSvc.all}">
@@ -182,7 +183,7 @@ img{
 					<input type="hidden" name="mail_stat" value="0">
 					<input type="hidden" name="mail_read_stat" value="0">
 					<input type="hidden" name="action" value="insert">
-					<input type="submit" value="發送" class="confirm" onclick="connection()">
+					<input type="submit" value="發送" class="confirm" onclick="sendNotify()">
 <!-- 					<input type="submit" value="存入草稿" class="confirm"> -->
 			</form>
 		</div>
@@ -232,11 +233,14 @@ img{
 			websocket = new WebSocket(wsUri);
 			websocket.onmessage = function(event){
 				let noRead = event.data;
-				alert(noRead);
+// 				alert(noRead);
 				writeToScreen(noRead);
 			};
 		}
-		
+// 		function sendNotify(){
+// 			let rcpt_no = document.getElementById('rcpt_no');
+// 			websocket.send(rcpt_no.value);
+// 		}
 	</script>
 </body>
 </html>
