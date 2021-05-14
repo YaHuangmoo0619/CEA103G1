@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -19,11 +20,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import com.campsite.model.*;
+import com.campsite_feature.model.Camp_FeatureService;
+import com.campsite_feature.model.Camp_FeatureVO;
+import com.campsite_picture.model.Camp_PictureService;
+import com.campsite_picture.model.Camp_PictureVO;
 import com.district.model.DistrictService;
 import com.district.model.DistrictVO;
 
 @MultipartConfig
 public class CampServlet extends HttpServlet {
+	String saveDirectory = "/images";
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
@@ -172,7 +178,13 @@ public class CampServlet extends HttpServlet {
 				campVO.setCounty(county);
 				campVO.setDistrict(district);
 				campVO.setAddress(address);
-
+				
+				Camp_FeatureService camp_featureSvc = new Camp_FeatureService();
+				List<Camp_FeatureVO> allcamp_featurelist = camp_featureSvc.getAll();
+				List<Camp_FeatureVO> camp_featurelist = new ArrayList();
+				for(Camp_FeatureVO camp_featureVO : allcamp_featurelist) {
+					
+				}
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
 				req.setAttribute("campVO", campVO); // 資料庫取出的empVO物件,存入req
 				System.out.println(req.getContextPath() + "/front-end/campsite/updateCamp.jsp");
@@ -419,5 +431,49 @@ public class CampServlet extends HttpServlet {
 		JSONObject campsite = results.getJSONObject(0);
 		Double elevation = campsite.getDouble("elevation");
 		return elevation;
+	}
+	
+	public String getFileNameFromPart(Part part) {
+		String header = part.getHeader("content-disposition");
+
+		String[] filename = (new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName())
+				.split("\\.");
+		for (int i = 0; i < filename.length; i++) {
+
+		}
+		String extension = filename[1];
+
+		if (extension.length() == 0) {
+			return null;
+		}
+		return extension;
+	}
+
+	public List<String> savePictureAtLocal(HttpServletRequest req, String camp_name)
+			throws IOException, ServletException {
+		List<String> fileDirectory = new ArrayList();
+		String realPath = getServletContext().getRealPath(saveDirectory);// 阿飄路徑
+		File fsaveDirectory = new File(realPath);
+		Camp_PictureService camp_pictureSvc = new Camp_PictureService();
+		int count = 1;
+		Collection<Part> parts = req.getParts();
+		for (Part part : parts) {
+			if (!("photo".equals(part.getName()))) {
+				continue;
+			}
+			String extension = getFileNameFromPart(part);
+			String filename = camp_name + count + "." + extension;
+			count++;
+			Camp_PictureVO camp_pictureVO = new Camp_PictureVO();
+			if (filename != null && part.getContentType() != null) {
+				File f = new File(fsaveDirectory, filename);
+				part.write(f.toString());
+			}
+			camp_pictureVO.setCamp_pic(req.getContextPath() + saveDirectory + filename);
+			filename = req.getContextPath() + saveDirectory + "/" + filename;
+			fileDirectory.add(filename);
+		}
+
+		return fileDirectory;
 	}
 }
