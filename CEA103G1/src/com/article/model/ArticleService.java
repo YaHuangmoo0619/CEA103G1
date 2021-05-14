@@ -12,7 +12,7 @@ public class ArticleService {
 		dao = new ArticleDAO(); 
 	}
 
-	public ArticleVO addArticle(Integer bd_cl_no, Integer mbr_no,Timestamp art_rel_time, String art_title, String art_cont,Integer likes, Integer art_stat,Integer replies) {
+	public ArticleVO addArticle(Integer bd_cl_no, Integer mbr_no,Timestamp art_rel_time, String art_title, String art_cont,Integer likes, Integer art_stat,Integer replies,String art_first_img) {
 
 		ArticleVO articleVO = new ArticleVO();
 	
@@ -25,12 +25,13 @@ public class ArticleService {
 		articleVO.setLikes(likes);
 		articleVO.setArt_stat(art_stat);
 		articleVO.setReplies(replies);
+		articleVO.setArt_first_img(art_first_img);
 		dao.insert(articleVO);
 
 		return articleVO;
 	}
 
-	public ArticleVO updateArticle(Integer art_no,Integer bd_cl_no, Integer mbr_no,Timestamp art_rel_time, String art_title, String art_cont,Integer likes, Integer art_stat,Integer replies) {
+	public ArticleVO updateArticle(Integer art_no,Integer bd_cl_no, Integer mbr_no,Timestamp art_rel_time, String art_title, String art_cont,Integer likes, Integer art_stat,Integer replies,String art_first_img) {
 
 		ArticleVO articleVO = new ArticleVO();
 
@@ -43,6 +44,7 @@ public class ArticleService {
 		articleVO.setLikes(likes);
 		articleVO.setArt_stat(art_stat);
 		articleVO.setReplies(replies);
+		articleVO.setArt_first_img(art_first_img);
 		dao.update(articleVO);
 
 		return articleVO;
