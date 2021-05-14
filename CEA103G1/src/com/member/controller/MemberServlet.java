@@ -739,11 +739,11 @@ public class MemberServlet extends HttpServlet {
 					return; //程式中斷
 				}
 				
-				/***************************2.開始新增資料***************************************/
+				/***************************2.開始新增(註冊)資料***************************************/
 				MemberService memberSvc = new MemberService();
 				memberVO = memberSvc.registerMember(mbr_no, acc, pwd, id, name, bday, sex, mobile, mail, city, dist, add, join_time, card, pt, acc_stat, exp, sticker, rmk);
 				
-				/***************************3.新增完成,準備轉交(Send the Success view)***********/
+				/***************************3.新增(註冊)完成,準備轉交(Send the Success view)***********/
 				String url = "/front-end/member/success.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllMember_rank.jsp
 				successView.forward(req, res);				
