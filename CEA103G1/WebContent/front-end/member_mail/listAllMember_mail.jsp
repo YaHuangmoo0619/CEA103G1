@@ -350,8 +350,22 @@ $(function(){
 </script>
 <script>
 		function writeToScreen(input){
-			var countNoRead = document.getElementById('countNoRead');
-			countNoRead.innerText = input;
+			alert(typeof input);
+			let noRead = JSON.parse(input);
+			alert(typeof noRead);
+			if(typeof noRead === "number"){
+				alert('in');
+				var countNoRead = document.getElementById('countNoRead');
+				countNoRead.innerText = input;
+			}else if(typeof noRead === "object"){
+				var notify = document.getElementById('countNoRead');
+				notify.innerText = noRead.countNoRead;
+				var tableOri = document.getElementsByTagName('table');
+				var trOri = document.getElementsByTagName('tr');
+				trOri[0].innerHTML = "<td>"+ noRead.mail_no+"</td><td>"+noRead.rcpt_no+"</td><td>"+noRead.mail_cont+"</td><td>"+noRead.mail_time+"</td>";
+				tableOri[0].prepend(trOri[0]);
+			}
+			
 		}
 		function connection(){
 <%-- 			alert('ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify.do'); --%>
@@ -364,9 +378,10 @@ $(function(){
 				document.getElementById('sendNotify').dispatchEvent(e);
 			}
 			websocket.onmessage = function(event){
-				let noRead = event.data;
+				
+				console.log(event.data);
 // 				alert(noRead);
-				writeToScreen(noRead);
+				writeToScreen(event.data);
 			};
 		}
 		function sendNotify(){
