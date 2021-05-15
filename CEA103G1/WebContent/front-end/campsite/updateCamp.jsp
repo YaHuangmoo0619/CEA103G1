@@ -14,6 +14,8 @@
 	PlaceService placeSvc = new PlaceService();
 	List<PlaceVO> placelist = placeSvc.getByCamp(campVO.getCamp_no());
 	List<String> camp_piclist = camp_pictureSvc.getCamp_Picture(campVO.getCamp_no());
+	List<Camp_FeatureVO> camp_featurelist = (List)request.getAttribute("camp_featurelist");
+System.out.println(camp_featurelist);
 	Feature_ListService feature_listSvc = new Feature_ListService();
 	List<Feature_ListVO> list = feature_listSvc.getAll();
 	pageContext.setAttribute("list", list);
@@ -184,14 +186,27 @@ span {
 					<br>
 					<div>
 						<c:forEach var="feature_listVO" items="${list}">
-							<div style="display: inline-block;">
-								<input type="checkbox" name="feature_list"
-									value="${feature_listVO.camp_fl_no}">${feature_listVO.camp_fl_name}</div>
+							<c:if test="${empty camp_featurelist}">
+								<div style="display: inline-block;"><input type="checkbox" name="feature_list"
+												value="${feature_listVO.camp_fl_no}">${feature_listVO.camp_fl_name}</div>
+							</c:if>
+							<%Boolean flag = false;pageContext.setAttribute("flag",flag);%>
+							<c:if test="${not empty camp_featurelist}">
+								<c:forEach var="camp_featureVO" items="${camp_featurelist}">
+									<c:if test="${camp_featureVO.camp_fl_no==feature_listVO.camp_fl_no}">
+										<%flag = true;pageContext.setAttribute("flag",flag);%>
+									</c:if>
+								</c:forEach>
+								<c:if test="${flag == true}">
+									<div style="display: inline-block;"><input type="checkbox" name="feature_list"
+													value="${feature_listVO.camp_fl_no}" checked>${feature_listVO.camp_fl_name}</div>		
+								</c:if>					
+								<c:if test="${flag == false}">
+									<div style="display: inline-block;"><input type="checkbox" name="feature_list"
+													value="${feature_listVO.camp_fl_no}">${feature_listVO.camp_fl_name}</div>		
+								</c:if>					
+							</c:if>					
 						</c:forEach>
-						<div style="display: inline-block;">
-							<input type="checkbox" name="feature_list" value="other">其他:<input
-								type="text">
-						</div>
 					</div>
 					<br>
 					<button type="button" onclick="showModal1()">新增營位</button>

@@ -954,15 +954,22 @@ td{
 			$('#stdate').val(sessionStorage.getItem('startdate'));
 			$('#eddate').val(sessionStorage.getItem('enddate'));
 			$('#camp').val($('#camp_no').val());
+
 			$.ajax({
 				type : "GET",
 				dataType : "json",
 				url : "http://localhost:8081/CEA103G1/Member.do",
+				data : {uri : url},
 				success : function(data) {
-					let html;
-					html=`<tr><td>쯯쫁</td><td><input type="text" readonly="true" value="${data.name}"><input type="hidden" name="member" value="${data.mbr_no}"></td></tr>`;
-					$('#info').prepend(html);
-					$('#point').append(`(넘푡${data.pt}헕)`);
+					if(data.length === 2){
+						alert(data[0]);
+						window.location.href=data[1];
+					}else{
+						let html;
+						html=`<tr><td>쯯쫁</td><td><input type="text" readonly="true" value="${data.name}"><input type="hidden" name="member" value="${data.mbr_no}"></td></tr>`;
+						$('#info').prepend(html);
+						$('#point').append(`(넘푡${data.pt}헕)`);
+					}
 				}
 			});
 		});
