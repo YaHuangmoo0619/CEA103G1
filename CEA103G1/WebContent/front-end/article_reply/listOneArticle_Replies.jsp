@@ -63,8 +63,9 @@
 <!-- 用於樓層統計		 -->
 <%int floor = 1;%>	
 
-<%@ include file="pageforhome.file"%>
-		<c:forEach var="article_replyVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+<%-- <%@ include file="pageforhome.file"%> --%>
+<%-- 		<c:forEach var="article_replyVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>"> --%>
+<c:forEach var="article_replyVO" items="${list}">
 <div class=reply id=reply<%=floor%>>
 <c:if test="${article_replyVO.getRep_stat() == 0}">
 
@@ -101,7 +102,7 @@
 		</c:forEach>
 						
 	</table>
-	<%@ include file="page2.file"%>
+<%-- 	<%@ include file="page2.file"%> --%>
 	
 	
 	

@@ -3,6 +3,7 @@
 <%@ page import="com.campsite.model.*"%>
 <%@ page import="com.place.model.*"%>
 <%@ page import="com.feature_list.model.*"%>
+<%@ page import="com.campsite_feature.model.*"%>
 <%@ page import="com.campsite_picture.model.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="java.io.*"%>
@@ -125,7 +126,7 @@ span {
 								type="hidden" name="image"
 								value="<%=(campVO == null) ? "µL" : campVO.getConfig()%>">
 								<div class="container">
-									<img id="showconfig">
+									<img id="showconfig" style="width:200px;height:100px;">
 								</div></td>
 						</tr>
 						<tr>

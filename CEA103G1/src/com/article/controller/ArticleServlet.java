@@ -278,17 +278,17 @@ public class ArticleServlet extends HttpServlet {
 				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
 
 				Integer art_no = new Integer(req.getParameter("art_no").trim());
-				System.out.println("art_no:" + art_no);
+//				System.out.println("art_no:" + art_no);
 
 				Integer bd_cl_no = new Integer(req.getParameter("bd_cl_no").trim());
-				System.out.println("bd_cl_no" + bd_cl_no);
+//				System.out.println("bd_cl_no" + bd_cl_no);
 
 				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
-				System.out.println("mbr_no:" + mbr_no);
+//				System.out.println("mbr_no:" + mbr_no);
 
 				Timestamp art_rel_time = new Timestamp(System.currentTimeMillis());
 				art_rel_time = Timestamp.valueOf(req.getParameter("art_rel_time"));
-				System.out.println("art_rel_time:" + art_rel_time);
+//				System.out.println("art_rel_time:" + art_rel_time);
 
 				String art_title = req.getParameter("art_title");
 				String art_titleReg = "^.{2,30}$";
@@ -297,7 +297,7 @@ public class ArticleServlet extends HttpServlet {
 				} else if (!art_title.trim().matches(art_titleReg)) { // 以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("文章標題: 長度必須在2到30之間");
 				}
-				System.out.println(art_title);
+//				System.out.println(art_title);
 
 				String art_cont = req.getParameter("art_cont");
 
@@ -305,7 +305,7 @@ public class ArticleServlet extends HttpServlet {
 					errorMsgs.add("文章內容: 請勿空白");
 				}
 
-				System.out.println(art_cont);
+//				System.out.println(art_cont);
 
 				Integer likes = null;
 				try {
@@ -314,7 +314,7 @@ public class ArticleServlet extends HttpServlet {
 					likes = 0;
 					errorMsgs.add("讚數請填數字.");
 				}
-				System.out.println(likes);
+//				System.out.println(likes);
 
 				Integer art_stat = null;
 				try {
@@ -324,11 +324,12 @@ public class ArticleServlet extends HttpServlet {
 					errorMsgs.add("文章狀態請填數字0 or 1.");
 				}
 
-				System.out.println(art_stat);
+//				System.out.println(art_stat);
 
 				Integer replies = new Integer(req.getParameter("replies").trim());
-				System.out.println(replies);
-
+//				System.out.println(replies);
+				String art_first_img=null;
+				
 				ArticleVO articleVO = new ArticleVO();
 				articleVO.setArt_no(art_no);
 				articleVO.setBd_cl_no(bd_cl_no);
@@ -339,6 +340,21 @@ public class ArticleServlet extends HttpServlet {
 				articleVO.setLikes(likes);
 				articleVO.setArt_stat(art_stat);
 				articleVO.setReplies(replies);
+				
+				
+				int begin;
+				int end;
+				String base64;
+				if(art_cont.indexOf("<p><img")>=0) {
+					begin = art_cont.indexOf("<p><img");
+					end   = art_cont.indexOf("</p>",begin)+4;
+					base64 = art_cont.substring(begin, end);
+					articleVO.setArt_first_img(base64);
+					
+				}else {
+					articleVO.setArt_first_img(null);
+				}
+				
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
@@ -351,8 +367,7 @@ public class ArticleServlet extends HttpServlet {
 
 				/*************************** 2.開始修改資料 *****************************************/
 				ArticleService articleSvc = new ArticleService();
-				articleVO = articleSvc.updateArticle(art_no, bd_cl_no, mbr_no, art_rel_time, art_title, art_cont, likes,
-						art_stat, replies);
+				articleVO = articleSvc.updateArticle(art_no, bd_cl_no, mbr_no, art_rel_time, art_titleReg, art_cont, likes, art_stat, replies, art_first_img);
 
 				/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
 				req.setAttribute("articleVO", articleVO); // 資料庫update成功後,正確的的articleVO物件,存入req
@@ -437,17 +452,16 @@ public class ArticleServlet extends HttpServlet {
 				if (art_cont == null || art_cont.trim().length() == 0) {
 					errorMsgs.add("文章內容: 請勿空白");
 				}
-				System.out.println(art_cont);
+//				System.out.println(art_cont);
 //				else if(!art_cont.trim().matches(art_contReg)) { //以下練習正則(規)表示式(regular-expression)
 //					errorMsgs.add("文章內容: 必須在10到10000個字之間");
 //	            }
 				
 				
-				
 				Integer likes = 0;
 				Integer art_stat = 0;
 				Integer replies = 0;
-
+//				String  art_first_img=null;
 				ArticleVO articleVO = new ArticleVO(); // 要新增的文章
 				articleVO.setBd_cl_no(bd_cl_no);
 				articleVO.setMbr_no(mbr_no);
@@ -457,7 +471,24 @@ public class ArticleServlet extends HttpServlet {
 				articleVO.setLikes(likes);
 				articleVO.setArt_stat(art_stat);
 				articleVO.setReplies(replies);
-
+				
+				int begin;
+				int end;
+				String art_first_img;
+				String reg = "[w][i][d][t][h][:] {1}[1-9]{1}[0-9]{1,}[p][x]";
+				if(art_cont.indexOf("<p><img")>=0) {
+					begin = art_cont.indexOf("<p><img");
+					end   = art_cont.indexOf("</p>",begin)+4;
+					art_first_img = art_cont.substring(begin, end);
+					art_first_img = art_first_img.replaceAll(reg, "width: 200px");
+					articleVO.setArt_first_img(art_first_img);
+					System.out.println("圖片的base64"+art_first_img);
+				}else {
+					art_first_img = null;
+					articleVO.setArt_first_img(art_first_img);
+//					System.out.println("我沒圖");
+				}
+				
 				ArticleVO articleVO2 = new ArticleVO(); // 查詢最後一筆文章的號碼
 
 				// Send the use back to the form, if there were errors
@@ -478,6 +509,7 @@ public class ArticleServlet extends HttpServlet {
 //				Jedis jedis = new Jedis("localhost", 6379);
 //				jedis.auth("123456");
 //				jedis.select(6);
+				
 //				for (String str : values) {// Redis新增開始
 //					System.out.println(str); // 印出測試
 //
@@ -485,8 +517,7 @@ public class ArticleServlet extends HttpServlet {
 //				}
 //				jedis.close();// Redis新增結束
 
-				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no, art_rel_time, art_title, art_cont, likes, art_stat,
-						replies);
+				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no, art_rel_time, art_title, art_cont, likes, art_stat, replies, art_first_img);
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				String url = "/front-end/article/listAllArticle.jsp";
@@ -660,6 +691,57 @@ public class ArticleServlet extends HttpServlet {
 			}
 		}
 
+		
+		
+		
+		if ("getOne_From4".equals(action)) { // 回到論壇首頁的燈箱
+
+			try {
+
+				String requestURL = req.getHeader("Referer");
+				System.out.println(requestURL);
+				req.setAttribute("requestURL", requestURL);
+				Jedis jedis = new Jedis("localhost", 6379);
+				jedis.auth("123456");
+				jedis.select(6);
+
+//				System.out.println(req.getParameter("art_no"));
+//				for (String str : jedis.smembers("post:"+req.getParameter("art_no")+":tags")) {
+//					System.out.println(str);
+//				}
+				Set<String> tag_list = jedis.smembers("post:" + req.getParameter("art_no") + ":tags");
+
+				jedis.close();
+
+//
+//				    for(String element : tag_list) {
+//				        System.out.println(element);
+//				    }
+//
+				req.setAttribute("tag_list", tag_list); // Redis資料庫取出的tag_list物件,存入req
+
+				// Retrieve form parameters.
+				Integer art_no = new Integer(req.getParameter("art_no"));
+
+				ArticleDAO dao = new ArticleDAO();
+				ArticleVO articleVO = dao.findByPrimaryKey(art_no);
+
+				req.setAttribute("articleVO", articleVO); // 資料庫取出的articleVO物件,存入req
+
+				// Bootstrap_modal
+				boolean openModal = true;
+				System.out.println(openModal);
+				req.setAttribute("openModal", openModal);
+
+				RequestDispatcher successView = req.getRequestDispatcher("/campion_front.jsp");
+				successView.forward(req, res);
+				return;
+
+				// Handle any unusual exceptions
+			} catch (Exception e) {
+				throw new ServletException(e);
+			}
+		}
 		
 		
 		

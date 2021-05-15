@@ -25,19 +25,19 @@ public class ArticleDAO implements ArticleDAO_Interface{
 	}
 	
 	private static final String INSERT_STMT = 
-			"INSERT INTO ARTICLE (bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies) VALUES (?,?, ?, ?, ?, ?,?,?)";
+			"INSERT INTO ARTICLE (bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies,art_first_img) VALUES (?,?, ?, ?, ?, ?,?,?,?)";
 		private static final String GET_ALL_STMT_FRONT = 
-			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies FROM ARTICLE where art_stat = 0 order by art_no desc";
+			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies,art_first_img FROM ARTICLE where art_stat = 0 order by art_no desc";
 		private static final String GET_ALL_STMT_BACK = 
-			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies FROM ARTICLE order by art_no";
+			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies,art_first_img FROM ARTICLE order by art_no";
 		private static final String GET_ONE_STMT = 
-			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies FROM ARTICLE where art_no = ?";
+			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies,art_first_img FROM ARTICLE where art_no = ?";
 		private static final String DELETE = 
 			"DELETE FROM ARTICLE where art_no = ?";
 		private static final String HIDE = 
 				"UPDATE ARTICLE set art_stat = 1 where art_no=?";
 		private static final String UPDATE = 
-				"UPDATE ARTICLE set bd_cl_no=?, mbr_no=?, art_rel_time=? ,art_title=? ,art_cont=? ,likes=? ,art_stat=?, replies=? where art_no = ?";
+				"UPDATE ARTICLE set bd_cl_no=?, mbr_no=?, art_rel_time=? ,art_title=? ,art_cont=? ,likes=? ,art_stat=?, replies=? art_first_img=? where art_no = ?";
 		private static final String PLUS_LIKE = 
 				"UPDATE ARTICLE set Likes = Likes + 1 where art_no = ?";
 		private static final String MINUS_LIKE = 
@@ -47,13 +47,13 @@ public class ArticleDAO implements ArticleDAO_Interface{
 		private static final String MINUS_REPLY = 
 				"UPDATE ARTICLE set replies = replies - 1 where art_no = ?";
 		private static final String GET_BY_BD_CL_NO_FRONT =
-			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies FROM ARTICLE where bd_cl_no = ? and art_stat = 0";
+			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies,art_first_img FROM ARTICLE where bd_cl_no = ? and art_stat = 0";
 		private static final String GET_BY_BD_CL_NO_BACK =
-				"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies FROM ARTICLE where bd_cl_no = ?";
+				"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies,art_first_img FROM ARTICLE where bd_cl_no = ?";
 		private static final String GET_LAST =
 				"select art_no from campion.ARTICLE order by art_no desc limit 1";
 		private static final String GET_BY_MBR_NO =
-				"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies FROM ARTICLE where mbr_no = ?";
+				"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies,art_first_img FROM ARTICLE where mbr_no = ?";
 	@Override
 	public void insert(ArticleVO articleVO) {
 		Connection con = null;
@@ -72,7 +72,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 			pstmt.setInt(6, articleVO.getLikes());
 			pstmt.setInt(7, articleVO.getArt_stat());
 			pstmt.setInt(8, articleVO.getReplies());
-
+			pstmt.setString(9, articleVO.getArt_first_img());
 			pstmt.executeUpdate();
 
 			// Handle any SQL errors
@@ -117,7 +117,8 @@ public class ArticleDAO implements ArticleDAO_Interface{
 			pstmt.setInt(6, articleVO.getLikes());
 			pstmt.setInt(7, articleVO.getArt_stat());
 			pstmt.setInt(8, articleVO.getReplies());
-			pstmt.setInt(9, articleVO.getArt_no());
+			pstmt.setString(9, articleVO.getArt_first_img());
+			pstmt.setInt(10, articleVO.getArt_no());
 			pstmt.executeUpdate();
 			
 			
@@ -213,6 +214,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 				articleVO.setLikes(rs.getInt("likes"));
 				articleVO.setArt_stat(rs.getInt("art_stat"));
 				articleVO.setReplies(rs.getInt("replies"));
+				articleVO.setArt_first_img(rs.getString("art_first_img"));
 			}
 
 			// Handle any driver errors
@@ -273,6 +275,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 				articleVO.setLikes(rs.getInt("likes"));
 				articleVO.setArt_stat(rs.getInt("art_stat"));
 				articleVO.setReplies(rs.getInt("replies"));
+				articleVO.setArt_first_img(rs.getString("art_first_img"));
 				list.add(articleVO); // Store the row in the list
 			}
 
@@ -336,6 +339,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 				articleVO.setLikes(rs.getInt("likes"));
 				articleVO.setArt_stat(rs.getInt("art_stat"));
 				articleVO.setReplies(rs.getInt("replies"));
+				articleVO.setArt_first_img(rs.getString("art_first_img"));
 				list.add(articleVO); // Store the row in the list
 			}
 
@@ -399,6 +403,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 				articleVO.setLikes(rs.getInt("likes"));
 				articleVO.setArt_stat(rs.getInt("art_stat"));
 				articleVO.setReplies(rs.getInt("replies"));
+				articleVO.setArt_first_img(rs.getString("art_first_img"));
 				list.add(articleVO); // Store the row in the list
 			}
 			// Handle any driver errors
@@ -464,6 +469,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 				articleVO.setLikes(rs.getInt("likes"));
 				articleVO.setArt_stat(rs.getInt("art_stat"));
 				articleVO.setReplies(rs.getInt("replies"));
+				articleVO.setArt_first_img(rs.getString("art_first_img"));
 				list.add(articleVO); // Store the row in the list
 			}
 			// Handle any driver errors
@@ -779,6 +785,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 				articleVO.setLikes(rs.getInt("likes"));
 				articleVO.setArt_stat(rs.getInt("art_stat"));
 				articleVO.setReplies(rs.getInt("replies"));
+				articleVO.setArt_first_img(rs.getString("art_first_img"));
 				list.add(articleVO); // Store the row in the list
 			}
 			// Handle any driver errors

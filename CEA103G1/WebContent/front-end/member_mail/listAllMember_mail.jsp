@@ -152,7 +152,7 @@ tr:hover {
 </style>
 
 </head>
-<body>
+<body onload="connection()">
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
@@ -245,6 +245,11 @@ tr:hover {
 					<div style="width: 250px;display:inline-block;">信件內容</div>
 					<div style="width: 150px;display:inline-block;">信件日期</div>
 				</div>
+			--${member_mailVO != null? member_mailVO.rcpt_no:'123' }--
+			<c:if test="${member_mailVO != null}">
+					<div onclick="sendNotify()" id="sendNotify">${member_mailVO.rcpt_no}</div>
+			</c:if>
+			
 			<table>
 <!-- 				<tr> -->
 <!-- 					<th style="width:50px">編號</th> -->
@@ -331,6 +336,7 @@ tr:hover {
 </script>
 <script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
 <script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
+<%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <script>
 <!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
 $.datetimepicker.setLocale('zh');
@@ -342,5 +348,41 @@ $(function(){
 	});
 });
 </script>
+<script>
+		function writeToScreen(input){
+			var countNoRead = document.getElementById('countNoRead');
+			countNoRead.innerText = input;
+		}
+		function connection(){
+<%-- 			alert('ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify.do'); --%>
+			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
+			websocket = new WebSocket(wsUri);
+			websocket.onopen = function(event){
+				//自動觸發click事件
+				let e = document.createEvent("MouseEvent");
+				e.initEvent("click",true,true);
+				document.getElementById('sendNotify').dispatchEvent(e);
+			}
+			websocket.onmessage = function(event){
+				let noRead = event.data;
+// 				alert(noRead);
+				writeToScreen(noRead);
+			};
+		}
+		function sendNotify(){
+			let sendNotify = document.getElementById('sendNotify');
+			alert(sendNotify.innerText);
+// 			var jsonObj = {
+// 				"send_no" : ${member_mailVO.send_no},
+// 				"rcpt_no" : ${member_mailVO.rcpt_no},
+// 				"mail_read_stat" : ${member_mailVO.mail_read_stat},
+// 				"mail_stat" : ${member_mailVO.mail_stat},
+// 				"mail_cont" : ${member_mailVO.mail_cont},
+// 				"mail_time" : ${member_mailVO.mail_time}
+// 			};
+			websocket.send(sendNotify.innerText);
+// 			websocket.send(JSON.stringify(jsonObj));
+		}
+	</script>
 </body>
 </html>

@@ -72,7 +72,7 @@ public class Member_mailService {
 		return dao.getWhereCondition(map);
 	}
 	
-	public void insertWithPic(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time, Set<Member_mail_pictureVO> set) {
+	public Member_mailVO insertWithPic(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time, Set<Member_mail_pictureVO> set) {
 		System.out.println("member_mailService");
 		Member_mailVO member_mailVO = new Member_mailVO();
 		
@@ -83,5 +83,7 @@ public class Member_mailService {
 		member_mailVO.setMail_read_stat(mail_read_stat);
 		member_mailVO.setMail_time(mail_time);
 		dao.insertWithPic(member_mailVO, set);
+		
+		return member_mailVO;
 	}
 }
