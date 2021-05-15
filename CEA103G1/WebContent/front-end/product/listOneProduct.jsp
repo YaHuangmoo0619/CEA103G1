@@ -64,10 +64,8 @@
 	<tr>
 		<th>商品編號</th>
 		<th>商品分類名稱</th>
-		<th>商品狀態</th>
 		<th>商品名稱</th>
 		<th>商品價格</th>
-		<th>商品庫存</th>
 		<th>商品資訊</th>
 		<th>商品品牌</th>
 		<th>商品顏色</th>
@@ -78,14 +76,6 @@
 		<td>${productVO.prod_no}</td>
 			<td>
 			${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}
-			</td>
-			<td>
-			<c:if test="${productVO.prod_stat==0}">
-				<c:out value="下架" />
-			</c:if>
-			<c:if test="${productVO.prod_stat==1}">
-				<c:out value="上架" />
-			</c:if>
 			</td>
 			<td>${productVO.prod_name}</td>
 			<td>${productVO.prod_pc}</td>
@@ -104,6 +94,12 @@
 			<c:if test="${productVO.ship_meth==2}">
 				<c:out value="限超商取貨" />
 			</c:if>
+			</td>
+			<td>
+			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
+			     <input type="submit" value="直接下訂">
+			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
+			     <input type="hidden" name="action"	value="buyOne"></FORM>
 			</td>
 	</tr>
 </table>

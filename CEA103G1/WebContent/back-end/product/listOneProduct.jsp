@@ -105,6 +105,18 @@
 				<c:out value="限超商取貨" />
 			</c:if>
 			</td>
+			<td>
+			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
+			     <input type="submit" value="修改">
+			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
+			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
+			</td>
+			<td>
+			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
+			     <input type="submit" value="刪除">
+			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
+			     <input type="hidden" name="action" value="delete"></FORM>
+			</td>
 	</tr>
 </table>
 
