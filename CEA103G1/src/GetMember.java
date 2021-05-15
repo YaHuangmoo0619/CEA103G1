@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,17 +22,20 @@ public class GetMember extends HttpServlet{
 		req.setCharacterEncoding("UTF-8");
 		PrintWriter out = res.getWriter();
 		Gson gson = new Gson();
-
+		
 		HttpSession session = req.getSession();
-		Object member = session.getAttribute("member");
-		if (member == null) {
-			MemberService memberSvc = new MemberService();
-	        MemberVO memberVO = memberSvc.getOneMember(10001);
-	        session.setAttribute("member", memberVO);
-	        String jsonObject = gson.toJson(memberVO);
+		Object memberVO = session.getAttribute("memberVO");
+		String uri = req.getParameter("uri");
+
+		if (memberVO == null) {
+			session.setAttribute("location", uri);
+			List<Object> list = new ArrayList();
+			list.add("請先登入會員");
+			list.add(req.getContextPath() + "/front-end/member/login.jsp");
+			String jsonObject = gson.toJson(list);
 			out.println(jsonObject);
-		} else {
-			String jsonObject = gson.toJson(member);
+		} else {			
+			String jsonObject = gson.toJson(memberVO);
 			out.println(jsonObject);
 		}
 	}
