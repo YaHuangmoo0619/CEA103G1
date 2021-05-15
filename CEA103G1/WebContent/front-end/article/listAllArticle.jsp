@@ -135,14 +135,35 @@ margin: 0px !important;
 border: 0px !important;
 }
 
+#basicModal{
+
+overflow-y: initial !important
+
+}
+
+#basicModal{
+
+height: 500px;
+
+overflow-y: auto;
+
+}
+
 </style>
 
 </head>
 <body>
 	<div>目前登入的人是: ${memberVO.mbr_no}</div>
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
-	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
 	
+<!-- 	如果有登入的話 -->
+	<c:if test="${not empty memberVO }"> 
+	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
+	</c:if>
+<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
+	<c:if test="${empty memberVO }"> 
+	<div class="no_login write" id="to_login"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
+	</c:if>
 
 
 
@@ -229,7 +250,7 @@ border: 0px !important;
 		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
 			aria-labelledby="basicModal" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
+				<div class="modal-content" >
 					<div class="modal-body">
 						<!-- =========================================以下為原listOneArticle.jsp的內容========================================== -->
 						<jsp:include page="listOneArticle.jsp" />
@@ -241,6 +262,28 @@ border: 0px !important;
 		</div>
 
 	</c:if>
+
+
+
+		
+		<div class="modal fade" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>您尚未登入</h5>
+      </div>
+      <div class="modal-body">
+        <div>想要一起加入討論，要先登入 Campion 唷！</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/front-end/member/login.jsp'">登入</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
   	<!-- 捲軸狀態 -->
   	<div class="scroller-status">
@@ -322,5 +365,10 @@ jedis.close();
   	})
   </script>
 
+  <script>
+  $("#to_login").click(function(){
+	  $('#login_confirm').modal('show');
+  })
+  </script>
 </body>
 </html>
