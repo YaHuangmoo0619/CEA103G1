@@ -9,10 +9,10 @@ public class Personal_System_NotifyVO implements Serializable{
 	private Integer mbr_no;
 	private Integer ntfy_stat;
 	private	String ntfy_cont;
-	private Timestamp ntfy_time;
+	private String ntfy_time;
 	
 
-	public Personal_System_NotifyVO(Integer ntfy_no, Integer mbr_no, Integer ntfy_stat, String ntfy_cont , Timestamp ntfy_time) {
+	public Personal_System_NotifyVO(Integer ntfy_no, Integer mbr_no, Integer ntfy_stat, String ntfy_cont , String ntfy_time) {
 		super();
 		this.ntfy_no = ntfy_no;
 		this.mbr_no = mbr_no;
@@ -22,8 +22,7 @@ public class Personal_System_NotifyVO implements Serializable{
 	}
 
 	public Personal_System_NotifyVO() {
-		super();
-		// TODO Auto-generated constructor stub
+
 	}
 	
 	public Integer getNtfy_no() {
@@ -58,11 +57,11 @@ public class Personal_System_NotifyVO implements Serializable{
 		this.ntfy_cont = ntfy_cont;
 	}
 
-	public Timestamp getNtfy_time() {
+	public String getNtfy_time() {
 		return ntfy_time;
 	}
 
-	public void setNtfy_time(Timestamp ntfy_time) {
+	public void setNtfy_time(String ntfy_time) {
 		this.ntfy_time = ntfy_time;
 	}
 	
