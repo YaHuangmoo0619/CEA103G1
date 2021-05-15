@@ -3,6 +3,7 @@
 <%@ page import="com.article.model.*"%>
 <%@ page import="com.board_class.model.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="com.member.model.*" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%
@@ -16,13 +17,15 @@
 <%String requestURL = (String)request.getAttribute("requestURL"); %>
 
 
-<%System.out.println("I'm listOneArticle.jsp"); %>
+<% 
+	MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); 
+%>
 
 
 <html>
 <head>
 <title>文章資料 - listOneArticle.jsp 前台</title>
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+
 <style>
   table#table-1 {
 	background-color: #CCCCFF;
@@ -127,7 +130,15 @@
    </tr>
     <tr>
 		<td>會員編號</td>
-		<td><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=<%=articleVO.getMbr_no()%>&action=getProfile"><%=articleVO.getMbr_no()%></a></td>
+		<!-- 	如果有登入的話 -->
+	<c:if test="${not empty memberVO }"> 
+	<td><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=<%=articleVO.getMbr_no()%>&action=getProfile"><%=articleVO.getMbr_no()%></a></td>
+	</c:if>
+<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
+	<c:if test="${empty memberVO }"> 
+	<td><div id="to_login"><%=articleVO.getMbr_no()%></div></td>
+	</c:if>
+		
    </tr>
    <tr>
 		<td>發表時間</td>
@@ -214,6 +225,28 @@
 <button id=rep>新增文章留言</button>
 
 
+		<div class="modal fade" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>您尚未登入</h5>
+      </div>
+      <div class="modal-body">
+        <div>想要一起加入討論，要先登入 Campion 唷！</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/front-end/member/login.jsp'">登入</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 <script>
  var stateObj = { foo: "bar" };
  history.pushState(stateObj, "page 2", "${requestURL}");
@@ -338,7 +371,11 @@
  	}
  	
 	</script>
-
-
+  <script>
+  $("#to_login").click(function(){
+	  $('#login_confirm').modal('show');
+  })
+  </script>
+	
 </body>
 </html>

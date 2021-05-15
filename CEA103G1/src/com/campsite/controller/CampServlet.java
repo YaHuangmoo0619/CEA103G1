@@ -181,12 +181,18 @@ public class CampServlet extends HttpServlet {
 				
 				Camp_FeatureService camp_featureSvc = new Camp_FeatureService();
 				List<Camp_FeatureVO> allcamp_featurelist = camp_featureSvc.getAll();
+System.out.println(allcamp_featurelist);
 				List<Camp_FeatureVO> camp_featurelist = new ArrayList();
 				for(Camp_FeatureVO camp_featureVO : allcamp_featurelist) {
-					
+System.out.println(camp_featureVO.getCamp_no() + " " + camp_no);
+					if(camp_featureVO.getCamp_no() == camp_no) {
+						camp_featurelist.add(camp_featureVO);
+					}
 				}
+System.out.println(camp_featurelist);
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
 				req.setAttribute("campVO", campVO); // 資料庫取出的empVO物件,存入req
+				req.setAttribute("camp_featurelist", camp_featurelist);				
 				System.out.println(req.getContextPath() + "/front-end/campsite/updateCamp.jsp");
 				String url = "/front-end/campsite/updateCamp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp

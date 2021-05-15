@@ -360,6 +360,7 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 		return list;
 	}
 
+	@Override
 	public Set<Member_mailVO> getWhereCondition(Map<String,String[]> map){
 		Set<Member_mailVO> set = new LinkedHashSet<Member_mailVO>();
 		StringBuffer partOfsqlWhere = new StringBuffer();

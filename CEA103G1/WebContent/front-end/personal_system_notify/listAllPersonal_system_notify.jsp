@@ -16,7 +16,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<title>所有會員站內信列表</title>
+<title>所有系統通知列表</title>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -157,142 +157,44 @@ tr:hover {
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
 	<div class="row">
-<!-- 		<div class= "left col-3"> -->
-<%-- 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div> --%>
 		<div class="right col">
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
-			<h3>會員站內信列表&nbsp;
-			<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/addMember_mail.jsp">寄信</a>&nbsp;
-			<a class="content" href="<%=request.getContextPath()%>/front-end/member_mail/listAllMember_mail_send.jsp">寄件備份列表</a>
-			</h3>
+			<h3>系統通知列表&nbsp;</h3>
 			<hr>
-			<div class="forSearchs" id="forSearchs">
-					<ul>
-						<li>
-							<form method="post"	action="<%=request.getContextPath()%>/member_mail/member_mail.do">
-								<label	for="mail_cont"></label>
-								<input type="text" name="mail_cont" id="mail_cont" placeholder="依信件內容查詢">
-								<input type="hidden" name="action"	value="compositeSearchTop">
-								<input type="hidden" name="where"	value="rcpt">
-								<input type="submit" value="送出查詢" class="confirm" id="confirmTop">&nbsp;<span>進階查詢</span>
-							</form>
-					</li>
-					</ul>
-					<div class="forSearchs forSearchsMore" id="forSearchsMore">
-					<ul>
-						<li>
-							<form method="post"	action="<%=request.getContextPath()%>/member_mail/member_mail.do">
-								<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService" />
-								<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService" />
-								<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService" />
-								<jsp:useBean id="memberSvc"	class="com.member.model.MemberService" />
-	
-								<label for="mail_no">信件編號:</label>
-								<select size="1" name="mail_no" id="mail_no">
-									<option value="no">--請選擇--</option>
-									<c:forEach var="member_mailVO" items="${member_mailSvc.all}">
-										<option value="${member_mailVO.mail_no}">${member_mailVO.mail_no}</option>
-									</c:forEach>
-								</select>
-								<br>
-								<label for="send_no">寄件人:</label>
-								<select size="1" name="send_no" id="send_no">
-									<option value="no">--請選擇--</option>
-									<c:forEach var="employeeVO" items="${employeeSvc.all}">
-										<option value="${employeeVO.emp_no}">${employeeVO.emp_no}${employeeVO.name}</option>
-									</c:forEach>
-								</select>
-								<br>
-								<label for="rcpt_no">收件人:</label> 
-								<select size="1" name="rcpt_no" id="rcpt_no">
-									<option value="no">--請選擇--</option>
-									<c:forEach var="memberVO" items="${memberSvc.all}">
-										<option value="${memberVO.mbr_no}">${memberVO.mbr_no}${memberVO.name}</option>
-									</c:forEach>
-								</select>
-								<br>
-								<label for="mail_time">發信日期:</label>
-								<input	type="text" name="mail_time" id="mail_time"></input>
-								<br>
-								<label	for="mail_cont">信件內容:</label>
-								<input type="text"	name="mail_cont" id="mail_cont">
-								<br>
-								<label	for="mail_stat">信件狀態:</label>
-								<select size="1" name="mail_stat" id="mail_stat">
-									<option value="no">--請選擇--</option>
-									<option value="0">收件</option>
-									<option value="1">寄件</option>
-								</select>
-								<br>
-								<label for="mail_read_stat">信件閱讀狀態:</label>
-								<select	size="1" name="mail_read_stat" id="mail_read_stat">
-									<option value="no">--請選擇--</option>
-									<option value="0">未讀</option>
-									<option value="1">已讀</option>
-								</select>
-								<br>
-								<input type="hidden" name="action" value="compositeSearch">
-								<input type="hidden" name="where"	value="rcpt">
-								<input type="submit" value="送出查詢" class="confirm">
-							</form>
-						</li>
-					</ul>
-					</div>
-				</div>
-				<div style="text-align:center;font-weight:555;">
-					<div style="width: 150px;display:inline-block;">寄件人</div>
-					<div style="width: 150px;display:inline-block;">收件人</div>
-					<div style="width: 250px;display:inline-block;">信件內容</div>
-					<div style="width: 150px;display:inline-block;">信件日期</div>
-				</div>
-			--${member_mailVO != null? member_mailVO.rcpt_no:'123' }--
-			<c:if test="${member_mailVO != null}">
-					<div onclick="sendNotify()" id="sendNotify">${member_mailVO.rcpt_no}</div>
-			</c:if>
 			
+<!-- 				<div style="text-align:center;font-weight:555;"> -->
+<!-- 					<div style="width: 300px;display:inline-block;">系統訊息內容</div> -->
+<!-- 					<div style="width: 3000px;display:inline-block;">系統訊息時間</div> -->
+<!-- 				</div> -->
+<%-- 			--${member_mailVO != null? member_mailVO.rcpt_no:'123' }-- --%>
+<%-- 			<c:if test="${member_mailVO != null}"> --%>
+<%-- 					<div onclick="sendNotify()" id="sendNotify">${member_mailVO.rcpt_no}</div> --%>
+<%-- 			</c:if> --%>
+			<jsp:useBean id="personal_system_notifySvc" class="com.personal_system_notify.model.Personal_System_NotifyService"/>
 			<table>
-<!-- 				<tr> -->
-<!-- 					<th style="width:50px">編號</th> -->
-<!-- 					<th style="width:50px">寄件人</th> -->
-<!-- 					<th style="width:50px">收件人</th> -->
-<!-- 					<th style="width:200px">內容</th> -->
-<!-- 					<th style="width:50px">信件狀態</th> -->
-<!-- 					<th style="width:100px">信件閱讀狀態</th> -->
-<!-- 					<th style="width:100px">發信時間</th> -->
-<!-- 					<th style="width:100px"><a class="content" href="#focus" style="text-decoration: none;">看更新</a><a -->
-<!-- 						id="first" style="text-decoration: none;"></a></th> -->
-<!-- 				</tr> -->
-<%-- 				<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService"/> --%>
-				<c:forEach var="member_mailVO" items="${member_mailSvc.all}">
-<%-- 					<tr ${member_mailVO.mail_no == param.mail_no ? 'bgcolor=#eee':''}> --%>
-					<c:if test="${memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 0}">
+				<c:forEach var="personal_system_notifyVO" items="${personal_system_notifySvc.all}">
+					<c:if test="${memberVO.mbr_no == personal_system_notifyVO.mbr_no && personal_system_notifyVO.ntfy_stat == 0}">
 					<tr>
-<%-- 						<c:if test="${member_mailVO.mail_no==param.mail_no}"> --%>
-<%-- 							<td>${member_mailVO.mail_no}<a id="focus"></a></td> --%>
-<%-- 						</c:if> --%>
-<%-- 						<c:if test="${member_mailVO.mail_no!=param.mail_no}"> --%>
-						<td style="display:none;">${member_mailVO.mail_no}</td>
-<%-- 						</c:if> --%>
-						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
-						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
-						<c:set var="mail_cont" value="${member_mailVO.mail_cont}" />
-							<c:if test="${mail_cont.length() > 10}">
-								<td>${fn:substring(mail_cont, 0, 10)}...</td>
-							</c:if>
-							<c:if test="${mail_cont.length() <= 10}">
-								<td>${mail_cont}</td>
-							</c:if>
-						<td style="display:none;">${member_mailVO.mail_stat}</td>
-						<td class="mail_read_stat" style="display:none;">${member_mailVO.mail_read_stat}</td>
-						<c:set var="mail_time" value="${member_mailVO.mail_time}" />
-							<td>${fn:substring(mail_time, 0, 10)}</td>
-<!-- 						<td> -->
-<%-- 							<form method="post" action="<%=request.getContextPath()%>/member_mail/member_mail.do"> --%>
-<!-- 								<input class="change" type="submit" value="修改"> -->
-<%-- 								<input type="hidden" name="mail_no" value="${member_mailVO.mail_no}"> --%>
-<!-- 								<input type="hidden" name="action" value="getOne_For_Update"> -->
-<!-- 							</form> -->
-<!-- 						</td> -->
+						<td>${memberVO.mbr_no}</td>
+						<td>${personal_system_notifyVO.mbr_no}</td>
+						<td>${personal_system_notifyVO.ntfy_cont}</td>
+<%-- 						<td>${personal_system_notifyVO.ntfy_time}</td> --%>
+						<c:set var="ntfy_time" value="${personal_system_notifyVO.ntfy_time}" />
+							<td>${fn:substring(ntfy_time, 0, 19)}</td>
+<%-- 						<td style="display:none;">${member_mailVO.mail_no}</td> --%>
+<%-- 						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td> --%>
+<%-- 						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td> --%>
+<%-- 						<c:set var="mail_cont" value="${member_mailVO.mail_cont}" /> --%>
+<%-- 							<c:if test="${mail_cont.length() > 10}"> --%>
+<%-- 								<td>${fn:substring(mail_cont, 0, 10)}...</td> --%>
+<%-- 							</c:if> --%>
+<%-- 							<c:if test="${mail_cont.length() <= 10}"> --%>
+<%-- 								<td>${mail_cont}</td> --%>
+<%-- 							</c:if> --%>
+<%-- 						<td style="display:none;">${member_mailVO.mail_stat}</td> --%>
+<%-- 						<td class="mail_read_stat" style="display:none;">${member_mailVO.mail_read_stat}</td> --%>
+<%-- 						<c:set var="mail_time" value="${member_mailVO.mail_time}" /> --%>
+<%-- 							<td>${fn:substring(mail_time, 0, 10)}</td> --%>
 					</tr>
 					</c:if>
 				</c:forEach>

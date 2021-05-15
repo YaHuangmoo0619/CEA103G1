@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.article.model.*"%>
-
+<%@ page import="com.member.model.*" %>
 <%@ page import="java.sql.Timestamp"%>
 <%@ page import="redis.clients.jedis.Jedis"%>
 <%@ page import="java.util.*"%>
@@ -30,7 +30,9 @@
 	jedis.close();
 	pageContext.setAttribute("tag_list", tag_list);
 %>
-
+<% 
+	MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); 
+%>
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -51,7 +53,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
     <link rel="mask-icon" type="" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
 <title>新增文章 - addArticle.jsp前台</title>
-
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 
 
 <style>
@@ -165,7 +167,7 @@ input#search-bar:focus:-ms-placeholder {
 
 </head>
 <body bgcolor='white'>
-
+<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	<table id="table-1">
 		<tr>
 			<td>
@@ -209,11 +211,6 @@ input#search-bar:focus:-ms-placeholder {
 				</select></td>
 			</tr>
 			<tr>
-				<td>發文者:</td>
-				<td><input type="TEXT" name="mbr_no" size="45"
-					value="<%=(articleVO == null) ? "" : articleVO.getMbr_no()%>" /></td>
-			</tr>
-			<tr>
 				<td>文章標題:</td>
 				<td><input type="TEXT" name="art_title" size="45"
 					value="<%=(articleVO == null) ? "" : articleVO.getArt_title()%>"
@@ -231,9 +228,8 @@ input#search-bar:focus:-ms-placeholder {
 		<div onclick="history.back()">取消</div>
 		<div onclick="showModal1()">下一步</div>
 
-		<br> <input type="hidden" name="action" value="insert">
-
-
+		<input type="hidden" name="action" value="insert">
+		<input type="hidden" name="mbr_no" value="${memberVO.getMbr_no()}" />
 
 		<!-- 		Modal      -->
 		<div class="modal" tabindex="-1" role="dialog" id="test1">

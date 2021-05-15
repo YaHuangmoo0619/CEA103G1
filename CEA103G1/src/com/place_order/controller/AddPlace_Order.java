@@ -126,6 +126,7 @@ public class AddPlace_Order extends HttpServlet {
 
 				place_orderVO = place_orderSvc.addPlace_Order(mbr_no, camp_no, ckin_date, ckout_date, plc_amt,
 						plc_ord_sum, ex_ppl, pay_meth, pay_stat, used_pt, receipt, rmk, list);
+				
 				place_orderVO = place_orderSvc.getOnePlace_Order(place_orderVO.getPlc_ord_no());
 				payWithTransfer.add(place_orderVO);
 				payWithTransfer.add(atm);

@@ -1,0 +1,893 @@
+/*html {
+    position: relative;
+    min-height: 100%;
+}*/
+
+body {
+    height: 100%;
+    padding-top: 40px;
+    /*margin-bottom: 100px;*/
+    /* Margin bottom by footer height */
+    font-family: "Helvetica Neue", Helvetica, '微軟正黑體', '新細明體', Arial, sans-serif;
+    color: #49525e;
+    line-height: 1.6;
+    background-color: rgba(0, 0, 0, .9);
+    background-image: url(../img/bg2.jpg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+
+/*------------------------------------*\
+    共通樣式
+\*------------------------------------*/
+
+
+/***********
+   input
+************/
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+.form-control {
+    height: 40px;
+    border: 1px solid #ddd;
+    color: #55606e;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: border-color ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s;
+    transition: border-color ease-in-out .15s;
+}
+
+.form-control:focus {
+    border-color: #239ad1;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background-color: #fafafa;
+}
+
+.form-control:focus ~ .fa {
+    color: #239ad1;
+}
+
+.fa.form-control-feedback {
+    line-height: 40px;
+    /* @input-height-base; */
+}
+
+.form-control:focus i {
+    color: #239ad1;
+}
+
+.has-feedback-left input.form-control {
+    padding-left: 34px;
+    /* @input-height-base; */
+    padding-right: 12px;
+    /* @padding-base-horizontal */
+}
+
+.has-feedback-left .form-control-feedback {
+    left: 0;
+}
+
+
+/***********
+   checkbox
+************/
+
+label {
+    color: #444;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+input[type="checkbox"] + .label-text:before {
+    content: "\f096";
+    font-family: "FontAwesome";
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    width: 1em;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+input[type="checkbox"]:checked + .label-text:before {
+    content: "\f14a";
+    color: #239ad1;
+    -webkit-animation: tick 180ms ease-in;
+    animation: tick 180ms ease-in;
+}
+
+input[type="checkbox"]:checked + .label-text {
+    color: #239ad1;
+}
+
+input[type="checkbox"]:disabled + .label-text {
+    color: #aaa;
+}
+
+input[type="checkbox"]:disabled + .label-text:before {
+    content: "\f0c8";
+    color: #ccc;
+}
+
+@-webkit-keyframes tick {
+    0% {
+        -webkit-transform: scale(0);
+    }
+    90% {
+        -webkit-transform: scale(1.4);
+    }
+    100% {
+        -webkit-transform: scale(1);
+    }
+}
+
+@keyframes tick {
+    0% {
+        transform: scale(0);
+    }
+    90% {
+        transform: scale(1.4);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/***********
+   btn
+************/
+
+.btn {
+    width: 100%;
+    height: 40px;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus,
+input[type=file]:focus,
+input[type=radio]:focus,
+input[type=checkbox]:focus {
+    outline: none;
+}
+
+.btn:active {
+    box-shadow: none;
+}
+
+.btn-agree {
+    background-color: #239ad1;
+}
+
+.btn-facebook {
+    background-color: #3b5998;
+}
+
+.btn .fa {
+    margin-right: 3px;
+}
+
+.btn-margin {
+    margin-top: 8px;
+}
+
+[class^="btn"] {
+    -webkit-transition: 0.1s linear;
+    -moz-transition: 0.1s linear;
+    -ms-transition: 0.1s linear;
+    -o-transition: 0.1s linear;
+    transition: 0.1s linear;
+}
+
+[class^="btn"]:hover,
+[class^="btn"]:focus {
+    color: #fff;
+    /*-webkit-transform: translate(0, -5px);
+  -moz-transform: translate(0, -5px);
+  -ms-transform: translate(0, -5px);
+  -o-transform: translate(0, -5px);
+  transform: translate(0, -5px);*/
+}
+
+[class^="btn"]:active {
+    /*-webkit-transform: translate(0, -1px);
+  -moz-transform: translate(0, -1px);
+  -ms-transform: translate(0, -1px);
+  -o-transform: translate(0, -1px);
+  transform: translate(0, -1px);
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+  transition: none;*/
+}
+
+.btn-agree:hover,
+.btn-agree:focus {
+    background-color: #27a9e6;
+    /*box-shadow: 0 6px #197fae;*/
+}
+
+.btn-agree:active {
+    background-color: #1f88b9;
+    /*box-shadow: 0 1px #197fae;*/
+}
+
+,
+.btn-facebook:focus {
+    background-color: #3b5998;
+    color: #fff;
+}
+
+.btn-facebook:hover {
+    background-color: #6d84b4;
+    color: #fff;
+    /*box-shadow: 0 6px #475d88;*/
+}
+
+.btn-facebook:active {
+    background-color: #0e1f56;
+    /*box-shadow: 0 1px #475d88;*/
+}
+
+.btn-danger {
+    border-color: transparent;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+    border-color: transparent;
+    background-color: #d96562;
+    /*box-shadow: 0 6px #a7403d;*/
+}
+
+.btn-danger:active {
+    border-color: transparent;
+    background-color: #bc4844;
+    /*box-shadow: 0 1px #a7403d;*/
+}
+
+.btn-default {
+    width: auto;
+    color: #777;
+}
+
+.btn-default:hover {
+    color: #333;
+}
+
+.btn-adjust {
+    line-height: 40px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+
+/***********
+   提示訊息
+************/
+
+.bs-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.bs-callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.bs-callout p:last-child {
+    margin-bottom: 0;
+}
+
+.bs-callout code {
+    border-radius: 3px;
+}
+
+.bs-callout+.bs-callout {
+    margin-top: -5px;
+}
+
+.bs-callout-default {
+    border-left-color: #777;
+}
+
+.bs-callout-default h4 {
+    color: #777;
+}
+
+.bs-callout-primary {
+    border-left-color: #428bca;
+}
+
+.bs-callout-primary h4 {
+    color: #428bca;
+}
+
+.bs-callout-success {
+    border-left-color: #5cb85c;
+}
+
+.bs-callout-success h4 {
+    color: #5cb85c;
+}
+
+.bs-callout-danger {
+    border-left-color: #d9534f;
+}
+
+.bs-callout-danger h4 {
+    color: #d9534f;
+}
+
+.bs-callout-warning {
+    border-left-color: #f0ad4e;
+}
+
+.bs-callout-warning h4 {
+    color: #f0ad4e;
+}
+
+.bs-callout-info {
+    border-left-color: #5bc0de;
+}
+
+.bs-callout-info h4 {
+    color: #5bc0de;
+}
+
+
+/*------------------------------------*\
+    navbar
+\*------------------------------------*/
+
+.navbar-md {
+    min-height: 40px;
+    background-color: #239ad1;
+    border: none;
+}
+
+.navbar-md .navbar-brand,
+.navbar-md .navbar-nav>li>a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #fff;
+}
+
+.navbar-md .navbar-nav>li>a:hover {
+    color: #e7e7e7;
+}
+
+.navbar-md .navbar-brand {
+    height: 40px
+}
+
+.navbar-md .navbar-toggle {
+    margin: 6px 12px 6px 0px;
+    padding: 6px 7px 6px 7px;
+}
+
+.navbar-md .navbar-toggle .icon-bar {
+    width: 19px;
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    color: #fff;
+    background-color: transparent;
+}
+
+.navbar-brand>img {
+    display: inline-block;
+    padding-right: 7px;
+}
+
+.navbar-brand .logoname {
+    position: relative;
+    top: 3px;
+    left: -6px;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+}
+
+.navbar-default .navbar-toggle:focus,
+.navbar-default .navbar-toggle:hover {
+    background-color: transparent;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff;
+}
+
+
+/***********
+  帳戶navber
+************/
+
+.navbar-default .navbar-text {
+    margin: 0;
+    color: #fff;
+}
+
+.navbar-default .navbar-img {
+    margin-top: 5px;
+    margin-left: 15px;
+    margin-right: 15px;
+    color: #fff;
+}
+
+.navbar-default .navbar-img img {
+    margin-right: 8px;
+}
+
+.navbar-md .navbar-nav>li>.navbar-img-link {
+    padding: 0px;
+}
+
+
+/*------------------------------------*\
+    register & login
+\*------------------------------------*/
+
+.logform {
+    width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.form-base {
+    background-color: #fff;
+    padding: 15px 23px 25px 23px;
+}
+
+.form-base h2 {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: #239ad1;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.form-base > p {
+    color: #777;
+}
+
+.form-base > p > a {
+    color: #239ad1;
+}
+
+.logform .btn-facebook {
+    margin-top: 16px;
+}
+
+.form-base .checkbox {
+    margin-bottom: 16px;
+    margin-top: 16px;
+}
+
+.form-base .btn {
+    line-height: 40px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.logform .checkbox label {
+    padding-left: 5px;
+}
+
+.logform .agree {
+    margin-top: 8px;
+    margin-bottom: 0px;
+}
+
+.logform .btn-reg {
+    margin-bottom: 14px;
+}
+
+
+/***********
+   forget link
+************/
+
+.forget {
+    margin-top: 16px;
+}
+
+.forget a {
+    color: #777;
+    padding-left: 40px;
+}
+
+.forget a:first-child {
+    padding-left: 0px;
+}
+
+.forget a:hover {
+    color: #55606e;
+    text-decoration: none;
+}
+
+
+/***********
+  link style
+************/
+
+.login-register {
+    display: block;
+    background-color: #239AD1;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    color: #fff;
+    -webkit-transition: .2s ease-in-out;
+    -o-transition: .2s ease-in-out;
+    transition: .2s ease-in-out;
+}
+
+.login-register:focus,
+.login-register:hover {
+    background-color: #27A9E6;
+    text-decoration: none;
+    color: #fff;
+}
+
+
+/***********
+  connect fb
+************/
+
+.connect-fb {
+    display: block;
+    padding: 10px 15px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.connect-fb img {
+    margin-right: 15px;
+}
+
+
+/***********
+   註冊成功
+************/
+
+#register_success .form-group {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
+/*------------------------------------*\
+    footer
+\*------------------------------------*/
+
+.footer {
+    /*position: absolute;
+    bottom: 0;
+    left: 0;*/
+    width: 100%;
+    /*height: 100px;*/
+    /* Set the fixed height of the footer here */
+    padding: 25px 0;
+    background-color: #000;
+    text-align: center;
+    color: #fff;
+    opacity: .8;
+}
+
+.footer a {
+    color: #fff;
+}
+
+footer.bottom {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
+
+/*------------------------------------*\
+    profile
+\*------------------------------------*/
+
+.account-bg {
+    background-color: #1c7ca8;
+    color: #fff;
+}
+
+.account {
+    position: relative;
+    padding-left: 222px;
+    padding-top: 50px;
+    color: #fff;
+}
+
+.account p {
+    color: #e3e6e9;
+}
+
+.account-fontsize {
+    font-size: 20px;
+    color: #fff;
+}
+
+.nickname {
+    padding-left: 210px;
+    padding-top: 10px;
+}
+
+.nick-position {
+    position: relative;
+    left: 15px;
+}
+
+.nickname .fa {
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+#editNickname:focus {
+    outline: none;
+    border: 1px dashed rgba(255, 255, 255, .4);
+}
+
+
+/***********
+  帳戶大頭照
+************/
+
+.account .head {
+    position: absolute;
+    left: 50px;
+    width: 140px;
+    height: 140px;
+    border: 5px solid #fff;
+    background-color: #000;
+    cursor: pointer;
+}
+
+.account .edit-head {
+    visibility: hidden;
+    ;
+    position: absolute;
+    display: block;
+    bottom: 0;
+    width: 130px;
+    height: 130px;
+    background-color: #000;
+    opacity: 0;
+    text-align: center;
+    padding-top: 5px;
+    -webkit-transition: linear .2s;
+    -o-transition: linear .2s;
+    transition: linear .2s;
+}
+
+.account .edit {
+    position: absolute;
+    top: 45%;
+    left: 40%;
+}
+
+.account .head:hover .edit-head {
+    visibility: visible;
+    opacity: .8;
+}
+
+.modal-margin {
+    margin-bottom: 20px;
+}
+
+
+/*------------------------------------*\
+    profile menu
+\*------------------------------------*/
+
+.menu {
+    padding-top: 60px;
+    padding-bottom: 7px;
+}
+
+.menu ul {
+    padding-left: 0;
+    margin-left: -5px;
+    list-style: none;
+}
+
+.menu ul>li {
+    display: inline-block;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.menu li {
+    margin-left: 20px
+}
+
+.menu a {
+    position: relative;
+    display: inline-block;
+    width: 110px;
+    padding: 12px;
+    border-radius: 8px;
+    color: #adc0c9;
+    text-decoration: none;
+    -webkit-transition: ease-in-out .2s;
+    -o-transition: ease-in-out .2s;
+    transition: ease-in-out .2s;
+}
+
+.menu a .fa {
+    padding-bottom: 10px;
+    display: block;
+}
+
+.menu a:hover {
+    color: #f2f2f2;
+    background-color: #3e90b5;
+}
+
+.menu .active {
+    color: #f2f2f2;
+    background-color: #3e90b5;
+}
+
+
+/*------------------------------------*\
+    profile setting
+\*------------------------------------*/
+
+.setting {
+    padding-top: 20px;
+    padding-bottom: 30px;
+    min-height: 400px;
+    margin-bottom: 50px;
+    background-color: #f2f2f2;
+}
+
+.setting h4 {
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.modal .btn-agree,
+.setting .btn-agree,
+.setting .btn-danger,
+.setting .btn-facebook {
+    width: auto;
+}
+
+@media (min-width: 768px) {
+    .setting .form-horizontal .control-label {
+        padding-top: 11px;
+    }
+}
+
+.setting .bs-callout {
+    margin: 20px auto;
+}
+
+.setting .bs-callout-danger {
+    background-color: #fff;
+    width: 70%;
+    text-align: center;
+}
+
+
+/***********
+   edit email
+************/
+
+.fa-info-circle {
+    color: #239ad1;
+    margin-right: 7px;
+    margin-top: 7px;
+    margin-left: 4px;
+}
+
+.infomation {
+    visibility: hidden;
+    color: #737373;
+    opacity: 0;
+    -webkit-transition: linear .2s;
+    -o-transition: linear .2s;
+    transition: linear .2s;
+}
+
+.fa-info-circle:hover ~.infomation {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/***********
+   edit Profile
+************/
+
+.form-horizontal .theme-checkbox {
+    padding-left: 0;
+    padding-top: 12px;
+}
+
+.theme-checkbox+.theme-checkbox:last-child {
+    margin-left: 0;
+}
+
+.form-horizontal .radio-inline {
+    padding-top: 10px;
+}
+
+input[type=radio] {
+    margin: 1px 0 0;
+}
+
+
+/***********
+  connect to social
+************/
+
+.link-fb {
+    display: inline-block;
+    margin-bottom: 40px;
+    padding: 15px 30px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    font-size: 18px;
+}
+
+.link-fb i {
+    margin-right: 10px;
+    color: #546fa6;
+}
+
+.link-fb a {
+    color: #546fa6;
+    text-decoration: none;
+}
+
+.social-connect > p {
+    margin-bottom: 30px;
+}
+
+
+/***********
+   remove account
+************/
+
+.delete-account .btn {
+    margin-top: 25px;
+}

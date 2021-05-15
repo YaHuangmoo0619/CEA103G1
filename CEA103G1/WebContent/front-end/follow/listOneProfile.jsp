@@ -39,11 +39,14 @@
 <html>
 <head>
 <meta charset="BIG5">
+
 <link rel="stylesheet" type="text/css" href="/CEA103G1/profile.css">
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 <style>
+
 .profile-stat-count{
     display: inline-block;
     font-size: 1.6rem;
@@ -87,7 +90,7 @@ clear: both;
 
 </head>
 <body>
-
+	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
     <header>
         <div class="container">
             <div class="profile">

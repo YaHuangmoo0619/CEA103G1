@@ -2,6 +2,8 @@ package com.personal_system_notify.model;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Personal_System_NotifyService {
 	private Personal_System_NotifyDAO_Interface dao;
@@ -10,7 +12,7 @@ public class Personal_System_NotifyService {
 		dao = new Personal_System_NotifyDAO(); 
 	}
 
-	public Personal_System_NotifyVO addPersonal_System_Notify(Integer mbr_no, Integer ntfy_stat,String ntfy_cont, Timestamp ntfy_time) {
+	public Personal_System_NotifyVO addPersonal_System_Notify(Integer mbr_no, Integer ntfy_stat,String ntfy_cont, String ntfy_time) {
 
 		Personal_System_NotifyVO personal_system_notifyVO = new Personal_System_NotifyVO();
 	
@@ -23,7 +25,7 @@ public class Personal_System_NotifyService {
 		return personal_system_notifyVO;
 	}
 
-	public Personal_System_NotifyVO updatePersonal_System_Notify(Integer ntfy_no,Integer mbr_no, Integer ntfy_stat,String ntfy_cont, Timestamp ntfy_time) {
+	public Personal_System_NotifyVO updatePersonal_System_Notify(Integer ntfy_no,Integer mbr_no, Integer ntfy_stat,String ntfy_cont, String ntfy_time) {
 
 		Personal_System_NotifyVO personal_system_notifyVO = new Personal_System_NotifyVO();
 
@@ -47,5 +49,9 @@ public class Personal_System_NotifyService {
 
 	public List<Personal_System_NotifyVO> getAll() {
 		return dao.getAll();
+	}
+	
+	public Set<Personal_System_NotifyVO> getWhereCondition(Map<String, String[]> map) {
+		return dao.getWhereCondition(map);
 	}
 }

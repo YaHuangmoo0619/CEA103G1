@@ -1,4 +1,4 @@
-package com.member_mail.controller;
+package com.personal_system_notify.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,37 +8,36 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.member_mail.model.Member_mailForWS;
 import com.member_mail.model.Member_mailService;
 import com.member_mail.model.Member_mailVO;
+import com.personal_system_notify.model.Personal_System_NotifyService;
+import com.personal_system_notify.model.Personal_System_NotifyVO;
 
-@ServerEndpoint ("/Member_mailNotify/{userName}")
-public class Member_mailNotify {
-	private static Map<String, Session> sessionsMap = new ConcurrentHashMap<>();
+@ServerEndpoint ("/Personal_system_notifyNotify/{userName}")
+public class Personal_system_notifyNotify {
+private static Map<String, Session> sessionsMap = new ConcurrentHashMap<>();
 	
 	@OnOpen
 	public void onOpen(@PathParam("userName") String userName, Session userSession) {
 		final Session mySession = userSession;
 		sessionsMap.put(userName, userSession);
-		Member_mailService member_mailSvc = new Member_mailService();
+		Personal_System_NotifyService personal_system_notifySvc = new Personal_System_NotifyService();
 		Map<String,String[]> map = new LinkedHashMap<String,String[]>();
-		map.put("mail_read_stat",new String[] {"0"});
-		Set<Member_mailVO> set = member_mailSvc.getWhereCondition(map);
+		map.put("ntfy_stat",new String[] {"0"});
+		Set<Personal_System_NotifyVO> set = personal_system_notifySvc.getWhereCondition(map);
 		int countNoRead = 0;
-		for(Member_mailVO vo : set) {
+		for(Personal_System_NotifyVO vo : set) {
 //			System.out.println(vo.getRcpt_no());
-			if(userName.equals(vo.getRcpt_no().toString()) && "0".equals(vo.getMail_stat().toString())) {
+			if(userName.equals(vo.getMbr_no().toString()) && "0".equals(vo.getNtfy_stat().toString())) {
 				countNoRead++;
 			}
 		}
