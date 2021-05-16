@@ -104,7 +104,10 @@
 			<input type="hidden" name="prod_no"  value="${productVO.prod_no}">
 			<input type="hidden" name="action"	value="buyOne"></FORM>
 		</td>
-	</tr>
+		</tr>
+		<tr>
+		<td><input type="submit" value="°e¥X"></td> 
+		</tr>
 </table>
 
 </body>
