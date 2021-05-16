@@ -1,4 +1,4 @@
-registerÄæ¦ì
+register
 1.acc
 2.pwd
 3.id
