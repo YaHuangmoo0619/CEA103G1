@@ -15,4 +15,5 @@ public interface Camp_FeatureDAO_interface {
 	public List<Camp_FeatureVO> getAll();
 
 	void insert2(Camp_FeatureVO aCamp_Feature, Connection con);
+	
 }
