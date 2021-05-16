@@ -6,8 +6,11 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -26,10 +29,13 @@ import com.campsite_picture.model.Camp_PictureService;
 import com.campsite_picture.model.Camp_PictureVO;
 import com.district.model.DistrictService;
 import com.district.model.DistrictVO;
+import com.place.model.PlaceService;
+import com.place.model.PlaceVO;
 
 @MultipartConfig
 public class CampServlet extends HttpServlet {
 	String saveDirectory = "/images";
+
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
@@ -97,12 +103,12 @@ public class CampServlet extends HttpServlet {
 			}
 		}
 		if ("getOne_For_DisplayFromBack".equals(action)) { // 來自select_page.jsp的請求
-			
+
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
-			
+
 			try {
 				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
 				String str = req.getParameter("camp_no");
@@ -115,7 +121,7 @@ public class CampServlet extends HttpServlet {
 					failureView.forward(req, res);
 					return;// 程式中斷
 				}
-				
+
 				Integer camp_no = null;
 				try {
 					camp_no = new Integer(str);
@@ -128,7 +134,7 @@ public class CampServlet extends HttpServlet {
 					failureView.forward(req, res);
 					return;// 程式中斷
 				}
-				
+
 				/*************************** 2.開始查詢資料 *****************************************/
 				CampService campSvc = new CampService();
 				CampVO campVO = campSvc.getOneCamp(camp_no);
@@ -141,13 +147,13 @@ public class CampServlet extends HttpServlet {
 					failureView.forward(req, res);
 					return;// 程式中斷
 				}
-				
+
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
 				req.setAttribute("campVO", campVO); // 資料庫取出的empVO物件,存入req
 				String url = "/back-end/campsite/listOneCamp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 				successView.forward(req, res);
-				
+
 				/*************************** 其他可能的錯誤處理 *************************************/
 			} catch (Exception e) {
 				errorMsgs.add("無法取得資料:" + e.getMessage());
@@ -155,7 +161,7 @@ public class CampServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
-	
+
 		if ("getOne_For_Update".equals(action)) { // 來自listAllEmp.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -178,21 +184,57 @@ public class CampServlet extends HttpServlet {
 				campVO.setCounty(county);
 				campVO.setDistrict(district);
 				campVO.setAddress(address);
-				
+
 				Camp_FeatureService camp_featureSvc = new Camp_FeatureService();
 				List<Camp_FeatureVO> allcamp_featurelist = camp_featureSvc.getAll();
-System.out.println(allcamp_featurelist);
 				List<Camp_FeatureVO> camp_featurelist = new ArrayList();
-				for(Camp_FeatureVO camp_featureVO : allcamp_featurelist) {
-System.out.println(camp_featureVO.getCamp_no() + " " + camp_no);
-					if(camp_featureVO.getCamp_no() == camp_no) {
+				for (Camp_FeatureVO camp_featureVO : allcamp_featurelist) {
+					if ((int) camp_featureVO.getCamp_no() == (int) camp_no) {
 						camp_featurelist.add(camp_featureVO);
 					}
 				}
-System.out.println(camp_featurelist);
+
+				List<PlaceVO> placelist = new PlaceService().getByCamp(campVO.getCamp_no());
+				List<PlaceVO> newplacelist = new ArrayList();
+				String plc_name = "12345";
+				int amt = 0;
+
+				for (int i = 0; i < placelist.size(); i++) {
+					for (int j = 0; j < placelist.get(i).getPlc_name().length(); j++) {
+						if (Character.isDigit(placelist.get(i).getPlc_name().charAt(j)) == true) {
+							if(plc_name.equals(placelist.get(i).getPlc_name().substring(0, j))) {
+								amt = new Integer(placelist.get(i).getPlc_name().substring(j));	
+								
+							}else if(i != 0){
+								PlaceVO placeVO = new PlaceVO();
+								placeVO.setPlc_name(plc_name +"," + amt);
+								placeVO.setPpl(placelist.get(i-1).getPpl());
+								placeVO.setMax_ppl(placelist.get(i-1).getMax_ppl());
+								placeVO.setPc_wkdy(placelist.get(i-1).getPc_wkdy());
+								placeVO.setPc_wknd(placelist.get(i-1).getPc_wknd());
+								newplacelist.add(placeVO);
+								plc_name = placelist.get(i).getPlc_name().substring(0, j);								
+								amt = new Integer(placelist.get(i).getPlc_name().substring(j));
+							}else {
+								plc_name = placelist.get(i).getPlc_name().substring(0, j);								
+								amt = new Integer(placelist.get(i).getPlc_name().substring(j));
+							}
+						}
+					}
+					if(i == placelist.size()-1) {
+						PlaceVO placeVO = new PlaceVO();
+						placeVO.setPlc_name(plc_name +"," + amt);
+						placeVO.setPpl(placelist.get(i).getPpl());
+						placeVO.setMax_ppl(placelist.get(i).getMax_ppl());
+						placeVO.setPc_wkdy(placelist.get(i).getPc_wkdy());
+						placeVO.setPc_wknd(placelist.get(i).getPc_wknd());
+						newplacelist.add(placeVO);
+					}
+				}
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
 				req.setAttribute("campVO", campVO); // 資料庫取出的empVO物件,存入req
-				req.setAttribute("camp_featurelist", camp_featurelist);				
+				req.setAttribute("camp_featurelist", camp_featurelist);
+				req.setAttribute("placelist", newplacelist);
 				System.out.println(req.getContextPath() + "/front-end/campsite/updateCamp.jsp");
 				String url = "/front-end/campsite/updateCamp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
@@ -220,9 +262,9 @@ System.out.println(camp_featurelist);
 				byte[] config = new byte[in.available()];
 				in.read(config);
 				in.close();
-                
+
 				Integer camp_no = new Integer(req.getParameter("camp_no").trim());
-				
+
 				String str;
 				String camp_name = req.getParameter("camp_name");
 				String camp_nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
@@ -231,7 +273,7 @@ System.out.println(camp_featurelist);
 				} else if (!camp_name.trim().matches(camp_nameReg)) { // 以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("營區名稱: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
 				}
-                System.out.println(camp_name);
+				System.out.println(camp_name);
 				String campInfo = req.getParameter("campInfo");
 				System.out.println(campInfo);
 				System.out.println(campInfo);
@@ -281,7 +323,8 @@ System.out.println(camp_featurelist);
 				String address = req.getParameter("address");
 				String addressReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
 				if (address == null) {
-					errorMsgs.add("地址: 請勿空白");}
+					errorMsgs.add("地址: 請勿空白");
+				}
 //				} else if (!address.trim().matches(addressReg)) { // 以下練習正則(規)表示式(regular-expression)
 //					errorMsgs.add("地址: 只能是中文、數字");
 //				}
@@ -320,8 +363,8 @@ System.out.println(camp_featurelist);
 				Integer dist_no = districtSvc.updateDistrict(district, county).getDist_no();
 				System.out.println(dist_no);
 				CampService campSvc = new CampService();
-				campVO = campSvc.updateCamp(dist_no, camp_name, campInfo, note, config, height, wireless, pet,
-						facility, operate_date, park, address, latitude, longitude, camp_no);
+				campVO = campSvc.updateCamp(dist_no, camp_name, campInfo, note, config, height, wireless, pet, facility,
+						operate_date, park, address, latitude, longitude, camp_no);
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				String forwardurl = "/front-end/campsite/listOneCamp.jsp";
@@ -341,11 +384,11 @@ System.out.println(camp_featurelist);
 				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
 				Integer camp_no = new Integer(req.getParameter("camp_no").trim());
 				Integer review_status = new Integer(req.getParameter("review_status").trim());
-				
+
 				CampService campSvc = new CampService();
 				CampVO campVO = campSvc.getOneCamp(camp_no);
 				int campsite_status = campVO.getCampsite_Status();
-				
+
 				campSvc.updateCamp2(campsite_status, review_status, camp_no);
 				campVO = campSvc.getOneCamp(camp_no);
 				/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
@@ -353,7 +396,7 @@ System.out.println(camp_featurelist);
 				String url = "/back-end/campsite/listOneCamp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
-				
+
 				/*************************** 其他可能的錯誤處理 *************************************/
 			} catch (Exception e) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/campsite/listOneCamp.jsp");
@@ -375,7 +418,7 @@ System.out.println(camp_featurelist);
 				String url = "/front-end/campsite/listOneCamp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
-				
+
 				/*************************** 其他可能的錯誤處理 *************************************/
 			} catch (Exception e) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite/listOneCamp.jsp");
@@ -438,7 +481,7 @@ System.out.println(camp_featurelist);
 		Double elevation = campsite.getDouble("elevation");
 		return elevation;
 	}
-	
+
 	public String getFileNameFromPart(Part part) {
 		String header = part.getHeader("content-disposition");
 
