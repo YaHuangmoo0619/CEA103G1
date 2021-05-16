@@ -306,8 +306,10 @@ tr:hover {
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <script>
-	$("tr").click(function(e){
+	$("body").on("click","tr",function(e){
+// 		console.log('click');
 		let mail_no = e.currentTarget.children[0].innerText;
+// 		console.log(mail_no);
 		window.location.href="<%=request.getContextPath()%>/member_mail/member_mail.do?mail_no="+ mail_no + "&action=read";
 	});
 
