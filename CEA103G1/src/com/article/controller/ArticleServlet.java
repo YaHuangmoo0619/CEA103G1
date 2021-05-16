@@ -403,7 +403,7 @@ public class ArticleServlet extends HttpServlet {
 			articleVO.setArt_no(art_no);
 			/*************************** 2.開始修改資料 *****************************************/
 			ArticleService articleSvc = new ArticleService();
-			articleVO = articleSvc.plus_like(art_no);
+			articleVO = articleSvc.minus_like(art_no);
 
 		}
 

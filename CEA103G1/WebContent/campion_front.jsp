@@ -640,7 +640,7 @@ section.footer {
 
 	<c:if test="${openModal!=null}">
 
-		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
+		<div class="modal fade" id="basicModal_homepage" tabindex="-1" role="dialog"
 			aria-labelledby="basicModal" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -804,6 +804,15 @@ section.footer {
 		}
 		
 	</script>
+<<<<<<< HEAD
+=======
+	
+		<script>
+		
+		$('#basicModal_homepage').modal('show')
+	</script>
+	
+>>>>>>> 2be4fc30a071edb60a4aab912c6fd0c1d11b5e42
 </body>
 
 </html>
