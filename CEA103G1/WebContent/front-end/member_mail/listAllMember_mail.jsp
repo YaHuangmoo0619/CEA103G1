@@ -301,6 +301,7 @@ tr:hover {
 	</div>
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <script>
 	$("tr").click(function(e){
 		let mail_no = e.currentTarget.children[0].innerText;
@@ -336,10 +337,9 @@ tr:hover {
 </script>
 <script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
 <script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
-<%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <script>
 <!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
-$.datetimepicker.setLocale('zh');
+jQuery.datetimepicker.setLocale('zh-TW');
 $(function(){
 	$('#mail_time').datetimepicker({
 		format:'Y-m-d',
@@ -348,56 +348,7 @@ $(function(){
 	});
 });
 </script>
-<script>
-		function writeToScreen(input){
-			alert(typeof input);
-			let noRead = JSON.parse(input);
-			alert(typeof noRead);
-			if(typeof noRead === "number"){
-				alert('in');
-				var countNoRead = document.getElementById('countNoRead');
-				countNoRead.innerText = input;
-			}else if(typeof noRead === "object"){
-				var notify = document.getElementById('countNoRead');
-				notify.innerText = noRead.countNoRead;
-				var tableOri = document.getElementsByTagName('table');
-				var trOri = document.getElementsByTagName('tr');
-				trOri[0].innerHTML = "<td>"+ noRead.mail_no+"</td><td>"+noRead.rcpt_no+"</td><td>"+noRead.mail_cont+"</td><td>"+noRead.mail_time+"</td>";
-				tableOri[0].prepend(trOri[0]);
-			}
-			
-		}
-		function connection(){
-<%-- 			alert('ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify.do'); --%>
-			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
-			websocket = new WebSocket(wsUri);
-			websocket.onopen = function(event){
-				//自動觸發click事件
-				let e = document.createEvent("MouseEvent");
-				e.initEvent("click",true,true);
-				document.getElementById('sendNotify').dispatchEvent(e);
-			}
-			websocket.onmessage = function(event){
-				
-				console.log(event.data);
-// 				alert(noRead);
-				writeToScreen(event.data);
-			};
-		}
-		function sendNotify(){
-			let sendNotify = document.getElementById('sendNotify');
-			alert(sendNotify.innerText);
-// 			var jsonObj = {
-// 				"send_no" : ${member_mailVO.send_no},
-// 				"rcpt_no" : ${member_mailVO.rcpt_no},
-// 				"mail_read_stat" : ${member_mailVO.mail_read_stat},
-// 				"mail_stat" : ${member_mailVO.mail_stat},
-// 				"mail_cont" : ${member_mailVO.mail_cont},
-// 				"mail_time" : ${member_mailVO.mail_time}
-// 			};
-			websocket.send(sendNotify.innerText);
-// 			websocket.send(JSON.stringify(jsonObj));
-		}
-	</script>
+
 </body>
+
 </html>

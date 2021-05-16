@@ -314,6 +314,7 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 						//屬於特定sql型別做特定動作
 						for(String key : keys) {
 //							System.out.println(key);
+//							System.out.println(rm.getColumnTypeName(i));
 							if(partOfsqlWhere.length() == 0) {
 								if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
 									partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
@@ -322,6 +323,12 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 									break nextColumn;
 								}else if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
 									partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
+									checkfirst.add(key);
+									forPstmt.put(i, key);
+									break nextColumn;
+								}else if(rm.getColumnTypeName(i) == "TINYINT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+									partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
+//									System.out.println("inTINYINT");
 									checkfirst.add(key);
 									forPstmt.put(i, key);
 									break nextColumn;
@@ -342,7 +349,12 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 									checkfirst.add(key);
 									forPstmt.put(i, key);
 									break nextColumn;
-								}if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+								}else if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
+									partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" = ?");
+									checkfirst.add(key);
+									forPstmt.put(i, key);
+									break nextColumn;
+								}else if(rm.getColumnTypeName(i) == "TINYINT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
 									partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" = ?");
 									checkfirst.add(key);
 									forPstmt.put(i, key);
@@ -373,6 +385,9 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 							pstmt.setInt(index, Integer.valueOf(map.get(forPstmt.get(keyPstmt))[0]));
 							index++;
 						}else if(rm.getColumnTypeName(keyPstmt) == "BIT") {
+							pstmt.setInt(index, Integer.valueOf(map.get(forPstmt.get(keyPstmt))[0]));
+							index++;
+						}else if(rm.getColumnTypeName(keyPstmt) == "TINYINT") {
 							pstmt.setInt(index, Integer.valueOf(map.get(forPstmt.get(keyPstmt))[0]));
 							index++;
 						}else if(rm.getColumnTypeName(keyPstmt) == "VARCHAR") {

@@ -190,6 +190,7 @@ img{
 	</div>
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <script>
         let myFile = document.getElementById('myFile');
         let preview = document.getElementById('preview');
@@ -222,25 +223,5 @@ img{
         });
 
     </script>
-    <script>
-		function writeToScreen(input){
-			var countNoRead = document.getElementById('countNoRead');
-			countNoRead.innerText = input;
-		}
-		function connection(){
-<%-- 			alert('ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify.do'); --%>
-			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
-			websocket = new WebSocket(wsUri);
-			websocket.onmessage = function(event){
-				let noRead = event.data;
-// 				alert(noRead);
-				writeToScreen(noRead);
-			};
-		}
-// 		function sendNotify(){
-// 			let rcpt_no = document.getElementById('rcpt_no');
-// 			websocket.send(rcpt_no.value);
-// 		}
-	</script>
 </body>
 </html>

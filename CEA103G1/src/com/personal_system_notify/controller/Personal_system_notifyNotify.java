@@ -43,8 +43,8 @@ private static Map<String, Session> sessionsMap = new ConcurrentHashMap<>();
 		}
 		try {
 			mySession.getBasicRemote().sendText(Integer.valueOf(countNoRead).toString());
-			System.out.println(Integer.valueOf(countNoRead).toString());
-			System.out.println(userName);
+			System.out.println("fromNitfy="+Integer.valueOf(countNoRead).toString());
+			System.out.println("fromNitfy="+userName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -81,7 +81,7 @@ private static Map<String, Session> sessionsMap = new ConcurrentHashMap<>();
 					member_mailForWS.setMail_stat(member_mailVO.getMail_stat());
 					member_mailForWS.setMail_cont(member_mailVO.getMail_cont());
 					member_mailForWS.setMail_time(member_mailVO.getMail_time());
-					member_mailForWS.setCountNoRead(countNoRead);
+					member_mailForWS.setCountNoReadMail(countNoRead);
 					
 					String jsonStr = new JSONObject(member_mailForWS).toString();
 					sessionsMap.get(key).getBasicRemote().sendText(jsonStr);

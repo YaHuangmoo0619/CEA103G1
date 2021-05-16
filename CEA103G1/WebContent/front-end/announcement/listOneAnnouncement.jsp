@@ -94,7 +94,7 @@ img.info{
 </style>
 
 </head>
-<body>
+<body onload="connection()">
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
@@ -118,5 +118,6 @@ img.info{
 </div>
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 </body>
 </html>

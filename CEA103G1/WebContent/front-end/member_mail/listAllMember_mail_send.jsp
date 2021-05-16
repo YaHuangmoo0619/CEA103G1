@@ -152,7 +152,7 @@ tr:hover {
 </style>
 
 </head>
-<body>
+<body onload="connection()">
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
@@ -296,6 +296,7 @@ tr:hover {
 	</div>
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <script>
 	$("tr").click(function(e){
 		let mail_no = e.currentTarget.children[0].innerText;

@@ -22,6 +22,8 @@ import org.json.JSONObject;
 import com.member_mail.model.Member_mailForWS;
 import com.member_mail.model.Member_mailService;
 import com.member_mail.model.Member_mailVO;
+import com.personal_system_notify.model.Personal_System_NotifyService;
+import com.personal_system_notify.model.Personal_System_NotifyVO;
 
 @ServerEndpoint ("/Member_mailNotify/{userName}")
 public class Member_mailNotify {
@@ -29,23 +31,51 @@ public class Member_mailNotify {
 	
 	@OnOpen
 	public void onOpen(@PathParam("userName") String userName, Session userSession) {
+		//記錄有誰登入
 		final Session mySession = userSession;
 		sessionsMap.put(userName, userSession);
+		
+		//準備用service找VO
 		Member_mailService member_mailSvc = new Member_mailService();
-		Map<String,String[]> map = new LinkedHashMap<String,String[]>();
-		map.put("mail_read_stat",new String[] {"0"});
-		Set<Member_mailVO> set = member_mailSvc.getWhereCondition(map);
-		int countNoRead = 0;
-		for(Member_mailVO vo : set) {
+		Personal_System_NotifyService personal_system_notifySvc = new Personal_System_NotifyService();
+		
+		//找出未讀的
+		Map<String,String[]> mapMail = new LinkedHashMap<String,String[]>();
+		mapMail.put("mail_read_stat",new String[] {"0"});
+		Set<Member_mailVO> setMail = member_mailSvc.getWhereCondition(mapMail);
+		//---
+		Map<String,String[]> mapNotify = new LinkedHashMap<String,String[]>();
+		mapNotify.put("ntfy_stat",new String[] {"0"});
+		Set<Personal_System_NotifyVO> setNotify = personal_system_notifySvc.getWhereCondition(mapNotify);
+		
+		//給予累計數字的初值為零
+		int countNoReadMail = 0;
+		int countNoReadNotify = 0;
+		
+		//開始計數
+		for(Member_mailVO vo : setMail) {
 //			System.out.println(vo.getRcpt_no());
 			if(userName.equals(vo.getRcpt_no().toString()) && "0".equals(vo.getMail_stat().toString())) {
-				countNoRead++;
+				countNoReadMail++;
+			}
+		}
+		for(Personal_System_NotifyVO vo : setNotify) {
+//			System.out.println(vo.getMbr_no());
+			if(userName.equals(vo.getMbr_no().toString()) && "0".equals(vo.getNtfy_stat().toString())) {
+				countNoReadNotify++;
 			}
 		}
 		try {
-			mySession.getBasicRemote().sendText(Integer.valueOf(countNoRead).toString());
-			System.out.println(Integer.valueOf(countNoRead).toString());
-			System.out.println(userName);
+			//將結果轉為JSONObject
+			Member_mailForWS member_mailForWS = new Member_mailForWS();
+			member_mailForWS.setCountNoReadMail(countNoReadMail);
+			member_mailForWS.setCountNoReadNotify(countNoReadNotify);
+			String jsonStr = new JSONObject(member_mailForWS).toString();
+			
+			//傳送JSON格式字串給前端連線的WebSocket
+			mySession.getBasicRemote().sendText(jsonStr);
+//			System.out.println(Integer.valueOf(countNoReadMail).toString());
+//			System.out.println(userName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -82,7 +112,7 @@ public class Member_mailNotify {
 					member_mailForWS.setMail_stat(member_mailVO.getMail_stat());
 					member_mailForWS.setMail_cont(member_mailVO.getMail_cont());
 					member_mailForWS.setMail_time(member_mailVO.getMail_time());
-					member_mailForWS.setCountNoRead(countNoRead);
+					member_mailForWS.setCountNoReadMail(countNoRead);
 					
 					String jsonStr = new JSONObject(member_mailForWS).toString();
 					sessionsMap.get(key).getBasicRemote().sendText(jsonStr);

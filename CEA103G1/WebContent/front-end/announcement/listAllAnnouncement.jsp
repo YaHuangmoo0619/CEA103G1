@@ -155,7 +155,7 @@ tr:hover {
 </style>
 
 </head>
-<body>
+<body onload="connection()">
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 <div class="container">
@@ -227,20 +227,14 @@ tr:hover {
 		</div>
 	</div>
 </div>
+<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <script>
 	$("tr").click(function(e){
 		let an_no = e.currentTarget.children[0].innerText;
 		window.location.href="<%=request.getContextPath()%>/announcement/announcement.do?an_no="+ an_no + "&action=read";
 	});
 
-	let backToTop = document.getElementsByClassName("backToTop");
-	$(window).scroll(function(e) {
-		if ($(window).scrollTop() <= 1) {
-			backToTop[1].style.display = "none";
-		} else {
-			backToTop[1].style.display = "block";
-		}
-	});
 </script>
 
 </body>

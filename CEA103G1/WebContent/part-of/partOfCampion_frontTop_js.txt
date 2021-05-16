@@ -16,35 +16,37 @@
 		}
 	});
 
-	let countSearch = 0;
-	$("#searchIcon").click(function() {
-		countSearch++;
-		if (countSearch % 2 == 1) {
-			let formArray = document.getElementsByClassName("secSearch");
-			for (let i = 0; i < formArray.length; i++) {
-				formArray[i].style.display = "flex";
-			}
-		} else {
-			let formArray = document.getElementsByClassName("secSearch");
-			for (let i = 0; i < formArray.length; i++) {
-				formArray[i].style.display = "none";
-			}
-		}
-	});
+//	let countSearch = 0;
+//	$("#searchIcon").click(function() {
+//		countSearch++;
+//		if (countSearch % 2 == 1) {
+//			let formArray = document.getElementsByClassName("secSearch");
+//			for (let i = 0; i < formArray.length; i++) {
+//				formArray[i].style.display = "flex";
+//			}
+//		} else {
+//			let formArray = document.getElementsByClassName("secSearch");
+//			for (let i = 0; i < formArray.length; i++) {
+//				formArray[i].style.display = "none";
+//			}
+//		}
+//	});
 
 </script>
 <script>
 		function writeToScreen(input){
-			var countNoRead = document.getElementById('countNoRead');
-			countNoRead.innerText = input;
+			let noRead = JSON.parse(input);
+			var notifyMail = document.getElementById('countNoReadMail');
+			console.log(notifyMail);
+			notifyMail.innerText = noRead.countNoReadMail;
+			var notifyNotify = document.getElementById('countNoReadNotify');
+			notifyNotify.innerText = noRead.countNoReadNotify;
 		}
 		function connection(){
-<%-- 			alert('ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify.do'); --%>
 			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
 			websocket = new WebSocket(wsUri);
 			websocket.onmessage = function(event){
 				let noRead = event.data;
-// 				alert(noRead);
 				writeToScreen(noRead);
 			};
 		}

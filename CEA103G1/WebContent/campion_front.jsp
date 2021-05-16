@@ -439,13 +439,13 @@ section.footer {
 			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp">
 				<div style="position:relative;display:inline;">
 					<img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement">
-					<div style="background-color: red; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoRead"></div>
+					<div style="background-color: red; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadMail"></div>
 				</div>
 			</a>
 			<a href="<%=request.getContextPath() %>/front-end/personal_system_notify/listAllPersonal_system_notify.jsp">
 				<div style="position:relative;display:inline;">
 					<img src="<%=request.getContextPath() %>/front-images/notifications-outline.svg" class="announcement">
-					<div style="background-color: red; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoRead"></div>
+					<div style="background-color: red; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadNotify"></div>
 				</div>
 			</a>
 			<a class="button" href="<%=request.getContextPath()%>/member/member.do?action=logout"><button type="button" class="btn btn-outline-secondary">µn¥X</button></a>
@@ -763,30 +763,47 @@ section.footer {
 			}
 		});
 	</script>
-	<script>
-		function writeToScreen(input){
-			var countNoRead = document.getElementById('countNoRead');
-			countNoRead.innerText = input;
-		}
-		function connection(){
-<%-- 			alert('ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify.do'); --%>
-			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
-			websocket = new WebSocket(wsUri);
-			websocket.onmessage = function(event){
-				let noRead = event.data;
-// 				alert(noRead);
-				writeToScreen(noRead);
-			};
-		}
-		
-	</script>
-	
 		<script>
 		$("#basicModal").modal({
 			show : true
 		});
 	</script>
-	
+	<script>
+		function writeToScreen(input){
+			alert(typeof input);
+			let noRead = JSON.parse(input);
+			alert(typeof noRead);
+// 			if(typeof noRead === "number"){
+// 				alert('in');
+// 				var countNoRead = document.getElementById('countNoRead');
+// 				countNoRead.innerText = input;
+// 			}else if(typeof noRead === "object"){
+// 				var notify = document.getElementById('countNoRead');
+// 				notify.innerText = noRead.countNoRead;
+// 				var tableOri = document.getElementsByTagName('table');
+// 				var trOri = document.getElementsByTagName('tr');
+// 				trOri[0].innerHTML = "<td>"+ noRead.mail_no+"</td><td>"+noRead.rcpt_no+"</td><td>"+noRead.mail_cont+"</td><td>"+noRead.mail_time+"</td>";
+// 				tableOri[0].prepend(trOri[0]);
+// 			}
+			
+			var notifyMail = document.getElementById('countNoReadMail');
+			console.log(notifyMail);
+			notifyMail.innerText = noRead.countNoReadMail;
+			var notifyNotify = document.getElementById('countNoReadNotify');
+			notifyNotify.innerText = noRead.countNoReadNotify;
+		}
+			function connection(){
+<%-- 			alert('ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify.do'); --%>
+			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
+			websocket = new WebSocket(wsUri);
+			websocket.onmessage = function(event){
+				let noRead = event.data;
+				alert(noRead);
+				writeToScreen(noRead);
+			};
+		}
+		
+	</script>
 </body>
 
 </html>
