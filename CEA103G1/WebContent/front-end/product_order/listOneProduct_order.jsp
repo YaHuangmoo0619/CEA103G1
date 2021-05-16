@@ -132,7 +132,6 @@
 			</td>
 			<td>${product_orderVO.rmk}</td>
 			<td>
-	</tr>
 </table>
 
 </body>
