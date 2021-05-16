@@ -247,10 +247,12 @@ tr:hover {
 				</div>
 			--${member_mailVO != null? member_mailVO.rcpt_no:'123' }--
 			<c:if test="${member_mailVO != null}">
+			<!-- insert回傳的VO沒有信件編號 -->
 					<div onclick="sendNotify()" id="sendNotify">${member_mailVO.rcpt_no}</div>
 			</c:if>
 			
 			<table>
+			<tbody id="mailTable">
 <!-- 				<tr> -->
 <!-- 					<th style="width:50px">編號</th> -->
 <!-- 					<th style="width:50px">寄件人</th> -->
@@ -296,6 +298,7 @@ tr:hover {
 					</tr>
 					</c:if>
 				</c:forEach>
+				</tbody>
 			</table>
 		</div>
 	</div>

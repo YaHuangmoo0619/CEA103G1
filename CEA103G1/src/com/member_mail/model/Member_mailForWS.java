@@ -2,8 +2,8 @@ package com.member_mail.model;
 
 public class Member_mailForWS {
 	private Integer mail_no;
-	private Integer send_no;
-	private Integer rcpt_no;
+	private String send_no;
+	private String rcpt_no;
 	private Integer mail_read_stat;
 	private Integer mail_stat;
 	private String mail_cont;
@@ -20,7 +20,7 @@ public class Member_mailForWS {
 	public Member_mailForWS() {
 	}
 
-	public Member_mailForWS(Integer mail_no, Integer send_no, Integer rcpt_no, Integer mail_read_stat,
+	public Member_mailForWS(Integer mail_no, String send_no, String rcpt_no, Integer mail_read_stat,
 			Integer mail_stat, String mail_cont, String mail_time, Integer countNoReadMail,Integer ntfy_no, Integer mbr_no, Integer ntfy_stat, String ntfy_cont , String ntfy_time, Integer countNoReadNotify) {
 		this.mail_no = mail_no;
 		this.send_no = send_no;
@@ -45,16 +45,16 @@ public class Member_mailForWS {
 	public void setMail_no(Integer mail_no) {
 		this.mail_no = mail_no;
 	}
-	public Integer getSend_no() {
+	public String getSend_no() {
 		return send_no;
 	}
-	public void setSend_no(Integer send_no) {
+	public void setSend_no(String send_no) {
 		this.send_no = send_no;
 	}
-	public Integer getRcpt_no() {
+	public String getRcpt_no() {
 		return rcpt_no;
 	}
-	public void setRcpt_no(Integer rcpt_no) {
+	public void setRcpt_no(String rcpt_no) {
 		this.rcpt_no = rcpt_no;
 	}
 	public Integer getMail_read_stat() {

@@ -91,7 +91,7 @@ public class Member_mailServlet extends HttpServlet {
 			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
 			req.setAttribute("errorMsgs", errorMsgs);
 //			System.out.println("in2");
-			try {
+//			try {
 				
 				String send_noTest = req.getParameter("send_no");
 				if(send_noTest.equals("99")) {
@@ -166,11 +166,11 @@ public class Member_mailServlet extends HttpServlet {
 				RequestDispatcher successView = req.getRequestDispatcher("/front-end/member_mail/listAllMember_mail.jsp");
 				successView.forward(req, res);
 				
-			}catch(Exception e) {
-				errorMsgs.put("exception", new String[] {e.getMessage()});
-				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/addMember_mail.jsp");
-				failureView.forward(req, res);
-			}
+//			}catch(Exception e) {
+//				errorMsgs.put("exception", new String[] {e.getMessage()});
+//				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member_mail/addMember_mail.jsp");
+//				failureView.forward(req, res);
+//			}
 		}
 		
 		if("getOne_For_Update".equals(action)) {
