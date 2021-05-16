@@ -11,14 +11,9 @@
 <%int follows_num = (Integer)request.getAttribute("follows_num"); %>
 <%int article_num = (Integer)request.getAttribute("article_num"); %>
 <%String mbr_no = String.valueOf(request.getAttribute("mbr_no"));%>
-<%int mbr_no_self=10001; %>
-<!-- 測試登入用 -->
-<%-- <% --%>
-<!--  MemberService memberSvcLogin = new MemberService(); -->
-<!--  MemberVO memberVOLogin = memberSvcLogin.getOneMember(10001); -->
-<!--  session.setAttribute("memberVOLogin",memberVOLogin); -->
-<%-- %> --%>
-<%-- <%MemberVO memberVO = (MemberVO)session.getAttribute("memberVOLogin"); %> --%>
+<%MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
+<%int mbr_no_self=memberVO.getMbr_no(); %>
+
 
 
 <%
@@ -32,7 +27,8 @@
   
   pageContext.setAttribute("fans_list", fans_list); 
   pageContext.setAttribute("follows_list", follows_list); 
-  pageContext.setAttribute("followVO_mine", followVO_mine); 
+  pageContext.setAttribute("followVO_mine", followVO_mine);
+  pageContext.setAttribute("memberVO", memberVO);
 %>
 
 <!DOCTYPE html>
@@ -75,9 +71,18 @@ a:active {
 padding: 8px 16px;
 list-style:none;
 }
+.follows{
+padding: 8px 16px;
+list-style:none;
+}
 .fans_list{
 display:inline-block;
 }
+.follows_list
+{
+display:inline-block;
+}
+
 .follow{
 padding: 8px 16px;
 }
@@ -133,7 +138,7 @@ clear: both;
 
 					
 
-                    <button class="btn profile-edit-btn">發送站內信</button>
+                    <button class="btn profile-edit-btn" onclick="location.href='/CEA103G1/front-end/member_mail/addMember_mail.jsp'">發送站內信</button>
                     <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
                 </div>
                 <div class="profile-stats">
@@ -227,11 +232,21 @@ clear: both;
             </div>
             <div class="modal-body">
 				<c:forEach var="follows_list" items="${follows_list}">
-				<li class=fans>
-					<div class=fans_list style="width:47px;height:38px;"><img src="/CEA103G1/images/profile.png" width="30" height="30"></div>
-					<div class=fans_list style="width:241px;height:36px;"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${follows_list.flwed_mbr_no}&action=getProfile">${follows_list.flwed_mbr_no}</a></div>
-					<div class=fans_list style="width:48px;height:38px;"><button style="width:28;height:18;padding:9 5;border:1">追蹤</button></div>
-<!-- 					<div class=fans_list style="width:48px;height:38px;"><button style="width:28;height:18;padding:9 5;border:1">追蹤中</button></div> -->
+				<li class=follows>
+					<div class=follows_list style="width:47px;height:38px;"><img src="/CEA103G1/images/profile.png" width="30" height="30"></div>
+					<div class=follows_list style="width:241px;height:36px;"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${follows_list.flwed_mbr_no}&action=getProfile">${follows_list.flwed_mbr_no}</a></div>
+
+<!-- 					如果我追蹤的人裡面有這個人 -->
+					<c:if test="${followVO_mine.contains(follows_list.flwed_mbr_no)}">
+					<div class="follows_list cancel_follow_in_list" style="width:48px;height:38px; ">追蹤中</div>
+					<div class="follows_list add_follow_in_list" style="width:48px;height:38px;display:none;">追蹤</div>
+					</c:if>
+					
+<!-- 					如果我追蹤的人裡面沒有這個人 -->					
+					<c:if test="${followVO_mine.contains(follows_list.flwed_mbr_no)==false}">
+					<div class="follows_list cancel_follow_in_list" style="width:48px;height:38px;display:none">追蹤中</div>
+					<div class="follows_list add_follow_in_list" style="width:48px;height:38px;">追蹤</div>
+					</c:if>
 					</li>
 				</c:forEach> 
             </div>
@@ -273,9 +288,10 @@ clear: both;
 			$.ajax({ //負責傳到followServlet 新增某人對某人的追蹤  需要的參數: 追蹤者mbr_no 被追蹤者的 mbr_no   目前追蹤者mbr_no寫死 之後要從session get到目前是哪個會員對這個人追蹤
 			type : "POST",
 			url : "http://localhost:8081/CEA103G1/follow/follow.do",
-			data : {action: "add_follow",flw_mbr_no:"10001",flwed_mbr_no:<%=mbr_no%>}, //參數傳遞 
+			data : {action: "add_follow",flw_mbr_no:<%=memberVO.getMbr_no()%>,flwed_mbr_no:<%=mbr_no%>}, //參數傳遞 
 			success : function(data) {
-				alert("新增某人對某人的追蹤成功");
+				alert("新增"+<%=memberVO.getMbr_no()%>+"對"+<%=mbr_no%>+"的追蹤成功");
+				window.location.reload()  //重新整理頁面
 			}
 		}); 
 		 	 $(this).hide();
@@ -287,12 +303,12 @@ clear: both;
 	
 	$(".add_follow_in_list").click(function(){
 	 	 var want_follow_no = $(this).prev().prev().text(); //前一個元素的內容，即想追蹤的人的號碼 
-			$.ajax({ //負責傳到followServlet 新增某人對某人的追蹤  需要的參數: 追蹤者mbr_no 被追蹤者的 mbr_no   目前追蹤者mbr_no寫死 之後要從session get到目前是哪個會員對這個人追蹤
+			$.ajax({ //負責傳到followServlet 新增某人對某人的追蹤  需要的參數: 追蹤者mbr_no 被追蹤者的 mbr_no 
 				type : "POST",
 				url : "http://localhost:8081/CEA103G1/follow/follow.do",
-				data : {action: "add_follow",flw_mbr_no:"10001",flwed_mbr_no:want_follow_no}, //參數傳遞 
+				data : {action: "add_follow",flw_mbr_no:<%=memberVO.getMbr_no()%>,flwed_mbr_no:want_follow_no}, //參數傳遞 
 				success : function(data) {
-					alert("新增10001對"+want_follow_no+"的追蹤成功");
+					alert("新增"+<%=memberVO.getMbr_no()%>+"對"+want_follow_no+"的追蹤成功");
 				}
 			});
 	 	 $(this).hide();
@@ -311,12 +327,13 @@ clear: both;
  	 document.getElementById("cancel-follow-btn").style.display="none"; 
  	 
  	 
-			$.ajax({ //負責傳到followServlet 取消某人對某人的追蹤  需要的參數: 追蹤者mbr_no 被追蹤者的 mbr_no   目前追蹤者mbr_no寫死 之後要從session get到目前是哪個會員對這個人追蹤
+			$.ajax({ //負責傳到followServlet 取消某人對某人的追蹤  需要的參數: 追蹤者mbr_no 被追蹤者的 mbr_no 
 			type : "POST",
 			url : "http://localhost:8081/CEA103G1/follow/follow.do",
-			data : {action: "cancel_follow",flw_mbr_no:"10001",flwed_mbr_no:<%=mbr_no%>}, //參數傳遞 
+			data : {action: "cancel_follow",flw_mbr_no:<%=memberVO.getMbr_no()%>,flwed_mbr_no:<%=mbr_no%>}, //參數傳遞 
 			success : function(data) {
-				alert("取消某人對某人的追蹤成功");
+				alert("取消"+<%=memberVO.getMbr_no()%>+"對"+<%=mbr_no%>+"的追蹤成功");
+				window.location.reload()  //重新整理頁面
 			}
 		}); 
 			
@@ -333,12 +350,12 @@ clear: both;
 	
 	$(".cancel_follow_in_list").click(function(){
 	 	 var want_cancel_follow_no = $(this).prev().text(); //前一個元素的內容，即想取消追蹤的人的號碼 
-			$.ajax({ //負責傳到followServlet 取消某人對某人的追蹤  需要的參數: 追蹤者mbr_no 被追蹤者的 mbr_no   目前追蹤者mbr_no寫死 之後要從session get到目前是哪個會員對這個人追蹤
+			$.ajax({ //負責傳到followServlet 取消某人對某人的追蹤  需要的參數: 追蹤者mbr_no 被追蹤者的 mbr_no
 				type : "POST",
 				url : "http://localhost:8081/CEA103G1/follow/follow.do",
-				data : {action: "cancel_follow",flw_mbr_no:"10001",flwed_mbr_no:want_cancel_follow_no}, //參數傳遞 
+				data : {action: "cancel_follow",flw_mbr_no:<%=memberVO.getMbr_no()%>,flwed_mbr_no:want_cancel_follow_no}, //參數傳遞 
 				success : function(data) {
-					alert("取消10001對"+want_cancel_follow_no+"的追蹤成功");
+					alert("取消"+<%=memberVO.getMbr_no()%>+"對"+want_cancel_follow_no+"的追蹤成功");
 				}
 			});
 	 	 $(this).hide();

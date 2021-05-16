@@ -207,7 +207,8 @@ public class FollowServlet extends HttpServlet {
 //				HttpSession session = req.getSession();  //for Session
 //				String str2 = (String)session.getAttribute("mbr_no");
 //				Integer mbr_no_self = new Integer(str2);
-				Integer mbr_no_self = 10001;
+				String mbr_no_mine = req.getParameter("mbr_no_mine");
+				Integer mbr_no_self = new Integer(mbr_no_mine);
 				/***************************2.開始查詢資料*****************************************/
 				
 				ArticleService articleSvc = new ArticleService();

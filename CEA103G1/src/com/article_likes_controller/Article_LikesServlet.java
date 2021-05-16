@@ -202,6 +202,7 @@ public class Article_LikesServlet extends HttpServlet {
 
 		if ("plus_like".equals(action)) { // 來自listOneArticle.jsp的請求 為某篇文章新增一筆按讚資料
 
+			try {
 			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 			Integer art_no = null;
 			art_no = new Integer(req.getParameter("art_no").trim());
@@ -216,7 +217,9 @@ public class Article_LikesServlet extends HttpServlet {
 			/*************************** 2.開始新增資料 ***************************************/
 			Article_LikesService article_likesSvc = new Article_LikesService();
 			article_likesVO = article_likesSvc.addArticle_Likes(mbr_no, art_no);
-
+			}catch(Exception e) {
+				
+			}
 		}
 		
 		
@@ -248,6 +251,7 @@ public class Article_LikesServlet extends HttpServlet {
 		
 		
 		if ("minus_like".equals(action)) { // 來自listOneArticle.jsp的請求 為某篇文章刪除一筆按讚資料
+			try {
 
 			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 			Integer art_no = null;
@@ -264,7 +268,9 @@ public class Article_LikesServlet extends HttpServlet {
 			Article_LikesService article_likesSvc = new Article_LikesService();
 			article_likesSvc.deleteLike(mbr_no, art_no);
 
-
+			}catch(Exception e) {
+				
+			}
 		} //end of minus_like
 		
 		
