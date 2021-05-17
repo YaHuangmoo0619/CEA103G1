@@ -556,6 +556,7 @@ td{
 		 x[slideIndex-1].style.display = "block"; }
 	</script>
 	<script>
+	var webSocket;
 	var locat = window.location.href;
 	$.ajax({
 		type : "GET",
@@ -675,6 +676,7 @@ td{
 					initMap(data);
 					showCamp(data);
 					showPlace(data);
+					initWebSocket();
 					showFeature(data);
 					showPhoto(data);
 					near(data);
@@ -793,6 +795,7 @@ td{
 				sessionStorage.setItem("enddate", $('#enddate').val());
 				let split = url.split('action');
 				window.history.pushState({}, document.title, split[0] + "startdate=" + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val());
+				initWebSocket();
 		});
 		$("#restart").click(function(){
 			let start = Date.parse($('#startdate').val()).valueOf();
@@ -821,6 +824,7 @@ td{
 				}
 				let split = url.split('&');
 				window.history.pushState({}, document.title, url.substring(0,url.indexOf('&')+1) + "startdate=" + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val());
+				initWebSocket();
 		});
 		var map;
 		function initMap(data) {
@@ -906,7 +910,7 @@ td{
 			if(data[1]){
 				for(i in data[1]){
 					html = `<tr class="checkBoxChecked"><td>${data[1][i].plc_name}</td><td>${data[1][i].ppl}</td><td>${data[1][i].max_ppl}</td>
-					<td>${data[1][i].pc_wkdy}</td><td>${data[1][i].pc_wknd}</td><td><input type="checkbox" name="getprice" value="${data[1][i].plc_no}"></td><td class="pc"></td></tr>`;
+					<td>${data[1][i].pc_wkdy}</td><td>${data[1][i].pc_wknd}</td><td><input type="checkbox" name="getprice" onclick="grab(this)" value="${data[1][i].plc_no}"></td><td class="pc"></td></tr>`;
 			    	$('#placeInfo').append(html);
 				}
 				$('#placeInfo').append(`<tr><td colspan="6"><input class="confirm" type="button" id="add" value="我要下訂" disabled="true"></td><td id="sum">0</td></tr>`);
@@ -950,6 +954,11 @@ td{
            		let roomppl = 0;
            		let max_ppl = 0;
 				$("#placeInfo input:checked").each(function() {
+// 					if (webSocket != null) {
+// 			            var plc_no = $(this).val() + "&yes";
+// 			            console.log(plc_no);
+// 			            webSocket.send(plc_no);
+// 			        }
 					let dypc = $(this).parent().prev().prev().text();
 					let ndpc = $(this).parent().prev().text();
 					let pc = dypc*wkdy + ndpc*wknd;
@@ -974,6 +983,11 @@ td{
 				}
 				$('#place').val(chosen);
 				$("#placeInfo input:checkbox:not(:checked)").each(function() {
+// 					if (webSocket != null) {
+// 			            var plc_no = $(this).val() + "&no";
+// 			            console.log(plc_no);
+// 			            webSocket.send(plc_no);
+// 			        }
 					$(this).parent().next().text("");
 		 		});
 				let total = 0;
@@ -986,7 +1000,18 @@ td{
 				$("#total").val(total);
 			
 		});
-
+		function grab(input){
+			if(input.checked){
+				 var plc_no = input.value;
+		         console.log(plc_no);
+		         webSocket.send(plc_no);
+			}else{
+				var plc_no = input.value + "&release";
+		         console.log(plc_no);
+		         webSocket.send(plc_no);
+			}
+		}
+		
 		$("#placeInfo").on('click','#add',function(){
 			$('#add').attr("disabled",true);
 			$('#order').css("display", "block");
@@ -1059,6 +1084,53 @@ td{
 		$("#done").click(function() {
 			location.reload()
 		});
+		function initWebSocket() {
+			const eachQuery = query.split('&');
+			const camp = eachQuery[0].split('=');
+			const startdate = eachQuery[1].split('=');
+			const enddate = eachQuery[2].split('=');
+			const people = eachQuery[3].split('=');
+	        var campInfo = "camp_no=" + camp[1] + "&startdate=" + startdate[1] + "&enddate=" + enddate[1];
+
+//	            alert("您的瀏覽器支援 WebSocket!");
+	            if (webSocket == null) {
+	                var url = "ws://" + window.location.host + "/CEA103G1/webSocket/CampWS/" + campInfo;
+	                webSocket = new WebSocket(url);
+	            } else {
+	            	console.log("connect");
+	            }
+
+	            webSocket.onopen = function () {
+	                console.log("connect");
+	            };
+
+	            webSocket.onmessage = function (e) {
+	                let plc_no = e.data;
+	                let yesorno = plc_no.split('&')[1];
+	                if(yesorno === "no"){
+	                	$("#placeInfo").find('input').each(function() {
+	                		if($(this).val() === plc_no.split('&')[0]){
+	                			$(this).attr("disabled",true);
+	                		}
+	                	});
+	                }else if(yesorno === "yes"){
+	                	$("#placeInfo").find('input').each(function() {
+	                		if($(this).val() === plc_no.split('&')[0]){
+	                			$(this).attr("disabled",false);
+	                		}
+	                	});
+	                }
+	            };
+				
+	            webSocket.onerror = function(event) {
+	            	  console.error("WebSocket error observed:", event);
+	            	};
+	            
+	            webSocket.onclose = function () {
+	                console.log("disconnect");
+	                webSocket = null;
+	            };
+	    }
 	</script>
 	<script>
 		let countMenu = 0;
