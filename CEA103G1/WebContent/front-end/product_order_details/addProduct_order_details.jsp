@@ -68,29 +68,24 @@
 <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order_details/product_order_details.do" name="form1">
 <table>
 	<tr>
+		<td>訂單編號:</td>
+		<td><input type="TEXT" name="prod_order_no" size="45" 
+			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_ord_no()%>" /></td>
+	</tr>
+	<tr>
 		<td>商品編號:</td>
 		<td><input type="TEXT" name="prod_no" size="45" 
 			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_no()%>" /></td>
 	</tr>
-		<tr>
-		<td>商品編號:</td>
-		<td><input type="TEXT" name="prod_no" size="45" 
-			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_no()%>" /></td>
+	<tr>
+		<td>商品數量:</td>
+		<td><input type="TEXT" name="prod_amt" size="45" 
+			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_amt()%>" /></td>
 	</tr>
-		<tr>
-		<td>商品編號:</td>
-		<td><input type="TEXT" name="prod_no" size="45" 
-			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_no()%>" /></td>
-	</tr>
-		<tr>
-		<td>商品編號:</td>
-		<td><input type="TEXT" name="prod_no" size="45" 
-			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_no()%>" /></td>
-	</tr>
-		<tr>
-		<td>商品編號:</td>
-		<td><input type="TEXT" name="prod_no" size="45" 
-			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_no()%>" /></td>
+	<tr>
+		<td>商品單價:</td>
+		<td><input type="TEXT" name="prod_unit_pc" size="45" 
+			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_unit_pc()%>" /></td>
 	</tr>
 
 </table>

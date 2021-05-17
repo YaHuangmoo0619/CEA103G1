@@ -5,6 +5,8 @@
 
 <%
   ProductVO productVO = (ProductVO) request.getAttribute("productVO");
+  String username = request.getParameter("username");
+request.setAttribute ("username", username);
 %>
 
 <html>
@@ -99,15 +101,12 @@
 		</c:if>
 		</td>
 		<td>
-		<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
-			<input type="submit" value="直接下訂">
-			<input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-			<input type="hidden" name="action"	value="buyOne"></FORM>
+			<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order_details/product_order_details.do" style="margin-bottom: 0px;">
+			     <input type="submit" value="送出">
+			     <input type="hidden" name="prod_no" value="${productVO.prod_no}">
+			     <input type="hidden" name="action"	value="insert"></FORM>
 		</td>
-		</tr>
-		<tr>
-		<td><input type="submit" value="送出"></td> 
-		</tr>
+	</tr>
 </table>
 
 </body>

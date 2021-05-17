@@ -172,16 +172,16 @@ public class Product_order_detailsServlet extends HttpServlet {
 
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				Integer prod_ord_no = new Integer(req.getParameter("prod_ord_no").trim());
-				Integer prod_no = new Integer(req.getParameter("prod_no").trim());
-				Integer prod_amt = new Integer(req.getParameter("prod_amt").trim());
-				Integer prod_unit_pc = new Integer(req.getParameter("prod_unit_pc").trim());
+//				Integer prod_ord_no = new Integer(req.getParameter("prod_ord_no").trim());
+//				Integer prod_no = new Integer(req.getParameter("prod_no").trim());
+//				Integer prod_amt = new Integer(req.getParameter("prod_amt").trim());
+//				Integer prod_unit_pc = new Integer(req.getParameter("prod_unit_pc").trim());
 
 				Product_order_detailsVO product_order_detailsVO = new Product_order_detailsVO();
-				product_order_detailsVO.setProd_ord_no(prod_ord_no);
-				product_order_detailsVO.setProd_no(prod_no);
-				product_order_detailsVO.setProd_amt(prod_amt);
-				product_order_detailsVO.setProd_unit_pc(prod_unit_pc);
+//				product_order_detailsVO.setProd_ord_no(prod_ord_no);
+//				product_order_detailsVO.setProd_no(prod_no);
+//				product_order_detailsVO.setProd_amt(prod_amt);
+//				product_order_detailsVO.setProd_unit_pc(prod_unit_pc);
 				
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("product_order_detailsVO", product_order_detailsVO);
@@ -192,8 +192,8 @@ public class Product_order_detailsServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				Product_order_detailsService product_order_detailsSvc = new Product_order_detailsService();
-				product_order_detailsVO = product_order_detailsSvc.addProduct_order_details(prod_ord_no, prod_no, prod_amt, prod_unit_pc);
-				
+//				product_order_detailsVO = product_order_detailsSvc.addProduct_order_details(prod_ord_no, prod_no, prod_amt, prod_unit_pc);
+//				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/front-end/product_order_details/listAllProduct_order_details.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllProduct_order_details.jsp
