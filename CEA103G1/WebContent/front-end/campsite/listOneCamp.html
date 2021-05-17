@@ -8,6 +8,8 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
 	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 	crossorigin="anonymous">
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 <link   rel="stylesheet" type="text/css" href="/CEA103G1/datetimepicker/jquery.datetimepicker.css" />
@@ -67,14 +69,23 @@ html, body {
 	color: #4B7F52;
 }
 
-section {
+div.fixedTop {
+	background-color: #eee;
+	position: relative;
+	z-index: 10;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100%;
 	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0px 15px;
 }
 
 img.logo {
-	width: 100px;
+	width: 150px;
 	margin: 10px;
-	margin-left: 100px;
 }
 
 a {
@@ -83,6 +94,10 @@ a {
 
 a:hover {
 	text-decoration: none;
+}
+
+a.button{
+	margin: 5px;
 }
 
 form.form-inline {
@@ -103,6 +118,14 @@ img.cart:hover {
 	cursor: pointer;
 }
 
+img.announcement{
+	width: 30px;
+	margin: 10px;
+}
+img.announcement:hover{
+	cursor: pointer;
+}
+
 img.menu {
 	width: 40px;
 	margin: 10px;
@@ -116,6 +139,7 @@ img.menu:hover {
 img.person {
 	width: 40px;
 	margin: 10px;
+	right: 1px;
 }
 
 img.person:hover {
@@ -145,50 +169,11 @@ img.person:hover {
 	}
 	img.menu {
 		width: 30px;
-		margin: 10px;
 		display: inline-block;
 	}
 	div.sec {
 		display: none;
 		background-color: #eee;
-	}
-	div.where {
-		display: block;
-		padding: 5px 100px;
-		text-align: left;
-	}
-	div.slogan h1 {
-		color: #fff;
-		font-size: 2em;
-		font-weight: 999;
-		margin: 50px auto;
-	}
-	div.photo {
-		width: 200px;
-		height: 100px;
-		margin: 20px auto;
-		background-color: #eee;
-		overflow: hidden;
-	}
-	div.row {
-		margin-top: 0px;
-	}
-	div.article {
-		width: 90%;
-		margin: 20px auto;
-		text-align: left;
-		background-color: #eee;
-		border-radius: 5px;
-		padding: 10px 50px 20px 50px;
-	}
-	div.more {
-		display: inline;
-	}
-	section.footer {
-		background-color: #4B7F52;
-		color: #80c344;
-		height: 100px;
-		padding-top: 30px;
 	}
 }
 
@@ -216,17 +201,11 @@ img.person:hover {
 	}
 	img.menu {
 		width: 30px;
-		margin: 10px;
 		display: inline-block;
 	}
 	div.sec {
 		display: none;
 		background-color: #eee;
-	}
-	div.where {
-		display: block;
-		padding: 5px 130px;
-		text-align: left;
 	}
 }
 
@@ -254,24 +233,11 @@ img.person:hover {
 	}
 	img.menu {
 		width: 30px;
-		margin: 10px;
 		display: inline-block;
 	}
 	div.sec {
 		display: none;
-		background-color: #fff;
-	}
-	div.where {
-		display: block;
-		padding: 5px 220px;
-		text-align: left;
-	}
-	div.photo {
-		width: 300px;
-		height: 150px;
-		margin: 20px auto;
 		background-color: #eee;
-		overflow: hidden;
 	}
 }
 
@@ -286,13 +252,6 @@ img.person:hover {
 	div.forSearch {
 		display: none;
 	}
-	div.photo {
-		width: 400px;
-		height: 200px;
-		margin: 20px auto;
-		background-color: #fff;
-		overflow: hidden;
-	}
 }
 
 @media ( min-width : 1200px) {
@@ -305,13 +264,6 @@ img.person:hover {
 	}
 	div.forSearch {
 		display: none;
-	}
-	div.photo {
-		width: 400px;
-		height: 200px;
-		margin: 20px auto;
-		background-color: #fff;
-		overflow: hidden;
 	}
 }
 
@@ -354,31 +306,69 @@ td{
 </style>
 </head>
 <body>
-	<div style="background-color: #eee;">
-		<img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
-		<form class="form-inline my-2 my-lg-0">
+	<div class="fixedTop">
+		<div>
+			<a href="/CEA103G1/campion_front.jsp"> <img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
+			</a>
+<!-- 			<form class="form-inline my-2 my-lg-0"> -->
+<!-- 				<input class="form-control mr-sm-2" type="search" -->
+<!-- 					placeholder="營位/商品/文章" aria-label="Search"> -->
+<!-- 				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button> -->
+<!-- 			</form> -->
+		</div>
+		<div>
+<!--  			<img src="/CEA103G1/front-images/search-circle-outline.svg" id="searchIcon" class="searchIcon"> -->
+			<div class="btn-group" role="group" aria-label="Basic example">
+				<a class="button" href="/CEA103G1/front-end/campsite/listAllCamp.html"><button type="button" class="btn btn-secondary">露營</button></a>
+				<a class="button" href="/CEA103G1/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
+				<a class="button" href="/CEA103G1/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
+			</div>
+			<img src="/CEA103G1/front-images/cart-outline.svg" class="cart">
+			<a href="/CEA103G1/front-end/announcement/listAllAnnouncement.jsp"><img src="/CEA103G1/front-images/megaphone-outline.svg" class="announcement"></a>
+			<div id="havent" class="btn-group" role="group" aria-label="Basic example">
+				<a class="button" href="/CEA103G1/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
+				<a class="button" href="/CEA103G1/front-end/member/register.jsp"><button type="button" class="btn btn-outline-secondary">註冊</button></a>
+				<a class="button" href="/CEA103G1/front-end/member/login.jsp"><button type="button" class="btn btn-outline-secondary">登入</button></a>
+<!-- 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">FAQ</button></a> -->
+<!-- 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
+			</div>
+			<img src="/CEA103G1/front-images/menu-outline.svg" id="menu" class="menu">
+				<a id="have" href="/CEA103G1/front-end/member_mail/listAllMember_mail.jsp">
+					<div style="position:relative;display:inline;">
+						<img src="/CEA103G1/front-images/mail-outline.svg" class="announcement">
+					</div>
+				</a>
+				<a id="have1" href="/CEA103G1/front-end/personal_system_notify/listAllPersonal_system_notify.jsp">
+					<div style="position:relative;display:inline;">
+						<img src="/CEA103G1/front-images/notifications-outline.svg" class="announcement">
+						<div style="background-color: red; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadNotify"></div>
+					</div>
+				</a>
+				<a id="have2" class="button" href="/CEA103G1/member/member.do?action=logout"><button type="button" class="btn btn-outline-secondary">登出</button></a>
+				<a id="have3" href="/CEA103G1/front-end/member/viewMember.jsp"><div id="showPerson" class="person" style="display:inline;border-radius:50%;"></div></a>
+		</div>
+	</div>
+
+	<div class="forSearch">
+		<form class="form-inline secSearch my-2 my-lg-0">
 			<input class="form-control mr-sm-2" type="search"
 				placeholder="營位/商品/文章" aria-label="Search">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
 		</form>
-		<img src="/CEA103G1/front-images/search-circle-outline.svg"
-			class="searchIcon" onclick="showSearch()">
-		<div class="btn-group" role="group" aria-label="Basic example">
-			<button type="button" class="btn btn-secondary">營區</button>
-			<button type="button" class="btn btn-secondary">商城</button>
-			<button type="button" class="btn btn-secondary">論壇</button>
+	</div>
+	<div class="menuForButton">
+		<div class="btn-group sec" role="group" aria-label="Basic example">
+			<a class="button" href="/CEA103G1/front-end/campsite/listAllCamp.html"><button type="button" class="btn btn-secondary">露營</button></a>
+			<a class="button" href="/CEA103G1/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
+			<a class="button" href="/CEA103G1/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 		</div>
-		<img src="/CEA103G1/front-images/cart-outline.svg" class="cart">
-		<div class="btn-group" role="group" aria-label="Basic example">
-			<button type="button" class="btn btn-outline-secondary">註冊</button>
-			<button type="button" class="btn btn-outline-secondary">登入</button>
-			<button type="button" class="btn btn-outline-secondary">FAQ</button>
-			<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
+		<div id="havent2" class="btn-group sec" role="group" aria-label="Basic example">
+			<a class="button" href="/CEA103G1/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
+			<a class="button" href="/CEA103G1/front-end/member/register.jsp"><button type="button" class="btn btn-outline-secondary">註冊</button></a>
+			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">登入</button></a>
+<!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">FAQ</button></a> -->
+<!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 		</div>
-		<img src="/CEA103G1/front-images/menu-outline.svg" class="menu"
-			onclick="showMenu()"> <img
-			src="/CEA103G1/front-images/person-circle-outline.svg" class="person">
-
 	</div>
 	<div style="margin-top:15px;text-align:center;">
 		<FORM method="get" id="condition" onsubmit="return false"
@@ -516,6 +506,27 @@ td{
 			</div>
 		</div>
 	</div>
+	<div class="modal" tabindex="-1" role="dialog" id="test1">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" style="text-align: center;">訂單已成立</h3>
+				</div>
+				<div class="modal-body">
+					<div id="edit">
+						<div>
+							<p id="atm">虛擬ATM帳戶:</p>
+							<p id="ord_time"></p>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="done" value="確定"
+						class="btn btn-secondary" data-dismiss="modal">確定</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script src="/CEA103G1/datetimepicker/jquery.js"></script>
 	<script type="text/javascript" language="javascript" src="/CEA103G1/datetimepicker/jquery.datetimepicker.full.js" charset="UTF-8"></script>
 	<script
@@ -545,6 +556,34 @@ td{
 		 x[slideIndex-1].style.display = "block"; }
 	</script>
 	<script>
+	var locat = window.location.href;
+	$.ajax({
+		type : "GET",
+		dataType : "json",
+		url : "http://localhost:8081/CEA103G1/Member.do",
+		data : {uri : locat},
+		success : function(data) {
+			
+			if(data.length === 2){
+				$('#have').css("display","none");
+				$('#have1').css("display","none");
+				$('#have2').css("display","none");
+				$('#have3').css("display","none");
+				$('#havent').css("display","inline-block");
+				$('#havent2').css("display","inline-block");
+			}else{
+				let member_pic = `<img src="/CEA103G1/member/GetPhoto?mbr_no=${data.mbr_no}" class="person">`;
+				$('#have2').after(`${data.name}`);
+				$('#showPerson').append(member_pic);
+				$('#have').css("display","inline-block");
+				$('#have1').css("display","inline-block");
+				$('#have2').css("display","inline-block");
+				$('#have3').css("display","inline-block");
+				$('#havent').css("display","none");
+				$('#havent2').css("display","none");
+			}
+		}
+	});
 		var default1 = new Date();
 		default1.setTime(default1.getTime()+24*60*60*1000); 
 	    $.datetimepicker.setLocale('zh'); // kr ko ja en
@@ -954,12 +993,12 @@ td{
 			$('#stdate').val(sessionStorage.getItem('startdate'));
 			$('#eddate').val(sessionStorage.getItem('enddate'));
 			$('#camp').val($('#camp_no').val());
-
+			var locat = window.location.href;
 			$.ajax({
 				type : "GET",
 				dataType : "json",
 				url : "http://localhost:8081/CEA103G1/Member.do",
-				data : {uri : url},
+				data : {uri : locat},
 				success : function(data) {
 					if(data.length === 2){
 						alert(data[0]);
@@ -1000,12 +1039,25 @@ td{
 					url : "http://localhost:8081/CEA103G1/place_order/Place_order.do?action=transfer",
 					data : $('#order').serialize(),
 					success : function(data) {
-						let ord = JSON.stringify(data);
-						sessionStorage.setItem("ord", ord);
-						window.location.href="http://localhost:8081/CEA103G1/front-end/place_order/transfer.html";
+						showModal1(data)
+						
 					}
 				});
 			}
+		});
+		function showModal1(data) {
+			var place_ord = data[0];
+			var ord_time = Date.parse(`${place_ord.plc_ord_time}`);
+			var deadline = new Date(ord_time + (30*60*1000));
+			
+			var message = "請於" + deadline + "匯款完畢，逾時取消訂單";
+			$('#ord_time').append(message);
+			var atm = data[1];
+			$('#atm').append(atm);
+			$('#test1').modal('show');
+		}
+		$("#done").click(function() {
+			location.reload()
 		});
 	</script>
 	<script>

@@ -26,9 +26,9 @@ public class GetMember extends HttpServlet{
 		HttpSession session = req.getSession();
 		Object memberVO = session.getAttribute("memberVO");
 		String uri = req.getParameter("uri");
+		session.setAttribute("location", uri);
 
 		if (memberVO == null) {
-			session.setAttribute("location", uri);
 			List<Object> list = new ArrayList();
 			list.add("請先登入會員");
 			list.add(req.getContextPath() + "/front-end/member/login.jsp");

@@ -11,15 +11,11 @@
 <%
 	CampVO campVO = (CampVO) request.getAttribute("campVO");
 	Camp_PictureService camp_pictureSvc = new Camp_PictureService();
-	PlaceService placeSvc = new PlaceService();
-	List<PlaceVO> placelist = placeSvc.getByCamp(campVO.getCamp_no());
 	List<String> camp_piclist = camp_pictureSvc.getCamp_Picture(campVO.getCamp_no());
 	List<Camp_FeatureVO> camp_featurelist = (List)request.getAttribute("camp_featurelist");
-System.out.println(camp_featurelist);
 	Feature_ListService feature_listSvc = new Feature_ListService();
 	List<Feature_ListVO> list = feature_listSvc.getAll();
 	pageContext.setAttribute("list", list);
-	pageContext.setAttribute("placelist", placelist);
 	pageContext.setAttribute("camp_piclist", camp_piclist);
 %>
 <html>
@@ -207,14 +203,41 @@ span {
 								</c:if>					
 							</c:if>					
 						</c:forEach>
+						<br>
+						<div style="display: inline-block;">
+							<input id="otherornot" type="hidden" name="otherornot">
+							<input type="checkbox" name="feature_list" id="otherfeature">ㄤ:<input
+								type="text" id="other" style=" border:1px; border-bottom-style: solid;border-top-style: none;border-left-style:none;border-right-style:none;" disabled="true">
+						</div>
 					</div>
 					<br>
-					<button type="button" onclick="showModal1()">穝糤犁</button>
-					<div id="container" disabled="disabled"></div>
+					<button type="button" onclick="showModal1()">絪胯犁</button>
+					<div id="container">
+						<table id="camp_plc">
+							<tr id="title">
+								<th>犁嘿</th>
+								<th>计秖</th>
+								<th>计</th>
+								<th>计</th>
+								<th>キら基</th>
+								<th>安ら基</th>
+							</tr>
+							<c:forEach var="placeVO" items="${placelist}">
+								<tr>
+									<td><input type="text" value="${placeVO.plc_name.substring(0,placeVO.plc_name.indexOf(','))}" readonly="true"></td>
+									<td><input type="number" pattern="number" value="${placeVO.plc_name.substring(placeVO.plc_name.indexOf(',')+1)}" readonly="true"></td>
+									<td><input type="number" pattern="number" value="${placeVO.ppl}" readonly="true"></td>
+									<td><input type="number" pattern="number" value="${placeVO.max_ppl}" readonly="true"></td>
+									<td><input type="number" pattern="number" value="${placeVO.pc_wkdy}" readonly="true"></td>
+									<td><input type="number" pattern="number" value="${placeVO.pc_wknd}" readonly="true"></td>
+								</tr>
+							</c:forEach>
+						</table>
+					</div>
 					<input id="plc_amt" type="hidden" name="plc_amt">
 					<hr>
 					<input type="file" id="progressbarTWInput" name="photo"
-						accept="image/gif, image/jpeg, image/png"multiple/ >
+						accept="image/gif, image/jpeg, image/png" multiple>
 					<div id="preview_progressbarTW_imgs"
 						style="width: 100%; height: 300px; overflow: scroll;">
 						<p>ヘ玡⊿Τ瓜</p>
@@ -237,24 +260,6 @@ span {
 				</div>
 				<div class="modal-body">
 					<div id="edit">
-						<table id="camp_plc">
-							<tr id="title">
-								<th>犁嘿</th>
-								<th>计秖</th>
-								<th>计</th>
-								<th>计</th>
-								<th>キら基</th>
-								<th>安ら基</th>
-							</tr>
-							<tr>
-								<td><input type="text"></td>
-								<td><input type="number" pattern="number"></td>
-								<td><input type="number" pattern="number"></td>
-								<td><input type="number" pattern="number"></td>
-								<td><input type="number" pattern="number"></td>
-								<td><input type="number" pattern="number"></td>
-							</tr>
-						</table>
 					</div>
 					<button id="plc" type="button">
 						<ion-icon name="add-circle" size="large"></ion-icon>
@@ -305,55 +310,67 @@ span {
 				$(this).prop("checked", true);
 			}
 		});
-		$("#done").click(function() {
-			let index = 0;
-			if($("#title").nextAll().length === 1){
+		$('#otherfeature').change(function(){
+			   if($(this).prop('checked')){
+				   $('#otherornot').val("yes");
+				   $('#other').attr("disabled",false);
+			   }else{
+				   $('#otherornot').val("no");
+				   $('#other').attr("disabled",true);
+			   }
+			});
+			$('#other').change(function(){
+				$('#otherfeature').val($(this).val());
+			});
+			$("#done").click(function() {
+				let index = 0;
+				if($("#title").nextAll().length === 1){
+					let flag = true;
+					$("#title").nextAll().find('input').each(function() {
+						if($(this).val() === ""){
+							flag = false;
+						}			
+					});
+					if(flag === false){
+						$("#title").nextAll().find('input').val("");
+					}else{
+						if(!($("#title").nextAll().length === 0)){
+							$("#title").nextAll().each(function(i, dom) {
+								$(dom).find('input').attr("name", "plc" + index);
+								index++;
+							});
+							$("#plc_amt").val(index - 1);
+							$("#container").append($('#edit').children());
+							$("#container").find('input').attr("readonly",true);
+						}
+					}
+				}else{
+					$("#title").nextAll().find('input').each(function() {
+						if($(this).val() === ""){
+							$(this).parent().parent().remove();
+						}
+					});
+					$("#title").nextAll().each(function(i, dom) {
+						$(dom).find('input').attr("name", "plc" + index);
+						index++;
+					});
+					$("#plc_amt").val(index - 1);
+					$("#container").append($('#edit').children());
+					$("#container").find('input').attr("readonly",true);
+				}
+			});
+			$("#plc").click(function() {
 				let flag = true;
 				$("#title").nextAll().find('input').each(function() {
 					if($(this).val() === ""){
 						flag = false;
-					}			
+					}
 				});
 				if(flag === false){
-					$("#title").nextAll().find('input').val("");
-				}else{
-					if(!($("#title").nextAll().length === 0)){
-						$("#title").nextAll().each(function(i, dom) {
-							$(dom).find('input').attr("name", "plc" + index);
-							index++;
-						});
-						$("#plc_amt").val(index - 1);
-						$("#container").append($('#edit').children());
-						$("#container").find('input').attr("disabled",true);
-					}
+					return false;				
 				}
-			}else{
-				$("#title").nextAll().find('input').each(function() {
-					if($(this).val() === ""){
-						$(this).parent().parent().remove();
-					}
-				});
-				$("#title").nextAll().each(function(i, dom) {
-					$(dom).find('input').attr("name", "plc" + index);
-					index++;
-				});
-				$("#plc_amt").val(index - 1);
-				$("#container").append($('#edit').children());
-				$("#container").find('input').attr("disabled",true);
-			}
-		});
-		$("#plc").click(function() {
-			let flag = true;
-			$("#title").nextAll().find('input').each(function() {
-				if($(this).val() === ""){
-					flag = false;
-				}
+				$("#title").next().clone().find('input').val("").end().appendTo("#camp_plc");
 			});
-			if(flag === false){
-				return false;				
-			}
-			$("#title").next().clone().find('input').val("").end().appendTo("#camp_plc");
-		});
 		$('#config').on('change', function(e) {
 			const file = this.files[0];
 			const fr = new FileReader();
@@ -386,7 +403,7 @@ span {
 		}
 		function showModal1() {
 			$("#edit").append($("#container").children());
-			$("#edit").find('input').attr("disabled",false);
+			$("#edit").find('input').attr("readonly",false);
 			$('#test1').modal('show');
 		}
 	</script>

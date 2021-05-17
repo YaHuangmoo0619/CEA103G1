@@ -11,6 +11,8 @@
 %>
 <jsp:useBean id="placeSvc" scope="page"
 	class="com.place.model.PlaceService" />
+<jsp:useBean id="csoSvc" scope="page"
+	class="com.campsite_owner.model.Campsite_ownerService" />
 <html>
 <head>
 <meta name="viewport"
@@ -155,7 +157,7 @@ table {
 					<table>
 						<tr>
 							<th>營主編號</th>
-							<td>${campVO.cso_no}</td>
+							<td>${csoSvc.getOneCampsite_owner(campVO.cso_no).name}</td>
 						</tr>
 						<tr>
 							<th>營區名稱</th>

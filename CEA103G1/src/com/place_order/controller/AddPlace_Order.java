@@ -120,8 +120,8 @@ public class AddPlace_Order extends HttpServlet {
 				out.println(jsonObject);
 			} else {
 				List<Object> payWithTransfer = new ArrayList();
-				MemberVO member = (MemberVO) session.getAttribute("member");
-				String id = member.getId();
+				MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+				String id = memberVO.getId();
 				String atm = 99227 + id.substring(1);
 
 				place_orderVO = place_orderSvc.addPlace_Order(mbr_no, camp_no, ckin_date, ckout_date, plc_amt,
@@ -160,8 +160,11 @@ public class AddPlace_Order extends HttpServlet {
 
 			place_orderVO = place_orderSvc.addPlace_Order(mbr_no, camp_no, ckin_date, ckout_date, plc_amt, plc_ord_sum,
 					ex_ppl, pay_meth, pay_stat, used_pt, receipt, rmk, list);
-
-			res.sendRedirect(req.getContextPath() + "/front-end/place_order/finish.html");
+			list = new ArrayList();
+			list.add("已成功付款");
+			list.add("訂單已成立");
+			String jsonObject = gson.toJson(list);
+			out.println(jsonObject);
 		}
 	}
 }

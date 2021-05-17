@@ -105,8 +105,6 @@ th, td {
 
 				<table>
 					<tr>
-						<th>營區編號</th>
-						<th>營主姓名</th>
 						<th>營區名稱</th>
 						<th>營業狀態</th>
 						<th>審核狀態</th>
@@ -114,9 +112,6 @@ th, td {
 					</tr>
 					<c:forEach var="campVO" items="${list}">
 						<tr>
-
-							<td>${campVO.camp_no}</td>
-							<td>${campVO.cso_no}</td>
 							<td>${campVO.camp_name}</td>
 							<c:if test="${campVO.campsite_Status==0}">
 								<td><c:out value="營業 "/></td>
