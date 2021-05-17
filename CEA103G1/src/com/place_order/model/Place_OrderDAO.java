@@ -4,9 +4,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+
 import javax.naming.*;
 import javax.sql.DataSource;
 
+import com.follow.model.FollowDAO;
+import com.follow.model.FollowVO;
+import com.member.model.MemberDAO;
+import com.member.model.MemberVO;
+import com.personal_system_notify.model.Personal_System_NotifyDAO;
+import com.personal_system_notify.model.Personal_System_NotifyVO;
 import com.place_order_details.model.Place_Order_DetailsDAO;
 import com.place_order_details.model.Place_Order_DetailsVO;
 
@@ -315,6 +323,20 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 			con.commit();
 			con.setAutoCommit(true);
 
+			//雅凰嘗試連動新增系統通知
+			//建立訂單的會員新增通知
+			Personal_System_NotifyVO personal_System_NotifyVO = new Personal_System_NotifyVO();
+			personal_System_NotifyVO.setMbr_no(place_orderVO.getMbr_no());
+			personal_System_NotifyVO.setNtfy_cont("您的訂單已成立");
+			personal_System_NotifyVO.setNtfy_stat(0);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String ntfy_time = sdf.format(new java.util.Date());
+			personal_System_NotifyVO.setNtfy_time(ntfy_time);
+				
+			Personal_System_NotifyDAO personal_System_NotifyDAO = new Personal_System_NotifyDAO();
+			personal_System_NotifyDAO.insertWithArticle(personal_System_NotifyVO, con);
+			//雅凰嘗試連動新增系統通知
+			
 			// Handle any driver errors
 		} catch (SQLException se) {
 			if (con != null) {
