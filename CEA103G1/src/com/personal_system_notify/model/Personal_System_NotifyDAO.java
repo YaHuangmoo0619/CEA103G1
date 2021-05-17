@@ -494,6 +494,42 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 				}
 			}
 		}
-		
-		
+
+		@Override
+		public void insertWithArticle(Personal_System_NotifyVO personal_System_NotifyVO, Connection con) {
+			PreparedStatement pstmt = null;
+
+			try {
+
+				con = ds.getConnection();
+				pstmt = con.prepareStatement(INSERT_STMT);
+
+				pstmt.setInt(1, personal_System_NotifyVO.getMbr_no());
+				pstmt.setInt(2,personal_System_NotifyVO.getNtfy_stat());
+				pstmt.setString(3,personal_System_NotifyVO.getNtfy_cont());
+				pstmt.setString(4,personal_System_NotifyVO.getNtfy_time());
+				pstmt.executeUpdate();
+
+				// Handle any SQL errors
+			} catch (SQLException se) {
+				throw new RuntimeException("A database error occured. "
+						+ se.getMessage());
+				// Clean up JDBC resources
+			} finally {
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+				if (con != null) {
+					try {
+						con.close();
+					} catch (Exception e) {
+						e.printStackTrace(System.err);
+					}
+				}
+			}
+		}
 }

@@ -10,6 +10,8 @@ public interface Personal_System_NotifyDAO_Interface {
 	
 	public void insertWithLike(Personal_System_NotifyVO personal_System_NotifyVO,Connection con);
 
+	public void insertWithArticle(Personal_System_NotifyVO personal_System_NotifyVO,Connection con);
+	
 	public void update(Personal_System_NotifyVO Personal_System_NotifyVO);
 
 	public void delete(Integer ntfy_no);

@@ -12,6 +12,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.follow.model.FollowDAO;
+import com.follow.model.FollowVO;
+import com.member.model.MemberDAO;
+import com.member.model.MemberVO;
 import com.personal_system_notify.model.Personal_System_NotifyDAO;
 import com.personal_system_notify.model.Personal_System_NotifyVO;
 
@@ -79,6 +83,30 @@ public class ArticleDAO implements ArticleDAO_Interface{
 			pstmt.setString(9, articleVO.getArt_first_img());
 			pstmt.executeUpdate();
 
+			//雅凰嘗試連動新增系統通知
+			//取得會員VO，以獲得作者名字
+			MemberDAO memberDAO = new MemberDAO();
+			MemberVO memberVO = memberDAO.findByPrimaryKey(articleVO.getMbr_no());
+			
+			//取得追蹤者的會員編號
+			FollowDAO followDAO = new FollowDAO();
+			List<FollowVO> followVOList = followDAO.findByflwed_mbr_no(articleVO.getMbr_no());
+			
+			//每個追蹤者的會員編號都建立一則通知
+			for(FollowVO followVO : followVOList) {
+				Personal_System_NotifyVO personal_System_NotifyVO = new Personal_System_NotifyVO();
+				personal_System_NotifyVO.setMbr_no(followVO.getFlw_mbr_no());
+				personal_System_NotifyVO.setNtfy_cont("您追蹤的"+memberVO.getName()+"發布了新的文章「" + articleVO.getArt_title() + "」");
+				personal_System_NotifyVO.setNtfy_stat(0);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String ntfy_time = sdf.format(new java.util.Date());
+				personal_System_NotifyVO.setNtfy_time(ntfy_time);
+				
+				Personal_System_NotifyDAO personal_System_NotifyDAO = new Personal_System_NotifyDAO();
+				personal_System_NotifyDAO.insertWithArticle(personal_System_NotifyVO, con);
+			}
+			//雅凰嘗試連動新增系統通知
+			
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
@@ -565,7 +593,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 			//雅凰嘗試連動新增系統通知
 			ArticleVO articleVONotify = findByPrimaryKey(articleVO.getArt_no());
 			Personal_System_NotifyVO personal_System_NotifyVO = new Personal_System_NotifyVO();
-			System.out.println("articleVO.getMbr_no()="+articleVONotify.getMbr_no());
+//			System.out.println("articleVO.getMbr_no()="+articleVONotify.getMbr_no());
 			personal_System_NotifyVO.setMbr_no(articleVONotify.getMbr_no());
 			personal_System_NotifyVO.setNtfy_cont("您的文章「" + articleVONotify.getArt_title() + "」有新的按讚");
 			personal_System_NotifyVO.setNtfy_stat(0);

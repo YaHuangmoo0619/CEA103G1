@@ -770,9 +770,9 @@ section.footer {
 	</script>
 	<script>
 		function writeToScreen(input){
-			alert(typeof input);
+//			alert(typeof input);
 			let noRead = JSON.parse(input);
-			alert(typeof noRead);
+//			alert(typeof noRead);
 // 			if(typeof noRead === "number"){
 // 				alert('in');
 // 				var countNoRead = document.getElementById('countNoRead');
@@ -798,7 +798,7 @@ section.footer {
 			websocket = new WebSocket(wsUri);
 			websocket.onmessage = function(event){
 				let noRead = event.data;
-				alert(noRead);
+//				alert(noRead);
 				writeToScreen(noRead);
 			};
 		}
