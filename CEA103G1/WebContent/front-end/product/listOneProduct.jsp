@@ -79,7 +79,6 @@
 			</td>
 			<td>${productVO.prod_name}</td>
 			<td>${productVO.prod_pc}</td>
-			<td>${productVO.prod_stg}</td>
 			<td>${productVO.prod_info}</td>
 			<td>${productVO.prod_bnd}</td>
 			<td>${productVO.prod_clr}</td>
@@ -94,12 +93,6 @@
 			<c:if test="${productVO.ship_meth==2}">
 				<c:out value="限超商取貨" />
 			</c:if>
-			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="查看詳情">
-			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-			     <input type="hidden" name="action"	value="getOne_For_Display"></FORM>
 			</td>
 			<td>
 			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
