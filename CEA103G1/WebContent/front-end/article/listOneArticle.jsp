@@ -396,7 +396,7 @@
 					success : function(data) {
 						alert("某文章的讚數+1成功");
 						//雅凰嘗試加上系統通知
-						websocket.send(<%=articleVO.getMbr_no()%>);
+						websocket.send(<%=articleVO.getMbr_no()%>+'/like');
 						//雅凰嘗試加上系統通知
 					}
 				});
