@@ -57,7 +57,7 @@
 	</div>
 	<div class="menuForButton">
 		<div class="btn-group sec" role="group" aria-label="Basic example">
-			<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">露營</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.html"><button type="button" class="btn btn-secondary">露營</button></a>
 			<a class="button" href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
 			<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 		</div>

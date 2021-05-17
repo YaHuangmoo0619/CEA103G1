@@ -75,8 +75,8 @@ public class Campsite_ownerService {
 		dao.delete(rank_no);
 	}
 
-	public Campsite_ownerVO getOneCampsite_owner(Integer rank_no) {
-		return dao.findByPrimaryKey(rank_no);
+	public Campsite_ownerVO getOneCampsite_owner(Integer cso_no) {
+		return dao.findByPrimaryKey(cso_no);
 	}
 
 	public List<Campsite_ownerVO> getAll() {

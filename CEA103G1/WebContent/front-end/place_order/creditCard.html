@@ -334,15 +334,32 @@ img.person:hover {
 				<input placeholder="MM/YY" type="tel" name="expiry" required>
 				<input placeholder="CVC" type="number" name="cvc" required>
 				<input type="hidden" value="confirm" name="action"><input
-					type="submit" value="¥I´Ú" class="confirm">
+					type="button" id="confirm" value="¥I´Ú" class="confirm">
 			</form>
 		</div>
 	</div>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 		new Card({
 			form : document.querySelector('#card'),
 			container : '.card-wrapper'
 		});
+		$('#confirm').click(function(){
+			$.ajax({
+				type : "POST",
+				url : "/CEA103G1/place_order/Place_order.do",
+				data : $('#card').serialize(),
+				success : function(data) {
+				Swal.fire(
+						  data[0],
+						  data[1],
+						  'success'
+						).then(function() {
+							window.history.back(-1);
+						})
+				}
+			});
+		})
 	</script>
 </body>
 </html>

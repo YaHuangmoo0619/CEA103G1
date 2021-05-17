@@ -294,10 +294,19 @@ img.person:hover {
 <!-- 				<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 			</div>
 			<img src="/CEA103G1/front-images/menu-outline.svg" id="menu" class="menu">
-<!-- 			<c:if test="${memberVO != null}"> -->
-<!-- 				<a id="have" href="/CEA103G1/front-end/member_mail/listAllMember_mail.jsp"><img src="/CEA103G1/front-images/mail-outline.svg" class="announcement"></a> -->
-<!-- 				<a id="have2" href="/CEA103G1/front-end/member/viewMember.jsp"><div class="person" style="display:inline;border-radius:50%;">${memberVO.sticker}</div> <img src="/CEA103G1/front-images/person-circle-outline.svg" class="person"></a> -->
-<!-- 			</c:if> -->
+				<a id="have" href="/CEA103G1/front-end/member_mail/listAllMember_mail.jsp">
+					<div style="position:relative;display:inline;">
+						<img src="/CEA103G1/front-images/mail-outline.svg" class="announcement">
+					</div>
+				</a>
+				<a id="have1" href="/CEA103G1/front-end/personal_system_notify/listAllPersonal_system_notify.jsp">
+					<div style="position:relative;display:inline;">
+						<img src="/CEA103G1/front-images/notifications-outline.svg" class="announcement">
+						<div style="background-color: red; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadNotify"></div>
+					</div>
+				</a>
+				<a id="have2" class="button" href="/CEA103G1/member/member.do?action=logout"><button type="button" class="btn btn-outline-secondary">登出</button></a>
+				<a id="have3" href="/CEA103G1/front-end/member/viewMember.jsp"><div id="showPerson" class="person" style="display:inline;border-radius:50%;"></div></a>
 		</div>
 	</div>
 
@@ -383,21 +392,28 @@ img.person:hover {
 	
 	</script>
 	<script>
+		var locat = window.location.href;
 		$.ajax({
 			type : "GET",
 			dataType : "json",
 			url : "http://localhost:8081/CEA103G1/Member.do",
+			data : {uri : locat},
 			success : function(data) {
-				if(data.length === 0){
-// 					$('#have').css("display","none");
-// 					$('#have2').css("display","none");
-					$('#havent').css("display","block");
-					$('#havent2').css("display","block");
+				if(data.length === 2){
+					$('#have').css("display","none");
+					$('#have1').css("display","none");
+					$('#have2').css("display","none");
+					$('#have3').css("display","none");
+					$('#havent').css("display","inline-block");
+					$('#havent2').css("display","inline-block");
 				}else{
-// 					let mamber_name = `${data[0].name}`;
-// 					$('#have').after(mamber_name);
-// 					$('#have').css("display","block");
-// 					$('#have2').css("display","block");
+					let member_pic = `<img src="/CEA103G1/member/GetPhoto?mbr_no=${data.mbr_no}" class="person">`;
+					$('#have2').after(`${data.name}`);
+					$('#showPerson').append(member_pic);
+					$('#have').css("display","inline-block");
+					$('#have1').css("display","inline-block");
+					$('#have2').css("display","inline-block");
+					$('#have3').css("display","inline-block");
 					$('#havent').css("display","none");
 					$('#havent2').css("display","none");
 				}
