@@ -28,6 +28,8 @@ public interface ArticleDAO_Interface {
 	
 	public List<ArticleVO> getAll_Front();
 	
+	public List<ArticleVO> getAll_Front_By_Likes();
+	
 	public List<ArticleVO> findByMbr_no(Integer mbr_no);
 	
 	public List<ArticleVO> getAll_Back();

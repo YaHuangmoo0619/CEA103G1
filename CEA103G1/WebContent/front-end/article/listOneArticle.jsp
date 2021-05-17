@@ -106,7 +106,7 @@
    }
    
    
-      .like_no_login{ 
+  	.like_no_login{ 
    background-image:url('/CEA103G1/images/heart-outline.svg');
    width:20px; 
    height:18px;

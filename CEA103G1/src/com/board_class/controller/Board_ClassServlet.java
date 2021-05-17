@@ -12,6 +12,8 @@ import com.article.model.ArticleVO;
 import com.board_class.model.Board_ClassService;
 import com.board_class.model.Board_ClassVO;
 
+import redis.clients.jedis.Jedis;
+
 
 @WebServlet("/board_class/board_class.do")
 public class Board_ClassServlet extends HttpServlet {
@@ -321,6 +323,23 @@ public class Board_ClassServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		
+		if ("subscribe".equals(action)) { // 來自update_board_class_input.jsp的請求
+
+				/***************************1.接收請求參數 **********************/		
+				String bd_cl_no = req.getParameter("bd_cl_no"); //要訂閱的看板
+				Integer mbr_no   = new Integer(req.getParameter("mbr_no").trim());   //要訂閱的會員
+								
+				/***************************2.開始修改資料*****************************************/
+				Jedis jedis = new Jedis("localhost", 6379);
+				jedis.auth("123456");
+				jedis.select(6);
+				jedis.sadd("board:"+mbr_no+":subscribe", bd_cl_no);
+				jedis.close();
+			}
+		
+		
 		
 	}
 }

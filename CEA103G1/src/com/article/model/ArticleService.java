@@ -126,6 +126,10 @@ public class ArticleService {
 		return dao.getAll_Front();
 	}
 	
+	public List<ArticleVO> getAll_By_Likes() {
+		return dao.getAll_Front_By_Likes();
+	}
+	
 	public List<ArticleVO> getAll_Back() {
 		return dao.getAll_Back();
 	}

@@ -452,6 +452,30 @@ public class ArticleServlet extends HttpServlet {
 				if (art_cont == null || art_cont.trim().length() == 0) {
 					errorMsgs.add("文章內容: 請勿空白");
 				}
+				
+				
+				String reg_split_p = "(?<=[<][/][p][>])"; //先將每段p分開
+				String split_array[] = art_cont.split(reg_split_p);
+				int i = 0;
+				String save_to_redis = "";
+				for(i=0;i<split_array.length;i++) {
+					if(split_array[i].contains("img src")==false){ //如果不含圖
+						split_array[i]=split_array[i].replaceAll("[<][p][>]",""); //去掉網頁元素符號
+						split_array[i]=split_array[i].replaceAll("[<][/][p][>]","");
+						System.out.println("測試中"+split_array[i]); //印出測試
+						save_to_redis = save_to_redis+split_array[i]; //就串接就加入其中
+					}
+				}
+				if(save_to_redis.length()>=30) { //如果不到30個字，不動作，超過30個字就截斷
+					save_to_redis=save_to_redis.substring(0, 30);	
+				}
+				
+
+			
+				
+				
+				
+				
 //				System.out.println(art_cont);
 //				else if(!art_cont.trim().matches(art_contReg)) { //以下練習正則(規)表示式(regular-expression)
 //					errorMsgs.add("文章內容: 必須在10到10000個字之間");
@@ -516,7 +540,16 @@ public class ArticleServlet extends HttpServlet {
 //					jedis.sadd("post:" + no + ":tags", str);
 //				}
 //				jedis.close();// Redis新增結束
-
+				
+				Jedis jedis = new Jedis("localhost", 6379); 
+				jedis.auth("123456");
+				jedis.select(6);
+				jedis.set("post:"+no+":art_simple_cont", save_to_redis);
+				jedis.close();
+				System.out.println("最後結果:"+save_to_redis);//最後結果，準備加入redis資料庫
+				
+				
+				
 				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no, art_rel_time, art_title, art_cont, likes, art_stat, replies, art_first_img);
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/

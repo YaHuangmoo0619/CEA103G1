@@ -7,6 +7,7 @@
 <%@ page import="com.board_class.model.*"%>
 <%@ page import="com.member.model.*" %>
 <%@ page import="redis.clients.jedis.Jedis"%>
+<%MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
 <%
 	Jedis jedis = new Jedis("localhost", 6379);
 	jedis.auth("123456");
@@ -16,22 +17,22 @@
 
 <%
 	ArticleService articleSvc = new ArticleService();
-	List<ArticleVO> list = articleSvc.getAll_Front();
-// 	Map<Integer,String> article_first_img_map = new HashMap<Integer,String>(); //這是一個存有「有首圖」的Map，key為該文章號碼，value為base64編碼
-// 	int start_index;
-// 	int end_index;
-// 	String first_img_base64;
-// 	for(ArticleVO x : list){
-// 		start_index = x.getArt_cont().indexOf("<p><img");
-// 		if(start_index>=0){ //有首圖的話
-// 		System.out.println("start_index:"+start_index);
-// 		end_index   = x.getArt_cont().indexOf("</p>", start_index)+4; //從第一張圖片<p><img的位置以後開始搜尋到的第一個 </p>，即為第一張圖的結束
-// 			first_img_base64 = x.getArt_cont().substring(start_index, end_index); //擷取到第一張圖片的base64編碼
-// 			System.out.println("i'm here");
-// 			System.out.println(first_img_base64);
-// 			article_first_img_map.put(x.getArt_no(), first_img_base64); //放入Map中	
-// 		}
-// 	}
+	List<ArticleVO> list = new ArrayList<>();  //要來呈現的文章
+	List<ArticleVO> append_list = new ArrayList<>(); //拿來當作for each用的
+	
+	Set<String> my_subscribe_list = jedis.smembers("board:"+memberVO.getMbr_no()+":subscribe"); //取得我訂閱的所有看板的編號
+	
+	for(String my_subscribe_list_count : my_subscribe_list){ //對於每個我訂閱的看板
+		append_list = articleSvc.getByBoard_Class_Front(Integer.valueOf(my_subscribe_list_count)); //取得某看板的所有文章
+		for(ArticleVO append_VO : append_list){ //把這看板的所有文章  都丟進最後要呈現的文章list
+			list.add(append_VO);	
+		}
+		
+	}
+
+
+	
+	
 	Map<Integer,String> simple_art_cont = new HashMap<>();
 	for(ArticleVO count : list){
 		if(jedis.exists("post:"+count.getArt_no()+":art_simple_cont")){
@@ -54,7 +55,7 @@
 %>
 
 <% 
-	MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+	
 	int ajax_mbr_no = 0;
 	//如果memberVO不為空，代表他有登入，接著查詢他是否對這篇文章按過讚
 	if(memberVO!=null){
