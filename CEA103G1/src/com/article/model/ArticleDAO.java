@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,9 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import com.personal_system_notify.model.Personal_System_NotifyDAO;
+import com.personal_system_notify.model.Personal_System_NotifyVO;
 
 
 
@@ -558,6 +562,20 @@ public class ArticleDAO implements ArticleDAO_Interface{
 			pstmt.setInt(1, articleVO.getArt_no());
 			pstmt.executeUpdate();
 			
+			//雅凰嘗試連動新增系統通知
+			ArticleVO articleVONotify = findByPrimaryKey(articleVO.getArt_no());
+			Personal_System_NotifyVO personal_System_NotifyVO = new Personal_System_NotifyVO();
+			System.out.println("articleVO.getMbr_no()="+articleVONotify.getMbr_no());
+			personal_System_NotifyVO.setMbr_no(articleVONotify.getMbr_no());
+			personal_System_NotifyVO.setNtfy_cont("您的文章「" + articleVONotify.getArt_title() + "」有新的按讚");
+			personal_System_NotifyVO.setNtfy_stat(0);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String ntfy_time = sdf.format(new java.util.Date());
+			personal_System_NotifyVO.setNtfy_time(ntfy_time);
+			
+			Personal_System_NotifyDAO personal_System_NotifyDAO = new Personal_System_NotifyDAO();
+			personal_System_NotifyDAO.insertWithLike(personal_System_NotifyVO, con);
+			//雅凰嘗試連動新增系統通知
 			
 			// Handle any driver errors
 		} catch (SQLException se) {

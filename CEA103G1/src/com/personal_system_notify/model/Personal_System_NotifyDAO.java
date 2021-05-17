@@ -35,7 +35,7 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 	}
 	
 	private static final String INSERT_STMT = 
-			"INSERT INTO Personal_System_Notify (NTFY_NO,MBR_NO,NTFY_STAT,NTFY_CONT,NTFY_TIME) VALUES (?, ?, ?, ? , ? )";
+			"INSERT INTO Personal_System_Notify (MBR_NO,NTFY_STAT,NTFY_CONT,NTFY_TIME) VALUES (?, ?, ? , ? )";
 		private static final String GET_ALL_STMT = 
 			"SELECT NTFY_NO,MBR_NO,NTFY_STAT,NTFY_CONT,NTFY_TIME FROM Personal_System_Notify order by NTFY_TIME DESC";
 		private static final String GET_ONE_STMT = 
@@ -57,11 +57,10 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 				con = ds.getConnection();
 				pstmt = con.prepareStatement(INSERT_STMT);
 
-				pstmt.setInt(1, Personal_System_NotifyVO.getNtfy_no());
-				pstmt.setInt(2, Personal_System_NotifyVO.getMbr_no());
-				pstmt.setInt(3,Personal_System_NotifyVO.getNtfy_stat());
-				pstmt.setString(4,Personal_System_NotifyVO.getNtfy_cont());
-				pstmt.setString(5,Personal_System_NotifyVO.getNtfy_time());
+				pstmt.setInt(1, Personal_System_NotifyVO.getMbr_no());
+				pstmt.setInt(2,Personal_System_NotifyVO.getNtfy_stat());
+				pstmt.setString(3,Personal_System_NotifyVO.getNtfy_cont());
+				pstmt.setString(4,Personal_System_NotifyVO.getNtfy_time());
 				pstmt.executeUpdate();
 
 				// Handle any SQL errors
@@ -457,6 +456,44 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 				}
 				return set;
 			}
+
+		@Override
+		public void insertWithLike(Personal_System_NotifyVO personal_System_NotifyVO, Connection con) {
+			PreparedStatement pstmt = null;
+
+			try {
+
+				con = ds.getConnection();
+				pstmt = con.prepareStatement(INSERT_STMT);
+
+				pstmt.setInt(1, personal_System_NotifyVO.getMbr_no());
+				pstmt.setInt(2,personal_System_NotifyVO.getNtfy_stat());
+				pstmt.setString(3,personal_System_NotifyVO.getNtfy_cont());
+				pstmt.setString(4,personal_System_NotifyVO.getNtfy_time());
+				pstmt.executeUpdate();
+
+				// Handle any SQL errors
+			} catch (SQLException se) {
+				throw new RuntimeException("A database error occured. "
+						+ se.getMessage());
+				// Clean up JDBC resources
+			} finally {
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+				if (con != null) {
+					try {
+						con.close();
+					} catch (Exception e) {
+						e.printStackTrace(System.err);
+					}
+				}
+			}
+		}
 		
 		
 }

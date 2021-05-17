@@ -152,7 +152,8 @@ overflow-y: auto;
 </style>
 
 </head>
-<body>
+<!-- 雅凰嘗試加上onload事件 -->
+<body onload="connection()">
 	<div>目前登入的人是: ${memberVO.mbr_no}</div>
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	
@@ -303,7 +304,6 @@ jedis.close();
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.3/infinite-scroll.pkgd.min.js"></script>
 		
 		
-
 	<script>
 		let countMenu = 0;
 		function showMenu() {
@@ -370,5 +370,48 @@ jedis.close();
 	  $('#login_confirm').modal('show');
   })
   </script>
+
+  <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
+<script>
+		function writeToScreen(input){
+			let noRead = JSON.parse(input);
+			
+			var notifyMail = document.getElementById('countNoReadMail');
+			notifyMail.innerText = noRead.countNoReadMail;
+			var notifyNotify = document.getElementById('countNoReadNotify');
+			notifyNotify.innerText = noRead.countNoReadNotify;
+			
+			if(noRead.mail_no !== undefined){
+				let tableOri = document.getElementById('mailTable');
+				let trOri = document.createElement('tr');
+				trOri.innerHTML = "<td style='display:none;'>"+ noRead.mail_no+"</td><td>"+ noRead.send_no+"</td><td>"+noRead.rcpt_no+"</td><td>"+noRead.mail_cont+"</td><td>"+noRead.mail_time+"</td>";
+//				console.log(tableOri);
+//				console.log(trOri);
+				trOri.style.fontWeight=555;
+				tableOri.prepend(trOri);
+			}
+		}
+		function connection(){
+			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
+			websocket = new WebSocket(wsUri);
+			websocket.onopen = function(event){
+				let e = document.createEvent("MouseEvent");
+				e.initEvent("click",true,true);
+				if(document.getElementById('sendNotify') !== null){
+					document.getElementById('sendNotify').dispatchEvent(e);
+				}
+			};
+			websocket.onmessage = function(event){
+				let noRead = event.data;
+				writeToScreen(noRead);
+			};
+		}
+		function sendNotify(){
+			let sendNotify = document.getElementById('sendNotify');
+			websocket.send(sendNotify.innerText);
+		}
+		
+</script>
+  <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
 </body>
 </html>

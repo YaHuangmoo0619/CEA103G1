@@ -172,11 +172,12 @@ tr:hover {
 <%-- 			</c:if> --%>
 			<jsp:useBean id="personal_system_notifySvc" class="com.personal_system_notify.model.Personal_System_NotifyService"/>
 			<table>
+				<tbody id="notifyTable">
 				<c:forEach var="personal_system_notifyVO" items="${personal_system_notifySvc.all}">
 					<c:if test="${memberVO.mbr_no == personal_system_notifyVO.mbr_no && personal_system_notifyVO.ntfy_stat == 0}">
 					<tr>
-						<td>${memberVO.mbr_no}</td>
-						<td>${personal_system_notifyVO.mbr_no}</td>
+<%-- 						<td>${memberVO.mbr_no}</td> --%>
+<%-- 						<td>${personal_system_notifyVO.mbr_no}</td> --%>
 						<td>${personal_system_notifyVO.ntfy_cont}</td>
 <%-- 						<td>${personal_system_notifyVO.ntfy_time}</td> --%>
 						<c:set var="ntfy_time" value="${personal_system_notifyVO.ntfy_time}" />
@@ -198,6 +199,7 @@ tr:hover {
 					</tr>
 					</c:if>
 				</c:forEach>
+				</tbody>
 			</table>
 		</div>
 	</div>
@@ -205,7 +207,7 @@ tr:hover {
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <script>
-	$("tr").click(function(e){
+	$("body").on("click","tr",function(e){
 		let mail_no = e.currentTarget.children[0].innerText;
 		window.location.href="<%=request.getContextPath()%>/member_mail/member_mail.do?mail_no="+ mail_no + "&action=read";
 	});

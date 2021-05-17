@@ -20,6 +20,14 @@ public class Personal_System_NotifyVO implements Serializable{
 		this.ntfy_cont = ntfy_cont;
 		this.ntfy_time = ntfy_time;
 	}
+	
+	public Personal_System_NotifyVO(Integer mbr_no, Integer ntfy_stat, String ntfy_cont , String ntfy_time) {
+		super();
+		this.mbr_no = mbr_no;
+		this.ntfy_stat = ntfy_stat;
+		this.ntfy_cont = ntfy_cont;
+		this.ntfy_time = ntfy_time;
+	}
 
 	public Personal_System_NotifyVO() {
 

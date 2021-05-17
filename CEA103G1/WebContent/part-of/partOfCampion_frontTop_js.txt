@@ -49,7 +49,23 @@
 //				console.log(tableOri);
 //				console.log(trOri);
 				trOri.style.fontWeight=555;
-				tableOri.prepend(trOri);
+				if(tableOri !== null){
+					tableOri.prepend(trOri);
+				}
+			}
+			
+//			alert(noRead.ntfy_no);
+			if(noRead.ntfy_no !== undefined){
+//				alert('ntfy_no in');
+				let tableOri = document.getElementById('notifyTable');
+				let trOri = document.createElement('tr');
+				trOri.innerHTML = "<td style='display:none;'>"+ noRead.ntfy_no+"</td><td>"+noRead.ntfy_cont+"</td><td>"+noRead.ntfy_time+"</td>";
+//				alert(tableOri);
+//				console.log(trOri);
+//				trOri.style.fontWeight=555;
+				if(tableOri !== null){
+					tableOri.prepend(trOri);
+				}
 			}
 		}
 		function connection(){
@@ -58,7 +74,9 @@
 			websocket.onopen = function(event){
 				let e = document.createEvent("MouseEvent");
 				e.initEvent("click",true,true);
-				document.getElementById('sendNotify').dispatchEvent(e);
+				if(document.getElementById('sendNotify') !== null){
+					document.getElementById('sendNotify').dispatchEvent(e);
+				}
 			};
 			websocket.onmessage = function(event){
 				let noRead = event.data;

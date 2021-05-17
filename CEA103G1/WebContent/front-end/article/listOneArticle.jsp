@@ -395,6 +395,9 @@
 					data : {action: "plus_like",art_no:<%=articleVO.getArt_no()%>}, //參數傳遞 : action傳遞「加一」 mbr_no art_no 傳遞要加一的資訊
 					success : function(data) {
 						alert("某文章的讚數+1成功");
+						//雅凰嘗試加上系統通知
+						websocket.send(<%=articleVO.getMbr_no()%>);
+						//雅凰嘗試加上系統通知
 					}
 				});
  	})

@@ -1,4 +1,5 @@
 package com.personal_system_notify.model;
+import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -6,6 +7,8 @@ import java.util.Set;
 import com.member_mail.model.Member_mailVO;
 public interface Personal_System_NotifyDAO_Interface {
 	public void insert(Personal_System_NotifyVO Personal_System_NotifyVO);
+	
+	public void insertWithLike(Personal_System_NotifyVO personal_System_NotifyVO,Connection con);
 
 	public void update(Personal_System_NotifyVO Personal_System_NotifyVO);
 

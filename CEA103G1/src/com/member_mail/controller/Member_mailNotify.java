@@ -147,13 +147,14 @@ public class Member_mailNotify {
 //				//找出新增的VO
 				Member_mailVO member_mailVO = new Member_mailVO();
 				if(mail_noList.size() != 0 ) {
-					System.out.println("mail_noList.size()="+mail_noList.size());
+//					System.out.println("mail_noList.size()="+mail_noList.size());
 					member_mailVO = member_mailSvc.getOneMember_mail(mail_noList.get(mail_noList.size()-1));
 				}
 				Personal_System_NotifyVO personal_system_notifyVO = new Personal_System_NotifyVO();
 				if(ntfy_noList.size() != 0 ) {
-					System.out.println("ntfy_noList.size()="+ntfy_noList.size());
+//					System.out.println("ntfy_noList.size()="+ntfy_noList.size());
 					personal_system_notifyVO = personal_system_notifySvc.getOnePersonal_System_Notify(ntfy_noList.get(ntfy_noList.size()-1));
+//					System.out.println("personal_system_notifyVO="+personal_system_notifyVO);
 				}
 				
 				try {
@@ -169,6 +170,7 @@ public class Member_mailNotify {
 						member_mailForWS.setMail_time(member_mailVO.getMail_time().substring(0, 10));
 					}
 					if(personal_system_notifyVO != null) {
+//						System.out.println("personal_system_notifyVO.getNtfy_no()="+personal_system_notifyVO.getNtfy_no());
 						member_mailForWS.setNtfy_no(personal_system_notifyVO.getNtfy_no());
 						member_mailForWS.setMbr_no(personal_system_notifyVO.getMbr_no());
 						member_mailForWS.setNtfy_stat(personal_system_notifyVO.getNtfy_stat());
@@ -180,6 +182,7 @@ public class Member_mailNotify {
 					member_mailForWS.setCountNoReadNotify(countNoReadNotify);
 					
 					String jsonStr = new JSONObject(member_mailForWS).toString();
+//					System.out.println("jsonStr="+jsonStr);
 					sessionsMap.get(key).getBasicRemote().sendText(jsonStr);
 //					sessionsMap.get(key).getBasicRemote().sendText(Integer.valueOf(countNoRead).toString());
 				} catch (IOException e) {
