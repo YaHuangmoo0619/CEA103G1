@@ -68,7 +68,7 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 			
 			Personal_System_NotifyVO personal_System_NotifyVO = new Personal_System_NotifyVO();
 			personal_System_NotifyVO.setMbr_no(articleVO.getMbr_no());
-			personal_System_NotifyVO.setNtfy_cont("您的文章「" + articleVO.getArt_title() + "」有新的回應");
+			personal_System_NotifyVO.setNtfy_cont("您的文章「" + articleVO.getArt_title() + "」內容有新的回應");
 			personal_System_NotifyVO.setNtfy_stat(0);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String ntfy_time = sdf.format(new java.util.Date());
