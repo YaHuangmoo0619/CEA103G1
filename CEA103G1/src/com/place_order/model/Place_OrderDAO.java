@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
+<<<<<<< HEAD
 <<<<<<< .merge_file_a02712
 import javax.naming.*;
 import javax.sql.DataSource;
@@ -21,6 +22,11 @@ import com.member.model.MemberVO;
 import com.personal_system_notify.model.Personal_System_NotifyDAO;
 import com.personal_system_notify.model.Personal_System_NotifyVO;
 >>>>>>> .merge_file_a15944
+=======
+import javax.naming.*;
+import javax.sql.DataSource;
+
+>>>>>>> parent of 09af1b2 (正在處理訂營位的系統通知，時間到了先push)
 import com.place_order_details.model.Place_Order_DetailsDAO;
 import com.place_order_details.model.Place_Order_DetailsVO;
 
@@ -329,6 +335,7 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 			con.commit();
 			con.setAutoCommit(true);
 
+<<<<<<< HEAD
 <<<<<<< .merge_file_a02712
 =======
 			//���Ĺ��ճs�ʷs�W�t�γq��
@@ -346,6 +353,8 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 			//���Ĺ��ճs�ʷs�W�t�γq��
 			
 >>>>>>> .merge_file_a15944
+=======
+>>>>>>> parent of 09af1b2 (正在處理訂營位的系統通知，時間到了先push)
 			// Handle any driver errors
 		} catch (SQLException se) {
 			if (con != null) {

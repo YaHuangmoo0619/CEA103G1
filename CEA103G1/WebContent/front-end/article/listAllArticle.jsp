@@ -224,6 +224,7 @@ overflow-y: auto;
 
 
         <div class="container">
+<<<<<<< HEAD
  
         		<div class=article_sort_parent>
         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp';">³Ì·s</div>
@@ -241,6 +242,20 @@ overflow-y: auto;
      
      
      
+=======
+        
+        <!-- ¶®°Ä¥[ªº¡A¬°¤F¹Á¸Õ±Ò°Ê³qª¾ªº±À¼½ -->
+        --${articleVO != null? articleVO.mbr_no:'123' }--
+			<c:if test="${articleVO != null}">
+			<!-- insert¦^¶ÇªºVO¨S¦³¤å³¹½s¸¹ -->
+					<div onclick="sendNotify()" id="sendNotify">${articleVO.mbr_no}/article</div>
+			</c:if>
+			<c:if test="${article_ReplyVO != null}">
+			<!-- insert¦^¶ÇªºVO¨S¦³¯d¨¥½s¸¹ -->
+					<div onclick="sendNotify()" id="sendNotify">${article_ReplyVO.art_no}/reply</div>
+			</c:if>
+		<!-- ¶®°Ä¥[ªº¡A¬°¤F¹Á¸Õ±Ò°Ê³qª¾ªº±À¼½ -->
+>>>>>>> parent of 09af1b2 (æ­£åœ¨è™•ç†è¨‚ç‡Ÿä½çš„ç³»çµ±é€šçŸ¥ï¼Œæ™‚é–“åˆ°äº†å…ˆpush)
             <div class="body">
                     <c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
                     <div class=article>

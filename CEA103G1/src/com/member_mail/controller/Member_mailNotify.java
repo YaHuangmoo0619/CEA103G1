@@ -222,9 +222,9 @@ public class Member_mailNotify {
 		if(note.equals("mail") || note.equals("like")) {
 		
 			for(String key : sessionsMap.keySet()) {
-//				System.out.println(sessionsMap.size()+"/"+key+"/"+number);
+				System.out.println(sessionsMap.size()+"/"+key+"/"+number);
 				if(key.equals(number)) {
-//					System.out.println(key+"in");
+					System.out.println(key+"in");
 	//				Member_mailService member_mailSvc = new Member_mailService();
 	//				Map<String,String[]> map = new LinkedHashMap<String,String[]>();
 	//				map.put("mail_read_stat",new String[] {"0"});
@@ -318,7 +318,7 @@ public class Member_mailNotify {
 						e.printStackTrace();
 					}
 				}else {
-//					System.out.println(key+"out");
+					System.out.println(key+"out");
 					continue;
 					
 				}
@@ -329,9 +329,9 @@ public class Member_mailNotify {
 			for(FollowVO followVO : followVOList) {
 				for(String key : sessionsMap.keySet()) {
 					String numberFollow = followVO.getFlw_mbr_no().toString();
-//					System.out.println(sessionsMap.size()+"/"+key+"/"+numberFollow);
+					System.out.println(sessionsMap.size()+"/"+key+"/"+numberFollow);
 					if(key.equals(numberFollow)) {
-//						System.out.println(key+"in");
+						System.out.println(key+"in");
 						//找出未讀的
 						Map<String,String[]> mapMail = new LinkedHashMap<String,String[]>();
 						mapMail.put("mail_read_stat",new String[] {"0"});
@@ -389,14 +389,14 @@ public class Member_mailNotify {
 							member_mailForWS.setCountNoReadNotify(countNoReadNotify);
 							
 							String jsonStr = new JSONObject(member_mailForWS).toString();
-//							System.out.println("jsonStr="+jsonStr);
+							System.out.println("jsonStr="+jsonStr);
 							sessionsMap.get(key).getBasicRemote().sendText(jsonStr);
 		//					sessionsMap.get(key).getBasicRemote().sendText(Integer.valueOf(countNoRead).toString());
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
 					}else {
-//						System.out.println(key+"out");
+						System.out.println(key+"out");
 						continue;
 						
 					}
@@ -411,9 +411,9 @@ public class Member_mailNotify {
 			for(Article_LikesVO article_LikesVO : article_LikesVOList) {
 				for(String key : sessionsMap.keySet()) {
 					String numberLike = article_LikesVO.getMbr_no().toString();
-//					System.out.println(sessionsMap.size()+"/"+key+"/"+numberLike);
+					System.out.println(sessionsMap.size()+"/"+key+"/"+numberLike);
 					if(key.equals(numberLike)) {
-//						System.out.println(key+"in");
+						System.out.println(key+"in");
 						//找出未讀的
 						Map<String,String[]> mapMail = new LinkedHashMap<String,String[]>();
 						mapMail.put("mail_read_stat",new String[] {"0"});
@@ -471,14 +471,14 @@ public class Member_mailNotify {
 							member_mailForWS.setCountNoReadNotify(countNoReadNotify);
 							
 							String jsonStr = new JSONObject(member_mailForWS).toString();
-//							System.out.println("jsonStr="+jsonStr);
+							System.out.println("jsonStr="+jsonStr);
 							sessionsMap.get(key).getBasicRemote().sendText(jsonStr);
 		//					sessionsMap.get(key).getBasicRemote().sendText(Integer.valueOf(countNoRead).toString());
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
 					}else {
-//						System.out.println(key+"out");
+						System.out.println(key+"out");
 						continue;
 						
 					}
@@ -491,9 +491,9 @@ public class Member_mailNotify {
 			String authorNo = articleVO.getMbr_no().toString();
 			
 			for(String key : sessionsMap.keySet()) {
-//				System.out.println(sessionsMap.size()+"/"+key+"/"+authorNo);
+				System.out.println(sessionsMap.size()+"/"+key+"/"+authorNo);
 				if(key.equals(authorNo)) {
-//					System.out.println(key+"in");
+					System.out.println(key+"in");
 					//找出未讀的
 					Map<String,String[]> mapMail = new LinkedHashMap<String,String[]>();
 					mapMail.put("mail_read_stat",new String[] {"0"});
@@ -561,14 +561,14 @@ public class Member_mailNotify {
 						member_mailForWS.setCountNoReadNotify(countNoReadNotify);
 						
 						String jsonStr = new JSONObject(member_mailForWS).toString();
-//						System.out.println("jsonStr="+jsonStr);
+						System.out.println("jsonStr="+jsonStr);
 						sessionsMap.get(key).getBasicRemote().sendText(jsonStr);
 	//					sessionsMap.get(key).getBasicRemote().sendText(Integer.valueOf(countNoRead).toString());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}else {
-//					System.out.println(key+"out");
+					System.out.println(key+"out");
 					continue;
 					
 				}
