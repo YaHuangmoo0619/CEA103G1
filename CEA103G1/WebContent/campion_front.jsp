@@ -770,9 +770,15 @@ section.footer {
 	</script>
 	<script>
 		function writeToScreen(input){
+<<<<<<< .merge_file_a15032
 			alert(typeof input);
 			let noRead = JSON.parse(input);
 			alert(typeof noRead);
+=======
+//			alert(typeof input);
+			let noRead = JSON.parse(input);
+//			alert(typeof noRead);
+>>>>>>> .merge_file_a18464
 // 			if(typeof noRead === "number"){
 // 				alert('in');
 // 				var countNoRead = document.getElementById('countNoRead');
@@ -798,7 +804,11 @@ section.footer {
 			websocket = new WebSocket(wsUri);
 			websocket.onmessage = function(event){
 				let noRead = event.data;
+<<<<<<< .merge_file_a15032
 				alert(noRead);
+=======
+//				alert(noRead);
+>>>>>>> .merge_file_a18464
 				writeToScreen(noRead);
 			};
 		}

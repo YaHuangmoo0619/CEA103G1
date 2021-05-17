@@ -45,11 +45,35 @@
 			if(noRead.mail_no !== undefined){
 				let tableOri = document.getElementById('mailTable');
 				let trOri = document.createElement('tr');
+<<<<<<< .merge_file_a09640
 				trOri.innerHTML = "<td>"+ noRead.mail_no+"</td><td>"+ noRead.send_no+"</td><td>"+noRead.rcpt_no+"</td><td>"+noRead.mail_cont+"</td><td>"+noRead.mail_time+"</td>";
 				console.log(tableOri);
 				console.log(trOri);
 				trOri.style.fontWeight=555;
 				tableOri.prepend(trOri);
+=======
+				trOri.innerHTML = "<td style='display:none;'>"+ noRead.mail_no+"</td><td>"+ noRead.send_no+"</td><td>"+noRead.rcpt_no+"</td><td>"+noRead.mail_cont+"</td><td>"+noRead.mail_time+"</td>";
+//				console.log(tableOri);
+//				console.log(trOri);
+				trOri.style.fontWeight=555;
+				if(tableOri !== null){
+					tableOri.prepend(trOri);
+				}
+			}
+			
+//			alert(noRead.ntfy_no);
+			if(noRead.ntfy_no !== undefined){
+//				alert('ntfy_no in');
+				let tableOri = document.getElementById('notifyTable');
+				let trOri = document.createElement('tr');
+				trOri.innerHTML = "<td style='display:none;'>"+ noRead.ntfy_no+"</td><td>"+noRead.ntfy_cont+"</td><td>"+noRead.ntfy_time+"</td>";
+//				alert(tableOri);
+//				console.log(trOri);
+//				trOri.style.fontWeight=555;
+				if(tableOri !== null){
+					tableOri.prepend(trOri);
+				}
+>>>>>>> .merge_file_a03636
 			}
 		}
 		function connection(){
@@ -58,7 +82,13 @@
 			websocket.onopen = function(event){
 				let e = document.createEvent("MouseEvent");
 				e.initEvent("click",true,true);
+<<<<<<< .merge_file_a09640
 				document.getElementById('sendNotify').dispatchEvent(e);
+=======
+				if(document.getElementById('sendNotify') !== null){
+					document.getElementById('sendNotify').dispatchEvent(e);
+				}
+>>>>>>> .merge_file_a03636
 			};
 			websocket.onmessage = function(event){
 				let noRead = event.data;

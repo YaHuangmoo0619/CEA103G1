@@ -553,6 +553,9 @@ public class ArticleServlet extends HttpServlet {
 				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no, art_rel_time, art_title, art_cont, likes, art_stat, replies, art_first_img);
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
+				//雅凰加的，為了推播通知
+				req.setAttribute("articleVO", articleVO);
+				//雅凰加的，為了推播通知
 				String url = "/front-end/article/listAllArticle.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllArticle.jsp
 				successView.forward(req, res);
