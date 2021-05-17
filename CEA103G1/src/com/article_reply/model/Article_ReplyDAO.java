@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,17 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import com.article.model.ArticleDAO;
+import com.article.model.ArticleVO;
+import com.article_likes.model.Article_LikesDAO;
+import com.article_likes.model.Article_LikesVO;
+import com.follow.model.FollowDAO;
+import com.follow.model.FollowVO;
+import com.member.model.MemberDAO;
+import com.member.model.MemberVO;
+import com.personal_system_notify.model.Personal_System_NotifyDAO;
+import com.personal_system_notify.model.Personal_System_NotifyVO;
 
 
 public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
@@ -49,6 +61,39 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 			pstmt.setInt(6, article_ReplyVO.getLikes());
 			pstmt.executeUpdate();
 
+			//雅凰嘗試連動新增系統通知
+			//取得文章VO，以獲得文章標題
+			ArticleDAO articleDAO = new ArticleDAO();
+			ArticleVO articleVO = articleDAO.findByPrimaryKey(article_ReplyVO.getArt_no());
+			
+			Personal_System_NotifyVO personal_System_NotifyVO = new Personal_System_NotifyVO();
+			personal_System_NotifyVO.setMbr_no(articleVO.getMbr_no());
+			personal_System_NotifyVO.setNtfy_cont("您的文章「" + articleVO.getArt_title() + "」有新的回應");
+			personal_System_NotifyVO.setNtfy_stat(0);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String ntfy_time = sdf.format(new java.util.Date());
+			personal_System_NotifyVO.setNtfy_time(ntfy_time);
+			
+			Personal_System_NotifyDAO personal_System_NotifyDAO = new Personal_System_NotifyDAO();
+			personal_System_NotifyDAO.insertWithArticle(personal_System_NotifyVO, con);
+			
+			//取得按讚VO，以獲得按讚者名字，每個按讚者的會員編號都建立一則通知
+			Article_LikesDAO article_LikesDAO = new Article_LikesDAO();
+			List<Article_LikesVO> article_LikesVOList = article_LikesDAO.findByArt_no(article_ReplyVO.getArt_no());
+			
+			for(Article_LikesVO article_LikesVO : article_LikesVOList) {
+				Personal_System_NotifyVO personal_System_NotifyVOLike = new Personal_System_NotifyVO();
+				personal_System_NotifyVOLike.setMbr_no(article_LikesVO.getMbr_no());
+				personal_System_NotifyVOLike.setNtfy_cont("您按讚的文章「" + articleVO.getArt_title() + "」有新的回應");
+				personal_System_NotifyVOLike.setNtfy_stat(0);
+				SimpleDateFormat sdfLike = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String ntfy_timeLike = sdfLike.format(new java.util.Date());
+				personal_System_NotifyVOLike.setNtfy_time(ntfy_timeLike);
+				
+				personal_System_NotifyDAO.insertWithArticle(personal_System_NotifyVOLike, con);
+			}
+			//雅凰嘗試連動新增系統通知
+			
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());

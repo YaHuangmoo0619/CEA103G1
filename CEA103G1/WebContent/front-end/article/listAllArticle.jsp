@@ -187,8 +187,12 @@ overflow-y: auto;
         <!-- 雅凰加的，為了嘗試啟動通知的推播 -->
         --${articleVO != null? articleVO.mbr_no:'123' }--
 			<c:if test="${articleVO != null}">
-			<!-- insert回傳的VO沒有信件編號 -->
+			<!-- insert回傳的VO沒有文章編號 -->
 					<div onclick="sendNotify()" id="sendNotify">${articleVO.mbr_no}/article</div>
+			</c:if>
+			<c:if test="${article_ReplyVO != null}">
+			<!-- insert回傳的VO沒有留言編號 -->
+					<div onclick="sendNotify()" id="sendNotify">${article_ReplyVO.art_no}/reply</div>
 			</c:if>
 		<!-- 雅凰加的，為了嘗試啟動通知的推播 -->
             <div class="body">
