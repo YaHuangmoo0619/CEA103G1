@@ -245,26 +245,11 @@ tr:hover {
 					<div style="width: 250px;display:inline-block;">«H¥ó¤º®e</div>
 					<div style="width: 150px;display:inline-block;">«H¥ó¤é´Á</div>
 				</div>
-<<<<<<< HEAD
-<<<<<<< .merge_file_a17148
-			--${member_mailVO != null? member_mailVO.rcpt_no:'123' }--
-			<c:if test="${member_mailVO != null}">
-			<!-- insert¦^¶ÇªºVO¨S¦³«H¥ó½s¸¹ -->
-					<div onclick="sendNotify()" id="sendNotify">${member_mailVO.rcpt_no}</div>
-=======
 <%-- 			--${member_mailVO != null? member_mailVO.rcpt_no:'123' }-- --%>
 			<c:if test="${member_mailVO != null}">
 			<!-- insert¦^¶ÇªºVO¨S¦³«H¥ó½s¸¹ -->
 					<div onclick="sendNotify()" id="sendNotify" style="display:none;">${member_mailVO.rcpt_no}/mail</div>
->>>>>>> .merge_file_a09004
-=======
-			--${member_mailVO != null? member_mailVO.rcpt_no:'123' }--
-			<c:if test="${member_mailVO != null}">
-			<!-- insert¦^¶ÇªºVO¨S¦³«H¥ó½s¸¹ -->
-					<div onclick="sendNotify()" id="sendNotify">${member_mailVO.rcpt_no}/mail</div>
->>>>>>> parent of 09af1b2 (æ­£åœ¨è™•ç†è¨‚ç‡Ÿä½çš„ç³»çµ±é€šçŸ¥ï¼Œæ™‚é–“åˆ°äº†å…ˆpush)
 			</c:if>
-			
 			<table>
 			<tbody id="mailTable">
 <!-- 				<tr> -->

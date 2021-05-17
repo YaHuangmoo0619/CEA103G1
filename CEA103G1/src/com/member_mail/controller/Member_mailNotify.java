@@ -1,10 +1,8 @@
+
 package com.member_mail.controller;
 
 import java.io.IOException;
-<<<<<<< .merge_file_a18604
-=======
 import java.text.SimpleDateFormat;
->>>>>>> .merge_file_a13108
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,23 +21,17 @@ import javax.websocket.server.ServerEndpoint;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-<<<<<<< .merge_file_a18604
-=======
 import com.article.model.ArticleDAO;
 import com.article.model.ArticleVO;
 import com.article_likes.model.Article_LikesDAO;
 import com.article_likes.model.Article_LikesVO;
 import com.follow.model.FollowDAO;
 import com.follow.model.FollowVO;
->>>>>>> .merge_file_a13108
 import com.member.model.MemberService;
 import com.member_mail.model.Member_mailForWS;
 import com.member_mail.model.Member_mailService;
 import com.member_mail.model.Member_mailVO;
-<<<<<<< .merge_file_a18604
-=======
 import com.personal_system_notify.model.Personal_System_NotifyDAO;
->>>>>>> .merge_file_a13108
 import com.personal_system_notify.model.Personal_System_NotifyService;
 import com.personal_system_notify.model.Personal_System_NotifyVO;
 
@@ -100,12 +92,6 @@ public class Member_mailNotify {
 	}
 	
 	@OnMessage
-<<<<<<< .merge_file_a18604
-	public void onMessage(String number) {
-//		System.out.println("onMessage="+rcpt_no);
-//		System.out.println("size="+sessionsMap.size());
-		
-=======
 	public void onMessage(String numberAndNote) {
 //		System.out.println("onMessage="+rcpt_no);
 //		System.out.println("size="+sessionsMap.size());
@@ -114,117 +100,16 @@ public class Member_mailNotify {
 		String number = numberAndNote.split("/")[0];
 		String note = numberAndNote.split("/")[1];
 		
->>>>>>> .merge_file_a13108
 		//準備用service找VO
 		Member_mailService member_mailSvc = new Member_mailService();
 		Personal_System_NotifyService personal_system_notifySvc = new Personal_System_NotifyService();
 		
-<<<<<<< .merge_file_a18604
-		for(String key : sessionsMap.keySet()) {
-			System.out.println(sessionsMap.size()+"/"+key+"/"+number);
-			if(key.equals(number)) {
-				System.out.println(key+"in");
-//				Member_mailService member_mailSvc = new Member_mailService();
-//				Map<String,String[]> map = new LinkedHashMap<String,String[]>();
-//				map.put("mail_read_stat",new String[] {"0"});
-//				Set<Member_mailVO> set = member_mailSvc.getWhereCondition(map);
-//				List<Integer> mail_noList = new ArrayList<Integer>();
-//				int countNoRead = 0;
-//				for(Member_mailVO vo : set) {
-////					System.out.println(vo.getRcpt_no());
-//					if(rcpt_no.equals(vo.getRcpt_no().toString()) && "0".equals(vo.getMail_stat().toString())) {
-//						mail_noList.add(vo.getMail_no());
-//						countNoRead++;
-//					}
-//				}
-				
-				
-				
-				//找出未讀的
-				Map<String,String[]> mapMail = new LinkedHashMap<String,String[]>();
-				mapMail.put("mail_read_stat",new String[] {"0"});
-				Set<Member_mailVO> setMail = member_mailSvc.getWhereCondition(mapMail);
-				//---
-				Map<String,String[]> mapNotify = new LinkedHashMap<String,String[]>();
-				mapNotify.put("ntfy_stat",new String[] {"0"});
-				Set<Personal_System_NotifyVO> setNotify = personal_system_notifySvc.getWhereCondition(mapNotify);
-				
-				//準備裝符合條件的編號
-				List<Integer> mail_noList = new ArrayList<Integer>();
-				List<Integer> ntfy_noList = new ArrayList<Integer>();
-				
-				//給予累計數字的初值為零
-				int countNoReadMail = 0;
-				int countNoReadNotify = 0;
-				
-				//開始計數並加入符合條件的編號
-				for(Member_mailVO vo : setMail) {
-//					System.out.println(vo.getRcpt_no());
-					if(number.equals(vo.getRcpt_no().toString()) && "0".equals(vo.getMail_stat().toString())) {
-						mail_noList.add(vo.getMail_no());
-						countNoReadMail++;
-					}
-				}
-				for(Personal_System_NotifyVO vo : setNotify) {
-//					System.out.println(vo.getMbr_no());
-					if(number.equals(vo.getMbr_no().toString()) && "0".equals(vo.getNtfy_stat().toString())) {
-						ntfy_noList.add(vo.getNtfy_no());
-						countNoReadNotify++;
-					}
-				}
-				
-//				//找出新增的VO
-				Member_mailVO member_mailVO = new Member_mailVO();
-				if(mail_noList.size() != 0 ) {
-					System.out.println("mail_noList.size()="+mail_noList.size());
-					member_mailVO = member_mailSvc.getOneMember_mail(mail_noList.get(mail_noList.size()-1));
-				}
-				Personal_System_NotifyVO personal_system_notifyVO = new Personal_System_NotifyVO();
-				if(ntfy_noList.size() != 0 ) {
-					System.out.println("ntfy_noList.size()="+ntfy_noList.size());
-					personal_system_notifyVO = personal_system_notifySvc.getOnePersonal_System_Notify(ntfy_noList.get(ntfy_noList.size()-1));
-				}
-				
-				try {
-					Member_mailForWS member_mailForWS = new Member_mailForWS();
-					MemberService memberSvc = new MemberService();
-					if(member_mailVO != null) {
-						member_mailForWS.setMail_no(member_mailVO.getMail_no());
-						member_mailForWS.setSend_no(member_mailVO.getSend_no() + memberSvc.getOneMember(member_mailVO.getSend_no()).getName());
-						member_mailForWS.setRcpt_no(member_mailVO.getRcpt_no() + memberSvc.getOneMember(member_mailVO.getRcpt_no()).getName());
-						member_mailForWS.setMail_read_stat(member_mailVO.getMail_read_stat());
-						member_mailForWS.setMail_stat(member_mailVO.getMail_stat());
-						member_mailForWS.setMail_cont(member_mailVO.getMail_cont());
-						member_mailForWS.setMail_time(member_mailVO.getMail_time().substring(0, 10));
-					}
-					if(personal_system_notifyVO != null) {
-						member_mailForWS.setNtfy_no(personal_system_notifyVO.getNtfy_no());
-						member_mailForWS.setMbr_no(personal_system_notifyVO.getMbr_no());
-						member_mailForWS.setNtfy_stat(personal_system_notifyVO.getNtfy_stat());
-						member_mailForWS.setNtfy_cont(personal_system_notifyVO.getNtfy_cont());
-						member_mailForWS.setNtfy_time(personal_system_notifyVO.getNtfy_time());
-					}
-					
-					member_mailForWS.setCountNoReadMail(countNoReadMail);
-					member_mailForWS.setCountNoReadNotify(countNoReadNotify);
-					
-					String jsonStr = new JSONObject(member_mailForWS).toString();
-					sessionsMap.get(key).getBasicRemote().sendText(jsonStr);
-//					sessionsMap.get(key).getBasicRemote().sendText(Integer.valueOf(countNoRead).toString());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}else {
-				System.out.println(key+"out");
-				continue;
-				
-=======
 		if(note.equals("mail") || note.equals("like")) {
 		
 			for(String key : sessionsMap.keySet()) {
-				System.out.println(sessionsMap.size()+"/"+key+"/"+number);
+//				System.out.println(sessionsMap.size()+"/"+key+"/"+number);
 				if(key.equals(number)) {
-					System.out.println(key+"in");
+//					System.out.println(key+"in");
 	//				Member_mailService member_mailSvc = new Member_mailService();
 	//				Map<String,String[]> map = new LinkedHashMap<String,String[]>();
 	//				map.put("mail_read_stat",new String[] {"0"});
@@ -318,7 +203,7 @@ public class Member_mailNotify {
 						e.printStackTrace();
 					}
 				}else {
-					System.out.println(key+"out");
+//					System.out.println(key+"out");
 					continue;
 					
 				}
@@ -329,9 +214,9 @@ public class Member_mailNotify {
 			for(FollowVO followVO : followVOList) {
 				for(String key : sessionsMap.keySet()) {
 					String numberFollow = followVO.getFlw_mbr_no().toString();
-					System.out.println(sessionsMap.size()+"/"+key+"/"+numberFollow);
+//					System.out.println(sessionsMap.size()+"/"+key+"/"+numberFollow);
 					if(key.equals(numberFollow)) {
-						System.out.println(key+"in");
+//						System.out.println(key+"in");
 						//找出未讀的
 						Map<String,String[]> mapMail = new LinkedHashMap<String,String[]>();
 						mapMail.put("mail_read_stat",new String[] {"0"});
@@ -389,14 +274,14 @@ public class Member_mailNotify {
 							member_mailForWS.setCountNoReadNotify(countNoReadNotify);
 							
 							String jsonStr = new JSONObject(member_mailForWS).toString();
-							System.out.println("jsonStr="+jsonStr);
+//							System.out.println("jsonStr="+jsonStr);
 							sessionsMap.get(key).getBasicRemote().sendText(jsonStr);
 		//					sessionsMap.get(key).getBasicRemote().sendText(Integer.valueOf(countNoRead).toString());
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
 					}else {
-						System.out.println(key+"out");
+//						System.out.println(key+"out");
 						continue;
 						
 					}
@@ -411,9 +296,9 @@ public class Member_mailNotify {
 			for(Article_LikesVO article_LikesVO : article_LikesVOList) {
 				for(String key : sessionsMap.keySet()) {
 					String numberLike = article_LikesVO.getMbr_no().toString();
-					System.out.println(sessionsMap.size()+"/"+key+"/"+numberLike);
+//					System.out.println(sessionsMap.size()+"/"+key+"/"+numberLike);
 					if(key.equals(numberLike)) {
-						System.out.println(key+"in");
+//						System.out.println(key+"in");
 						//找出未讀的
 						Map<String,String[]> mapMail = new LinkedHashMap<String,String[]>();
 						mapMail.put("mail_read_stat",new String[] {"0"});
@@ -471,14 +356,14 @@ public class Member_mailNotify {
 							member_mailForWS.setCountNoReadNotify(countNoReadNotify);
 							
 							String jsonStr = new JSONObject(member_mailForWS).toString();
-							System.out.println("jsonStr="+jsonStr);
+//							System.out.println("jsonStr="+jsonStr);
 							sessionsMap.get(key).getBasicRemote().sendText(jsonStr);
 		//					sessionsMap.get(key).getBasicRemote().sendText(Integer.valueOf(countNoRead).toString());
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
 					}else {
-						System.out.println(key+"out");
+//						System.out.println(key+"out");
 						continue;
 						
 					}
@@ -491,9 +376,9 @@ public class Member_mailNotify {
 			String authorNo = articleVO.getMbr_no().toString();
 			
 			for(String key : sessionsMap.keySet()) {
-				System.out.println(sessionsMap.size()+"/"+key+"/"+authorNo);
+//				System.out.println(sessionsMap.size()+"/"+key+"/"+authorNo);
 				if(key.equals(authorNo)) {
-					System.out.println(key+"in");
+//					System.out.println(key+"in");
 					//找出未讀的
 					Map<String,String[]> mapMail = new LinkedHashMap<String,String[]>();
 					mapMail.put("mail_read_stat",new String[] {"0"});
@@ -561,19 +446,19 @@ public class Member_mailNotify {
 						member_mailForWS.setCountNoReadNotify(countNoReadNotify);
 						
 						String jsonStr = new JSONObject(member_mailForWS).toString();
-						System.out.println("jsonStr="+jsonStr);
+//						System.out.println("jsonStr="+jsonStr);
 						sessionsMap.get(key).getBasicRemote().sendText(jsonStr);
 	//					sessionsMap.get(key).getBasicRemote().sendText(Integer.valueOf(countNoRead).toString());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}else {
-					System.out.println(key+"out");
+//					System.out.println(key+"out");
 					continue;
 					
 				}
->>>>>>> .merge_file_a13108
 			}
 		}
 	}
 }
+

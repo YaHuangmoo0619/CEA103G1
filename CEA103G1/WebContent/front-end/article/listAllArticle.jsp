@@ -184,7 +184,7 @@ overflow-y: auto;
 </style>
 
 </head>
-<body>
+<body onload="connection()">
 	<div>•ÿ´eµn§J™∫§H¨O: ${memberVO.mbr_no}</div>
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	
@@ -224,7 +224,6 @@ overflow-y: auto;
 
 
         <div class="container">
-<<<<<<< HEAD
  
         		<div class=article_sort_parent>
         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp';">≥Ã∑s</div>
@@ -242,20 +241,20 @@ overflow-y: auto;
      
      
      
-=======
+
         
         <!-- ∂Æ∞ƒ•[™∫°A¨∞§Fπ¡∏’±“∞ ≥q™æ™∫±¿ºΩ -->
-        --${articleVO != null? articleVO.mbr_no:'123' }--
+<%--         --${articleVO != null? articleVO.mbr_no:'123' }-- --%>
 			<c:if test="${articleVO != null}">
 			<!-- insert¶^∂«™∫VO®S¶≥§Â≥πΩs∏π -->
-					<div onclick="sendNotify()" id="sendNotify">${articleVO.mbr_no}/article</div>
+					<div onclick="sendNotify()" id="sendNotify" style="display:none;">${articleVO.mbr_no}/article</div>
 			</c:if>
 			<c:if test="${article_ReplyVO != null}">
 			<!-- insert¶^∂«™∫VO®S¶≥Ød®•Ωs∏π -->
-					<div onclick="sendNotify()" id="sendNotify">${article_ReplyVO.art_no}/reply</div>
+					<div onclick="sendNotify()" id="sendNotify" style="">${article_ReplyVO.art_no}/reply</div>
 			</c:if>
 		<!-- ∂Æ∞ƒ•[™∫°A¨∞§Fπ¡∏’±“∞ ≥q™æ™∫±¿ºΩ -->
->>>>>>> parent of 09af1b2 (Ê≠£Âú®ËôïÁêÜË®ÇÁáü‰ΩçÁöÑÁ≥ªÁµ±ÈÄöÁü•ÔºåÊôÇÈñìÂà∞‰∫ÜÂÖàpush)
+
             <div class="body">
                     <c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
                     <div class=article>
@@ -448,6 +447,47 @@ jedis.close();
 	  $('#login_confirm').modal('show');
   })
   </script>
-  
+   <!-- ∂Æ∞ƒπ¡∏’•[§W≠∫≠∂§ß≠∂≠∫™∫WebSocket -->
+  <script>
+		function writeToScreen(input){
+			let noRead = JSON.parse(input);
+			
+			var notifyMail = document.getElementById('countNoReadMail');
+			notifyMail.innerText = noRead.countNoReadMail;
+			var notifyNotify = document.getElementById('countNoReadNotify');
+			notifyNotify.innerText = noRead.countNoReadNotify;
+			
+			if(noRead.mail_no !== undefined){
+				let tableOri = document.getElementById('mailTable');
+				let trOri = document.createElement('tr');
+				trOri.innerHTML = "<td style='display:none;'>"+ noRead.mail_no+"</td><td>"+ noRead.send_no+"</td><td>"+noRead.rcpt_no+"</td><td>"+noRead.mail_cont+"</td><td>"+noRead.mail_time+"</td>";
+//				console.log(tableOri);
+//				console.log(trOri);
+				trOri.style.fontWeight=555;
+				tableOri.prepend(trOri);
+			}
+		}
+		function connection(){
+			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
+			websocket = new WebSocket(wsUri);
+			websocket.onopen = function(event){
+				let e = document.createEvent("MouseEvent");
+				e.initEvent("click",true,true);
+				if(document.getElementById('sendNotify') !== null){
+					document.getElementById('sendNotify').dispatchEvent(e);
+				}
+			};
+			websocket.onmessage = function(event){
+				let noRead = event.data;
+				writeToScreen(noRead);
+			};
+		}
+		function sendNotify(){
+			let sendNotify = document.getElementById('sendNotify');
+			websocket.send(sendNotify.innerText);
+		}
+		
+</script>
+  <!-- ∂Æ∞ƒπ¡∏’•[§W≠∫≠∂§ß≠∂≠∫™∫WebSocket -->
 </body>
 </html>

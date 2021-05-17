@@ -20,8 +20,6 @@ public class Personal_System_NotifyVO implements Serializable{
 		this.ntfy_cont = ntfy_cont;
 		this.ntfy_time = ntfy_time;
 	}
-<<<<<<< .merge_file_a13844
-=======
 	
 	public Personal_System_NotifyVO(Integer mbr_no, Integer ntfy_stat, String ntfy_cont , String ntfy_time) {
 		super();
@@ -30,7 +28,6 @@ public class Personal_System_NotifyVO implements Serializable{
 		this.ntfy_cont = ntfy_cont;
 		this.ntfy_time = ntfy_time;
 	}
->>>>>>> .merge_file_a17712
 
 	public Personal_System_NotifyVO() {
 

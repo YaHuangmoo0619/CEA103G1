@@ -4,12 +4,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
-<<<<<<< HEAD
-<<<<<<< .merge_file_a02712
+
 import javax.naming.*;
 import javax.sql.DataSource;
 
-=======
+
 import java.text.SimpleDateFormat;
 
 import javax.naming.*;
@@ -21,12 +20,10 @@ import com.member.model.MemberDAO;
 import com.member.model.MemberVO;
 import com.personal_system_notify.model.Personal_System_NotifyDAO;
 import com.personal_system_notify.model.Personal_System_NotifyVO;
->>>>>>> .merge_file_a15944
-=======
+
 import javax.naming.*;
 import javax.sql.DataSource;
 
->>>>>>> parent of 09af1b2 (æ­£åœ¨è™•ç†è¨‚ç‡Ÿä½çš„ç³»çµ±é€šçŸ¥ï¼Œæ™‚é–“åˆ°äº†å…ˆpush)
 import com.place_order_details.model.Place_Order_DetailsDAO;
 import com.place_order_details.model.Place_Order_DetailsVO;
 
@@ -335,9 +332,6 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 			con.commit();
 			con.setAutoCommit(true);
 
-<<<<<<< HEAD
-<<<<<<< .merge_file_a02712
-=======
 			//¶®°Ä¹Á¸Õ³s°Ê·s¼W¨t²Î³qª¾
 			//«Ø¥ß­q³æªº·|­û·s¼W³qª¾
 			Personal_System_NotifyVO personal_System_NotifyVO = new Personal_System_NotifyVO();
@@ -352,9 +346,6 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 			personal_System_NotifyDAO.insertWithArticle(personal_System_NotifyVO, con);
 			//¶®°Ä¹Á¸Õ³s°Ê·s¼W¨t²Î³qª¾
 			
->>>>>>> .merge_file_a15944
-=======
->>>>>>> parent of 09af1b2 (æ­£åœ¨è™•ç†è¨‚ç‡Ÿä½çš„ç³»çµ±é€šçŸ¥ï¼Œæ™‚é–“åˆ°äº†å…ˆpush)
 			// Handle any driver errors
 		} catch (SQLException se) {
 			if (con != null) {
