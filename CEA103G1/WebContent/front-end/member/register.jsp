@@ -136,6 +136,7 @@
 		<td><input type="TEXT" name="add" id="add" size="45"/></td>
 		<input type="hidden" name="action" value="register_Member">
 	</tr>
+	
 
 </table>
 <br>
