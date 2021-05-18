@@ -251,7 +251,7 @@ overflow-y: auto;
 			</c:if>
 			<c:if test="${article_ReplyVO != null}">
 			<!-- insert回傳的VO沒有留言編號 -->
-					<div onclick="sendNotify()" id="sendNotify" style="">${article_ReplyVO.art_no}/reply</div>
+					<div onclick="sendNotify()" id="sendNotify" style="display:none;">${article_ReplyVO.art_no}/reply</div>
 			</c:if>
 		<!-- 雅凰加的，為了嘗試啟動通知的推播 -->
 

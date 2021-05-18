@@ -304,16 +304,12 @@ tr:hover {
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
+
 <script>
-<<<<<<< .merge_file_a17148
-	$("tr").click(function(e){
-		let mail_no = e.currentTarget.children[0].innerText;
-=======
 	$("body").on("click","tr",function(e){
 // 		console.log('click');
 		let mail_no = e.currentTarget.children[0].innerText;
 // 		console.log(mail_no);
->>>>>>> .merge_file_a09004
 		window.location.href="<%=request.getContextPath()%>/member_mail/member_mail.do?mail_no="+ mail_no + "&action=read";
 	});
 

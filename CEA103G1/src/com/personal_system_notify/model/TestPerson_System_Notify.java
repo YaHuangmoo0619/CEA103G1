@@ -47,7 +47,7 @@ public class TestPerson_System_Notify extends HttpServlet {
 //		articleVO.setMbr_no(10001);
 //		Timestamp art_rel_time = new Timestamp(System.currentTimeMillis());
 //		articleVO.setArt_rel_time(art_rel_time);
-//		articleVO.setArt_title("測試新增通知11");
+//		articleVO.setArt_title("測試新增通知12");
 //		articleVO.setArt_cont("測試新增通知");
 //		articleVO.setLikes(0);
 //		articleVO.setArt_stat(0);

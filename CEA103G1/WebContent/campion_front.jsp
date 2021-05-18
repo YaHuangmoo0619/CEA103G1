@@ -768,61 +768,66 @@ section.footer {
 			show : true
 		});
 	</script>
-	<script>
+<script>
+	let countMenu = 0;
+	$("#menu").click(function() {
+		countMenu++;
+		if (countMenu % 2 == 1) {
+			let secArray = document.getElementsByClassName("sec");
+			for (let i = 0; i < secArray.length; i++) {
+				secArray[i].style.display = "flex";
+			}
+		} else {
+			let secArray = document.getElementsByClassName("sec");
+			for (let i = 0; i < secArray.length; i++) {
+				secArray[i].style.display = "none";
+			}
+		}
+	});
+
+//	let countSearch = 0;
+//	$("#searchIcon").click(function() {
+//		countSearch++;
+//		if (countSearch % 2 == 1) {
+//			let formArray = document.getElementsByClassName("secSearch");
+//			for (let i = 0; i < formArray.length; i++) {
+//				formArray[i].style.display = "flex";
+//			}
+//		} else {
+//			let formArray = document.getElementsByClassName("secSearch");
+//			for (let i = 0; i < formArray.length; i++) {
+//				formArray[i].style.display = "none";
+//			}
+//		}
+//	});
+
+</script>
+<script>
 		function writeToScreen(input){
-<<<<<<< .merge_file_a15032
-			alert(typeof input);
 			let noRead = JSON.parse(input);
-			alert(typeof noRead);
-=======
-//			alert(typeof input);
-			let noRead = JSON.parse(input);
-//			alert(typeof noRead);
->>>>>>> .merge_file_a18464
-// 			if(typeof noRead === "number"){
-// 				alert('in');
-// 				var countNoRead = document.getElementById('countNoRead');
-// 				countNoRead.innerText = input;
-// 			}else if(typeof noRead === "object"){
-// 				var notify = document.getElementById('countNoRead');
-// 				notify.innerText = noRead.countNoRead;
-// 				var tableOri = document.getElementsByTagName('table');
-// 				var trOri = document.getElementsByTagName('tr');
-// 				trOri[0].innerHTML = "<td>"+ noRead.mail_no+"</td><td>"+noRead.rcpt_no+"</td><td>"+noRead.mail_cont+"</td><td>"+noRead.mail_time+"</td>";
-// 				tableOri[0].prepend(trOri[0]);
-// 			}
 			
 			var notifyMail = document.getElementById('countNoReadMail');
-			console.log(notifyMail);
 			notifyMail.innerText = noRead.countNoReadMail;
 			var notifyNotify = document.getElementById('countNoReadNotify');
 			notifyNotify.innerText = noRead.countNoReadNotify;
+			
 		}
-			function connection(){
-<%-- 			alert('ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify.do'); --%>
+		function connection(){
 			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
 			websocket = new WebSocket(wsUri);
 			websocket.onmessage = function(event){
 				let noRead = event.data;
-<<<<<<< .merge_file_a15032
-				alert(noRead);
-=======
-//				alert(noRead);
->>>>>>> .merge_file_a18464
 				writeToScreen(noRead);
 			};
 		}
 		
-	</script>
-<<<<<<< HEAD
-=======
+</script>
 	
 		<script>
 		
 		$('#basicModal_homepage').modal('show')
 	</script>
 	
->>>>>>> 2be4fc30a071edb60a4aab912c6fd0c1d11b5e42
 </body>
 
 </html>

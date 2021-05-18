@@ -318,13 +318,13 @@ public class Member_mailNotify {
 						
 						//開始計數並加入符合條件的編號
 						for(Member_mailVO vo : setMail) {
-		//					System.out.println(vo.getRcpt_no());
+//							System.out.println(vo.getRcpt_no());
 							if(numberLike.equals(vo.getRcpt_no().toString()) && "0".equals(vo.getMail_stat().toString())) {
 								countNoReadMail++;
 							}
 						}
 						for(Personal_System_NotifyVO vo : setNotify) {
-		//					System.out.println(vo.getMbr_no());
+//							System.out.println(vo.getMbr_no());
 							if(numberLike.equals(vo.getMbr_no().toString()) && "0".equals(vo.getNtfy_stat().toString())) {
 								ntfy_noList.add(vo.getNtfy_no());
 								countNoReadNotify++;
