@@ -152,7 +152,6 @@
 			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 			     <input type="hidden" name="action"	value="buyOne"></FORM>
 			</td>
-			<td><button class=addshopping_cart>加入購物車</button></td>
 		</tr>
 	</c:forEach>
 </table>
@@ -160,17 +159,5 @@
 <%-- <%@ include file="page2.file" %> --%> 
 
 
-<script>
-	$(".addshopping_cart").click(function(){
-		$.ajax({  
-			type : "POST",
-			url : "http://localhost:8081/CEA103G1/shopping_cart/shopping_cart.do",
-			data : {action: "plus_like",mbr_no:"10001",art_no:<%=articleVO.getArt_no()%>}, //參數傳遞 : action傳遞「加一」 mbr_no art_no 傳遞要加一的資訊
-			success : function(data) {
-				alert("新增某人對某文章的按讚成功");
-			}
-		});
-	})
-</script>
 </body>
 </html>

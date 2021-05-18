@@ -27,25 +27,18 @@ public class Shopping_cartServlet extends HttpServlet{
 		String action = req.getParameter("action");
 		
 	
-	
-	
-		
-		
-		
-		
-		
 		if ("add_collection".equals(action)) { // 為某篇人新增一個購物車商品
 
 			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 			Integer prod_no = null;
 			prod_no = new Integer(req.getParameter("prod_no").trim());
-
+			System.out.println("要加入購物車的商品編號:"+prod_no);
 			Integer mbr_no = null;
 			mbr_no = new Integer(req.getParameter("mbr_no").trim());
-			
+			System.out.println("會員號碼:"+mbr_no);
 			Integer prod_amt= null;
 			prod_amt = new Integer(req.getParameter("prod_amt").trim());
-			
+			System.out.println("要加入購物車的數量"+prod_amt);
 			Shopping_cartVO shopping_cartVO = new Shopping_cartVO();
 			shopping_cartVO.setMbr_no(mbr_no);
 			shopping_cartVO.setProd_no(prod_no);

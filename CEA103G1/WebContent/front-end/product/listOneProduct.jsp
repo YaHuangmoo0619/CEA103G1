@@ -25,7 +25,9 @@
 <html>
 <head>
 <title>商品 - listOneProduct.jsp</title>
-
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -63,9 +65,43 @@
   }
 </style>
 
+<style>
+.product-subtract,
+.product-plus,
+.product-qty {
+  width: 33.330557%;
+  background-color: transparent;
+  color: #686868;
+  text-align: center;
+}
+
+._column {
+  display: inline-block;
+  vertical-align: top;
+  font-size: medium;
+  text-align: left;
+  text-rendering: optimizeLegibility;
+}
+
+._btn {
+  display: inline-block;
+  background-color: #bdc3c7;
+  border: none;
+  padding: .5em .75em;
+  text-align: center;
+  font-weight: 300;
+}
+
+._btn:hover,
+.cart-totals:hover ._btn {
+  background-color: #3498db;
+  color: #ecf0f1;
+
+</style>
+
 </head>
 <body bgcolor='white'>
-
+<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <table id="table-1">
 	<tr><td>
 		 <h3>商品 - ListOneProduct.jsp</h3>
@@ -86,6 +122,10 @@
 		<th>商品顏色</th>
 		<th>商品大小</th>
 		<th>運送方式</th>
+		<th></th>
+		<th>數量</th>
+		<th>庫存量</th>
+		<th></th>
 	</tr>
 	<tr>
 		<td>${productVO.prod_no}</td>
@@ -116,6 +156,15 @@
 			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 			     <input type="hidden" name="action"	value="buyOne"></FORM>
 			</td>
+			<td>
+			  <button class="_btn _column product-subtract">&minus;</button>
+              <div class="_column product-qty" id="product-qty">0</div>
+              <button class="_btn _column product-plus">&plus;</button>
+			</td>
+			
+			
+			
+			<td id="max_num">${productVO.prod_stg}</td>
 			<td><button class=addshopping_cart>加入購物車</button></td>
 	</tr>
 </table>
@@ -127,15 +176,37 @@
 
 <script>
 	$(".addshopping_cart").click(function(){
+		var num_add = $("#product-qty").text();
 		$.ajax({  
-			type : "POST",
+			type : "post",
 			url : "http://localhost:8081/CEA103G1/shopping_cart/shopping_cart.do",
-			data : {action: "plus_like",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,}, //參數傳遞 : action傳遞「加一」 mbr_no art_no 傳遞要加一的資訊
+			data : {action: "add_collection",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,prod_no:<%=productVO.getProd_no()%>,prod_amt:num_add},
 			success : function(data) {
-				alert("新增某人對某文章的按讚成功");
+				alert("成功加入購物車");
 			}
 		});
 	})
+	
+	$(".product-plus").click(function(){
+		var max_num = parseInt($("#max_num").text());
+		console.log("max_num:"+max_num);
+		var num = parseInt($(this).prev().text());
+		if(num<max_num){
+			num = num + 1;
+		}
+		$(this).prev().text(num);
+		
+		})
+
+	$(".product-subtract").click(function(){
+		var num = parseInt($(this).next().text());
+		if(num>0){
+			num = num - 1;
+			$(this).next().text(num);
+		}
+
+		$(this).next().text(num);
+		})	
 </script>
 </body>
 </html>
