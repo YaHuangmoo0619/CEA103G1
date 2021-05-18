@@ -12,7 +12,7 @@ public class Campsite_ownerService {
 		dao = new Campsite_ownerDAO();
 	}
 
-	public Campsite_ownerVO addCampsite_owner(String acc, String pwd, String id, String name, Date bday, Integer sex, String mobile, String mail, String city, String dist, String add, Timestamp join_time, Byte id_picf, Byte id_picb, Byte id_pic2f, Integer stat, Byte sticker, Byte license, Integer bank_no, String bank_acc) {
+	public Campsite_ownerVO addCampsite_owner(String acc, String pwd, String id, String name, Date bday, Integer sex, Integer mobile, String mail, String city, String dist, String add, byte[] sticker,Integer bank_no, String bank_acc) {
 
 		Campsite_ownerVO campsite_ownerVO = new Campsite_ownerVO();
 
@@ -27,13 +27,7 @@ public class Campsite_ownerService {
 		campsite_ownerVO.setCity(city);
 		campsite_ownerVO.setDist(dist);
 		campsite_ownerVO.setAdd(add);
-		campsite_ownerVO.setJoin_time(join_time);
-		campsite_ownerVO.setId_picf(id_picf);
-		campsite_ownerVO.setId_picb(id_picb);
-		campsite_ownerVO.setId_pic2f(id_pic2f);
-		campsite_ownerVO.setStat(stat);
 		campsite_ownerVO.setSticker(sticker);
-		campsite_ownerVO.setLicense(license);
 		campsite_ownerVO.setBank_no(bank_no);
 		campsite_ownerVO.setBank_acc(bank_acc);
 		dao.insert(campsite_ownerVO);
@@ -41,7 +35,7 @@ public class Campsite_ownerService {
 		return campsite_ownerVO;
 	}
 	
-	public Campsite_ownerVO updateCampsite_owner(Integer cso_no, String acc, String pwd, String id, String name, Date bday, Integer sex, String mobile, String mail, String city, String dist, String add, Timestamp join_time, Byte id_picf, Byte id_picb, Byte id_pic2f, Integer stat, Byte sticker, Byte license, Integer bank_no, String bank_acc) {
+	public Campsite_ownerVO updateCampsite_owner(Integer cso_no, String acc, String pwd, String id, String name, Date bday, Integer sex, Integer mobile, String mail, String city, String dist, String add, byte[] sticker, Integer bank_no, String bank_acc) {
 
 		Campsite_ownerVO campsite_ownerVO = new Campsite_ownerVO();
 		
@@ -57,13 +51,7 @@ public class Campsite_ownerService {
 		campsite_ownerVO.setCity(city);
 		campsite_ownerVO.setDist(dist);
 		campsite_ownerVO.setAdd(add);
-		campsite_ownerVO.setJoin_time(join_time);
-		campsite_ownerVO.setId_picf(id_picf);
-		campsite_ownerVO.setId_picb(id_picb);
-		campsite_ownerVO.setId_pic2f(id_pic2f);
-		campsite_ownerVO.setStat(stat);
 		campsite_ownerVO.setSticker(sticker);
-		campsite_ownerVO.setLicense(license);
 		campsite_ownerVO.setBank_no(bank_no);
 		campsite_ownerVO.setBank_acc(bank_acc);
 		dao.update(campsite_ownerVO);
