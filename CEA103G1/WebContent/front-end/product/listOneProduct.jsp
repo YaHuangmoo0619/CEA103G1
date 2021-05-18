@@ -113,6 +113,7 @@
 			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="直接下訂">
 			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
+			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 			     <input type="hidden" name="action"	value="buyOne"></FORM>
 			</td>
 			<td><button class=addshopping_cart>加入購物車</button></td>

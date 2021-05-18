@@ -38,6 +38,7 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 		try {
 
 			con = ds.getConnection();
+			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			pstmt.setInt(1, product_orderVO.getMbr_no());
@@ -54,6 +55,10 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 			pstmt.setString(12, product_orderVO.getRmk());
 
 			pstmt.executeUpdate();
+			
+			con.commit();
+//			con.setAutoCommit(autoCommit);
+
 
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
