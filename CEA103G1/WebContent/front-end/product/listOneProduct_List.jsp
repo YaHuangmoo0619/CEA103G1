@@ -5,8 +5,6 @@
 
 <%
   ProductVO productVO = (ProductVO) request.getAttribute("productVO");
-  String username = request.getParameter("username");
-request.setAttribute ("username", username);
 %>
 
 <html>
@@ -104,6 +102,7 @@ request.setAttribute ("username", username);
 			<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order_details/product_order_details.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="°e¥X">
 			     <input type="hidden" name="prod_no" value="${productVO.prod_no}">
+			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 			     <input type="hidden" name="action"	value="insert"></FORM>
 		</td>
 	</tr>

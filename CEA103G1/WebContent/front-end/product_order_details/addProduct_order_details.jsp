@@ -1,15 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.product_order_details.model.*"%>
+<%@ page import="com.product.model.*"%>
+<%@ page import="com.product_order.model.*"%>
 
 <%
-  Product_order_detailsVO product_order_detailsVO = (Product_order_detailsVO) request.getAttribute("product_order_detailsVO");
+	ProductVO productVO = (ProductVO) request.getAttribute("productVO");  
+	Product_orderVO product_orderVO = (Product_orderVO) request.getAttribute("product_orderVO");
 %>
 
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>商品訂單明細新增 - addProduct_order_details.jsp</title>
+<title>商品訂單明細新增</title>
 
 <style>
   table#table-1 {
@@ -69,25 +71,38 @@
 <table>
 	<tr>
 		<td>訂單編號:</td>
-		<td><input type="TEXT" name="prod_order_no" size="45" 
-			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_ord_no()%>" /></td>
+		<td><input type="TEXT" name="prod_ord_no" size="45" 
+			 value="${product_orderVO.prod_ord_no}" /></td>
 	</tr>
 	<tr>
 		<td>商品編號:</td>
 		<td><input type="TEXT" name="prod_no" size="45" 
-			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_no()%>" /></td>
+			 value="${productVO.prod_no}" /></td>
 	</tr>
 	<tr>
 		<td>商品數量:</td>
 		<td><input type="TEXT" name="prod_amt" size="45" 
-			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_amt()%>" /></td>
+			 value="${product_order_detailsVO.prod_amt}" /></td>
 	</tr>
 	<tr>
-		<td>商品單價:</td>
+		<td>商品單價:</td>  
 		<td><input type="TEXT" name="prod_unit_pc" size="45" 
-			 value="<%= (product_order_detailsVO==null)? "" : product_order_detailsVO.getProd_unit_pc()%>" /></td>
+			 value="${product.prod_unit_pc}" /></td>
 	</tr>
 
+
+
+	<jsp:useBean id="product_orderSvc" scope="page" class="com.product_order.model.Product_orderService" />
+	<tr>
+		<td>訂單:<font color=red><b>*</b></font></td>
+		<td>
+		<select size="1" name="prod_ordno">
+			<c:forEach var="product_orderVO" items="${product_orderSvc.all}">
+				<option value="$product_orderVO.prod_ord_no}" ${(product_order_detailsVO.product_orderVO.prod_ord_no==product_orderVO.prod_ord_no)? 'selected':'' } >${product_orderVO.prod_ord_no}
+			</c:forEach>
+		</select>
+		</td>
+	</tr>
 </table>
 <br>
 <input type="hidden" name="action" value="insert">
