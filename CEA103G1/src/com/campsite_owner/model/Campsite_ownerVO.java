@@ -12,7 +12,7 @@ public class Campsite_ownerVO implements java.io.Serializable{
 	private String name;
 	private Date bday;
 	private Integer sex;
-	private String mobile;
+	private Integer mobile;
 	private String mail;
 	private String city;
 	private String dist;
@@ -22,7 +22,7 @@ public class Campsite_ownerVO implements java.io.Serializable{
 	private Byte id_picb;
 	private Byte id_pic2f;
 	private Integer stat;
-	private Byte sticker;
+	private byte[] sticker;
 	private Byte license;
 	private Integer bank_no;
 	private String bank_acc;
@@ -83,11 +83,11 @@ public class Campsite_ownerVO implements java.io.Serializable{
 		this.sex = sex;
 	}
 	
-	public String getMobile() {
+	public Integer getMobile() {
 		return mobile;
 	}
 	
-	public void setMobile(String mobile) {
+	public void setMobile(Integer mobile) {
 		this.mobile = mobile;
 	}
 	
@@ -163,11 +163,11 @@ public class Campsite_ownerVO implements java.io.Serializable{
 		this.stat = stat;
 	}
 	
-	public Byte getSticker() {
+	public byte[] getSticker() {
 		return sticker;
 	}
 	
-	public void setSticker(Byte sticker) {
+	public void setSticker(byte[] sticker) {
 		this.sticker = sticker;
 	}
 	

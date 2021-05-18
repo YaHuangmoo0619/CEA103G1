@@ -22,9 +22,9 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 	}
 
 	private static final String INSERT_STMT = 
-		"INSERT INTO campion.campsite_owner (acc,pwd,id,name,bday,sex,mobile,mail,city,dist,add,join_time,id_picf,id_picb,id_pic2f,stat,sticker,license,bank_no,bank_acc) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		"INSERT INTO campion.campsite_owner (acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,sticker,bank_no,bank_acc) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
-		"SELECT cso_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,id_picf,id_picb,id_pic2f,stat,sticker,license,bank_no,bank_acc FROM campion.campsite_owner order by cso_no";
+		"SELECT * FROM campion.campsite_owner order by cso_no";
 	private static final String GET_ONE_STMT = 
 		"SELECT cso_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,id_picf,id_picb,id_pic2f,stat,sticker,license,bank_no,bank_acc FROM campion.campsite_owner where cso_no = ?";
 	private static final String DELETE = 
@@ -43,30 +43,22 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			
 			pstmt.setString(1, campsite_ownerVO.getAcc());
 			pstmt.setString(2, campsite_ownerVO.getPwd());
 			pstmt.setString(3, campsite_ownerVO.getId());
 			pstmt.setString(4, campsite_ownerVO.getName());
 			pstmt.setDate(5, campsite_ownerVO.getBday());
 			pstmt.setInt(6, campsite_ownerVO.getSex());
-			pstmt.setString(7, campsite_ownerVO.getMobile());
+			pstmt.setInt(7, campsite_ownerVO.getMobile());
 			pstmt.setString(8, campsite_ownerVO.getMail());
 			pstmt.setString(9, campsite_ownerVO.getCity());
 			pstmt.setString(10, campsite_ownerVO.getDist());
 			pstmt.setString(11, campsite_ownerVO.getAdd());
-			pstmt.setTimestamp(12, campsite_ownerVO.getJoin_time());
-			pstmt.setByte(13, campsite_ownerVO.getId_picf());
-			pstmt.setByte(14, campsite_ownerVO.getId_picb());
-			pstmt.setByte(15, campsite_ownerVO.getId_pic2f());
-			pstmt.setInt(16, campsite_ownerVO.getStat());
-			pstmt.setByte(17, campsite_ownerVO.getSticker());
-			pstmt.setByte(18, campsite_ownerVO.getLicense());
-			pstmt.setInt(19, campsite_ownerVO.getBank_no());
-			pstmt.setString(20, campsite_ownerVO.getBank_acc());
-
+			pstmt.setBytes(12, campsite_ownerVO.getSticker());
+			pstmt.setInt(13, campsite_ownerVO.getBank_no());
+			pstmt.setString(14, campsite_ownerVO.getBank_acc());
+			
 			pstmt.executeUpdate();
-
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
@@ -109,21 +101,16 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 			pstmt.setString(4, campsite_ownerVO.getName());
 			pstmt.setDate(5, campsite_ownerVO.getBday());
 			pstmt.setInt(6, campsite_ownerVO.getSex());
-			pstmt.setString(7, campsite_ownerVO.getMobile());
+			pstmt.setInt(7, campsite_ownerVO.getMobile());
 			pstmt.setString(8, campsite_ownerVO.getMail());
 			pstmt.setString(9, campsite_ownerVO.getCity());
 			pstmt.setString(10, campsite_ownerVO.getDist());
 			pstmt.setString(11, campsite_ownerVO.getAdd());
-			pstmt.setTimestamp(12, campsite_ownerVO.getJoin_time());
-			pstmt.setByte(13, campsite_ownerVO.getId_picf());
-			pstmt.setByte(14, campsite_ownerVO.getId_picb());
-			pstmt.setByte(15, campsite_ownerVO.getId_pic2f());
-			pstmt.setInt(16, campsite_ownerVO.getStat());
-			pstmt.setByte(17, campsite_ownerVO.getSticker());
-			pstmt.setByte(18, campsite_ownerVO.getLicense());
-			pstmt.setInt(19, campsite_ownerVO.getBank_no());
-			pstmt.setString(20, campsite_ownerVO.getBank_acc());
-			pstmt.setInt(21, campsite_ownerVO.getCso_no());
+			pstmt.setInt(12, campsite_ownerVO.getStat());
+			pstmt.setBytes(13, campsite_ownerVO.getSticker());
+			pstmt.setInt(14, campsite_ownerVO.getBank_no());
+			pstmt.setString(15, campsite_ownerVO.getBank_acc());
+			pstmt.setInt(16, campsite_ownerVO.getCso_no());
 
 			pstmt.executeUpdate();
 
@@ -218,18 +205,14 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 				campsite_ownerVO.setName(rs.getString("name"));
 				campsite_ownerVO.setBday(rs.getDate("bday"));
 				campsite_ownerVO.setSex(rs.getInt("sex"));
-				campsite_ownerVO.setMobile(rs.getString("mobile"));
+				campsite_ownerVO.setMobile(rs.getInt("mobile"));
 				campsite_ownerVO.setMail(rs.getString("mail"));
 				campsite_ownerVO.setCity(rs.getString("city"));
 				campsite_ownerVO.setDist(rs.getString("dist"));
 				campsite_ownerVO.setAdd(rs.getString("add"));
 				campsite_ownerVO.setJoin_time(rs.getTimestamp("join_time"));
-				campsite_ownerVO.setId_picf(rs.getByte("id_picf"));
-				campsite_ownerVO.setId_picb(rs.getByte("id_picb"));
-				campsite_ownerVO.setId_pic2f(rs.getByte("id_pic2f"));
 				campsite_ownerVO.setStat(rs.getInt("stat"));
-				campsite_ownerVO.setSticker(rs.getByte("sticker"));
-				campsite_ownerVO.setLicense(rs.getByte("license"));
+				campsite_ownerVO.setSticker(rs.getBytes("sticker"));
 				campsite_ownerVO.setBank_no(rs.getInt("bank_no"));
 				campsite_ownerVO.setBank_acc(rs.getString("bank_acc"));
 			}
@@ -290,18 +273,14 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 				campsite_ownerVO.setName(rs.getString("name"));
 				campsite_ownerVO.setBday(rs.getDate("bday"));
 				campsite_ownerVO.setSex(rs.getInt("sex"));
-				campsite_ownerVO.setMobile(rs.getString("mobile"));
+				campsite_ownerVO.setMobile(rs.getInt("mobile"));
 				campsite_ownerVO.setMail(rs.getString("mail"));
 				campsite_ownerVO.setCity(rs.getString("city"));
 				campsite_ownerVO.setDist(rs.getString("dist"));
 				campsite_ownerVO.setAdd(rs.getString("add"));
 				campsite_ownerVO.setJoin_time(rs.getTimestamp("join_time"));
-				campsite_ownerVO.setId_picf(rs.getByte("id_picf"));
-				campsite_ownerVO.setId_picb(rs.getByte("id_picb"));
-				campsite_ownerVO.setId_pic2f(rs.getByte("id_pic2f"));
 				campsite_ownerVO.setStat(rs.getInt("stat"));
-				campsite_ownerVO.setSticker(rs.getByte("sticker"));
-				campsite_ownerVO.setLicense(rs.getByte("license"));
+				campsite_ownerVO.setSticker(rs.getBytes("sticker"));
 				campsite_ownerVO.setBank_no(rs.getInt("bank_no"));
 				campsite_ownerVO.setBank_acc(rs.getString("bank_acc"));
 				
