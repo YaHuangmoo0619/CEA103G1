@@ -5,9 +5,9 @@
 
 <!-- 測試登入狀態及畫面改變 -->
 <%
-EmployeeService employeeSvcLogin = new EmployeeService();
-EmployeeVO employeeVOLogin = employeeSvcLogin.getOneEmployee(90002);
-session.setAttribute("employeeVO",employeeVOLogin);
+// EmployeeService employeeSvcLogin = new EmployeeService();
+// EmployeeVO employeeVOLogin = employeeSvcLogin.getOneEmployee(90002);
+// session.setAttribute("employeeVO",employeeVOLogin);
 %>
 
 <% EmployeeVO employeeVO = (EmployeeVO)session.getAttribute("employeeVO"); %>
@@ -168,6 +168,7 @@ p {
 						<li><a href="">即時小幫手管理</a></li>
 						</c:if>
 						</c:forEach>
+						<li><a href="<%=request.getContextPath()%>/employee/employee.do?action=logout">登出</a></li>
 					</ul>
 				</c:if>
 				<c:if test="${employeeVO == null}"><img style="max-width: 100%; margin-top: 30%;opacity:0.8;" src="<%=request.getContextPath()%>/images/campionLogoCircle.png"></c:if>

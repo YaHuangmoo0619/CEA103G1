@@ -35,11 +35,7 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 	}
 	
 	private static final String INSERT_STMT = 
-<<<<<<< .merge_file_a09880
-			"INSERT INTO Personal_System_Notify (NTFY_NO,MBR_NO,NTFY_STAT,NTFY_CONT,NTFY_TIME) VALUES (?, ?, ?, ? , ? )";
-=======
 			"INSERT INTO Personal_System_Notify (MBR_NO,NTFY_STAT,NTFY_CONT,NTFY_TIME) VALUES (?, ?, ? , ? )";
->>>>>>> .merge_file_a08232
 		private static final String GET_ALL_STMT = 
 			"SELECT NTFY_NO,MBR_NO,NTFY_STAT,NTFY_CONT,NTFY_TIME FROM Personal_System_Notify order by NTFY_TIME DESC";
 		private static final String GET_ONE_STMT = 
@@ -61,18 +57,10 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 				con = ds.getConnection();
 				pstmt = con.prepareStatement(INSERT_STMT);
 
-<<<<<<< .merge_file_a09880
-				pstmt.setInt(1, Personal_System_NotifyVO.getNtfy_no());
-				pstmt.setInt(2, Personal_System_NotifyVO.getMbr_no());
-				pstmt.setInt(3,Personal_System_NotifyVO.getNtfy_stat());
-				pstmt.setString(4,Personal_System_NotifyVO.getNtfy_cont());
-				pstmt.setString(5,Personal_System_NotifyVO.getNtfy_time());
-=======
 				pstmt.setInt(1, Personal_System_NotifyVO.getMbr_no());
 				pstmt.setInt(2,Personal_System_NotifyVO.getNtfy_stat());
 				pstmt.setString(3,Personal_System_NotifyVO.getNtfy_cont());
 				pstmt.setString(4,Personal_System_NotifyVO.getNtfy_time());
->>>>>>> .merge_file_a08232
 				pstmt.executeUpdate();
 
 				// Handle any SQL errors
@@ -468,10 +456,6 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 				}
 				return set;
 			}
-<<<<<<< .merge_file_a09880
-		
-		
-=======
 
 		@Override
 		public void insertWithLike(Personal_System_NotifyVO personal_System_NotifyVO, Connection con) {
@@ -548,5 +532,4 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 				}
 			}
 		}
->>>>>>> .merge_file_a08232
 }

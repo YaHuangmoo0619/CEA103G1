@@ -252,9 +252,14 @@ tr:hover {
 </div>
 </div>
 <script>
+// $("tr").click(function(e){
+// 	let emp_no = e.currentTarget.children[0].innerText;
+<%-- 	window.location.href="<%=request.getContextPath()%>/employee/employee.do?emp_no="+ emp_no + "&action=read"; --%>
+// });
+
 $("tr").click(function(e){
 	let emp_no = e.currentTarget.children[0].innerText;
-	window.location.href="<%=request.getContextPath()%>/employee/employee.do?emp_no="+ emp_no + "&action=read";
+	window.location.href="<%=request.getContextPath()%>/back-end/employee/listOneEmployee.jsp?emp_no="+ emp_no;
 });
 
 	let backToTop = document.getElementsByClassName("backToTop");

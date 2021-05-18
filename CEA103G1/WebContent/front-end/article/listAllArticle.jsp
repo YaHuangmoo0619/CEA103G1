@@ -184,7 +184,7 @@ overflow-y: auto;
 </style>
 
 </head>
-<body>
+<body onload="connection()">
 	<div>目前登入的人是: ${memberVO.mbr_no}</div>
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	
@@ -241,6 +241,20 @@ overflow-y: auto;
      
      
      
+
+        
+        <!-- 雅凰加的，為了嘗試啟動通知的推播 -->
+<%--         --${articleVO != null? articleVO.mbr_no:'123' }-- --%>
+			<c:if test="${articleVO != null}">
+			<!-- insert回傳的VO沒有文章編號 -->
+					<div onclick="sendNotify()" id="sendNotify" style="display:none;">${articleVO.mbr_no}/article</div>
+			</c:if>
+			<c:if test="${article_ReplyVO != null}">
+			<!-- insert回傳的VO沒有留言編號 -->
+					<div onclick="sendNotify()" id="sendNotify" style="display:none;">${article_ReplyVO.art_no}/reply</div>
+			</c:if>
+		<!-- 雅凰加的，為了嘗試啟動通知的推播 -->
+
             <div class="body">
                     <c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
                     <div class=article>
@@ -433,6 +447,47 @@ jedis.close();
 	  $('#login_confirm').modal('show');
   })
   </script>
-  
+   <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
+  <script>
+		function writeToScreen(input){
+			let noRead = JSON.parse(input);
+			
+			var notifyMail = document.getElementById('countNoReadMail');
+			notifyMail.innerText = noRead.countNoReadMail;
+			var notifyNotify = document.getElementById('countNoReadNotify');
+			notifyNotify.innerText = noRead.countNoReadNotify;
+			
+			if(noRead.mail_no !== undefined){
+				let tableOri = document.getElementById('mailTable');
+				let trOri = document.createElement('tr');
+				trOri.innerHTML = "<td style='display:none;'>"+ noRead.mail_no+"</td><td>"+ noRead.send_no+"</td><td>"+noRead.rcpt_no+"</td><td>"+noRead.mail_cont+"</td><td>"+noRead.mail_time+"</td>";
+//				console.log(tableOri);
+//				console.log(trOri);
+				trOri.style.fontWeight=555;
+				tableOri.prepend(trOri);
+			}
+		}
+		function connection(){
+			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
+			websocket = new WebSocket(wsUri);
+			websocket.onopen = function(event){
+				let e = document.createEvent("MouseEvent");
+				e.initEvent("click",true,true);
+				if(document.getElementById('sendNotify') !== null){
+					document.getElementById('sendNotify').dispatchEvent(e);
+				}
+			};
+			websocket.onmessage = function(event){
+				let noRead = event.data;
+				writeToScreen(noRead);
+			};
+		}
+		function sendNotify(){
+			let sendNotify = document.getElementById('sendNotify');
+			websocket.send(sendNotify.innerText);
+		}
+		
+</script>
+  <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
 </body>
 </html>

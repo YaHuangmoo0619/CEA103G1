@@ -3,7 +3,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.util.*" %>
 <%@ page import="com.employee.model.*" %>
-   
+
+<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
+<jsp:useBean id="functionSvc" scope="page" class="com.function.model.FunctionService"/>
+<%-- <jsp:useBean id="authoritySvc" scope="page" class="com.authority.model.AuthorityService"/> --%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -136,9 +140,6 @@ tr {
 				<tr>
 					<th style="width:400px">網站管理權限</th>
 				</tr>
-				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
-				<jsp:useBean id="functionSvc" scope="page" class="com.function.model.FunctionService"/>
-				<jsp:useBean id="authoritySvc" scope="page" class="com.authority.model.AuthorityService"/>
 				<c:forEach var="employeeVO" items="${employeeSvc.all}">
 					<c:if test="${employeeVO.emp_no == param.emp_no}">
 					<tr>

@@ -114,7 +114,7 @@ tr:hover {
 <!-- 				</tr> -->
 				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
 				<jsp:useBean id="functionSvc" scope="page" class="com.function.model.FunctionService"/>
-				<jsp:useBean id="authoritySvc" scope="page" class="com.authority.model.AuthorityService"/>
+<%-- 				<jsp:useBean id="authoritySvc" scope="page" class="com.authority.model.AuthorityService"/> --%>
 				<c:forEach var="employeeVO" items="${employeeSvc.all}">
 					<tr ${employeeVO.emp_no == param.emp_no ? 'bgcolor=#eee':''}>
 						<c:if test="${employeeVO.emp_no != 90001}">

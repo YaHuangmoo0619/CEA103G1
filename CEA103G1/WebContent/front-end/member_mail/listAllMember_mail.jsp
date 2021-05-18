@@ -245,19 +245,11 @@ tr:hover {
 					<div style="width: 250px;display:inline-block;">信件內容</div>
 					<div style="width: 150px;display:inline-block;">信件日期</div>
 				</div>
-<<<<<<< .merge_file_a17148
-			--${member_mailVO != null? member_mailVO.rcpt_no:'123' }--
-			<c:if test="${member_mailVO != null}">
-			<!-- insert回傳的VO沒有信件編號 -->
-					<div onclick="sendNotify()" id="sendNotify">${member_mailVO.rcpt_no}</div>
-=======
 <%-- 			--${member_mailVO != null? member_mailVO.rcpt_no:'123' }-- --%>
 			<c:if test="${member_mailVO != null}">
 			<!-- insert回傳的VO沒有信件編號 -->
 					<div onclick="sendNotify()" id="sendNotify" style="display:none;">${member_mailVO.rcpt_no}/mail</div>
->>>>>>> .merge_file_a09004
 			</c:if>
-			
 			<table>
 			<tbody id="mailTable">
 <!-- 				<tr> -->
@@ -312,16 +304,12 @@ tr:hover {
 </div>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
+
 <script>
-<<<<<<< .merge_file_a17148
-	$("tr").click(function(e){
-		let mail_no = e.currentTarget.children[0].innerText;
-=======
 	$("body").on("click","tr",function(e){
 // 		console.log('click');
 		let mail_no = e.currentTarget.children[0].innerText;
 // 		console.log(mail_no);
->>>>>>> .merge_file_a09004
 		window.location.href="<%=request.getContextPath()%>/member_mail/member_mail.do?mail_no="+ mail_no + "&action=read";
 	});
 

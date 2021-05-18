@@ -29,6 +29,7 @@ public class EmployeeDAO implements EmployeeDAO_interface {
 	private static final String INSERT_STMT = "INSERT INTO campion.employee (acc, pwd, name, email) VALUES (?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT emp_no, acc, pwd, name, email, emp_stat FROM campion.employee order by emp_no";
 	private static final String GET_ONE_STMT = "SELECT emp_no, acc, pwd, name, email, emp_stat FROM campion.employee where emp_no = ?";
+	private static final String GET_ONE_FORLOGIN_STMT = "SELECT emp_no, acc, pwd, name, email, emp_stat FROM campion.employee where BINARY acc = ? and BINARY pwd = ?";
 	private static final String GET_ALL_NAME_EMP_NO_STMT = "SELECT emp_no, acc, pwd, name, email, emp_stat FROM campion.employee where name = ?";
 	private static final String GET_ALL_FUNCTION_EMP_NO_STMT = "SELECT e.emp_no, e.acc, e.pwd, e.name, email, e.emp_stat "
 			+ "FROM campion.EMPLOYEE e " + "join campion.Authority a " + "on e.EMP_NO = a.EMP_NO "
@@ -384,6 +385,60 @@ public class EmployeeDAO implements EmployeeDAO_interface {
 		return list;
 	}
 
+	@Override
+	public EmployeeVO findForLogin(String acc, String pwd) {
+		EmployeeVO employeeVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ONE_FORLOGIN_STMT);
+			
+			pstmt.setString(1, acc);
+			pstmt.setString(2, pwd);
+			
+			
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				employeeVO = new EmployeeVO();
+				employeeVO.setEmp_no(rs.getInt("emp_no"));
+				employeeVO.setAcc(rs.getString("acc"));
+				employeeVO.setPwd(showPwdformDatabase(rs.getString("pwd")));
+				employeeVO.setName(rs.getString("name"));
+				employeeVO.setEmail(rs.getString("email"));
+				employeeVO.setEmp_stat(rs.getInt("emp_stat"));
+			}
+			
+		}catch(SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return employeeVO;
+	}
+	
 	// 可顯示正確的密碼
 	public String showPwdformDatabase(String newPwd) {
 		char[] forShow = newPwd.toCharArray();
@@ -398,4 +453,5 @@ public class EmployeeDAO implements EmployeeDAO_interface {
 		String showPwd = String.valueOf(gobackCode);
 		return showPwd;
 	}
+
 }
