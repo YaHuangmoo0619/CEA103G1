@@ -4,20 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-<<<<<<< .merge_file_a11852
-=======
 import java.text.SimpleDateFormat;
->>>>>>> .merge_file_a19208
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
-<<<<<<< .merge_file_a11852
-=======
 import com.article.model.ArticleDAO;
 import com.article.model.ArticleVO;
 import com.article_likes.model.Article_LikesDAO;
@@ -29,7 +22,7 @@ import com.member.model.MemberVO;
 import com.personal_system_notify.model.Personal_System_NotifyDAO;
 import com.personal_system_notify.model.Personal_System_NotifyVO;
 
->>>>>>> .merge_file_a19208
+
 
 public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 	private static DataSource ds = null;
@@ -67,8 +60,7 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 			pstmt.setInt(6, article_ReplyVO.getLikes());
 			pstmt.executeUpdate();
 
-<<<<<<< .merge_file_a11852
-=======
+
 			//雅凰嘗試連動新增系統通知
 			//取得文章VO，以獲得文章標題
 			ArticleDAO articleDAO = new ArticleDAO();
@@ -102,7 +94,7 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 			}
 			//雅凰嘗試連動新增系統通知
 			
->>>>>>> .merge_file_a19208
+
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());

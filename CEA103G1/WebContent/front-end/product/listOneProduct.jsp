@@ -2,9 +2,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="com.product.model.*"%>
-
+<%@ page import="com.member.model.*" %>
 <%
   ProductVO productVO = (ProductVO) request.getAttribute("productVO");
+%>
+
+
+
+<% 
+	MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+	int ajax_mbr_no = 0;
+
+	if(memberVO!=null){
+		ajax_mbr_no = memberVO.getMbr_no();
+	}
+	if(memberVO==null){
+		ajax_mbr_no=0;
+	}
+	pageContext.setAttribute("ajax_mbr_no", ajax_mbr_no);
 %>
 
 <html>
@@ -100,8 +115,26 @@
 			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
 			     <input type="hidden" name="action"	value="buyOne"></FORM>
 			</td>
+			<td><button class=addshopping_cart>加入購物車</button></td>
 	</tr>
 </table>
 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+
+<script>
+	$(".addshopping_cart").click(function(){
+		$.ajax({  
+			type : "POST",
+			url : "http://localhost:8081/CEA103G1/shopping_cart/shopping_cart.do",
+			data : {action: "plus_like",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,}, //參數傳遞 : action傳遞「加一」 mbr_no art_no 傳遞要加一的資訊
+			success : function(data) {
+				alert("新增某人對某文章的按讚成功");
+			}
+		});
+	})
+</script>
 </body>
 </html>

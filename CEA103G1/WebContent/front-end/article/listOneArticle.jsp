@@ -355,7 +355,7 @@
 	<script>   
   	$("#rep_login").click(function(){
 		$.ajax({
-			url:"/CEA103G1/back-end/article_reply/addArticle_reply.jsp?art_no=<%=articleVO.getArt_no()%>",
+			url:"/CEA103G1/front-end/article_reply/addArticle_reply.jsp?art_no=<%=articleVO.getArt_no()%>&mbr_no=<%=pageContext.getAttribute("ajax_mbr_no")%>",
 			type: "GET",
 			success: function(data){
 				$("#addrep").html(data);

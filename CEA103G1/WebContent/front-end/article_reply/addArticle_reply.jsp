@@ -3,9 +3,13 @@
 <%@ page import="com.article_reply.model.*"%>
 
 <%@ page import="java.sql.Timestamp"%>
-
+<%@ page import="com.member.model.*" %>
 
 <%int art_no = Integer.parseInt(request.getParameter("art_no")); %>
+<%int mbr_no = Integer.parseInt(request.getParameter("mbr_no")); 
+	System.out.println("測試");
+	System.out.println(mbr_no);
+%>
 <%
 	Article_ReplyVO article_replyVO = (Article_ReplyVO) request.getAttribute("article_replyVO");
 %>
@@ -54,22 +58,6 @@ th, td {
 </head>
 <body bgcolor='white'>
 
-	<table id="table-1">
-		<tr>
-			<td>
-				<h3>新增文章留言 - addArticle_Reply.jsp 前台</h3>
-			</td>
-			<td>
-				<h4>
-					<a href="/CEA103G1/back-end/article_reply/select_page.jsp"><img src="/CEA103G1/images/Campion.png"
-						width="100" height="100" border="0"></a>
-				</h4>
-			</td>
-		</tr>
-	</table>
-
-	<h3>文章資料新增:</h3>
-
 	<%-- 錯誤表列 --%>
 	<c:if test="${not empty errorMsgs}">
 		<font style="color: red">請修正以下錯誤:</font>
@@ -84,11 +72,6 @@ th, td {
 		<table>
 			
 			<tr>
-				<td>留言者:</td>
-				<td><input type="TEXT" name="mbr_no" size="45" 
-				value="<%= (article_replyVO==null)? "" : article_replyVO.getMbr_no()%>"/></td>
-			</tr>
-			<tr>
 				<td>留言內容:</td>
 				<td><input type="TEXT" name="rep_cont" size="45" 
 				value="<%= (article_replyVO==null)? "" : article_replyVO.getRep_cont()%>"/></td>
@@ -101,7 +84,8 @@ th, td {
 			
 		</table>
 		<br>
-		<input type="hidden" name="art_no" value="<%= art_no%>">  
+		<input type="hidden" name="mbr_no" value="<%=mbr_no%>">
+		<input type="hidden" name="art_no" value="<%=art_no%>">  
 		<input type="hidden" name="action" value="insert"> 
 		<input type="submit" value="送出新增">
 	</FORM>

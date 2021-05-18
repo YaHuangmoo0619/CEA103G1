@@ -310,7 +310,7 @@ public class Article_ReplyServlet extends HttpServlet{
 
 		
         if ("insert".equals(action)) { // 來自addArticle_Reply.jsp的請求  
-			
+			System.out.println("我有來");
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -319,9 +319,9 @@ public class Article_ReplyServlet extends HttpServlet{
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				Integer art_no = new Integer(req.getParameter("art_no").trim());
-				
+				System.out.println("art_no"+art_no);
 				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
-				
+				System.out.println("mbr_no"+mbr_no);
 				Timestamp rep_time = new Timestamp(System.currentTimeMillis());
 
 				String rep_cont = req.getParameter("rep_cont");
@@ -382,6 +382,7 @@ public class Article_ReplyServlet extends HttpServlet{
 					return;
 				}
 				/***************************2.開始新增資料***************************************/
+				System.out.println("我要新增囉");
 				//新增一筆留言資料Article_reply
 				Article_ReplyService article_replySvc = new Article_ReplyService();
 				article_replyVO = article_replySvc.addArticle_Reply(art_no, mbr_no,rep_cont,rep_time,rep_stat,likes);
