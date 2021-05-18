@@ -554,12 +554,12 @@ public class EmployeeServlet extends HttpServlet {
 				
 				HttpSession session = req.getSession();
 				session.setAttribute("employeeVO",employeeVO);
-				String location = (String)session.getAttribute("location");
-				if(location != null) {
-					session.removeAttribute("location");
-					res.sendRedirect(location);
-					return;
-				}
+//				String location = (String)session.getAttribute("location");
+//				if(location != null) {
+//					session.removeAttribute("location");
+//					res.sendRedirect(location);
+//					return;
+//				}
 				
 				String url = "/campion_back.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmployee.jsp
