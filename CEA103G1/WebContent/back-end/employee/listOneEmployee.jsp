@@ -3,6 +3,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.util.*" %>
 <%@ page import="com.employee.model.*" %>
+<%@ page import="com.authority.model.*" %>
+ 
+<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
+<jsp:useBean id="functionSvc" scope="page" class="com.function.model.FunctionService"/>
+<%-- <jsp:useBean id="authoritySvc" scope="page" class="com.authority.model.AuthorityService"/> --%>
    
 <!DOCTYPE html>
 <html>
@@ -86,7 +91,7 @@ tr {
 		<div class= "left col-3">
 		<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 		<div class="right col-9">
-			<h2>${employeeVO.name}資料&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/employee/listAllEmployee.jsp">回網站管理員列表</a></h2>
+			<h2>${employeeSvc.getOneEmployee(param.emp_no).getName()}資料&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/employee/listAllEmployee.jsp">回網站管理員列表</a></h2>
 			<hr>
 <%-- 錯誤列表 --%>
 <c:if test="${not empty errorMsgs}">
@@ -108,15 +113,15 @@ tr {
 		<th style="width:100px">在職狀況</th>	
 	</tr>
 		<tr>
-			<td>${employeeVO.emp_no}</td>
-			<td>${employeeVO.name}</td>
-			<td>${employeeVO.acc}</td>
-			<td>${employeeVO.pwd}</td>
-			<td>${employeeVO.email}</td>
+			<td>${employeeSvc.getOneEmployee(param.emp_no).getEmp_no()}</td>
+			<td>${employeeSvc.getOneEmployee(param.emp_no).getName()}</td>
+			<td>${employeeSvc.getOneEmployee(param.emp_no).getAcc()}</td>
+			<td>${employeeSvc.getOneEmployee(param.emp_no).getPwd()}</td>
+			<td>${employeeSvc.getOneEmployee(param.emp_no).getEmail()}</td>
 			<td>
-			<c:if test="${employeeVO.emp_stat == 0}">在職</c:if>
-			<c:if test="${employeeVO.emp_stat == 1}">離職</c:if>
-			<c:if test="${employeeVO.emp_stat == 2}">留職</c:if>
+			<c:if test="${employeeSvc.getOneEmployee(param.emp_no).getEmp_stat() == 0}">在職</c:if>
+			<c:if test="${employeeSvc.getOneEmployee(param.emp_no).getEmp_stat() == 1}">離職</c:if>
+			<c:if test="${employeeSvc.getOneEmployee(param.emp_no).getEmp_stat() == 2}">留職</c:if>
 			</td>
 <!-- 			<td> -->
 <%-- 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/employee/employee.do" style="margin-bottom: 0px;"> --%>
@@ -136,9 +141,6 @@ tr {
 				<tr>
 					<th style="width:400px">網站管理權限</th>
 				</tr>
-				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService"/>
-				<jsp:useBean id="functionSvc" scope="page" class="com.function.model.FunctionService"/>
-				<jsp:useBean id="authoritySvc" scope="page" class="com.authority.model.AuthorityService"/>
 				<c:forEach var="employeeVO" items="${employeeSvc.all}">
 					<c:if test="${employeeVO.emp_no == param.emp_no}">
 					<tr>

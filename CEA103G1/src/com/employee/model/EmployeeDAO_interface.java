@@ -10,6 +10,7 @@ public interface EmployeeDAO_interface {
     public void update(EmployeeVO employeeVO);
     public void delete(Integer emp_no);
     public EmployeeVO findByPrimaryKey(Integer emp_no);
+    public EmployeeVO findForLogin(String acc, String pwd);
     public List<EmployeeVO> getAll();
     public List<EmployeeVO> getNameEmp_no(String name);
     public List<EmployeeVO> getFunctionEmp_no(Integer fx_no);

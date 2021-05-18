@@ -57,6 +57,10 @@ public class EmployeeService {
 		return dao.findByPrimaryKey(emp_no);
 	}
 
+	public EmployeeVO findForLogin(String acc, String pwd) {
+		return dao.findForLogin(acc, pwd);
+	}
+	
 	public List<EmployeeVO> getAll() {
 		return dao.getAll();
 	}

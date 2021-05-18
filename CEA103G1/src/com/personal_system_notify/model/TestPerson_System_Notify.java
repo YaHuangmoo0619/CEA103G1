@@ -47,7 +47,7 @@ public class TestPerson_System_Notify extends HttpServlet {
 //		articleVO.setMbr_no(10001);
 //		Timestamp art_rel_time = new Timestamp(System.currentTimeMillis());
 //		articleVO.setArt_rel_time(art_rel_time);
-//		articleVO.setArt_title("代刚穝糤硄12");
+//		articleVO.setArt_title("代刚穝糤硄13");
 //		articleVO.setArt_cont("代刚穝糤硄");
 //		articleVO.setLikes(0);
 //		articleVO.setArt_stat(0);
@@ -66,7 +66,7 @@ public class TestPerson_System_Notify extends HttpServlet {
 		
 		article_ReplyVO.setArt_no(10);
 		article_ReplyVO.setMbr_no(10001);
-		article_ReplyVO.setRep_cont("代刚╰参硄");
+		article_ReplyVO.setRep_cont("代刚╰参硄XX");
 		Timestamp rep_time = new Timestamp(System.currentTimeMillis());
 		article_ReplyVO.setRep_time(rep_time);
 		article_ReplyVO.setRep_stat(0);

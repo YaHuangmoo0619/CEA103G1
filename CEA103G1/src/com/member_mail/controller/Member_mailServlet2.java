@@ -28,9 +28,9 @@ import com.service_mail_picture.model.Service_mail_pictureVO;
 import com.member_mail.model.Member_mailService;
 import com.member_mail.model.Member_mailVO;
 
-@WebServlet("/member_mail/member_mail.do")
+@WebServlet("/member_mail/member_mail2.do")
 @MultipartConfig(fileSizeThreshold=1024*1024, maxFileSize=5*1024*1024, maxRequestSize=5*5*1024*1024)
-public class Member_mailServlet extends HttpServlet {
+public class Member_mailServlet2 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	String saveDirectory = "/images/member_mail_picture";
 	int count = 1;
@@ -101,9 +101,9 @@ public class Member_mailServlet extends HttpServlet {
 				Integer send_no = Integer.valueOf(send_noTest);
 				
 				String rcpt_noTest = req.getParameter("rcpt_no");
-				String rcpt_noReg = "^[(0-9)]{5,5}$";
-				if(!rcpt_noTest.trim().matches(rcpt_noReg)) {
-					errorMsgs.put("rcpt_no", new String[] {"請輸入數字"});
+				if(rcpt_noTest.equals("99")) {
+					errorMsgs.put("rcpt_no", new String[] {"請選擇收件人編號"});
+//					System.out.print('b');
 				}
 				Integer rcpt_no = Integer.valueOf(rcpt_noTest);
 				

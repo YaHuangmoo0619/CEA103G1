@@ -4,7 +4,7 @@
 <%@ page import="java.util.*" %>
 
 <%
-	EmployeeVO employeeVO = (EmployeeVO) request.getAttribute("employeeVO");
+	EmployeeVO employeeVOUpdate = (EmployeeVO) request.getAttribute("employeeVOUpdate");
 	EmployeeService employeeSvc = new EmployeeService();
 	LinkedList<EmployeeVO> employeeVOLink = (LinkedList<EmployeeVO>)employeeSvc.getAll();
 	EmployeeVO employeeLast = employeeVOLink.getLast();
@@ -190,22 +190,22 @@ tr:hover {
 	<tr>
 		<td>姓名:</td>
 		<td><input type="TEXT" name="name" size="30" placeholder="請輸入姓名"
-			 value="<%= (employeeVO == null)? "" : employeeVO.getName()%>" /></td>
+			 value="<%= (employeeVOUpdate == null)? "" : employeeVOUpdate.getName()%>" /></td>
 	</tr>
 	<tr>
 		<td>帳號:</td>
 		<td>CEA<input type="TEXT" name="acc" size="25"
-			 value="<%= (employeeVO == null)? employeeLast.getEmp_no()+1 : employeeVO.getAcc().substring(3)%>" /></td>
+			 value="<%= (employeeVOUpdate == null)? employeeLast.getEmp_no()+1 : employeeVOUpdate.getAcc().substring(3)%>" /></td>
 	</tr>
 	<tr>
 		<td>EMAIL:</td>
 		<td><input type="TEXT" name="email" size="40" placeholder="請輸入EMAIL"
-			 value="<%= (employeeVO == null)? "" : employeeVO.getEmail()%>" /></td>
+			 value="<%= (employeeVOUpdate == null)? "" : employeeVOUpdate.getEmail()%>" /></td>
 	</tr>
 	<tr>
 		<td>在職狀況:</td>
 		<td onclick="noChecked(this)">
-			<c:if test="${employeeVO.getEmp_stat() == null}">
+			<c:if test="${employeeVOUpdate.getEmp_stat() == null}">
 				<input type="radio" id="state0" name="emp_stat" value="0">
 				<label for="state0">在職</label><br>
 				<input type="radio" id="state1" name="emp_stat" value="1">
@@ -213,7 +213,7 @@ tr:hover {
 				<input type="radio" id="state2" name="emp_stat" value="2">
 				<label for="state2">留職</label>
 			</c:if>
-			<c:if test="${employeeVO.getEmp_stat() == 0}">
+			<c:if test="${employeeVOUpdate.getEmp_stat() == 0}">
 				<input type="radio" id="state0" name="emp_stat" value="0" checked>
 				<label for="state0">在職</label><br>
 				<input type="radio" id="state1" name="emp_stat" value="1">
@@ -221,7 +221,7 @@ tr:hover {
 				<input type="radio" id="state2" name="emp_stat" value="2">
 				<label for="state2">留職</label>
 			</c:if>
-			<c:if test="${employeeVO.getEmp_stat() == 1}">
+			<c:if test="${employeeVOUpdate.getEmp_stat() == 1}">
 				<input type="radio" id="state0" name="emp_stat" value="0">
 				<label for="state0">在職</label><br>
 				<input type="radio" id="state1" name="emp_stat" value="1" checked>
@@ -229,7 +229,7 @@ tr:hover {
 				<input type="radio" id="state2" name="emp_stat" value="2">
 				<label for="state2">留職</label>
 			</c:if>
-			<c:if test="${employeeVO.getEmp_stat() == 2}">
+			<c:if test="${employeeVOUpdate.getEmp_stat() == 2}">
 				<input type="radio" id="state0" name="emp_stat" value="0">
 				<label for="state0">在職</label><br>
 				<input type="radio" id="state1" name="emp_stat" value="1">
@@ -243,7 +243,7 @@ tr:hover {
 		<td>密碼更新:</td>
 		<td>
 			<c:if test="${code == null}">
-		 		<input type="TEXT" name="pwd" value="${employeeVO.pwd}" readOnly>
+		 		<input type="TEXT" name="pwd" value="${employeeVOUpdate.getPwd()}" readOnly>
 		 	</c:if>
 		 	<c:if test="${code != null}">
 		 		<input type="TEXT" name="pwd" value="${code}" readOnly>
@@ -252,8 +252,8 @@ tr:hover {
 	</tr>
 </table>
 <br>
-<input type="hidden" name="emp_no" value="<%=employeeVO.getEmp_no()%>">
-<input type="hidden" name="pwd" value="<%=employeeVO.getPwd()%>">
+<input type="hidden" name="emp_no" value="<%=employeeVOUpdate.getEmp_no()%>">
+<input type="hidden" name="pwd" value="<%=employeeVOUpdate.getPwd()%>">
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="sendingEmail" value="${sendingEmail==null ? '' : 'sendingEmail'}">
 <input type="submit" name="change" value="密碼更新" class="change">

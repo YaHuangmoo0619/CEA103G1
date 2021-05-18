@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.json.*;
 
@@ -24,9 +25,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.employee.model.EmployeeService;
 import com.employee.model.EmployeeVO;
+import com.service_mail.model.Service_mailService;
+import com.service_mail.model.Service_mailVO;
 
 
 
@@ -226,7 +230,8 @@ public class EmployeeServlet extends HttpServlet {
 				EmployeeVO employeeVO = employeeSvc.getOneEmployee(emp_no);
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
-				req.setAttribute("employeeVO", employeeVO);         // 資料庫取出的employeeVO物件,存入req
+				req.setAttribute("employeeVOUpdate", employeeVO);         // 資料庫取出的employeeVO物件,存入req
+//				req.setAttribute("emp_no", emp_no);
 				String url = "/back-end/employee/update_employee_input.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_employee_input.jsp
 				successView.forward(req, res);
@@ -312,7 +317,7 @@ public class EmployeeServlet extends HttpServlet {
 				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty() || "密碼更新".equals(change)) {
-					req.setAttribute("employeeVO", employeeVO); // 含有輸入格式錯誤的employeeVO物件,也存入req
+					req.setAttribute("employeeVOUpdate", employeeVO); // 含有輸入格式錯誤的employeeVO物件,也存入req
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/back-end/employee/update_employee_input.jsp");
 					failureView.forward(req, res);
@@ -333,7 +338,7 @@ public class EmployeeServlet extends HttpServlet {
 					if (!errorMsgs.isEmpty()) { // 含有輸入格式錯誤的employeeVO物件,也存入req
 						req.setAttribute("employeeVO", employeeVO);
 						RequestDispatcher failureView = req
-								.getRequestDispatcher("/back-end/employee/addEmployee.jsp");
+								.getRequestDispatcher("/back-end/employee/update_employee_input.jsp");
 						failureView.forward(req, res);
 						return;
 					}
@@ -506,6 +511,74 @@ public class EmployeeServlet extends HttpServlet {
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/employee/listAllEmployee.jsp");
 				failureView.forward(req, res);
 			}
+		}
+		
+		if("login_Employee".equals(action)) {
+			Map<String,String[]> errorMsgs = new LinkedHashMap<String,String[]>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				String acc = req.getParameter("acc");
+				String accReg = "^[(a-zA-Z)(0-9)]{8,8}$";
+				if(acc == null || acc.trim().isEmpty()) {
+					errorMsgs.put("accError",new String[] {"請輸入帳號"});
+				}else if(!acc.trim().matches(accReg)) {
+					errorMsgs.put("accError",new String[] {"請輸入英文字母或數字，共8個字元"});
+				}
+				
+				String pwd = req.getParameter("pwd");
+				String pwdReg = "^[(a-zA-Z)(0-9)]{8,8}";
+				if(pwd == null ||pwd.trim().isEmpty()) {
+					errorMsgs.put("pwdError",new String[] {"請輸入密碼"});
+				}else if(!pwd.trim().matches(pwdReg)) {
+					errorMsgs.put("pwdError",new String[] {"請輸入英文字母或數字，共8個字元"});
+				}
+				
+				EmployeeService employeeSvc = new EmployeeService();
+				EmployeeVO employeeVO = employeeSvc.findForLogin(acc, pwd);
+				if(employeeVO == null) {
+					errorMsgs.put("notFound",new String[] {"帳號密碼輸入錯誤請重新輸入"});
+				}
+//				EmployeeVO employeeVO = new EmployeeVO();
+//				employeeVO.setAcc(acc);
+//				employeeVO.setPwd(pwd);
+
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) { // 含有輸入格式錯誤的employeeVO物件,也存入req
+//					req.setAttribute("employeeVO", employeeVO);
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/campion_back_login.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				
+				HttpSession session = req.getSession();
+				session.setAttribute("employeeVO",employeeVO);
+				String location = (String)session.getAttribute("location");
+				if(location != null) {
+					session.removeAttribute("location");
+					res.sendRedirect(location);
+					return;
+				}
+				
+				String url = "/campion_back.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmployee.jsp
+				successView.forward(req, res);				
+				
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.put("errorMsgs", new String[] {e.getMessage()});
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/campion_back_login.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if ("logout".equals(action)) {
+			HttpSession session = req.getSession();
+			session.removeAttribute("employeeVO");
+			System.out.println("remove");
+			res.sendRedirect(req.getContextPath()+"/campion_back_login.jsp");
 		}
 	}
 	

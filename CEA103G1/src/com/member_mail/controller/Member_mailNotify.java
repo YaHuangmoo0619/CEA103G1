@@ -34,6 +34,8 @@ import com.member_mail.model.Member_mailVO;
 import com.personal_system_notify.model.Personal_System_NotifyDAO;
 import com.personal_system_notify.model.Personal_System_NotifyService;
 import com.personal_system_notify.model.Personal_System_NotifyVO;
+import com.place_order.model.Place_OrderDAO;
+import com.place_order.model.Place_OrderVO;
 
 @ServerEndpoint ("/Member_mailNotify/{userName}")
 public class Member_mailNotify {
@@ -417,6 +419,96 @@ public class Member_mailNotify {
 					for(Personal_System_NotifyVO vo : setNotifyAuthor) {
 	//					System.out.println(vo.getMbr_no());
 						if(authorNo.equals(vo.getMbr_no().toString()) && "0".equals(vo.getNtfy_stat().toString())) {
+							ntfy_noList.add(vo.getNtfy_no());
+						}
+					}
+					
+	//				//找出新增的VO
+
+					Personal_System_NotifyVO personal_system_notifyVO = new Personal_System_NotifyVO();
+					if(ntfy_noList.size() != 0 ) {
+	//					System.out.println("ntfy_noList.size()="+ntfy_noList.size());
+						personal_system_notifyVO = personal_system_notifySvc.getOnePersonal_System_Notify(ntfy_noList.get(ntfy_noList.size()-1));
+	//					System.out.println("personal_system_notifyVO="+personal_system_notifyVO);
+					}
+					
+					try {
+						Member_mailForWS member_mailForWS = new Member_mailForWS();
+
+						if(personal_system_notifyVO != null) {
+	//						System.out.println("personal_system_notifyVO.getNtfy_no()="+personal_system_notifyVO.getNtfy_no());
+							member_mailForWS.setNtfy_no(personal_system_notifyVO.getNtfy_no());
+							member_mailForWS.setMbr_no(personal_system_notifyVO.getMbr_no());
+							member_mailForWS.setNtfy_stat(personal_system_notifyVO.getNtfy_stat());
+							member_mailForWS.setNtfy_cont(personal_system_notifyVO.getNtfy_cont());
+							member_mailForWS.setNtfy_time(personal_system_notifyVO.getNtfy_time());
+						}
+						
+						member_mailForWS.setCountNoReadMail(countNoReadMail);
+						member_mailForWS.setCountNoReadNotify(countNoReadNotify);
+						
+						String jsonStr = new JSONObject(member_mailForWS).toString();
+//						System.out.println("jsonStr="+jsonStr);
+						sessionsMap.get(key).getBasicRemote().sendText(jsonStr);
+	//					sessionsMap.get(key).getBasicRemote().sendText(Integer.valueOf(countNoRead).toString());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}else {
+//					System.out.println(key+"out");
+					continue;
+					
+				}
+			}
+		}else if(note.equals("placeOrder")){
+
+			//推播留言通知給訂營位的會員
+			Place_OrderDAO place_OrderDAO = new Place_OrderDAO();
+			Place_OrderVO place_OrderVO = place_OrderDAO.findByPrimaryKey(Integer.valueOf(number));
+			String mbr_no = place_OrderVO.getMbr_no().toString();
+			
+			for(String key : sessionsMap.keySet()) {
+//				System.out.println(sessionsMap.size()+"/"+key+"/"+authorNo);
+				if(key.equals(mbr_no)) {
+//					System.out.println(key+"in");
+					//找出未讀的
+					Map<String,String[]> mapMail = new LinkedHashMap<String,String[]>();
+					mapMail.put("mail_read_stat",new String[] {"0"});
+					Set<Member_mailVO> setMail = member_mailSvc.getWhereCondition(mapMail);
+					//---
+					Map<String,String[]> mapNotify = new LinkedHashMap<String,String[]>();
+					mapNotify.put("ntfy_stat",new String[] {"0"});
+//					mapNotify.put("ntfy_cont",new String[] {"內容"});
+					Set<Personal_System_NotifyVO> setNotify = personal_system_notifySvc.getWhereCondition(mapNotify);
+					
+					//準備裝符合條件的編號
+					List<Integer> ntfy_noList = new ArrayList<Integer>();
+					
+					//給予累計數字的初值為零
+					int countNoReadMail = 0;
+					int countNoReadNotify = 0;
+					
+					//開始計數並加入符合條件的編號
+					for(Member_mailVO vo : setMail) {
+	//					System.out.println(vo.getRcpt_no());
+						if(mbr_no.equals(vo.getRcpt_no().toString()) && "0".equals(vo.getMail_stat().toString())) {
+							countNoReadMail++;
+						}
+					}
+					for(Personal_System_NotifyVO vo : setNotify) {
+	//					System.out.println(vo.getMbr_no());
+						if(mbr_no.equals(vo.getMbr_no().toString()) && "0".equals(vo.getNtfy_stat().toString())) {
+//							ntfy_noList.add(vo.getNtfy_no());
+							countNoReadNotify++;
+						}
+					}
+					
+					//取出作者文章的留言通知
+					mapNotify.put("ntfy_cont",new String[] {"訂單"});
+					Set<Personal_System_NotifyVO> setNotifyAuthor = personal_system_notifySvc.getWhereCondition(mapNotify);
+					for(Personal_System_NotifyVO vo : setNotifyAuthor) {
+	//					System.out.println(vo.getMbr_no());
+						if(mbr_no.equals(vo.getMbr_no().toString()) && "0".equals(vo.getNtfy_stat().toString())) {
 							ntfy_noList.add(vo.getNtfy_no());
 						}
 					}
