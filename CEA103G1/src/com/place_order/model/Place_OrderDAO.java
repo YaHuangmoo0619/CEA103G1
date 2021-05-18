@@ -4,11 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Date;
-
 import javax.naming.*;
 import javax.sql.DataSource;
-
-
 import java.text.SimpleDateFormat;
 
 import javax.naming.*;
@@ -20,10 +17,6 @@ import com.member.model.MemberDAO;
 import com.member.model.MemberVO;
 import com.personal_system_notify.model.Personal_System_NotifyDAO;
 import com.personal_system_notify.model.Personal_System_NotifyVO;
-
-import javax.naming.*;
-import javax.sql.DataSource;
-
 import com.place_order_details.model.Place_Order_DetailsDAO;
 import com.place_order_details.model.Place_Order_DetailsVO;
 
@@ -345,7 +338,7 @@ public class Place_OrderDAO implements Place_OrderDAO_interface {
 			Personal_System_NotifyDAO personal_System_NotifyDAO = new Personal_System_NotifyDAO();
 			personal_System_NotifyDAO.insertWithArticle(personal_System_NotifyVO, con);
 			//雅凰嘗試連動新增系統通知
-			
+
 			// Handle any driver errors
 		} catch (SQLException se) {
 			if (con != null) {
