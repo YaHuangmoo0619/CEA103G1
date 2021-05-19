@@ -10,7 +10,13 @@
 // session.setAttribute("employeeVO",employeeVOLogin);
 %>
 
-<% EmployeeVO employeeVO = (EmployeeVO)session.getAttribute("employeeVO"); %>
+<% 
+	EmployeeVO employeeVO = (EmployeeVO)session.getAttribute("employeeVO");
+	if(employeeVO == null){
+		response.sendRedirect(request.getContextPath()+"/campion_back_login.jsp");
+		return;
+	}
+%>
 
 <!DOCTYPE html>
 <html lang="zh-tw">
@@ -150,7 +156,7 @@ p {
 						<li><a href="<%=request.getContextPath() %>/back-end/campsite/UnreviewCamp.jsp">營位訂購平台管理</a></li>
 						</c:if>
 						<c:if test="${authorityVO.fx_no == 2}">
-						<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城管理</a></li>
+						<li><a href="<%=request.getContextPath() %>/back-end/product/listAllProduct.jsp">商城管理</a></li>
 						</c:if>
 						<c:if test="${authorityVO.fx_no == 4}">
 						<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
