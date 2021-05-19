@@ -10,7 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style type="text/css">
-        @import url("https://fonts.googleeapis.com/css?family=Noto+Sans+TC:100,300,400,500,700,900&display=swap");
         * {
             margin: 0;
             padding: 0;
@@ -109,6 +108,10 @@
                 <button class="btn">登入</button>  
                 <input type="hidden" name="action" value="login">
             </div>
+            <br>
+            <div>
+                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/addCampsite_owner.jsp">建立帳號</a>  
+            </div>
              <%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
 				<ul>
@@ -126,5 +129,11 @@
         </form>
     </div>
 </body>
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+	var enable = "<%=session.getAttribute("enable")%>";
+	if(!(enable === null)){
+		alert(enable);
+	}
+</script>
 </html>
