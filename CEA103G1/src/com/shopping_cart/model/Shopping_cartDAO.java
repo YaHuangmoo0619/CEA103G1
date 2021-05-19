@@ -226,6 +226,7 @@ public class Shopping_cartDAO implements Shopping_cartDAO_interface {
 				shopping_cartVO.setMbr_no(rs.getInt("MBR_NO"));
 				shopping_cartVO.setProd_no(rs.getInt("PROD_NO"));
 				shopping_cartVO.setProd_amt(rs.getInt("PROD_AMT"));
+				list.add(shopping_cartVO);
 			}
 
 		} catch (SQLException se) {

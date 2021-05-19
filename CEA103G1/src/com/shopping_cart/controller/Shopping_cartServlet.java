@@ -39,14 +39,34 @@ public class Shopping_cartServlet extends HttpServlet{
 			Integer prod_amt= null;
 			prod_amt = new Integer(req.getParameter("prod_amt").trim());
 			System.out.println("要加入購物車的數量"+prod_amt);
-			Shopping_cartVO shopping_cartVO = new Shopping_cartVO();
-			shopping_cartVO.setMbr_no(mbr_no);
-			shopping_cartVO.setProd_no(prod_no);
-			shopping_cartVO.setProd_amt(prod_amt);
 
-			/*************************** 2.開始新增資料 ***************************************/
+			
+			boolean check = false; //設一個變數為check 檢視要加入購物車的商品是否原先就存在於購物車中
+			int num_origin = 0; //原先的數量
 			Shopping_cartService shopping_cartSvc = new Shopping_cartService();
-			shopping_cartVO = shopping_cartSvc.addShopping_cart(mbr_no, prod_no, prod_amt);
+			List<Shopping_cartVO> shopping_cart_now = shopping_cartSvc.getByMbr_no(mbr_no); //先查出這個人目前購物車有的清單
+
+			
+			for (Shopping_cartVO count : shopping_cart_now) {
+				if(count.getProd_no().intValue()==prod_no.intValue()) { //如果這個人目前的購物車清單中  與現在要加入的商品編號重複
+				num_origin = count.getProd_amt();
+				System.out.println("原先的數量"+count.getProd_amt());
+				check = true; //將check 設為 true 	
+				}
+			}
+			System.out.println("check:"+check);
+			/*************************** 2.開始新增資料 ***************************************/
+			if(check==true) {
+				shopping_cartSvc.updateShopping_cart(mbr_no, prod_no, prod_amt+num_origin); //更新資料 數量為原先的數量+現在要加入的數量
+			}
+			if(check==false) {
+				Shopping_cartVO shopping_cartVO = new Shopping_cartVO();
+				shopping_cartVO.setMbr_no(mbr_no);
+				shopping_cartVO.setProd_no(prod_no);
+				shopping_cartVO.setProd_amt(prod_amt);
+				shopping_cartVO = shopping_cartSvc.addShopping_cart(mbr_no, prod_no, prod_amt);
+			}
+			
 
 		} //end of add_collection
 		

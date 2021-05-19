@@ -165,16 +165,50 @@
 			
 			
 			<td id="max_num">${productVO.prod_stg}</td>
+			<!-- 	如果有登入的話 -->
+			<c:if test="${not empty memberVO }"> 
 			<td><button class=addshopping_cart>加入購物車</button></td>
+			</c:if>
+			<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
+			<c:if test="${empty memberVO }"> 
+			<td><button class=to_login>加入購物車</button></td>
+			</c:if>
+			
 	</tr>
 </table>
-
+	
+			<div class="modal fade" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>您尚未登入</h5>
+      </div>
+      <div class="modal-body">
+        <div>想要一起加入討論，要先登入 Campion 唷！</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close_modal" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/front-end/member/login.jsp'">登入</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
 
 <script>
+
+	$(".to_login").click(function(){
+	  		$('#login_confirm').modal('show');
+	})
+	
+	$(".close_modal").click(function(){
+	  		$('#login_confirm').modal('hide');
+	})
+	
 	$(".addshopping_cart").click(function(){
 		var num_add = $("#product-qty").text();
 		$.ajax({  
@@ -207,6 +241,9 @@
 
 		$(this).next().text(num);
 		})	
+		
+		
+		
 </script>
 </body>
 </html>

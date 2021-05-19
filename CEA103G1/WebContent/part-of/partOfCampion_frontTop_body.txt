@@ -16,7 +16,7 @@
 				<a class="button" href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">½×¾Â</button></a>
 				<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">°Ó«°</button></a>
 			</div>
-			<img src="<%=request.getContextPath() %>/front-images/cart-outline.svg" class="cart">
+			<a href="<%=request.getContextPath() %>/front-end/shopping_cart/listOneShoppingCart.jsp"><img src="<%=request.getContextPath() %>/front-images/cart-outline.svg" class="cart"></a>
 			<a href="<%=request.getContextPath() %>/front-end/announcement/listAllAnnouncement.jsp"><img src="<%=request.getContextPath() %>/front-images/megaphone-outline.svg" class="announcement"></a>
 			<c:if test="${memberVO == null}">
 			<div class="btn-group" role="group" aria-label="Basic example">
