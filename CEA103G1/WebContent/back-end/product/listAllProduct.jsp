@@ -11,76 +11,168 @@
 
 
 <html>
-
 <head>
+<meta charset="UTF-8">
+<link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <title>所有商品 </title>
-
-<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
-
 <style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
+body {
+	background-color: #4e5452;
+	color: #4e5452;
+}
+
+div.left {
+	margin-top: 20px;
+}
+
+div.right {
+	background-color: #fff;
+	margin-top: 40px;
+	padding: 50px 50px;
+	border-radius: 5px;
+	overflow:scroll;
+}
+
+a.content {
+	color: #80c344;
+	font-size: 0.6em;
+}
+
+a.content:hover {
+	color: #4B7F52;
+}
+
+input.confirm {
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+
+input.confirm:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+
+#confirmTop:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+
+div.forSearch{
+	margin: 0 auto;
+	width: 70%;
+	hieght: 50px;
+	position: relative;
+}
+div.forSearchMore{
+	top: 110%;
+	left: 15%;
+	width: 70%;
+	position: absolute;
+	background-color: #fff;
+	box-shadow: 0 1px 5px 0 #4e5452;
+	display: none
+}
+
+#mail_cont{
+	border-radius:5px;
+	background-color:#eee;
+	border:none;
+	padding:5px 15px;
+	width:50%;
+}
+
+span{
+	 font-size:0.8em;
+	 font-weight:444;
+	 padding: 7px;
+	 background-color: #eee;
+	 border-radius:5px;
+}
+span:hover{
+	cursor: pointer;
+	background-color: #4e5452;
+	color: #eee;
+}
+
+label, select, input {
+	font-size: 0.8em;
+}
+
+table {
+	width: 700px;
+	margin: 30px auto;
+	/* 	border: 1px solid #4e5452; */
+}
+
+th, td {
+	text-align: left;
+	/* 	border: 1px solid #4e5452; */
+	padding: 10px 15px;
+}
+
+td.function {
+	text-align: justify;
+}
+
+label.spotlight {
+	background-color: #80c344;
+	padding: 2px 5px;
+	border-radius: 5px;
+	color: #fff;
+}
+
+input.change {
+	background-color: #80c344;
+	color: #4e5452;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+
+input.change:hover {
+	background-color: #4B7F52;
+	color: #80c344;
+	cursor: pointer;
+}
+
+#focus {
+	margin-right: -5px;
+}
+
+tr {
+/* 	border-top: 1px solid #eee; */
+	border-bottom: 2px solid #eee;
+}
+
+tr:hover {
+	box-shadow: 0 1px 5px 0 #4e5452 inset;
+/* 	cursor: pointer; */
+}
 </style>
 
-<style>
-  table {
-	width: 800px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
-</style>
 
 </head>
-<body bgcolor='white'>
-
-<!-- <div style="background-color: #eee;">
-	<img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
-	<form class="form-inline my-2 my-lg-0">
-		<input class="form-control mr-sm-2" type="search"
-			placeholder="營位/商品/文章" aria-label="Search">
-		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜尋</button>
-	</form>
-	<img src="/CEA103G1/front-images/search-circle-outline.svg"
-		class="searchIcon" onclick="showSearch()">
-	<div class="btn-group" role="group" aria-label="Basic example">
-		<button type="button" class="btn btn-secondary">營區</button>
-		<button type="button" class="btn btn-secondary">商城</button>
-		<button type="button" class="btn btn-secondary">論壇</button>
-	</div>
-	<img src="/CEA103G1/front-images/cart-outline.svg" class="cart">
-	<div class="btn-group" role="group" aria-label="Basic example">
-		<button type="button" class="btn btn-outline-secondary">註冊</button>
-		<button type="button" class="btn btn-outline-secondary">登入</button>
-		<button type="button" class="btn btn-outline-secondary">FAQ</button>
-		<button type="button" class="btn btn-outline-secondary">聯絡我們</button>
-	</div>
-	<img src="/CEA103G1/front-images/menu-outline.svg" class="menu"
-		onclick="showMenu()"> <img
-		src="/CEA103G1/front-images/person-circle-outline.svg" class="person">
-</div> -->
-
+<body>
+<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+	<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
+	<div class="container">
+		<div class="row">
+			<div class="left col-3">
+				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
+			<div class="right col-9">
 <table id="table-1">
 	<tr><td>
 		 <h3>所有商品 </h3>
@@ -162,8 +254,19 @@
 		</tr>
 	</c:forEach>
 </table>
+</div>
+</div>
+</div>
 
-<%-- <%@ include file="page2.file" %> --%> 
-
+<script>
+	let backToTop = document.getElementsByClassName("backToTop");
+	$(window).scroll(function(e) {
+		if ($(window).scrollTop() <= 1) {
+			backToTop[1].style.display = "none";
+		} else {
+			backToTop[1].style.display = "block";
+		}
+	});
+</script>
 </body>
 </html>
