@@ -50,9 +50,9 @@ public class Product_order_detailsService {
 		return dao.findByProd_ord_no(prod_ord_no);
 	}
 	
-	public List<Product_order_detailsVO> getByProd_no(Integer prod_no) {
-		return dao.findByProd_no(prod_no);
-	}
+//	public List<Product_order_detailsVO> getByProd_no(Integer prod_no) {
+//		return dao.findByProd_no(prod_no);
+//	}
 	
 	public List<Product_order_detailsVO> getAll() {
 		return dao.getAll();

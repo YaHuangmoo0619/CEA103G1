@@ -8,6 +8,6 @@ public interface Product_order_detailsDAO_interface {
           public void delete(Integer prod_ord_no, Integer prod_no);
           public Product_order_detailsVO findByPrimaryKey(Integer prod_ord_no, Integer prod_no);
           public List<Product_order_detailsVO> findByProd_ord_no(Integer prod_ord_no);
-          public List<Product_order_detailsVO> findByProd_no(Integer prod_no);
+//          public List<Product_order_detailsVO> findByProd_no(Integer prod_no);
           public List<Product_order_detailsVO> getAll();
 }

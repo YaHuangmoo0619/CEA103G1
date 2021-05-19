@@ -28,8 +28,8 @@ public class Product_order_detailsDAO implements Product_order_detailsDAO_interf
 		"select * from PRODUCT_ORDER_DETAILS where PROD_ORD_NO = ? and PROD_NO = ?";
 	private static final String GET_PROD_ORD_STMT = 
 		"select * from PRODUCT_ORDER_DETAILS where PROD_ORD_NO = ?";
-	private static final String GET_PROD_STMT = 
-		"select * from PRODUCT_ORDER_DETAILS where PROD_NO = ?";
+//	private static final String GET_PROD_STMT = 
+//		"select * from PRODUCT_ORDER_DETAILS where PROD_NO = ?";
 	private static final String GET_ALL_STMT = 
 		"select * from PRODUCT_ORDER_DETAILS order by PROD_ORD_NO";
 
@@ -264,61 +264,61 @@ public class Product_order_detailsDAO implements Product_order_detailsDAO_interf
 		return list;
 	}
 	
-	@Override
-	public List<Product_order_detailsVO> findByProd_no(Integer prod_no) {
-		List<Product_order_detailsVO> list = new ArrayList<Product_order_detailsVO>();
-		Product_order_detailsVO product_order_detailsVO = null;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_PROD_STMT);
-
-			pstmt.setInt(1, prod_no);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				product_order_detailsVO = new Product_order_detailsVO();
-				product_order_detailsVO.setProd_ord_no(rs.getInt("PROD_ORD_NO"));
-				product_order_detailsVO.setProd_no(rs.getInt("PROD_NO"));
-				product_order_detailsVO.setProd_amt(rs.getInt("PROD_AMT"));
-				product_order_detailsVO.setProd_unit_pc(rs.getInt("PROD_UNIT_PC"));
-				list.add(product_order_detailsVO); 
-			}
-
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-		return list;
-	}
+//	@Override
+//	public List<Product_order_detailsVO> findByProd_no(Integer prod_no) {
+//		List<Product_order_detailsVO> list = new ArrayList<Product_order_detailsVO>();
+//		Product_order_detailsVO product_order_detailsVO = null;
+//		Connection con = null;
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//
+//		try {
+//
+//			con = ds.getConnection();
+//			pstmt = con.prepareStatement(GET_PROD_STMT);
+//
+//			pstmt.setInt(1, prod_no);
+//
+//			rs = pstmt.executeQuery();
+//
+//			while (rs.next()) {
+//				product_order_detailsVO = new Product_order_detailsVO();
+//				product_order_detailsVO.setProd_ord_no(rs.getInt("PROD_ORD_NO"));
+//				product_order_detailsVO.setProd_no(rs.getInt("PROD_NO"));
+//				product_order_detailsVO.setProd_amt(rs.getInt("PROD_AMT"));
+//				product_order_detailsVO.setProd_unit_pc(rs.getInt("PROD_UNIT_PC"));
+//				list.add(product_order_detailsVO); 
+//			}
+//
+//		} catch (SQLException se) {
+//			throw new RuntimeException("A database error occured. "
+//					+ se.getMessage());
+//
+//		} finally {
+//			if (rs != null) {
+//				try {
+//					rs.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (pstmt != null) {
+//				try {
+//					pstmt.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (Exception e) {
+//					e.printStackTrace(System.err);
+//				}
+//			}
+//		}
+//		return list;
+//	}
 	
 	@Override
 	public List<Product_order_detailsVO> getAll() {

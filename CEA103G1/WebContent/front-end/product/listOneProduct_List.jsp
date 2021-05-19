@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+ <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="com.product.model.*"%>
@@ -78,11 +78,11 @@
 		</td>
 		<td>${productVO.prod_name}</td>
 		<td>
-			${productVO.prod_pc}
+			<input type="hidden" value="prod_unit_pc"/>${productVO.prod_pc}
 		</td>
 		<td>
 		<input type="button" value="+" onclick="this.nextElementSibling.value++"/>
-    	<input type="text" id="amount" value="0" readonly="readonly" size="4"/>
+    	<input type="text" name="prod_amt" id="amount" value="0" readonly="readonly" size="4"/>
     	<input type="button" value="-" onclick="(this.previousElementSibling.value<1 ? 0 : this.previousElementSibling.value--)"/>
     	</td>
 		<td>
@@ -103,7 +103,9 @@
 			     <input type="submit" value="°e¥X">
 			     <input type="hidden" name="prod_no" value="${productVO.prod_no}">
 			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-			     <input type="hidden" name="action"	value="insert"></FORM>
+			     <input type="hidden" name="action"	value="insert">
+			</FORM>
+			
 		</td>
 	</tr>
 </table>
