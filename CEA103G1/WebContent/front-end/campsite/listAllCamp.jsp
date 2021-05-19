@@ -4,9 +4,19 @@
 <%@ page import="java.util.*"%>
 <%@ page import="java.io.*"%>
 <%@ page import="com.campsite.model.*"%>
+<%@ page import="com.campsite_owner.model.*"%>
 <%
+	Campsite_ownerVO campsite_ownerVO = (Campsite_ownerVO)session.getAttribute("campsite_ownerVO");
+System.out.println(campsite_ownerVO.getCso_no());
 	CampService campSvc = new CampService();
-	List<CampVO> list = campSvc.getAll();
+	List<CampVO> camplist = campSvc.getAll();
+	List<CampVO> list = new ArrayList();
+	for(CampVO campVO : camplist){
+System.out.println(campVO.getCso_no());
+		if((int)campVO.getCso_no() == (int)campsite_ownerVO.getCso_no()){
+			list.add(campVO);
+		}
+	}
 	pageContext.setAttribute("list", list);
 	CampVO campVO = (CampVO) request.getAttribute("campVO");
 %>

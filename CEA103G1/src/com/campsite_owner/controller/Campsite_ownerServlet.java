@@ -13,10 +13,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.campsite_owner.model.Campsite_ownerService;
 import com.campsite_owner.model.Campsite_ownerVO;
+import com.member.model.MemberService;
+import com.member.model.MemberVO;
 
 @MultipartConfig
 @WebServlet("/campsite_owner/campsite_owner.do")
@@ -253,6 +256,54 @@ public class Campsite_ownerServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		if ("login".equals(action)) {		
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				String acc = req.getParameter("acc");
+				if (acc == null || (acc.trim()).length() == 0) {
+					errorMsgs.add("請輸入帳號");
+				}
+				
+				Campsite_ownerService campsite_ownerSvc = new Campsite_ownerService();
+				Campsite_ownerVO campsite_ownerVO = null;
+				List<Campsite_ownerVO> csolist = campsite_ownerSvc.getAll();
+				for (Campsite_ownerVO csoVO : csolist) {
+					if (acc.equals(csoVO.getAcc())) {
+						campsite_ownerVO = csoVO;
+					}
+				}
+				if(campsite_ownerVO == null) {
+					errorMsgs.add("此帳號無效");
+				}else {
+					String pwd = req.getParameter("pwd");
+					if (pwd == null || (pwd.trim()).length() == 0) {
+						errorMsgs.add("請輸入密碼");
+					}
+					if(pwd.equals(campsite_ownerVO.getPwd())) {
+						HttpSession session = req.getSession();
+						session.setAttribute("campsite_ownerVO",campsite_ownerVO);
+						String url = "/campion_campsiteOwner.jsp";
+						RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 campion_front.jsp
+						successView.forward(req, res);
+					}else {
+						errorMsgs.add("密碼錯誤");
+					}
+				}
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/campsite_owner/login.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/campsite_owner/login.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 
 	public Boolean checkId(String id) {
@@ -289,4 +340,5 @@ public class Campsite_ownerServlet extends HttpServlet {
 		}
 		return checkid;
 	}
+	
 }

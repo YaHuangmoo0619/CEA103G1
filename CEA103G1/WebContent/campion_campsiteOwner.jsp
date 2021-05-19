@@ -5,12 +5,8 @@
 <!-- 測試登入狀態及畫面改變 -->
 <%
 Campsite_ownerService campsite_ownerSvcLogin = new Campsite_ownerService();
-Campsite_ownerVO campsite_ownerVOLogin = campsite_ownerSvcLogin.getOneCampsite_owner(70003);
-session.setAttribute("campsite_ownerVO",campsite_ownerVOLogin);
+Campsite_ownerVO campsite_ownerVOLogin = (Campsite_ownerVO)session.getAttribute("campsite_ownerVO");
 %>
-
-<% Campsite_ownerVO campsite_ownerVO = (Campsite_ownerVO)session.getAttribute("campsite_ownerVO"); %>
-
 <!DOCTYPE html>
 <html lang="zh-tw">
 

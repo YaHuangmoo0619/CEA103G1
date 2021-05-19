@@ -3,11 +3,13 @@
 <%@ page import="com.campsite.model.*"%>
 <%@ page import="com.place.model.*"%>
 <%@ page import="com.campsite_feature.model.*"%>
+<%@ page import="com.campsite_owner.model.*"%>
 <%@ page import="com.feature_list.model.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="java.io.*"%>
 
 <%
+	Campsite_ownerVO campsite_ownerVO = (Campsite_ownerVO)session.getAttribute("campsite_ownerVO");
 	CampVO campVO = (CampVO) request.getAttribute("campVO");
 	pageContext.setAttribute("campVO", campVO);
 	List<Camp_FeatureVO> camp_featurelist = (List)request.getAttribute("camp_featurelist");
@@ -15,6 +17,7 @@
 	Feature_ListService feature_listSvc = new Feature_ListService();
 	List<Feature_ListVO> list = feature_listSvc.getAll();
 	pageContext.setAttribute("list", list);
+	pageContext.setAttribute("campsite_ownerVO", campsite_ownerVO);
 %>
 <%-- <%=campVO == null%> --%>
 <!DOCTYPE html>
@@ -101,11 +104,6 @@ span {
 					enctype="multipart/form-data"
 					οnkeydοwn="if(event.keyCode==13){return false;}">
 					<table>
-						<tr>
-							<td>營主編號:</td>
-							<td><input type="TEXT" name="cso_no" size="45"
-								value="<%=(campVO == null) ? "70001" : campVO.getCso_no()%>" /></td>
-						</tr>
 						<tr>
 							<td>營區名稱:</td>
 							<td><input type="TEXT" name="camp_name" size="45"
@@ -235,6 +233,8 @@ span {
 					<hr>
 					<input type="hidden" name="action" value="insert"> <input
 						type="submit" value="刊登營區">
+					<input type="hidden" name="cso_no" size="45"
+								value="<%=campsite_ownerVO.getCso_no()%>" />
 				</FORM>
 			</div>
 		</div>

@@ -3,21 +3,29 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.place_order.model.*"%>
-
+<%@ page import="com.campsite_owner.model.*"%>
+<%@ page import="com.campsite.model.*"%>
 <%
+	Campsite_ownerVO campsite_ownerVO = (Campsite_ownerVO)session.getAttribute("campsite_ownerVO");
+	CampService campSvc = new CampService();
 	Place_OrderService place_orderSvc = new Place_OrderService();
 	List<Place_OrderVO> order_list = place_orderSvc.getAll();
+	List<Place_OrderVO> order_list2 = new ArrayList();
 	List<Place_OrderVO> list = new ArrayList();
 	for (Place_OrderVO place_orderVO : order_list) {
+		if ((int)campSvc.getOneCamp(place_orderVO.getCamp_no()).getCso_no() == (int)campsite_ownerVO.getCso_no()) {
+			order_list2.add(place_orderVO);
+		}
+	}
+	for (Place_OrderVO place_orderVO : order_list2) {
 		if (place_orderVO.getCkin_stat() == 0 || place_orderVO.getCkin_stat() == 2) {
 			list.add(place_orderVO);
 		}
 	}
+	pageContext.setAttribute("campSvc", campSvc);
 	pageContext.setAttribute("list", list);
 	Place_OrderVO place_orderVO = (Place_OrderVO) request.getAttribute("place_orderVO");
 %>
-<jsp:useBean id="campSvc" scope="page"
-	class="com.campsite.model.CampService" />
 	<jsp:useBean id="memberSvc" scope="page"
 	class="com.member.model.MemberService" />
 <!DOCTYPE html>
