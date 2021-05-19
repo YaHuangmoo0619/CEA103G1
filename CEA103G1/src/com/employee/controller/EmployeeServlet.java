@@ -712,8 +712,8 @@ public class EmployeeServlet extends HttpServlet {
 
 			// ●設定 gmail 的帳號 & 密碼 (將藉由你的Gmail來傳送Email)
 			// ●須將myGmail的【安全性較低的應用程式存取權】打開
-			final String myGmail = "ixlogic.wu@gmail.com";
-			final String myGmail_password = "CCC45678CCC";
+			final String myGmail = "campion20210219@gmail.com";
+			final String myGmail_password = "campion0219";
 			Session session = Session.getInstance(props, new Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
 					return new PasswordAuthentication(myGmail, myGmail_password);
