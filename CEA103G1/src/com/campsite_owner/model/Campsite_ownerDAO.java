@@ -29,11 +29,11 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 		"SELECT cso_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,id_picf,id_picb,id_pic2f,stat,sticker,license,bank_no,bank_acc FROM campion.campsite_owner where cso_no = ?";
 	private static final String DELETE = 
 		"DELETE FROM campion.campsite_owner where cso_no = ?";
-	private static final String UPDATE = 
-		"UPDATE campion.campsite_owner set acc=?, pwd=?, id=?, name=?, bday=?, sex=?, mobile=?, mail=?, city=?, dist=?, add=?, join_time=?, id_picf=?, id_picb=?, id_pic2f=?, stat=?, sticker=?, license=?, bank_no=?, bank_acc=? where cso_no=?";
+	private static final String ENABLE = 
+		"UPDATE campion.campsite_owner set stat=? where cso_no=?";
 
 	@Override
-	public void insert(Campsite_ownerVO campsite_ownerVO) {
+	public Campsite_ownerVO insert(Campsite_ownerVO campsite_ownerVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -41,8 +41,9 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 		try {
 
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(INSERT_STMT);
-
+			
+			String cols[] = { "CSO_NO" };
+			pstmt = con.prepareStatement(INSERT_STMT, cols);
 			pstmt.setString(1, campsite_ownerVO.getAcc());
 			pstmt.setString(2, campsite_ownerVO.getPwd());
 			pstmt.setString(3, campsite_ownerVO.getId());
@@ -57,8 +58,20 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 			pstmt.setBytes(12, campsite_ownerVO.getSticker());
 			pstmt.setInt(13, campsite_ownerVO.getBank_no());
 			pstmt.setString(14, campsite_ownerVO.getBank_acc());
-			
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("set auto_increment_offset=70001;"); // 自增主鍵-初始值
+			stmt.executeUpdate("set auto_increment_increment=1;"); // 自增主鍵-遞增
 			pstmt.executeUpdate();
+			
+			String next_cso_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+			if (rs.next()) {
+				next_cso_no = rs.getString(1);
+			} else {
+				System.out.println("未取得自增主鍵值");
+			}
+			rs.close();
+			campsite_ownerVO.setCso_no(new Integer(next_cso_no));
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
@@ -80,11 +93,11 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 				}
 			}
 		}
-
+		return campsite_ownerVO;
 	}
 
 	@Override
-	public void update(Campsite_ownerVO campsite_ownerVO) {
+	public void enable(Campsite_ownerVO campsite_ownerVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -92,26 +105,9 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 		try {
 
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE);
-
-			
-			pstmt.setString(1, campsite_ownerVO.getAcc());
-			pstmt.setString(2, campsite_ownerVO.getPwd());
-			pstmt.setString(3, campsite_ownerVO.getId());
-			pstmt.setString(4, campsite_ownerVO.getName());
-			pstmt.setDate(5, campsite_ownerVO.getBday());
-			pstmt.setInt(6, campsite_ownerVO.getSex());
-			pstmt.setInt(7, campsite_ownerVO.getMobile());
-			pstmt.setString(8, campsite_ownerVO.getMail());
-			pstmt.setString(9, campsite_ownerVO.getCity());
-			pstmt.setString(10, campsite_ownerVO.getDist());
-			pstmt.setString(11, campsite_ownerVO.getAdd());
-			pstmt.setInt(12, campsite_ownerVO.getStat());
-			pstmt.setBytes(13, campsite_ownerVO.getSticker());
-			pstmt.setInt(14, campsite_ownerVO.getBank_no());
-			pstmt.setString(15, campsite_ownerVO.getBank_acc());
-			pstmt.setInt(16, campsite_ownerVO.getCso_no());
-
+			pstmt = con.prepareStatement(ENABLE);
+			pstmt.setInt(1, campsite_ownerVO.getStat());
+			pstmt.setInt(2, campsite_ownerVO.getCso_no());
 			pstmt.executeUpdate();
 
 			// Handle any driver errors

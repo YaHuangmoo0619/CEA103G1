@@ -63,11 +63,8 @@ public class InsertCamp extends HttpServlet {
 			in.close();
 
 			String str = req.getParameter("cso_no");
-			String strReg = "^[7][0-9]{4}$";
 			if (str == null || str.trim().length() == 0) {
 				errorMsgs.add("營主編號: 請勿空白");
-			} else if (!str.trim().matches(strReg)) { // 以下練習正則(規)表示式(regular-expression)
-				errorMsgs.add("營主編號: 只能是數字,第一個數字為7且長度必需為5");
 			}
 			Integer cso_no = Integer.parseInt(str);
 			System.out.println("營主編號:" + cso_no);
