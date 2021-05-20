@@ -25,8 +25,8 @@
 }
 */
 body{
-/* 	background-color: #fff; */
- 	background-color: #4e5452; 
+/*   	background-color: #fff;   */
+   	background-color: #4e5452;
 	color: #4e5452;
 	height:55em;
 }
@@ -66,19 +66,35 @@ div.right{
  	margin-left:5em; 
  	border-radius: 5px;
  	background-color: #fff;
+ 	position:relative;
 }
 div.photo{
 	width:10em;
 	height:10em;
 	margin: 4em auto;
 	border-radius: 50%;
-	overflow: hidden;
+ 	overflow: hidden; 
 	display:flex;
 	justify-content: center;
 }
-img.personBig{
-	width:100%;
+div.photo:hover{
+	cursor: pointer;
 }
+img.personBig{
+/* 	width:100%; */
+}
+#changePic{
+	position:absolute;
+	right: 60%;
+	top: 27%;
+}
+img.camera{
+	width: 2em;
+}
+img.camera:hover{
+	cursor: pointer;
+}
+
 form{
 	width:80%;
 	margin: 0 auto;
@@ -109,6 +125,11 @@ input.confirm:hover {
 	color: #80c344;
 	cursor: pointer;
 }
+
+#preview{
+	display:flex;
+	justify-content: center;
+}
 </style>
 
 </head>
@@ -126,7 +147,10 @@ input.confirm:hover {
 	</div>
 	<div class="right">
 		<div class="photo">
-			<img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="personBig"  style="border-radius:50%;">
+			<img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="personBig" onclick="changePic()">
+		</div>
+		<div id="changePic">
+			<img src="<%=request.getContextPath() %>/images/camera-outline.svg" class="camera" title="更新大頭照" onclick="changePic()">
 		</div>
 		<div class="info">
 			<form method="post" >
@@ -177,6 +201,30 @@ input.confirm:hover {
 		</div>
 	</div>
 </div>	
+
+		<div class="modal" tabindex="-1" role="dialog" id="Modal">
+		     <div class="modal-dialog" role="document"> 
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title">照片預覽</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
+		            </div>
+		            <div class="modal-body">
+						<div id="preview"></div>
+		            </div>
+		            <div class="modal-footer">
+		            	<form method="post" action="<%=request.getContextPath()%>/member/GetPhoto" enctype="multipart/form-data" style="text-align:right;">
+							<input type="file" id="file-upload-button" name="sticker" style="display:none;">
+							<input type="hidden" name="mbr_no" value="${memberVO.mbr_no}">
+							<input type="hidden" name="action" value="updatePic">
+							<input type="submit" class="btn btn-secondary" value="確定上傳">
+						</form>
+		            </div>
+		       </div>
+		   </div>
+		</div>
+		
+
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 
@@ -185,5 +233,49 @@ input.confirm:hover {
 		$("input").css("outline","none");
 	});
 </script>
+<script>
+function changePic(event){
+	document.getElementById('file-upload-button').value=''; //為了能夠上傳同一張照片
+	let e = document.createEvent("MouseEvent");
+	e.initEvent("click",true,true);
+	document.getElementById('file-upload-button').dispatchEvent(e);
+}
+</script>
+<script>
+let myFile = document.getElementById('file-upload-button');
+let input = document.getElementById('preview');
+let imgs = document.getElementsByClassName('img');
+myFile.addEventListener('change',function(e){
+	let files = e.target.files;
+	for(let i = 0; i < files.length; i++){
+		if(files[0].type.indexOf('image') > -1 && (files[0].size)/1024/1024 < 1){
+			fileName = files[0].name;
+// 			alert(files[0].size/1024/1024+"MB");
+			let reader = new FileReader();					
+			reader.addEventListener('load', function(e){
+				let result = e.target.result;			
+				let img = document.createElement('img');
+				img.setAttribute('class', 'img');
+				img.style.width='200px';
+				img.src = result;
+				input.append(img);
+			});
+			reader.readAsDataURL(files[i]);
+			if(imgs[0] !== undefined){ //不同檔案時執行
+				imgs[0].remove();
+			}
+			showModal(); //彈出預覽圖燈箱
+		}else{
+			alert('請上傳1MB以內的圖檔');
+		}
+	}
+});
+</script>
+<script>
+function showModal() {
+	 $('#Modal').modal('show'); 
+}
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 </html>
