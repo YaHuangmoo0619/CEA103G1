@@ -663,8 +663,8 @@ section.footer {
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
-	<script src="/CEA103G1/datetimepicker/jquery.js"></script>
-	<script type="text/javascript" language="javascript" src="/CEA103G1/datetimepicker/jquery.datetimepicker.full.js" charset="UTF-8"></script>
+	<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
+	<script type="text/javascript" language="javascript" src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js" charset="UTF-8"></script>
 	<script>
 	var default1 = new Date();
 	default1.setTime(default1.getTime()+24*60*60*1000); 
@@ -696,7 +696,7 @@ section.footer {
 	$.ajax({
 		type : "GET",
 		dataType : "json",
-		url : "http://localhost:8081/CEA103G1/district/district.do",
+		url : "<%=request.getContextPath()%>/district/district.do",
 		success : function(data) {
 			showDistrict(data);
 		}
@@ -735,7 +735,7 @@ section.footer {
 			let p = $('#p').val();
 			let c = $('#c').val();
 			sessionStorage.setItem('county',c)
-			window.location.href="http://localhost:8081/CEA103G1/front-end/campsite/listAllCamp.html?startdate=" + st + "&enddate=" + ed + "&people=" + p;
+			window.location.href="<%=request.getContextPath()%>/front-end/campsite/listAllCamp.html?startdate=" + st + "&enddate=" + ed + "&people=" + p;
 		});
 		let countSearch = 0;
 		$("#searchIcon").click(function() {
