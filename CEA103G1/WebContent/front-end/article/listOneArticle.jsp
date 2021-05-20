@@ -60,38 +60,11 @@
 <html>
 <head>
 <title>文章資料 - listOneArticle.jsp 前台</title>
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"> -->
 
 <style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
 
-<style>
-  table {
-	width: 600px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
    .like{ 
    background-image:url('/CEA103G1/images/heart-outline.svg');
    width:20px; 
@@ -170,65 +143,39 @@
    background-image:url('/CEA103G1/images/bookmarks-outline.svg'); 
    } 
 	
-	
+	.container{
+padding: 20px 50px 20px 50px;
+/* background:#ff7d40; */
+}
 </style>
 
 </head>
 <body bgcolor='white'>
 
-<table id="table-1">
-	<tr><td>
-		 <h3>文章資料 - ListOneArticle.jsp 前台</h3>
-		 <h4><a href="/CEA103G1/back-end/article/select_page.jsp"><img src="/CEA103G1/images/Campion.png"
-						width="100" height="100" border="0"></a></h4>
-	</td></tr>
-</table>
+<div class=container>
+<%-- 		文章編號<%=articleVO.getArt_no()%> --%>
+	
+<!-- 		看板編號 -->
+<%-- 		<%=articleVO.getBd_cl_no()%> --%>
+<!-- 		會員編號 -->
 
-<table>
-	<tr>
-		<td>文章編號</td>
-		<td><%=articleVO.getArt_no()%></td>
-   </tr>
-	<tr>
-		<td>看板編號</td>
-		<td><%=articleVO.getBd_cl_no()%></td>
-   </tr>
-    <tr>
-		<td>會員編號</td>
 		<!-- 	如果有登入的話  可以連到該發文者的簡介-->
-	<c:if test="${not empty memberVO}"> 
-	<td><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=<%=articleVO.getMbr_no()%>&action=getProfile&mbr_no_mine=<%=pageContext.getAttribute("ajax_mbr_no")%>"><%=articleVO.getMbr_no()%></a></td>
-	</c:if>
-<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
-	<c:if test="${empty memberVO}"> 
-	<td><div class= to_login_listOneArticle><%=articleVO.getMbr_no()%></div></td>
-	</c:if>
-		
-   </tr>
-   <tr>
-		<td>發表時間</td>
+		<c:if test="${not empty memberVO}"> 
+		<a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=<%=articleVO.getMbr_no()%>&action=getProfile&mbr_no_mine=<%=pageContext.getAttribute("ajax_mbr_no")%>"><%=articleVO.getMbr_no()%></a>
+		</c:if>
+		<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
+		<c:if test="${empty memberVO}"> 
+		<div class= to_login_listOneArticle><%=articleVO.getMbr_no()%></div>
+		</c:if>
+		發表時間
 <%-- 		<td><%=articleVO.getArt_rel_time()%></td> --%>
-		<td><fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm"/></td>
-  </tr>
-   <tr>
-		<td>文章標題</td>
-		<td><%=articleVO.getArt_title()%></td>
-  </tr>
-   <tr>
-		<td>文章內容</td>
-		<td><%=articleVO.getArt_cont().replaceAll("\n","<br>")%></td>
-  </tr>
-   <tr>
-		<td>文章狀態</td>
-		<td>
-		    <c:if test="${articleVO.getArt_stat() == 0}">顯示</c:if>
-		    <c:if test="${articleVO.getArt_stat() == 1}">不顯示</c:if>
-	   </td>  	   
-   </tr>
-   
-   <tr>
-   				<td>修改</td>	
-   				<td>
+		<fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm"/>
+		文章標題
+		<%=articleVO.getArt_title()%>
+		文章內容
+		<%=articleVO.getArt_cont().replaceAll("\n","<br>")%>
+		修改
+   				
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/article/article.do"
 						style="margin-bottom: 0px;">
@@ -236,11 +183,7 @@
 							name="art_no" value="${articleVO.art_no}"> <input
 							type="hidden" name="action" value="getOne_For_Update">
 					</FORM>
-				</td>
-   </tr>
-   <tr>
-   				<td>刪除</td>
-   				<td>
+	刪除
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/article/article.do"
 						style="margin-bottom: 0px;">
@@ -248,23 +191,11 @@
 							name="art_no" value="${articleVO.art_no}"> <input
 							type="hidden" name="action" value="hide">
 					</FORM>
-				</td> 
-   </tr>
-   
-   
-   <tr>
-		<td>讚數</td>
-		<td id = like_td>${articleVO.likes}</td>
-  </tr>
-  
-     <tr>
-		<td>留言數</td>
-		<td id = like_td>${articleVO.replies}</td>
-  </tr>
-   
-</table>
+	讚數
+		<div id = like_td>${articleVO.likes}</div>
+	留言數
+		<div id = like_td>${articleVO.replies}</div>
 
-<div><%=(String)request.getAttribute("requestURI")%></div>
 
 <div>
 <div>回應  </div>
@@ -342,6 +273,7 @@
   </div>
 </div>
 
+</div>
 
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

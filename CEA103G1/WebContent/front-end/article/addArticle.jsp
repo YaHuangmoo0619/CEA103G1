@@ -56,40 +56,9 @@
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 
 
-<style>
-table#table-1 {
-	background-color: #CCCCFF;
-	border: 2px solid black;
-	text-align: center;
-}
-
-table#table-1 h4 {
-	color: red;
-	display: block;
-	margin-bottom: 1px;
-}
-
-h4 {
-	color: blue;
-	display: inline;
-}
-</style>
 
 <style>
-table {
-	width: 450px;
-	background-color: white;
-	margin-top: 1px;
-	margin-bottom: 1px;
-}
 
-table, th, td {
-	border: 0px solid #CCCCFF;
-}
-
-th, td {
-	padding: 1px;
-}
 
 #tags_add_list {
 	width: 500px;
@@ -116,74 +85,35 @@ th, td {
 	display: inline-block;
 }
 
+.container{
+padding: 20px 50px 20px 50px;
+/* background:#ff7d40; */
+}
+
+.cancelAndNextParent{
+text-align: right;
+}
+.cancelAndNext{
+display:inline-block;
+padding:0px 0px 0px 20px;
+}
+
+.main_div{
+padding: 0px 0px 20px 0px;
+}
 </style>
 
 
-<style>
-.search-container {
-  width: 490px;
-  display: block;
-  margin: 0 auto;
-}
 
-input#search-bar {
-  margin: 0 auto;
-  width: 100%;
-  height: 45px;
-  padding: 0 20px;
-  font-size: 1rem;
-  border: 1px solid #D0CFCE;
-  outline: none;
-}
-input#search-bar:focus {
-  border: 1px solid #008ABF;
-  transition: 0.35s ease;
-  color: #008ABF;
-}
-input#search-bar:focus::-webkit-input-placeholder {
-  transition: opacity 0.45s ease;
-  opacity: 0;
-}
-input#search-bar:focus::-moz-placeholder {
-  transition: opacity 0.45s ease;
-  opacity: 0;
-}
-input#search-bar:focus:-ms-placeholder {
-  transition: opacity 0.45s ease;
-  opacity: 0;
-}
-
-.search-icon {
-  position: relative;
-  float: right;
-  width: 75px;
-  height: 75px;
-  top: -62px;
-  right: -45px;
-}
-</style>
 
 
 
 </head>
 <body bgcolor='white'>
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
-	<table id="table-1">
-		<tr>
-			<td>
-				<h3>文章資料新增 - addArticle.jsp 前台</h3>
-			</td>
-			<td>
-				<h4>
-					<a href="/CEA103G1/back-end/article/select_page.jsp"><img
-						src="/CEA103G1/images/Campion.png" width="100" height="100"
-						border="0"></a>
-				</h4>
-			</td>
-		</tr>
-	</table>
 
-	<h3>文章資料新增:</h3>
+
+	
 
 	<%-- 錯誤表列 --%>
 	<c:if test="${not empty errorMsgs}">
@@ -194,40 +124,39 @@ input#search-bar:focus:-ms-placeholder {
 			</c:forEach>
 		</ul>
 	</c:if>
-
+<div class="container">
+	<h3 class=main_div>發表文章</h3>
 	<FORM METHOD="post" ACTION="/CEA103G1/article/article.do" name="form1"
 		autocomplete>
-		<table>
+		
 			<jsp:useBean id="bd_clSvc" scope="page"
 				class="com.board_class.model.Board_ClassService" />
-			<tr>
-				<td>發文看板:<font color=red><b>*</b></font></td>
-				<td><select size="1" name="bd_cl_no">
+			
+				<div class=main_div>
+				<select size="1" name="bd_cl_no">
 						<c:forEach var="board_classVO" items="${bd_clSvc.all}">
 							<option value="${board_classVO.bd_cl_no}"
 								${(articleVO.bd_cl_no==board_classVO.bd_cl_no)? 'selected':'' }>${board_classVO.bd_name}
 						</c:forEach>
-
-				</select></td>
-			</tr>
-			<tr>
-				<td>文章標題:</td>
-				<td><input type="TEXT" name="art_title" size="45"
+				</select>
+				</div>
+				
+				<div class=main_div>
+				<input type="TEXT" name="art_title" size="45"
 					value="<%=(articleVO == null) ? "" : articleVO.getArt_title()%>"
-					placeholder="標題" /></td>
-			</tr>
-			<tr>
-				<td>文章內容:</td>
-				<td><textarea id="art_cont" name="art_cont"><%=(articleVO == null) ? "" : articleVO.getArt_cont()%></textarea></td>
-			</tr>
+					placeholder="請輸入文章標題" />
+				</div>
+				
+				<div class=main_div>
+				<textarea id="art_cont" name="art_cont"><%=(articleVO == null) ? "" : articleVO.getArt_cont()%></textarea>
+				</div>
+			
 
-
-		</table>
-		<br>
-		<br>
-		<div onclick="history.back()">取消</div>
-		<div onclick="showModal1()">下一步</div>
-
+		<div class="cancelAndNextParent main_div">
+		<div class="cancelAndNext" onclick="history.back()">取消</div>
+		<div class="cancelAndNext" onclick="showModal1()">下一步</div>
+		</div>
+		
 		<input type="hidden" name="action" value="insert">
 		<input type="hidden" name="mbr_no" value="${memberVO.getMbr_no()}" />
 
@@ -279,6 +208,7 @@ input#search-bar:focus:-ms-placeholder {
 
 	</FORM>
 
+</div>
 
 
 	<script>
@@ -286,15 +216,15 @@ input#search-bar:focus:-ms-placeholder {
 				{
 					placeholder : '請輸入文字',
 					tabsize : 2,
-					height : 100,
-					maxHeight: 100, //固定，不寫的話就可隨意拉開
+					height : 300,
+					maxHeight: 300, //固定，不寫的話就可隨意拉開
 					toolbar : [
 					// [groupName, [list of button]]
 					[ 'style', [ 'bold', 'italic', 'underline' ] ],
 							[ 'fontsize', [ 'fontsize' ] ],
 							[ 'color', [ 'color' ] ],
 							[ 'para', [ 'paragraph' ] ],
-							[ 'insert', [ 'link', 'picture' ] ], ]
+							[ 'insert', [ 'picture' ] ], ]
 				});
 
 

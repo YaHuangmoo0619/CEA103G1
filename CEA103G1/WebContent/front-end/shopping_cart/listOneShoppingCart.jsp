@@ -224,6 +224,7 @@ label {
 <div class="shopping-cart">
 
   <div class="column-labels">
+  	<label class="product-confirm">購買意願</label>
     <label class="product-image">照片</label>
     <label class="product-details">產品</label>
     <label class="product-price">單價</label>
@@ -234,9 +235,13 @@ label {
 
 	<c:forEach var="detail_list" items="${detail_list}">
   <div class="product">
+  	<div class="product-confirm">
+  		<input type="checkbox" class="check"/> 
+  	</div>
     <div class="product-image">
       <img src="https://s.cdpn.io/3/dingo-dog-bones.jpg">
     </div>
+    
     <div class="product-details">
       <div class="product-title">${detail_list.prod_name}</div>
       <p class="product-description">${fn:replace(detail_list.prod_info,vEnter,"<br>")}</p>
@@ -248,7 +253,7 @@ label {
 <!--       未解疑問，為何不用set的話第二圈進來跑不動 -->
 		<c:set value="${list}" var="list2"/>
          <c:forEach var="list2" items="${list2}">
-			<c:if test="${detail_list.prod_no==list2.prod_no}"><input type="number" value="${list2.prod_amt}" min="1"></c:if>
+			<c:if test="${detail_list.prod_no==list2.prod_no}"><input type="number" value="${list2.prod_amt}" min="1" class=number></c:if>
 			<c:if test="${detail_list.prod_no==list2.prod_no}"><c:set value="${list2.prod_amt}" var="amt_this"/></c:if>		 
 		 </c:forEach>
     </div>
@@ -266,7 +271,7 @@ label {
   <div class="totals">
     <div class="totals-item totals-item-total">
       <label>總額</label>
-      <div class="totals-value" id="cart-total"></div>
+      <div class="totals-value" id="cart-total">0</div>
     </div>
   </div>
       
@@ -283,14 +288,14 @@ label {
 
 <script>
 
-var total_init = 0;
-$('.product-line-price').each(function(){
-	var te = parseInt($(this).text());
-	if(isNaN(te)===false){
-		total_init += te;
-	}
-});
-$('#cart-total').text(total_init);
+// var total_init = 0;
+// $('.product-line-price').each(function(){
+// 	var te = parseInt($(this).text());
+// 	if(isNaN(te)===false){
+// 		total_init += te;
+// 	}
+// });
+// $('#cart-total').text(total_init);
 
 /* 動畫毫秒 */
 var fadeTime = 300;
@@ -316,6 +321,10 @@ $('.product-removal button').click(function () {
 });
 
 
+$('.check').click(function(){
+	recalculateCart();
+	
+})
 /* 重新計算購物車 */
 function recalculateCart()
 {
@@ -323,13 +332,15 @@ function recalculateCart()
 
   /* 要購買的單一商品總價   */
   $('.product').each(function () {
-    total += parseFloat($(this).children('.product-line-price').text());
+	  if($(this).find('.check').prop("checked")==true){
+		  total += parseInt($(this).children('.product-line-price').text());  
+	  }
   });
 
 
   /*更新顯示的總價 */
   $('.totals-value').fadeOut(fadeTime, function () {
-    $('#cart-total').html(total.toFixed(2));
+    $('#cart-total').html(total);
     if (total == 0) {
       $('.checkout').fadeOut(fadeTime);
     } else {
@@ -345,15 +356,15 @@ function updateQuantity(quantityInput)
 {
   /* Calculate line price */
   var productRow = $(quantityInput).parent().parent();
-  var price = parseFloat(productRow.children('.product-price').text());
+  var price = parseInt(productRow.children('.product-price').text());
   var quantity = $(quantityInput).val();
   var linePrice = price * quantity;
 
   /* Update line price display and recalc cart totals */
   productRow.children('.product-line-price').each(function () {
     $(this).fadeOut(fadeTime, function () {
-      $(this).text(linePrice.toFixed(2));
-      recalculateCart();
+      $(this).text(linePrice);
+//       recalculateCart();
       $(this).fadeIn(fadeTime);
     });
   });
@@ -371,6 +382,35 @@ function removeItem(removeButton)
   });
   
 }
+
+
+$(".checkout").click(function(){
+	let map=new Map();
+	  $('.product').each(function () {
+		  if($(this).find('.check').prop("checked")==true){
+			 var prod_no = $(this).find('.product-no').text();
+// 			 console.log("prod-no"+prod_no);
+			 var num     = $(this).find('.number').val();
+// 			 console.log("num"+num);
+			 map.set(prod_no,num);
+		  }
+	  });
+// 	  console.log(map.size);
+// 	  for(let entry of map){ // 逐一取得 map 物件的鍵值對，放入 entry 中
+// 		    console.log("Key:", entry[0], "Value:", entry[1]);
+// 		}
+
+		
+		$.ajax({  
+			type : "post",
+			url : "http://localhost:8081/CEA103G1/shopping_cart/shopping_cart.do",
+			dataType:"json",
+			data : {action: "generate",mbr_no:<%=memberVO.getMbr_no()%>,mydata:map},
+			success : function(data) {
+				alert("成功生成暫時訂單資料");
+			}
+		});
+})
     </script>
 
 

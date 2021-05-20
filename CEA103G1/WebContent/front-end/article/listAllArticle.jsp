@@ -346,7 +346,7 @@ overflow-y: auto;
         <div>想要一起加入討論，要先登入 Campion 唷！</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-secondary close_modal" data-bs-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/front-end/member/login.jsp'">登入</button>
       </div>
     </div>
@@ -429,6 +429,7 @@ jedis.close();
 		$('.article').click(function(){
 			
 		})
+	
 
   	var infScroll = new InfiniteScroll( ".scroll", {
   		path: function() {
@@ -445,6 +446,10 @@ jedis.close();
 
   $(".to_login").click(function(){
 	  $('#login_confirm').modal('show');
+  })
+  
+  $('.close_modal').click(function(){
+	  $('#login_confirm').modal('hide');
   })
   </script>
    <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->

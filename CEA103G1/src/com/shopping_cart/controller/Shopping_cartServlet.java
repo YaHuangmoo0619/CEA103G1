@@ -1,8 +1,10 @@
 package com.shopping_cart.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +12,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.RepaintManager;
+
+import net.sf.json.JSONObject;
 
 import com.shopping_cart.model.Shopping_cartService;
 import com.shopping_cart.model.Shopping_cartVO;
@@ -117,5 +122,31 @@ public class Shopping_cartServlet extends HttpServlet{
 		
 		
 		
+		if ("generate".equals(action)) { // 為某人新增一筆臨時訂單
+
+			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
+			res.setContentType("application/json;charset=utf-8");
+			Integer mbr_no = null;
+			mbr_no = new Integer(req.getParameter("mbr_no").trim());
+			System.out.println(mbr_no);
+			
+			String jsonStr = "";
+			jsonStr = req.getParameter("map");
+			System.out.println(jsonStr);
+			Map<String, String> map = new HashMap<String, String>();
+			map = JSONObject.fromObject(jsonStr);
+			System.out.println("map的大小" + map.size());
+			for (Map.Entry<String, String> entry : map.entrySet()) {  
+				  
+			    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
+			  
+			}  
+
+
+			
+			/*************************** 2.開始新增資料 ***************************************/
+
+
+		} //end of minus_collection
 	}
 }
