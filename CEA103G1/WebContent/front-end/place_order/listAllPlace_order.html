@@ -432,7 +432,7 @@ img.person:hover {
 		$.ajax({
 			type : "GET",
 			dataType : "json",
-			url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=listPresent",
+			url : "/CEA103G1/place_order/place_orderformamber.do?action=listPresent",
 			success : function(data) {
 				showPresent(data);
 			}
@@ -441,7 +441,7 @@ img.person:hover {
 			$.ajax({
 				type : "GET",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=listPresent",
+				url : "/CEA103G1/place_order/place_orderformamber.do?action=listPresent",
 				success : function(data) {
 					showPresent(data);
 				}
@@ -451,7 +451,7 @@ img.person:hover {
 			$.ajax({
 				type : "GET",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=listHistory",
+				url : "/CEA103G1/place_order/place_orderformamber.do?action=listHistory",
 				success : function(data) {
 					showHistory(data);
 				}
@@ -480,7 +480,7 @@ img.person:hover {
 					var ckin_stat = "已取消";
 				}
 				let html;
-				var href = `http://localhost:8081/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
+				var href = `/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
 				html = `<tr><td><a id="${data[i].plc_ord_no}">${data[i].camp_name}</a></td><td>${data[i].ckin_date}</td><td>${data[i].ckout_date}</td><td>${data[i].plc_ord_sum}</td><td>`
 						+ pay_stat
 						+ `</td><td>`
@@ -517,7 +517,7 @@ img.person:hover {
 					var ckin_stat = "已取消";
 				}
 				let html;
-				var href = `http://localhost:8081/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
+				var href = `/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
 				html = `<tr><td><a id="${data[i].plc_ord_no}">${data[i].camp_name}</a></td><td>${data[i].ckin_date}</td><td>${data[i].ckout_date}</td><td>${data[i].plc_ord_sum}</td><td>`
 						+ pay_stat
 						+ `</td><td>`
@@ -536,7 +536,7 @@ img.person:hover {
 			$.ajax({
 				type : "GET",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=listOne&plc_ord_no=" + e,
+				url : "/CEA103G1/place_order/place_orderformamber.do?action=listOne&plc_ord_no=" + e,
 				success : function(data) {
 					showOrder(data);
 				}
@@ -545,7 +545,7 @@ img.person:hover {
 		function showOrder(data){
 			$('#last').nextAll().remove();
 			$('#whole').next().remove();
-			$('#camp_name').html(`<a href="http://localhost:8081/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[0].camp_no}&action=getone">${data[0].camp_name}</a>`);
+			$('#camp_name').html(`<a href="/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[0].camp_no}&action=getone">${data[0].camp_name}</a>`);
 			$('#plc_ord_time').text(`${data[0].plc_ord_time}`);
 			$('#ckin_date').text(`${data[0].ckin_date}`);
 			$('#ckout_date').text(`${data[0].ckout_date}`);
@@ -613,7 +613,7 @@ img.person:hover {
 			$.ajax({
 				type : "GET",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=cancel&plc_ord_no=" + e,
+				url : "/CEA103G1/place_order/place_orderformamber.do?action=cancel&plc_ord_no=" + e,
 				success : function(data) {
 					alert("已取消訂單")
 					$(`#${data[0].plc_ord_no}`).parent().parent().remove();
@@ -622,7 +622,7 @@ img.person:hover {
 						$.ajax({
 							type : "GET",
 							dataType : "json",
-							url : "http://localhost:8081/CEA103G1/place_order/place_orderformamber.do?action=listHistory",
+							url : "/CEA103G1/place_order/place_orderformamber.do?action=listHistory",
 							success : function(data) {
 								showHistory(data);
 							}

@@ -420,7 +420,7 @@ img.person:hover {
 		$.ajax({
 			type : "GET",
 			dataType : "json",
-			url : "http://localhost:8081/CEA103G1/Member.do",
+			url : "/CEA103G1/Member.do",
 			data : {uri : locat},
 			success : function(data) {
 				if(data.length === 2){
@@ -475,7 +475,7 @@ img.person:hover {
 		$.ajax({
 			type : "GET",
 			dataType : "json",
-			url : "http://localhost:8081/CEA103G1/district/district.do",
+			url : "/CEA103G1/district/district.do",
 			success : function(data) {
 				for (i in data) {
 					if(county === data[i]){
@@ -491,7 +491,7 @@ img.person:hover {
 		$.ajax({
 			type : "GET",
 			dataType : "json",
-			url : "http://localhost:8081/CEA103G1/feature_list/featurelist.do?action=getAll",
+			url : "/CEA103G1/feature_list/featurelist.do?action=getAll",
 			success : function(data) {
 				showFeature(data);
 			}
@@ -501,7 +501,7 @@ img.person:hover {
 			$.ajax({
 				type : "GET",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/campsite/CampInfo.do?action=getall",
+				url : "/CEA103G1/campsite/CampInfo.do?action=getall",
 				success : function(data) {
 					showAll(data);
 				}
@@ -513,7 +513,7 @@ img.person:hover {
 			$.ajax({
 				type : "GET",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/feature_list/featurelist.do?action=getCamp&" + query,
+				url : "/CEA103G1/feature_list/featurelist.do?action=getCamp&" + query,
 				success : function(data) {
 					window.history.pushState({}, document.title, url.substring(0,url.indexOf('?')));
 					showAll(data);
@@ -535,7 +535,7 @@ img.person:hover {
 				type : "GET",
 				cache : "false",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/ValidPlace.do",
+				url : "/CEA103G1/ValidPlace.do",
 				data: {county: county, startdate: startdate[1], enddate: enddate[1], people: people[1]},
 				success : function(data) {
 					if($('#startdate').val() === "" || $('#enddate').val() === ""){
@@ -561,7 +561,7 @@ img.person:hover {
 					type : "GET",
 					cache : "false",
 					dataType : "json",
-					url : "http://localhost:8081/CEA103G1/ValidPlace.do",
+					url : "/CEA103G1/ValidPlace.do",
 					data : $('#condition').serialize(), // serializes the form's elements.
 					success : function(data) {
 						if($('#startdate').val() === "" || $('#enddate').val() === ""){
@@ -586,7 +586,7 @@ img.person:hover {
 			$.ajax({
 				type : "GET",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/feature_list/featurelist.do?action=getCamp&camp_fl_no=" + e,
+				url : "/CEA103G1/feature_list/featurelist.do?action=getCamp&camp_fl_no=" + e,
 				success : function(data) {
 					showAll(data);
 				}
@@ -635,7 +635,7 @@ img.person:hover {
 			if(icon.getAttribute("name") === "bookmark-outline"){
 				$.ajax({
 					type : "GET",
-					url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + camp_no,
+					url : "/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + camp_no,
 					success : function() {
 						alert(data);
 						icon.setAttribute("name","bookmark");
@@ -644,7 +644,7 @@ img.person:hover {
 			}else{
 				$.ajax({
 					type : "GET",
-					url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + camp_no,
+					url : "/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + camp_no,
 					success : function() {
 						alert(data);
 						icon.setAttribute("name","bookmark-outline");
