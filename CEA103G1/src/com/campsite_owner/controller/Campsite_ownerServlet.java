@@ -139,7 +139,7 @@ public class Campsite_ownerServlet extends HttpServlet {
 
 		if ("insert".equals(action)) { // 來自addMember_rank.jsp的請求
 			HttpSession session = req.getSession();
-			
+
 			Part part = req.getPart("sticker");
 			InputStream in = part.getInputStream();
 			byte[] sticker = new byte[in.available()];
@@ -226,7 +226,7 @@ public class Campsite_ownerServlet extends HttpServlet {
 						city, dist, add, sticker, bank_no, bank_acc);
 				mail(req, campsite_ownerVO);
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
-				session.setAttribute("enable","請確認信箱是否收到啟用信");
+				session.setAttribute("enable", "請確認信箱是否收到啟用信");
 				String url = "/front-end/campsite_owner/login.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllMember_rank.jsp
 				successView.forward(req, res);
@@ -288,6 +288,8 @@ public class Campsite_ownerServlet extends HttpServlet {
 				}
 				if (campsite_ownerVO == null) {
 					errorMsgs.add("此帳號無效");
+				} else if ((int) campsite_ownerVO.getStat() == 0) {
+					errorMsgs.add("帳號尚未啟用，請前往信箱確認");
 				} else {
 					String pwd = req.getParameter("pwd");
 					if (pwd == null || (pwd.trim()).length() == 0) {
@@ -315,19 +317,20 @@ public class Campsite_ownerServlet extends HttpServlet {
 			}
 		}
 	}
-	
-	public void mail (HttpServletRequest req, Campsite_ownerVO campsite_ownerVO){
 
-	      String to = campsite_ownerVO.getMail();
-	      
-	      String subject = "Campion營主啟用";
-	      String messageText = "http://localhost:8081/" + req.getContextPath() + "/campion_campsiteOwner.jsp?cso_no=" + campsite_ownerVO.getCso_no(); 
-	       
-	      Campsite_ownerServlet mailService = new Campsite_ownerServlet();
-	      mailService.sendMail(to, subject, messageText);
+	public void mail(HttpServletRequest req, Campsite_ownerVO campsite_ownerVO) {
+
+		String to = campsite_ownerVO.getMail();
+
+		String subject = "Campion營主啟用";
+		String messageText = "http://localhost:8081" + req.getContextPath() + "/campion_campsiteOwner.jsp?cso_no="
+				+ campsite_ownerVO.getCso_no();
+
+		Campsite_ownerServlet mailService = new Campsite_ownerServlet();
+		mailService.sendMail(to, subject, messageText);
 
 	}
-	
+
 	public void sendMail(String to, String subject, String messageText) {
 		try {
 			// 設定使用SSL連線至 Gmail smtp Server

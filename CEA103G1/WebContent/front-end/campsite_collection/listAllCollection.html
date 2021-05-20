@@ -337,7 +337,7 @@ img.person:hover {
 		$.ajax({
 			type : "GET",
 			dataType : "json",
-			url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=getAll",
+			url : "/CEA103G1/campsite_colection/collection.do?action=getAll",
 			success : function(data) {
 				showAll(data);
 			}
@@ -345,7 +345,7 @@ img.person:hover {
 		function showAll(data) {
 			for (i in data) {
 				let html;	
-				var href=`http://localhost:8081/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
+				var href=`/CEA103G1/front-end/campsite/listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
 				html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="180" height="130" style="margin-right:15px;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
 					</a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr></div>`;
 				$('#all').append(html);
@@ -364,7 +364,7 @@ img.person:hover {
 			if(icon.getAttribute("name") === "bookmark-outline"){
 				$.ajax({
 					type : "GET",
-					url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + camp_no,
+					url : "/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + camp_no,
 					success : function(data) {
 						alert(data);
 						icon.setAttribute("name","bookmark");
@@ -373,7 +373,7 @@ img.person:hover {
 			}else{
 				$.ajax({
 					type : "GET",
-					url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + camp_no,
+					url : "/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + camp_no,
 					success : function(data) {
 						alert(data);
 						icon.setAttribute("name","bookmark-outline");

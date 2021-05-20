@@ -55,7 +55,7 @@ div.left {
 }
 
 div.right {
-	background-color: #fff;
+/* 	background-color: #fff; */
 	margin-top: 20px;
 	/* 	padding: 50px 50px; */
 	border-radius: 5px;
@@ -428,7 +428,8 @@ td{
 				<div id="infoblock">
 					<p id="campInfo"></p>
 				</div>
-				<img id="config" width="800" height="500"><br> <br>
+				<button type="button" onclick="openConfig()">展開配置圖</button>
+				<div id="showConfig" style="display: none;"><img id="config" width="800" height="500"></div><br> <br>
 				<div style="width:1000px;"><hr><FORM method="get" id="form1" onsubmit="return false"
 					accept-charset="big5">
 					<div class="formtoplace">入住日期:<input id="startdate" name="startdate" type="text" required></div>
@@ -561,7 +562,7 @@ td{
 	$.ajax({
 		type : "GET",
 		dataType : "json",
-		url : "http://localhost:8081/CEA103G1/Member.do",
+		url : "/CEA103G1/Member.do",
 		data : {uri : locat},
 		success : function(data) {
 			
@@ -638,7 +639,7 @@ td{
 		$.ajax({
 			type : "GET",
 			dataType : "json",
-			url : "http://localhost:8081/CEA103G1/district/district.do",
+			url : "/CEA103G1/district/district.do",
 			success : function(data) {
 				showDistrict(data);
 			}
@@ -670,7 +671,7 @@ td{
 			$.ajax({
 				type : "GET",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/campsite/CampInfo.do?"
+				url : "/CEA103G1/campsite/CampInfo.do?"
 						+ query,
 				success : function(data) {
 					initMap(data);
@@ -691,7 +692,7 @@ td{
 			$.ajax({
 				type : "GET",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/campsite/CampInfo.do?"
+				url : "/CEA103G1/campsite/CampInfo.do?"
 						+ query,
 				success : function(data) {
 					initMap(data);
@@ -742,6 +743,9 @@ td{
 
 		}
 		function showPhoto(data) {
+			$('body').css('background-image', `linear-gradient(rgba(255,255,255,6), rgba(255,255,255,.6)), url("${data[data.length-1][0]}")`);
+			$('body').css('background-size', "100%");
+			$('body').css('background-attachment', "fixed");
 			let count = 1;
 			for(i in data[data.length-1]){
 				let alt = "custom_html_banner" + count;
@@ -760,7 +764,7 @@ td{
 			$.ajax({
 				type : "GET",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/near.do?locat="
+				url : "/CEA103G1/near.do?locat="
 						+ locat,
 				success : function(spot) {
 					for(i in spot){
@@ -782,7 +786,7 @@ td{
 				$.ajax({
 					type : "GET",
 					dataType : "json",
-					url : "http://localhost:8081/CEA103G1/campsite/CampInfo.do",
+					url : "/CEA103G1/campsite/CampInfo.do",
 					data : $('#form1').serialize(),
 					success : function(data) {
 						showPlace(data);
@@ -809,7 +813,7 @@ td{
 				$.ajax({
 					type : "GET",
 					dataType : "json",
-					url : "http://localhost:8081/CEA103G1/campsite/CampInfo.do",
+					url : "/CEA103G1/campsite/CampInfo.do",
 					data : $('#form1').serialize(),
 					success : function(data) {
 						showPlace(data);
@@ -851,7 +855,7 @@ td{
 			if($("#fav").attr("name") === "bookmark-outline"){
 				$.ajax({
 					type : "GET",
-					url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + $('#camp_no').val(),
+					url : "/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + $('#camp_no').val(),
 					success : function(data) {
 						alert(data);
 						$("#fav").attr("name","bookmark");
@@ -860,7 +864,7 @@ td{
 			}else{
 				$.ajax({
 					type : "GET",
-					url : "http://localhost:8081/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + $('#camp_no').val(),
+					url : "/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + $('#camp_no').val(),
 					success : function(data) {
 						alert(data);
 						$("#fav").attr("name","bookmark-outline");
@@ -886,7 +890,7 @@ td{
 		}
 		
 		function findWithFeature(e) {
-			window.location.href="http://localhost:8081/CEA103G1/front-end/campsite/listAllCamp.html?camp_fl_no=" + e;
+			window.location.href="/CEA103G1/front-end/campsite/listAllCamp.html?camp_fl_no=" + e;
 		}
 
 		$("#backtobrowse").click(function(){
@@ -901,7 +905,7 @@ td{
 			let p = $('#p').val();
 			let c = $('#c').val();
 			sessionStorage.setItem('county',c)
-			window.location.href="http://localhost:8081/CEA103G1/front-end/campsite/listAllCamp.html?startdate=" + st + "&enddate=" + ed + "&people=" + p;
+			window.location.href="/CEA103G1/front-end/campsite/listAllCamp.html?startdate=" + st + "&enddate=" + ed + "&people=" + p;
 		});
 		
 		function showPlace(data){
@@ -918,7 +922,15 @@ td{
 				$('#placeInfo').after("<p>查無營位</p>");
 			}
 		}
-
+		function openConfig(){
+			if($('#showConfig').css('display') === "none"){
+				$('#showConfig').css('display','block');
+				$('#showConfig').prev().text("隱藏配置圖");
+			}else{
+				$('#showConfig').css('display','none');
+				$('#showConfig').prev().text("展開配置圖");
+			}
+		}
 		$("#placeInfo").click(function(){
 			if($("#placeInfo input:checked").length===0){
 				$('#add').attr("disabled",true);
@@ -1022,7 +1034,7 @@ td{
 			$.ajax({
 				type : "GET",
 				dataType : "json",
-				url : "http://localhost:8081/CEA103G1/Member.do",
+				url : "/CEA103G1/Member.do",
 				data : {uri : locat},
 				success : function(data) {
 					if(data.length === 2){
@@ -1050,18 +1062,18 @@ td{
 			if($("input[name='pay_meth']:checked").val()==="0"){
 				$.ajax({
 					type : "POST",
-					url : "http://localhost:8081/CEA103G1/place_order/Place_order.do?action=creditcard",
+					url : "/CEA103G1/place_order/Place_order.do?action=creditcard",
 					data : $('#order').serialize(),
 					success : function(data) {
 						let ord = JSON.stringify(data);
 						sessionStorage.setItem("ord", ord);
-						window.location.href="http://localhost:8081/CEA103G1/front-end/place_order/creditCard.html";
+						window.location.href="/CEA103G1/front-end/place_order/creditCard.html";
 					}
 				});
 			} else{
 				$.ajax({
 					type : "POST",
-					url : "http://localhost:8081/CEA103G1/place_order/Place_order.do?action=transfer",
+					url : "/CEA103G1/place_order/Place_order.do?action=transfer",
 					data : $('#order').serialize(),
 					success : function(data) {
 						showModal1(data)

@@ -19,7 +19,7 @@
             height: 100%;
         }
         body {
-            background: url("<%=request.getContextPath()%>/front-images/Login_image.jpg") no-repeat center center / cover;
+            background: url("<%=request.getContextPath()%>/front-images/LoginCSO.jpg") no-repeat center center / cover;
             display: flex;
             justify-content: center;
             align-items: center;

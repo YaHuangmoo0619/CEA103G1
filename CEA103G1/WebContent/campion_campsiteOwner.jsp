@@ -5,9 +5,16 @@
 <!-- 測試登入狀態及畫面改變 -->
 <%
 Campsite_ownerService campsite_ownerSvcLogin = new Campsite_ownerService();
-int cso_no = new Integer(request.getParameter("cso_no"));
-session.setAttribute("campsite_ownerVO", campsite_ownerSvcLogin.enableCampsite_owner(cso_no, 1));
+if(request.getParameter("cso_no") != null){
+	int cso_no = new Integer(request.getParameter("cso_no"));
+	session.setAttribute("campsite_ownerVO", campsite_ownerSvcLogin.enableCampsite_owner(cso_no, 1));
+}
 Campsite_ownerVO campsite_ownerVOLogin = (Campsite_ownerVO)session.getAttribute("campsite_ownerVO");
+if(campsite_ownerVOLogin == null){
+	String url = "front-end/campsite_owner/login.jsp";
+	RequestDispatcher successView = request.getRequestDispatcher(url); // 成功轉交 campion_front.jsp
+	successView.forward(request, response);
+}
 %>
 <!DOCTYPE html>
 <html lang="zh-tw">
@@ -44,6 +51,12 @@ body {
 	color: #80c344;
 	overflow-x: hidden;
 	position: relative;
+}
+
+.person{
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
 }
 
 a {
