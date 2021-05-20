@@ -1,10 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.util.*"%>
 <%@ page import="com.product.model.*"%>
 <%@ page import="com.employee.model.*"%>
-
+<jsp:useBean id="product_pictureSvc" class="com.product_picture.model.Product_pictureService"/>
+<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
 <% 
 	EmployeeVO employeeVO = (EmployeeVO)session.getAttribute("employeeVO");
 	if(employeeVO == null){
@@ -27,7 +29,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<title>所有商品 </title>
+<title>所有商品列表 </title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -171,6 +173,18 @@ tr:hover {
 	box-shadow: 0 1px 5px 0 #4e5452 inset;
 /* 	cursor: pointer; */
 }
+
+img.inDiv{
+	width:50px;
+}
+div.innerDiv{
+ 	display:inline;
+}
+hr{
+	margin: 3px;
+	width: 30%;
+	border-color:#80c344;
+}
 </style>
 
 
@@ -183,91 +197,103 @@ tr:hover {
 			<div class="left col-3">
 				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 			<div class="right col-9">
-<table id="table-1">
-	<tr><td>
-		 <h3>所有商品 </h3>
-		 <h4><a href="${pageContext.request.contextPath}/back-end/product/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0"></a></h4>
-	</td></tr>
-</table>
+			<form>
+		 <h3>所有商品列表&nbsp;
+			<a class="content" href="<%=request.getContextPath()%>/back-end/product/addProduct.jsp">新增商品</a>
+			<a class="content" href="<%=request.getContextPath()%>/back-end/product/listAllProduct_update.jsp">修改商品</a>
+			<input type="submit" value="上架" name="action" class="confirm">
+			<input type="submit" value="下架" name="action" class="confirm">
+		</h3>
 
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">請修正以下錯誤:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
+<%-- <c:if test="${not empty errorMsgs}"> --%>
+<!-- 	<font style="color:red">請修正以下錯誤:</font> -->
+<!-- 	<ul> -->
+<%-- 		<c:forEach var="message" items="${errorMsgs}"> --%>
+<%-- 			<li style="color:red">${message}</li> --%>
+<%-- 		</c:forEach> --%>
+<!-- 	</ul> -->
+<%-- </c:if> --%>
 
-<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
+
 
 <table>
-	<tr>
-		<th>商品編號</th>
-		<th>商品分類名稱</th>
-		<th>商品狀態</th>
-		<th>商品名稱</th>
-		<th>商品價格</th>
-		<th>商品庫存</th>
-		<th>商品資訊</th>
-		<th>商品品牌</th>
-		<th>商品顏色</th>
-		<th>商品大小</th>
-		<th>運送方式</th>
-	</tr>
-<%-- <%@ include file="page1.file" %> --%>
-	<c:forEach var="productVO" items="${list}" > <%-- begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" --%>
+
+	<c:forEach var="productVO" items="${list}" >
 		
 		<tr>
 			<td>${productVO.prod_no}</td>
+			<td><input type="checkbox" name="prod_no" value="${productVO.prod_no}"></td>
+			<td><img src="${product_pictureSvc.getOneProduct_picture(productVO.prod_no).getProd_pic()}" class="inDiv"></td>
 			<td>
-			${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}
-			</td>
-			<td>
-			<c:if test="${productVO.prod_stat==0}">
-				<c:out value="下架" />
+			<div style="color:#4B7F52;">${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}</div>
+			<div style="font-weight:555;">${productVO.prod_bnd}</div>
+			<h5>${productVO.prod_name}</h5>
+			<hr>
+			<c:set var="prod_info" value="${productVO.prod_info}"/>
+			<c:if test="${prod_info.length()>30}">
+				<div>${fn:substring(prod_info, 0, 30)}...</div>
 			</c:if>
-			<c:if test="${productVO.prod_stat==1}">
-				<c:out value="上架" />
+			<c:if test="${prod_info.length()<=30}">
+				<div>${fn:substring(prod_info, 0, 30)}</div>
 			</c:if>
-			</td>
-			<td>${productVO.prod_name}</td>
-			<td>${productVO.prod_pc}</td>
-			<td>${productVO.prod_stg}</td>
-			<td>${productVO.prod_info}</td>
-			<td>${productVO.prod_bnd}</td>
-			<td>${productVO.prod_clr}</td>
-			<td>${productVO.prod_size}</td>
-			<td>
-			<c:if test="${productVO.ship_meth==0}">
-				<c:out value="不限運送方式" />
+			<c:if test="${prod_info.length()==0}">
+				<div>無資訊</div>
 			</c:if>
-			<c:if test="${productVO.ship_meth==1}">
-				<c:out value="限宅配" />
-			</c:if>
-			<c:if test="${productVO.ship_meth==2}">
-				<c:out value="限超商取貨" />
-			</c:if>
+			<hr>
+			<div>
+				<div class="innerDiv">${productVO.prod_clr}</div>
+				<div class="innerDiv" style="color:#4B7F52;">${productVO.prod_size}</div>
+				<div class="innerDiv">
+					<c:if test="${productVO.ship_meth==0}">
+						<c:out value="不限運送方式" />
+					</c:if>
+					<c:if test="${productVO.ship_meth==1}">
+						<c:out value="限宅配" />
+					</c:if>
+					<c:if test="${productVO.ship_meth==2}">
+						<c:out value="限超商取貨" />
+					</c:if>
+				</div>
+			</div>
 			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改">
-			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
+			<td style="width:15%;">
+				<h5>庫存${productVO.prod_stg}</h5>
+				<div>${productVO.prod_pc}元</div>
+				<hr>
+				<div>
+				<c:if test="${productVO.prod_stat==0}">
+					<c:out value="下架" />
+				</c:if>
+				<c:if test="${productVO.prod_stat==1}">
+					<c:out value="上架" />
+				</c:if>
+				</div>
 			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="查看詳情">
-			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-			     <input type="hidden" name="action"	value="getOne_For_Display"></FORM>
-			</td>
+<!-- 			<td> -->
+<%-- 			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;"> --%>
+<!-- 			     <input type="submit" value="修改"> -->
+<%-- 			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}"> --%>
+<!-- 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM> -->
+<!-- 			</td> -->
 		</tr>
 	</c:forEach>
 </table>
+</form>
 </div>
 </div>
 </div>
-
+<script>
+$("tr").click(function(e){
+// console.log(e.currentTarget.children[1].children[0].checked);
+	if(e.currentTarget.children[1].children[0].checked === false){
+// 		alert('toTrue');
+		e.currentTarget.children[1].children[0].checked= true;
+	}else{
+// 		alert('toFalse');
+		e.currentTarget.children[1].children[0].checked= false;
+	}
+});
+</script>
 <script>
 	let backToTop = document.getElementsByClassName("backToTop");
 	$(window).scroll(function(e) {
