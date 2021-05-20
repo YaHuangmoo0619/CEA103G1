@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.product_order.model.*"%>
+<%@ page import="com.product_order.model.*"%>
 
 <%
     Product_orderService product_orderSvc = new Product_orderService();

@@ -105,8 +105,9 @@
 			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 			     <input type="hidden" name="action"	value="insert">
 			</FORM>
-			
-		</td>
+		
+		</td>    
+   
 	</tr>
 </table>
 

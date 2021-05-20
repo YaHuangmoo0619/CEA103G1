@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.product.model.*"%>
+<%@ page import="com.product_picture.model.*"%>
 <%
 	ProductService productSvc = new ProductService();
     List<ProductVO> list = productSvc.getShop();
@@ -104,6 +105,7 @@
 	<tr>
 		<th>商品編號</th>
 		<th>商品分類名稱</th>
+		<th>商品照片</th>
 		<th>商品名稱</th>
 		<th>商品價格</th>
 		<th>商品資訊</th>
@@ -119,6 +121,11 @@
 			<td>${productVO.prod_no}</td>
 			<td>
 			${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}
+			</td>
+			<td>
+			<c:forEach var="product_pictureVO" items="${list}" >
+			${product_pictureSvc.getOneProduct_picture(productVO.prod_cat_no).prod_pic}
+			</c:forEach>
 			</td>
 			<td>${productVO.prod_name}</td>
 			<td>${productVO.prod_pc}</td>
@@ -156,8 +163,75 @@
 	</c:forEach>
 </table>
 
+<div class="modal fade" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>您尚未登入</h5>
+      </div>
+      <div class="modal-body">
+        <div>想要一起加入討論，要先登入 Campion 唷！</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close_modal" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/front-end/member/login.jsp'">登入</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <%-- <%@ include file="page2.file" %> --%> 
 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+
+<script>
+
+	$(".to_login").click(function(){
+	  		$('#login_confirm').modal('show');
+	})
+	
+	$(".close_modal").click(function(){
+	  		$('#login_confirm').modal('hide');
+	})
+	
+	$(".addshopping_cart").click(function(){
+		var num_add = $("#product-qty").text();
+		$.ajax({  
+			type : "post",
+			url : "http://localhost:8081/CEA103G1/shopping_cart/shopping_cart.do",
+			data : {action: "add_collection",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,prod_no:<%=productVO.getProd_no()%>,prod_amt:num_add},
+			success : function(data) {
+				alert("成功加入購物車");
+			}
+		});
+	})
+	
+	$(".product-plus").click(function(){
+		var max_num = parseInt($("#max_num").text());
+		console.log("max_num:"+max_num);
+		var num = parseInt($(this).prev().text());
+		if(num<max_num){
+			num = num + 1;
+		}
+		
+		$(this).prev().text(num);
+		})
+
+	$(".product-subtract").click(function(){
+		var num = parseInt($(this).next().text());
+		if(num>0){
+			num = num - 1;
+		}
+		
+		$(this).next().text(num);
+		})	
+		
+		
+		
+</script>
 
 </body>
 </html>

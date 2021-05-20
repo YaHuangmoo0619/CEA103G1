@@ -165,7 +165,7 @@
 			
 			
 			<td id="max_num">${productVO.prod_stg}</td>
-			<!-- 	如果有登入的話 -->
+			<!-- 	如果有登入的話 -->	
 			<c:if test="${not empty memberVO }"> 
 			<td><button class=addshopping_cart>加入購物車</button></td>
 			</c:if>
