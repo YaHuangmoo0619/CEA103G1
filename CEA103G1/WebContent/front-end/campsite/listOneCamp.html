@@ -55,7 +55,7 @@ div.left {
 }
 
 div.right {
-	background-color: #fff;
+/* 	background-color: #fff; */
 	margin-top: 20px;
 	/* 	padding: 50px 50px; */
 	border-radius: 5px;
@@ -428,7 +428,8 @@ td{
 				<div id="infoblock">
 					<p id="campInfo"></p>
 				</div>
-				<img id="config" width="800" height="500"><br> <br>
+				<button type="button" onclick="openConfig()">展開配置圖</button>
+				<div id="showConfig" style="display: none;"><img id="config" width="800" height="500"></div><br> <br>
 				<div style="width:1000px;"><hr><FORM method="get" id="form1" onsubmit="return false"
 					accept-charset="big5">
 					<div class="formtoplace">入住日期:<input id="startdate" name="startdate" type="text" required></div>
@@ -742,6 +743,9 @@ td{
 
 		}
 		function showPhoto(data) {
+			$('body').css('background-image', `linear-gradient(rgba(255,255,255,6), rgba(255,255,255,.6)), url("${data[data.length-1][0]}")`);
+			$('body').css('background-size', "100%");
+			$('body').css('background-attachment', "fixed");
 			let count = 1;
 			for(i in data[data.length-1]){
 				let alt = "custom_html_banner" + count;
@@ -918,7 +922,15 @@ td{
 				$('#placeInfo').after("<p>查無營位</p>");
 			}
 		}
-
+		function openConfig(){
+			if($('#showConfig').css('display') === "none"){
+				$('#showConfig').css('display','block');
+				$('#showConfig').prev().text("隱藏配置圖");
+			}else{
+				$('#showConfig').css('display','none');
+				$('#showConfig').prev().text("展開配置圖");
+			}
+		}
 		$("#placeInfo").click(function(){
 			if($("#placeInfo input:checked").length===0){
 				$('#add').attr("disabled",true);

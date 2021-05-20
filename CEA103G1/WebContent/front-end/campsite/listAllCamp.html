@@ -23,6 +23,24 @@
   .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
            height: 151px;   /* height:  151px; */
   }
+  #search {
+  			margin-top: 10px;
+            height: 325px;
+            width:250px;
+            border-radius: 10px;
+            border: 1px solid #fff;
+            box-shadow: 0 0 8px #000;
+            backdrop-filter: blur(5px);
+            display:flex;
+            position:fixed;
+            justify-content: center;
+            align-items: center;
+        } 
+  #condition input {
+            border: 1px solid #aaa;
+            border-radius: 5px;
+
+        }
 .confirm {
 	margin: 2px;
 	background-color: #80c344;
@@ -34,28 +52,27 @@
 	background-color: #80c344;
 }
 
+#idForm{
+	font-color:white;
+}
+
 .confirm:hover {
 	background-color: #4B7F52;
 	color: #80c344;
 	cursor: pointer;
 }
-
-.camp:hover {
-	background-color: #F0FFF0;
-}
-
 .camp {
 	margin: 0px;
 }
 
 div.left {
-	margin-top: 20px;
+	display: flex;
+	margin-top: 100px;
+	/* 	margin-right: 100%; */
 }
 
 div.right {
-/* 	background-color: #fff; */
-	margin-top: 20px;
-	margin-right: 100%;
+	margin-top: 110px;
 	/* 	padding: 50px 50px; */
 	border-radius: 5px;
 }
@@ -63,13 +80,17 @@ div.right {
 html, body {
 	margin: 0;
 	padding: 0;
-	background: #fff;
+/* 	background: #fff; */
+	background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("/CEA103G1/front-images/CampFront.jpg") ;
+	background-size: 100%;
+	background-attachment: fixed;
 	color: #4B7F52;
 }
 
+
 div.fixedTop {
 	background-color: #eee;
-	position: relative;
+	position: fixed;
 	z-index: 10;
 	left: 50%;
 	transform: translateX(-50%);
@@ -334,24 +355,26 @@ img.person:hover {
 	</div>
 	<div class="container" style="margin-left: 0; margin-right: 0;">
 		<div class="row">
-			<div class="left col-3">
-				<FORM method="get" id="condition" onsubmit="return false"
-					accept-charset="big5">
-					<!-- 		縣市:<select id="county" name="county"></select> -->
-					縣市:<br>
-					<select name="county" id="county"><option value="不拘">不拘</option></select><br> 入住日期:<br>
-					<input name="startdate" id="startdate" type="text"><br>
-					退房日期:<br>
-					<input name="enddate" id="enddate" type="text"><br>
-					人數:<br>
-					<input name="people" id="people" type="number"><br>
-					<input type="hidden" name="action" value="search"><br>
-					<input type="button" id="idForm" value="搜尋" class="btn btn-outline-success my-2 my-sm-0">
-				</FORM>
+			<div class="left col-3" style="border-right:solid 1px #DDDDDD;">
+				<div id="search">
+					<FORM method="get" id="condition" onsubmit="return false"
+						accept-charset="big5">
+						<!-- 		縣市:<select id="county" name="county"></select> -->
+						縣市:<br>
+						<select name="county" id="county"><option value="不拘">不拘</option></select><br> 入住日期:<br>
+						<input name="startdate" id="startdate" type="text"><br>
+						退房日期:<br>
+						<input name="enddate" id="enddate" type="text"><br>
+						人數:<br>
+						<input name="people" id="people" type="number"><br>
+						<input type="hidden" name="action" value="search"><br>
+						<input type="button" id="idForm" value="搜尋" class="btn btn-outline-success my-2 my-sm-0">
+					</FORM>
+				</div>
 				<FORM id="feature"></FORM>
 			</div>
 			<div class="right col-9">
-				<div id="featurelist"></div>
+				<div id="featurelist" style="position:fixed, relative;"></div>
 				<div id="all"></div>
 			</div>
 		</div>
@@ -573,8 +596,8 @@ img.person:hover {
 			for (i in data) {
 				let html;	
 				var href=`listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
-				html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="180" height="130" style="margin-right:15px;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
-					</a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr></div>`;
+				html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="210" height="150" style="margin-right:15px;box-shadow: 0 0 8px #fff;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;"><h5 style="font-weight:bold;font-color:white;">${data[i].camp_name}
+					</h5></a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr color="white"></div>`;
 				$('#all').append(html);
 				$(`#${data[i].camp_no}`).attr("href",href);
 				$(`#${data[i].camp_no}`).attr("target","_blank");
@@ -590,8 +613,8 @@ img.person:hover {
 				let html;
 				if (i) {	
 					var href=`listOneCamp.html?camp_no=${data[i].camp_no}&startdate=` + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val();
-					html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="180" height="130" style="margin-right:15px;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;">${data[i].camp_name}
-						</a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr></div>`;
+					html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="210" height="150" style="margin-right:15px;box-shadow: 0 0 8px #fff;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;"><h5 style="font-weight:bold;font-color:white;">${data[i].camp_name}
+						</h5></a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr color="white"></div>`;
 				} else {
 					html = "<center>所有營區皆已滿</center>";
 				}

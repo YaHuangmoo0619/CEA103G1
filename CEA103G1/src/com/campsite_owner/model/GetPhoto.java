@@ -35,7 +35,7 @@ public class GetPhoto extends HttpServlet {
 			Statement stmt = con.createStatement();
 			String cso_no = req.getParameter("cso_no").trim();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT sticker FROM campion.announcement WHERE cso_no = " + cso_no);
+					"SELECT sticker FROM campion.campsite_owner WHERE cso_no = " + cso_no);
 			
 			if(rs.next()) {
 				BufferedInputStream bInput= new BufferedInputStream(rs.getBinaryStream("sticker"));
@@ -46,7 +46,7 @@ public class GetPhoto extends HttpServlet {
 				}
 				bInput.close();
 			}else {
-				InputStream in = getServletContext().getResourceAsStream("/images/campionLogoLong.png");
+				InputStream in = getServletContext().getResourceAsStream("/images/campionLogoCircle.png");
 				byte[] b = new byte[in.available()];
 				in.read(b);
 				out.write(b);
