@@ -45,6 +45,7 @@ public class MemberService {
 
 		MemberVO memberVO = new MemberVO();
 		
+		
 		memberVO.setMbr_no(mbr_no);
 		memberVO.setRank_no(rank_no);
 		memberVO.setAcc(acc);

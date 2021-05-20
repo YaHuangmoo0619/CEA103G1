@@ -96,6 +96,7 @@ public class MemberServlet extends HttpServlet {
 			}
 		}
 		
+		
 		if ("getOne_For_Update".equals(action)) { // 來自listAllmember.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
