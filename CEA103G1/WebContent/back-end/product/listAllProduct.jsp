@@ -3,6 +3,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.product.model.*"%>
+<%@ page import="com.employee.model.*"%>
+
+<% 
+	EmployeeVO employeeVO = (EmployeeVO)session.getAttribute("employeeVO");
+	if(employeeVO == null){
+		response.sendRedirect(request.getContextPath()+"/campion_back_login.jsp");
+		return;
+	}
+%>
+
 <%
 	ProductService productSvc = new ProductService();
     List<ProductVO> list = productSvc.getAll();
