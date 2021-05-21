@@ -321,9 +321,8 @@ public class Campsite_ownerServlet extends HttpServlet {
 	public void mail(HttpServletRequest req, Campsite_ownerVO campsite_ownerVO) {
 
 		String to = campsite_ownerVO.getMail();
-
 		String subject = "Campion¿Á•D±“•Œ";
-		String messageText = "http://localhost:8081" + req.getContextPath() + "/campion_campsiteOwner.jsp?cso_no="
+		String messageText = req.getScheme() + ":" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/campion_campsiteOwner.jsp?cso_no="
 				+ campsite_ownerVO.getCso_no();
 
 		Campsite_ownerServlet mailService = new Campsite_ownerServlet();
