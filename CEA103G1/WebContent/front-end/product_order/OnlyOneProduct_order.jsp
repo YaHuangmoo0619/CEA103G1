@@ -3,10 +3,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.product_order.model.*"%>
+<%@ page import="com.product_order.model.*"%>
 
 <%
     Product_orderService product_orderSvc = new Product_orderService();
-	List<Product_orderVO> list = product_orderSvc.getAllByMbr();
+    List<Product_orderVO> list = product_orderSvc.getAll();
     pageContext.setAttribute("list",list);
 %>
 
@@ -95,7 +96,7 @@
 			<li style="color:red">${message}</li>
 		</c:forEach>
 	</ul>
-</c:if>
+<%--</c:if>
 
 <table>
 
@@ -113,10 +114,10 @@
 		<th>運送地址</th>
 		<th>發票形式</th>
 		<th>訂單備註</th>
-	</tr>
+	</tr>--%>
 <%-- <%@ include file="page1.file" %> --%>
 	<c:forEach var="product_orderVO" items="${list}" > <%-- begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" --%>
-		
+	<%--	
 		
 		<tr>
 			<td>${product_orderVO.prod_ord_no}</td>
@@ -177,15 +178,20 @@
 			<td>${product_orderVO.rmk}</td>
 			<td>
 			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="查看詳情">
-			     <input type="hidden" name="prod_no"  value="${product_orderVO.prod_ord_no}">
-			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-			     <input type="hidden" name="action"	value="getOne_For_Display"></FORM>
+			     <input type="submit" value="修改">
+			     <input type="hidden" name="prod_ord_no"  value="${product_orderVO.prod_ord_no}">
+			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
+			</td>
+			<td>
+			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
+			     <input type="submit" value="刪除">
+			     <input type="hidden" name="prod_ord_no"  value="${product_orderVO.prod_ord_no}">
+			     <input type="hidden" name="action" value="delete"></FORM>
 			</td>
 		</tr>
 	</c:forEach>
 	
-</table>
+</table>--%>
 <%-- <%@ include file="page2.file" %> --%> 
 
 </body>
