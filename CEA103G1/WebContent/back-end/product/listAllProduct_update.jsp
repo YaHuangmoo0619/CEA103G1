@@ -281,7 +281,7 @@ hr{
 </div>
 </div>
 </div>
-
+<c:if test="${openModal!=null}">
 		<div class="modal" tabindex="-1" role="dialog" id="Modal">
 		     <div class="modal-dialog" role="document"> 
 		        <div class="modal-content">
@@ -290,8 +290,8 @@ hr{
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
 		            </div>
 		            <div class="modal-body">
-		            ${productVO.prod_no}
-<%-- 						<jsp:include page="listOneProduct.jsp" /> --%>
+<%-- 		            ${productVOOne.prod_no} --%>
+						<jsp:include page="listOneProduct.jsp" />
 		            </div>
 		            <div class="modal-footer">
 		            	<form method="post" action="<%=request.getContextPath()%>/product/product.do" enctype="multipart/form-data" style="text-align:right;">
@@ -305,12 +305,17 @@ hr{
 		</div>
 
 <script>
-$("tr").click(function(e){
-	let prod_no = e.currentTarget.children[0].innerText;
-	window.location.href="<%=request.getContextPath()%>/product/product.do?prod_no="+ prod_no + "&action=read";
 	$('#Modal').modal({
 	  	show :true
 	}); 
+</script>
+</c:if>
+
+<script>
+$("tr").click(function(e){
+	console.log('in');
+	let prod_no = e.currentTarget.children[0].innerText;
+	window.location.href="<%=request.getContextPath()%>/product/product.do?prod_no="+ prod_no + "&action=read";
 });
 </script>
 <script>

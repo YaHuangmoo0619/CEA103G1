@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 
 import com.product.model.*;
 
+
 @WebServlet("/product/product.do")
 public class ProductServlet extends HttpServlet {
 
@@ -414,6 +415,23 @@ public class ProductServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 			
+		}
+		if("read".equals(action)) {
+			try {
+				ProductService productSvc = new ProductService();
+				ProductVO productVO = productSvc.getOneProduct(Integer.valueOf(req.getParameter("prod_no")));
+				
+				//Bootstrap_modal
+				boolean openModal=true;
+				req.setAttribute("openModal",openModal );
+				
+				req.setAttribute("productVO", productVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/product/listAllProduct_update.jsp");
+				successView.forward(req, res);
+			}catch(Exception e) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product/listAllProduct_update.jsp");
+				failureView.forward(req, res);
+			}
 		}
 		//¶®°Ä¥[ªº
 	}
