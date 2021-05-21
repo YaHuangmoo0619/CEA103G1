@@ -123,7 +123,7 @@ padding:0px 0px 0px 10px;
 /* -----------------------------以下為側欄css------------------------------ */
 #sidebar {
   position:absolute;
-  top:100px;
+  top:115px;
   left:0px;
   width:208px;
   height:100%;
@@ -167,25 +167,23 @@ margin: 0px !important;
 border: 0px !important;
 }
 
-#basicModal{
-
-overflow-y: initial !important
-
-}
 
 #basicModal{
 
 height: 500px;
-
+overflow-y: initial !important;
 overflow-y: auto;
 
 }
 
+
+.modal{
+	color: black
+}
 </style>
 
 </head>
 <body onload="connection()">
-	<div>目前登入的人是: ${memberVO.mbr_no}</div>
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	
 <!-- 	如果有登入的話 -->
@@ -196,6 +194,7 @@ overflow-y: auto;
 	<c:if test="${empty memberVO }"> 
 	<div class="no_login write to_login"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
 	</c:if>
+
 
 
 
@@ -219,22 +218,24 @@ overflow-y: auto;
 
 
 <div class=main_content id=main_content>
-<div class="scroll"> 
 	<%@ include file="pageforhome.file"%>
 
 
         <div class="container">
  
         		<div class=article_sort_parent>
-        			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp';">最新</div>
-        			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp';">熱門</div>
+<%--         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp';">最新</div> --%>
+        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp">最新</a>
+<%--         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp';">熱門</div> --%>
+        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp">熱門</a>
 					<!-- 	如果有登入的話 -->
 					<c:if test="${not empty memberVO }">
 					<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/addArticle.jsp';">追蹤</div> 
 					</c:if>
 					<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
 					<c:if test="${empty memberVO }"> 
-					<div class="article_sort to_login">追蹤</div>
+<!-- 					<div class="article_sort to_login">追蹤</div> -->
+					<a class="article_sort to_login">追蹤</a>
 					</c:if>
 					
         		</div>
@@ -255,9 +256,9 @@ overflow-y: auto;
 			</c:if>
 		<!-- 雅凰加的，為了嘗試啟動通知的推播 -->
 
-            <div class="body">
+            <div class="each_article">
                     <c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-                    <div class=article>
+                    <div class=article  style="cursor:pointer;" onclick="location.href='<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2';">
                         <article class="content" role="article" data-post-list-viewed-cell-no="2">
                             <div class="top_in">
                                 <div class="top_in1">
@@ -312,7 +313,7 @@ overflow-y: auto;
                         </c:forEach>
                     </div>
         </div>
-    </div>
+
 
 
 	<c:if test="${openModal!=null}">
@@ -425,13 +426,9 @@ jedis.close();
 			show : true
 		});
 		
-		
-		$('.article').click(function(){
-			
-		})
 	
 
-  	var infScroll = new InfiniteScroll( ".scroll", {
+  	var infScroll = new InfiniteScroll( ".container", {
   		path: function() {
   			// 頁面路徑
   			if ( this.loadCount < <%=max_page%> ) {
@@ -440,7 +437,7 @@ jedis.close();
   				return "http://localhost:8081/CEA103G1/front-end/article/listAllArticle.jsp?whichPage="+nextIndex;
   			}
   		},
-  		append: ".container", // 匯入物件類別
+  		append: ".each_article", // 匯入物件類別
   		status: ".scroller-status" // 捲軸狀態類別
   	})
 
@@ -451,6 +448,12 @@ jedis.close();
   $('.close_modal').click(function(){
 	  $('#login_confirm').modal('hide');
   })
+  
+  
+  
+
+  
+  
   </script>
    <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
   <script>

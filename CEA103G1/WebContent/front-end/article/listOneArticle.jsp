@@ -19,6 +19,8 @@
 <%String requestURL = (String)request.getAttribute("requestURL"); %>
 
 
+
+
 <% 
 	boolean like_status=false; // 設一個布林值變數為like_status為false
 	boolean collection_status=false;
@@ -56,7 +58,8 @@
 	pageContext.setAttribute("ajax_mbr_no", ajax_mbr_no);
 %>
 
-
+<jsp:useBean id="memberDAO" scope="page" class="com.member.model.MemberDAO" />
+<jsp:useBean id="bd_clDAO" scope="page"  class="com.board_class.model.Board_ClassDAO" />	
 <html>
 <head>
 <title>文章資料 - listOneArticle.jsp 前台</title>
@@ -144,91 +147,146 @@
    } 
 	
 	.container{
-padding: 20px 50px 20px 50px;
-/* background:#ff7d40; */
-}
+	padding: 0px 50px 0px 50px;
+	/* background:#ff7d40; */
+	}
+	
+	.headshotAndAuthor{
+	padding: 0px 0px 10px 0px;
+	width:auto; 
+	display:inline-block !important; 
+	display:inline;
+	}
+	
+	.bdAandReltime{
+	display:inline-block;
+	}
+	.likegroup{
+	display:inline-block;
+	}
+	.rel_time{
+	color:rgba(0, 0, 0, 0.35);
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    padding:0px 0px 0px 10px;
+	}
+	.cont{
+	padding: 20px 0px 0px 0px;
+	color: black;
+	}
+	
+	.heart_group{
+	padding:20px 0px 0px 0px;
+	}
+	.heart_group div{
+	display:inline-block;
+	}
+	.heart_for_like{
+	width:24px;
+	height:24px;
+	padding:2px;
+	}
+	.modal div{
+	color:black;
+	}
+	
+
 </style>
 
 </head>
 <body bgcolor='white'>
 
 <div class=container>
-<%-- 		文章編號<%=articleVO.getArt_no()%> --%>
-	
-<!-- 		看板編號 -->
-<%-- 		<%=articleVO.getBd_cl_no()%> --%>
-<!-- 		會員編號 -->
 
+		<div class="main_div headshotAndAuthor">
+		<div class="headshot">
+		<c:forEach var="memberVO" items="${memberDAO.all}">
+		<c:if test="${articleVO.mbr_no==memberVO.mbr_no}">${memberVO.sticker}</c:if>
+		</c:forEach>
+		</div>
 		<!-- 	如果有登入的話  可以連到該發文者的簡介-->
 		<c:if test="${not empty memberVO}"> 
-		<a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=<%=articleVO.getMbr_no()%>&action=getProfile&mbr_no_mine=<%=pageContext.getAttribute("ajax_mbr_no")%>"><%=articleVO.getMbr_no()%></a>
+		<div class="author"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=<%=articleVO.getMbr_no()%>&action=getProfile&mbr_no_mine=<%=pageContext.getAttribute("ajax_mbr_no")%>"><c:forEach var="memberVO" items="${memberDAO.all}"><c:if test="${articleVO.mbr_no==memberVO.mbr_no}">${memberVO.acc}</c:if></c:forEach></a></div>
 		</c:if>
 		<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
 		<c:if test="${empty memberVO}"> 
-		<div class= to_login_listOneArticle><%=articleVO.getMbr_no()%></div>
+		<div class="author to_login_listOneArticle"><c:forEach var="memberVO" items="${memberDAO.all}"><c:if test="${articleVO.mbr_no==memberVO.mbr_no}">${memberVO.acc}</c:if></c:forEach></div>
 		</c:if>
-		發表時間
-<%-- 		<td><%=articleVO.getArt_rel_time()%></td> --%>
-		<fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm"/>
-		文章標題
-		<%=articleVO.getArt_title()%>
-		文章內容
-		<%=articleVO.getArt_cont().replaceAll("\n","<br>")%>
-		修改
-   				
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/article/article.do"
-						style="margin-bottom: 0px;">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="art_no" value="${articleVO.art_no}"> <input
-							type="hidden" name="action" value="getOne_For_Update">
-					</FORM>
-	刪除
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/article/article.do"
-						style="margin-bottom: 0px;">
-						<input type="submit" value="刪除"> <input type="hidden"
-							name="art_no" value="${articleVO.art_no}"> <input
-							type="hidden" name="action" value="hide">
-					</FORM>
-	讚數
-		<div id = like_td>${articleVO.likes}</div>
-	留言數
-		<div id = like_td>${articleVO.replies}</div>
+		</div>
+			
+		
+		<div class=title><h2><%=articleVO.getArt_title()%></h2></div>
+		
+		
+
+		
+		<div>
+		
+		<div class="bd bdAandReltime">
+		<c:forEach var="bd_VO" items="${bd_clDAO.all}">
+		<c:if test="${articleVO.bd_cl_no==bd_VO.bd_cl_no}"><a href="<%=request.getContextPath()%>/article/article.do?bd_cl_no=${bd_VO.bd_cl_no}&action=getOneArticle_ByBoard_Clss_For_Display">${bd_VO.bd_name}</a></c:if>
+		</c:forEach>
+		<div class="rel_time bdAandReltime"><fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm"/></div>
+		</div>
+		</div>
+		<div class=cont><%=articleVO.getArt_cont().replaceAll("\n","<br>")%></div>
+		
+		
+   							<c:if test="${not empty memberVO &&(articleVO.mbr_no==memberVO.mbr_no)}"> 
+								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article/article.do" style="margin-bottom: 0px;">
+									<input type="submit" value="修改文章"> <input type="hidden" name="art_no" value="${articleVO.art_no}"> 
+									<input type="hidden" name="action" value="getOne_For_Update">
+								</FORM>
+							</c:if>
+
+					<c:if test="${not empty memberVO &&(articleVO.mbr_no==memberVO.mbr_no)}">
+						<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article/article.do" style="margin-bottom: 0px;">
+							<input type="submit" value="刪除文章"> 
+							<input type="hidden" name="art_no" value="${articleVO.art_no}"> <input type="hidden" name="action" value="hide">
+						</FORM>
+					</c:if>
+	
+		
 
 
+<div class=heart_group>
+<div><img class=heart_for_like src="/CEA103G1/images/heart_for_like.svg" ></div>
+<div>${articleVO.likes}</div>
+<div><img class=heart_for_like src="/CEA103G1/images/reply.svg" ></div>
+<div>${articleVO.replies}</div>
+</div>
 <div>
-<div>回應  </div>
+
 	<!-- 	如果有登入的話  可以對文章按/收回讚 加入/取消收藏-->
 	<c:if test="${not empty memberVO}"> 
 	<!--    判斷這篇文章是否按過讚，如果還沒，那先出現的就是按讚   收回讚則設為隱藏 -->
 	<c:if test="${like_status eq true }">
-	<button class="like" style="display:none;"></button>
-	<button class="unlike" ></button>
+	<button class="like likegroup" style="display:none;"></button>
+	<button class="unlike likegroup" ></button>
 	</c:if>
 	<c:if test="${like_status eq false }">
-	<button class="like" ></button>
-	<button class="unlike"style="display:none;"></button>	
+	<button class="like likegroup" ></button>
+	<button class="unlike likegroup"style="display:none;"></button>	
 	</c:if>
-	
 	<!--    判斷這篇文章是否收藏過，如果還沒，那先出現的就是加入收藏   取消收藏則設為隱藏 -->
 	<c:if test="${collection_status eq true }">
-	<button class="collection" style="display:none;"></button>
-	<button class="uncollection"></button>
+	<button class="collection likegroup" style="display:none;"></button>
+	<button class="uncollection likegroup"></button>
 	</c:if>
 	
 	<c:if test="${collection_status eq false }">
-	<button class="collection"></button>
-	<button class="uncollection" style="display:none;"></button>
+	<button class="collection likegroup"></button>
+	<button class="uncollection likegroup" style="display:none;"></button>
 	</c:if>
-
 	</c:if>
 <!-- 	如果沒有登入的話  只會顯示按讚、收藏的按紐，點擊要打開名為登入的燈箱-->	
 	<c:if test="${empty memberVO}"> 
-	<button class="like_no_login to_login_listOneArticle" type="button"></button>
-	<button class="collection_no_login to_login_listOneArticle" type="button"></button>
+	<button class="like_no_login to_login_listOneArticle likegroup" type="button"></button>
+	<button class="collection_no_login to_login_listOneArticle likegroup" type="button"></button>
 	</c:if>
-
+	
+	
 
 </div>
 
@@ -266,7 +324,7 @@ padding: 20px 50px 20px 50px;
         <div>想要一起加入討論，要先登入 Campion 唷！</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-secondary close_modal" data-bs-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/front-end/member/login.jsp'">登入</button>
       </div>
     </div>
@@ -275,9 +333,10 @@ padding: 20px 50px 20px 50px;
 
 </div>
 
-
+這裡是<span data-hover="Is Life">易思生活</span>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+	<script src="/CEA103G1/front-end/article/jquery.hover.js"></script>
 <script>
  var stateObj = { foo: "bar" };
  history.pushState(stateObj, "page 2", "${requestURL}");
@@ -397,7 +456,7 @@ padding: 20px 50px 20px 50px;
     	$('#login_confirm_listOneArticle').modal('show');
   })
   
-  $(".close").click(function(){
+  $(".close_modal").click(function(){
 	  $('#login_confirm_listOneArticle').modal('hide');
   })
   </script>
