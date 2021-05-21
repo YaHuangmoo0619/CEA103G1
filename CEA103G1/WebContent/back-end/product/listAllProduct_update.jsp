@@ -283,10 +283,10 @@ hr{
 </div>
 <c:if test="${openModal!=null}">
 		<div class="modal" tabindex="-1" role="dialog" id="Modal">
-		     <div class="modal-dialog" role="document"> 
+		     <div class="modal-dialog modal-lg" role="document"> 
 		        <div class="modal-content">
 		            <div class="modal-header">
-		                <h5 class="modal-title">單一商品</h5>
+		                <h5 class="modal-title">${productVO.prod_no}.&nbsp;${productVO.prod_name}&nbsp;${productVO.prod_stat==1?'↑上架↑':'↓下架↓'}</h5>
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
 		            </div>
 		            <div class="modal-body">

@@ -269,6 +269,7 @@ public class Campsite_ownerServlet extends HttpServlet {
 			}
 		}
 		if ("login".equals(action)) {
+System.out.println(action);
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 
@@ -316,20 +317,78 @@ public class Campsite_ownerServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		if ("resend".equals(action)) {
+System.out.println(action);
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				String acc = req.getParameter("acc");
+				if (acc == null || (acc.trim()).length() == 0) {
+					errorMsgs.add("請輸入帳號");
+				}
+				
+				Campsite_ownerService campsite_ownerSvc = new Campsite_ownerService();
+				Campsite_ownerVO campsite_ownerVO = null;
+				List<Campsite_ownerVO> csolist = campsite_ownerSvc.getAll();
+				for (Campsite_ownerVO csoVO : csolist) {
+					if (acc.equals(csoVO.getAcc())) {
+						campsite_ownerVO = csoVO;
+					}
+				}
+				if (campsite_ownerVO == null) {
+					errorMsgs.add("此帳號無效");
+				} else {
+					String pwd = req.getParameter("pwd");
+					if (pwd == null || (pwd.trim()).length() == 0) {
+						errorMsgs.add("請輸入密碼");
+					}
+					if (pwd.equals(campsite_ownerVO.getPwd())) {
+						HttpSession session = req.getSession();
+						mail(req, campsite_ownerVO);
+						session.setAttribute("enable", "請確認信箱是否收到啟用信");
+						RequestDispatcher successView = req.getRequestDispatcher("/front-end/campsite_owner/login.jsp");
+						successView.forward(req, res);
+						return;
+					} else {
+						errorMsgs.add("密碼錯誤");
+					}
+				}
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite_owner/login.jsp");
+					failureView.forward(req, res);
+					return;// 程式中斷
+				}
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite_owner/login.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 
 	public void mail(HttpServletRequest req, Campsite_ownerVO campsite_ownerVO) {
 
 		String to = campsite_ownerVO.getMail();
-
 		String subject = "Campion營主啟用";
-		String messageText = "http://localhost:8081" + req.getContextPath() + "/campion_campsiteOwner.jsp?cso_no="
+		String messageText = req.getScheme() + ":" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/campion_campsiteOwner.jsp?cso_no="
 				+ campsite_ownerVO.getCso_no();
 
 		Campsite_ownerServlet mailService = new Campsite_ownerServlet();
 		mailService.sendMail(to, subject, messageText);
 
 	}
+//	public void resetPassword(HttpServletRequest req, Campsite_ownerVO campsite_ownerVO) {
+//		
+//		String to = campsite_ownerVO.getMail();
+//		String subject = "Campion營主修改密碼";
+//		String messageText = req.getScheme() + ":" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/campion_campsiteOwner.jsp?cso_no="
+//				+ campsite_ownerVO.getCso_no();
+//		
+//		Campsite_ownerServlet mailService = new Campsite_ownerServlet();
+//		mailService.sendMail(to, subject, messageText);
+//		
+//	}
 
 	public void sendMail(String to, String subject, String messageText) {
 		try {

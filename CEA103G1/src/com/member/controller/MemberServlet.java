@@ -604,15 +604,6 @@ public class MemberServlet extends HttpServlet {
 
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
-				
-				Integer rank_no = new Integer(req.getParameter("rank_no").trim());
-				
-				Part pic = req.getPart("sticker");
-				InputStream in = pic.getInputStream();
-				byte[] sticker = new byte[in.available()];
-				in.read(sticker);
-				
 				String acc = req.getParameter("acc");
 				String accReg = "^[(a-zA-Z0-9_)]{2,20}$";
 				if (acc == null || acc.trim().length() == 0) {
@@ -657,11 +648,16 @@ public class MemberServlet extends HttpServlet {
 	            }
 				
 				String mail = req.getParameter("mail");
-				String mailReg = "^[(a-zA-Z0-9_)]{2,100}$";
-				if (mail == null || mail.trim().length() == 0) {
-					errorMsgs.add("會員信箱: 請勿空白");
-				} else if(!mail.trim().matches(mailReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("會員信箱: 只能是英文字母、數字和_ , 且長度必需在2到100之間");
+				if(mail == null ||mail.trim().isEmpty()) {
+					errorMsgs.add("EMAIL: 請輸入EMAIL");
+				}else if(!mail.trim().contains("@")) {
+					errorMsgs.add("EMAIL: 請在電子郵件中包含@, " + mail +"並未包含@");
+				}else if(mail.trim().contains("@") && mail.trim().length() == 1) {
+					errorMsgs.add("EMAIL: 請輸入@前面和後面的部分, " + mail +"不是完整值");
+				}else if(mail.trim().indexOf("@") == 0) {
+					errorMsgs.add("EMAIL: 請輸入@前面的部分, " + mail +"不是完整值");
+				}else if(mail.trim().lastIndexOf("@") == mail.trim().length()-1) {
+					errorMsgs.add("EMAIL: 請輸入@後面的部分, " + mail +"不是完整值");
 				}
 				
 				String city = new String(req.getParameter("city").trim());
@@ -673,33 +669,8 @@ public class MemberServlet extends HttpServlet {
 					errorMsgs.add("地址請勿空白");
 				}
 				
-				SimpleDateFormat dsf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				java.util.Date dateU1 = dsf1.parse(req.getParameter("join_time"));
-				java.sql.Timestamp join_time = new java.sql.Timestamp(dateU1.getTime());
-					
-				String card = req.getParameter("card");
-				String cardReg = "^[(A-Z0-9)]{2,100}$";
-				if (card == null || card.trim().length() == 0) {
-					errorMsgs.add("信用卡號: 請勿空白");
-				} else if(!card.trim().matches(cardReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("信用卡號: 只能是英文字母、數字, 且長度必需在2到100之間");
-	            }
 				
-				Integer pt = new Integer(req.getParameter("pt").trim());
-				
-				Integer acc_stat = new Integer(req.getParameter("acc_stat").trim());
-				
-				Integer exp = new Integer(req.getParameter("exp").trim());
-				
-				String rmk = req.getParameter("rmk");
-				if(rmk == null || rmk.trim().isEmpty()) {
-					errorMsgs.add("請撰寫內文");
-				}
-				
-
 				MemberVO memberVO = new MemberVO();
-				memberVO.setMbr_no(mbr_no);
-				memberVO.setRank_no(rank_no);
 				memberVO.setAcc(acc);
 				memberVO.setPwd(pwd);
 				memberVO.setName(name);
@@ -711,25 +682,8 @@ public class MemberServlet extends HttpServlet {
 				memberVO.setCity(city);
 				memberVO.setDist(dist);
 				memberVO.setAdd(add);
-				memberVO.setJoin_time(join_time);
-				memberVO.setCard(card);
-				memberVO.setPt(pt);
-				memberVO.setPt(acc_stat);
-				memberVO.setExp(exp);
-				memberVO.setSticker(sticker);
-				memberVO.setRmk(rmk);
-				
-				byte[] sticker_database = new byte[0];
-				if(sticker.length == 0) {
-					System.out.println("in");
-					MemberService memberSvc = new MemberService();
-					MemberVO memberVOPic = memberSvc.getOneMember(mbr_no);
-					sticker_database = memberVOPic.getSticker();
-					memberVO.setSticker(sticker_database);
-				}else {
-					memberVO.setSticker(sticker);
-				}
 
+				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的member_rankVO物件,也存入req
@@ -741,7 +695,7 @@ public class MemberServlet extends HttpServlet {
 				
 				/***************************2.開始新增(註冊)資料***************************************/
 				MemberService memberSvc = new MemberService();
-				memberVO = memberSvc.registerMember(mbr_no, acc, pwd, id, name, bday, sex, mobile, mail, city, dist, add, join_time, card, pt, acc_stat, exp, sticker, rmk);
+				memberVO = memberSvc.registerMember(acc, pwd, id, name, bday, sex, mobile, mail, city, dist, add);
 				
 				/***************************3.新增(註冊)完成,準備轉交(Send the Success view)***********/
 				String url = "/front-end/member/success.jsp";
