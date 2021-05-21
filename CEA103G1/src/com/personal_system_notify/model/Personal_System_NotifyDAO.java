@@ -97,11 +97,11 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 				con = ds.getConnection();
 				pstmt = con.prepareStatement(UPDATE);
 
-				pstmt.setInt(1, Personal_System_NotifyVO.getNtfy_no());
-				pstmt.setInt(2, Personal_System_NotifyVO.getMbr_no());
-				pstmt.setInt(3,Personal_System_NotifyVO.getNtfy_stat());
-				pstmt.setString(4,Personal_System_NotifyVO.getNtfy_cont());
-				pstmt.setString(5,Personal_System_NotifyVO.getNtfy_time());
+				pstmt.setInt(5, Personal_System_NotifyVO.getNtfy_no());
+				pstmt.setInt(1, Personal_System_NotifyVO.getMbr_no());
+				pstmt.setInt(2,Personal_System_NotifyVO.getNtfy_stat());
+				pstmt.setString(3,Personal_System_NotifyVO.getNtfy_cont());
+				pstmt.setString(4,Personal_System_NotifyVO.getNtfy_time());
 				pstmt.executeUpdate();
 
 				// Handle any driver errors
@@ -189,8 +189,8 @@ public class Personal_System_NotifyDAO implements Personal_System_NotifyDAO_Inte
 				while (rs.next()) {
 					// empVo ¤]ºÙ¬° Domain objects
 					Personal_System_NotifyVO = new Personal_System_NotifyVO();
-					Personal_System_NotifyVO.setMbr_no(rs.getInt("ntfy_no"));
-					Personal_System_NotifyVO.setNtfy_no(rs.getInt("mbr_no"));
+					Personal_System_NotifyVO.setNtfy_no(rs.getInt("ntfy_no"));
+					Personal_System_NotifyVO.setMbr_no(rs.getInt("mbr_no"));
 					Personal_System_NotifyVO.setNtfy_stat(rs.getInt("ntfy_stat"));
 					Personal_System_NotifyVO.setNtfy_cont(rs.getString("ntfy_cont"));
 					Personal_System_NotifyVO.setNtfy_time(rs.getString("ntfy_time"));

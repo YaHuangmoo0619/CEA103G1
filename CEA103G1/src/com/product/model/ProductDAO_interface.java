@@ -10,4 +10,8 @@ public interface ProductDAO_interface {
           public List<ProductVO> getAll();
           public List<ProductVO> getShop();
           public List<ProductVO> getAll(Map<String, String[]> map); 
+          //雅凰加的
+          public void updateUpOrDown(Integer prod_stat, Integer prod_no);
+          public List<ProductVO> getAllStat();
+          //雅凰加的
 }

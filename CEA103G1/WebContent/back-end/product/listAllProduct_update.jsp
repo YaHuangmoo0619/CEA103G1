@@ -171,7 +171,7 @@ tr {
 
 tr:hover {
 	box-shadow: 0 1px 5px 0 #4e5452 inset;
-/* 	cursor: pointer; */
+ 	cursor: pointer;
 }
 
 img.inDiv{
@@ -269,18 +269,50 @@ hr{
 				</c:if>
 				</div>
 			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改">
-			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-			</td>
+<!-- 			<td> -->
+<%-- 			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;"> --%>
+<!-- 			     <input type="submit" value="修改"> -->
+<%-- 			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}"> --%>
+<!-- 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM> -->
+<!-- 			</td> -->
 		</tr>
 	</c:forEach>
 </table>
 </div>
 </div>
 </div>
+
+		<div class="modal" tabindex="-1" role="dialog" id="Modal">
+		     <div class="modal-dialog" role="document"> 
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title">單一商品</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
+		            </div>
+		            <div class="modal-body">
+		            ${productVO.prod_no}
+<%-- 						<jsp:include page="listOneProduct.jsp" /> --%>
+		            </div>
+		            <div class="modal-footer">
+		            	<form method="post" action="<%=request.getContextPath()%>/product/product.do" enctype="multipart/form-data" style="text-align:right;">
+							<input type="hidden" name="prod_no" value="${productVO.prod_no}">
+							<input type="hidden" name="action" value="getOne_For_Update">
+							<input type="submit" class="btn btn-secondary" value="修改">
+						</form>
+		            </div>
+		       </div>
+		   </div>
+		</div>
+
+<script>
+$("tr").click(function(e){
+	let prod_no = e.currentTarget.children[0].innerText;
+	window.location.href="<%=request.getContextPath()%>/product/product.do?prod_no="+ prod_no + "&action=read";
+	$('#Modal').modal({
+	  	show :true
+	}); 
+});
+</script>
 <script>
 	let backToTop = document.getElementsByClassName("backToTop");
 	$(window).scroll(function(e) {

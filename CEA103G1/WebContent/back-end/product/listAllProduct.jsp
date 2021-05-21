@@ -17,7 +17,7 @@
 
 <%
 	ProductService productSvc = new ProductService();
-    List<ProductVO> list = productSvc.getAll();
+    List<ProductVO> list = productSvc.getAllStat();
     pageContext.setAttribute("list",list);
 %>
 
@@ -171,7 +171,7 @@ tr {
 
 tr:hover {
 	box-shadow: 0 1px 5px 0 #4e5452 inset;
-/* 	cursor: pointer; */
+ 	cursor: pointer; 
 }
 
 img.inDiv{
@@ -197,7 +197,7 @@ hr{
 			<div class="left col-3">
 				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 			<div class="right col-9">
-			<form>
+			<form method="post" action="<%=request.getContextPath()%>/product/product.do">
 		 <h3>所有商品列表&nbsp;
 			<a class="content" href="<%=request.getContextPath()%>/back-end/product/addProduct.jsp">新增商品</a>
 			<a class="content" href="<%=request.getContextPath()%>/back-end/product/listAllProduct_update.jsp">修改商品</a>
@@ -220,7 +220,7 @@ hr{
 
 	<c:forEach var="productVO" items="${list}" >
 		
-		<tr>
+		<tr ${productVO.prod_stat==0? 'style="opacity:0.5;"':'' }>
 			<td>${productVO.prod_no}</td>
 			<td><input type="checkbox" name="prod_no" value="${productVO.prod_no}"></td>
 			<td><img src="${product_pictureSvc.getOneProduct_picture(productVO.prod_no).getProd_pic()}" class="inDiv"></td>

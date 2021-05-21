@@ -72,5 +72,14 @@ public class ProductService {
 		return dao.getAll(map);
 	}
 	
+	//雅凰加的
+	public void updateUpOrDown(Integer prod_stat, Integer prod_no) {
+		dao.updateUpOrDown(prod_stat, prod_no);
+	}
+	
+	public List<ProductVO> getAllStat() {
+		return dao.getAllStat();
+	}
+	//雅凰加的
 }
 
