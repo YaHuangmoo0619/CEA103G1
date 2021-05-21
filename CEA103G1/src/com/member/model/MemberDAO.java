@@ -22,7 +22,7 @@ public class MemberDAO implements MemberDAO_interface {
 	}
 
 	private static final String INSERT_STMT = 
-		"INSERT INTO campion.member (rank_no,acc,pwd,id,name,bday,sex,mobile,mail,city,dist,add,join_time,card,pt,acc_stat,exp,sticker,rmk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		"INSERT INTO campion.member (rank_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,card,pt,acc_stat,exp,sticker,rmk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
 		"SELECT mbr_no,rank_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,card,pt,acc_stat,exp,sticker,rmk FROM campion.member order by mbr_no";
 	private static final String GET_ONE_STMT = 
@@ -34,7 +34,7 @@ public class MemberDAO implements MemberDAO_interface {
 	private static final String LOGIN_MEMBER =
 		"SELECT mbr_no,rank_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,card,pt,acc_stat,exp,sticker,rmk FROM campion.member where acc = ? and pwd = ?";
 	private static final String REGISTER_MEMBER = 
-		"INSERT INTO campion.member (rank_no,acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time,card,pt,acc_stat,exp,sticker,rmk) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		"INSERT INTO campion.member (acc,pwd,id,`name`,bday,sex,mobile,mail,city,dist,`add`,join_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,NOW())";
 	//新增會員
 	@Override
 	public void insert(MemberVO memberVO) {
@@ -404,7 +404,7 @@ public class MemberDAO implements MemberDAO_interface {
 	}
 	//註冊會員
 	@Override
-	public void register_member(MemberVO memberVO) {
+	public void register_Member(MemberVO memberVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -415,25 +415,17 @@ public class MemberDAO implements MemberDAO_interface {
 			pstmt = con.prepareStatement(REGISTER_MEMBER);
 
 			
-			pstmt.setInt(1, memberVO.getRank_no());
-			pstmt.setString(2, memberVO.getAcc());
-			pstmt.setString(3, memberVO.getPwd());
-			pstmt.setString(4, memberVO.getId());
-			pstmt.setString(5, memberVO.getName());
-			pstmt.setDate(6, memberVO.getBday());
-			pstmt.setInt(7, memberVO.getSex());
-			pstmt.setString(8, memberVO.getMobile());
-			pstmt.setString(9, memberVO.getMail());
-			pstmt.setString(10, memberVO.getCity());
-			pstmt.setString(11, memberVO.getDist());
-			pstmt.setString(12, memberVO.getAdd());
-			pstmt.setTimestamp(13, memberVO.getJoin_time());
-			pstmt.setString(14, memberVO.getCard());
-			pstmt.setInt(15, memberVO.getPt());
-			pstmt.setInt(16, memberVO.getAcc_stat());
-			pstmt.setInt(17, memberVO.getExp());
-			pstmt.setBytes(18, memberVO.getSticker());
-			pstmt.setString(19, memberVO.getRmk());
+			pstmt.setString(1, memberVO.getAcc());
+			pstmt.setString(2, memberVO.getPwd());
+			pstmt.setString(3, memberVO.getId());
+			pstmt.setString(4, memberVO.getName());
+			pstmt.setDate(5, memberVO.getBday());
+			pstmt.setInt(6, memberVO.getSex());
+			pstmt.setString(7, memberVO.getMobile());
+			pstmt.setString(8, memberVO.getMail());
+			pstmt.setString(9, memberVO.getCity());
+			pstmt.setString(10, memberVO.getDist());
+			pstmt.setString(11, memberVO.getAdd());
 
 			pstmt.executeUpdate();
 
@@ -459,5 +451,4 @@ public class MemberDAO implements MemberDAO_interface {
 			}
 		}
 	}
-	
 }
