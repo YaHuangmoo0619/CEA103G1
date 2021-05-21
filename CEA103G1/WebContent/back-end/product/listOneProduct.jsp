@@ -77,7 +77,7 @@
 	<tr>
 		<td>${productVO.prod_no}</td>
 			<td>
-			${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}
+<%-- 			${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name} --%>
 			</td>
 			<td>
 			<c:if test="${productVO.prod_stat==0}">

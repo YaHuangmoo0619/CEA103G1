@@ -161,41 +161,17 @@ tr:hover {
 			<h5 style="color: #80c344;">${errorMsgs.notFound[0]}${errorMsgs.exception[0]}</h5>
 			<h3>系統通知列表&nbsp;</h3>
 			<hr>
-			
-<!-- 				<div style="text-align:center;font-weight:555;"> -->
-<!-- 					<div style="width: 300px;display:inline-block;">系統訊息內容</div> -->
-<!-- 					<div style="width: 3000px;display:inline-block;">系統訊息時間</div> -->
-<!-- 				</div> -->
-<%-- 			--${member_mailVO != null? member_mailVO.rcpt_no:'123' }-- --%>
-<%-- 			<c:if test="${member_mailVO != null}"> --%>
-<%-- 					<div onclick="sendNotify()" id="sendNotify">${member_mailVO.rcpt_no}</div> --%>
-<%-- 			</c:if> --%>
 			<jsp:useBean id="personal_system_notifySvc" class="com.personal_system_notify.model.Personal_System_NotifyService"/>
 			<table>
 				<tbody id="notifyTable">
 				<c:forEach var="personal_system_notifyVO" items="${personal_system_notifySvc.all}">
-					<c:if test="${memberVO.mbr_no == personal_system_notifyVO.mbr_no && personal_system_notifyVO.ntfy_stat == 0}">
+					<c:if test="${memberVO.mbr_no == personal_system_notifyVO.mbr_no}">
 					<tr>
-<%-- 						<td>${memberVO.mbr_no}</td> --%>
-<%-- 						<td>${personal_system_notifyVO.mbr_no}</td> --%>
+						<td style="display:none;">${personal_system_notifyVO.ntfy_no}</td>
 						<td>${personal_system_notifyVO.ntfy_cont}</td>
-<%-- 						<td>${personal_system_notifyVO.ntfy_time}</td> --%>
 						<c:set var="ntfy_time" value="${personal_system_notifyVO.ntfy_time}" />
-							<td>${fn:substring(ntfy_time, 0, 19)}</td>
-<%-- 						<td style="display:none;">${member_mailVO.mail_no}</td> --%>
-<%-- 						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td> --%>
-<%-- 						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td> --%>
-<%-- 						<c:set var="mail_cont" value="${member_mailVO.mail_cont}" /> --%>
-<%-- 							<c:if test="${mail_cont.length() > 10}"> --%>
-<%-- 								<td>${fn:substring(mail_cont, 0, 10)}...</td> --%>
-<%-- 							</c:if> --%>
-<%-- 							<c:if test="${mail_cont.length() <= 10}"> --%>
-<%-- 								<td>${mail_cont}</td> --%>
-<%-- 							</c:if> --%>
-<%-- 						<td style="display:none;">${member_mailVO.mail_stat}</td> --%>
-<%-- 						<td class="mail_read_stat" style="display:none;">${member_mailVO.mail_read_stat}</td> --%>
-<%-- 						<c:set var="mail_time" value="${member_mailVO.mail_time}" /> --%>
-<%-- 							<td>${fn:substring(mail_time, 0, 10)}</td> --%>
+						<td>${fn:substring(ntfy_time, 0, 19)}</td>
+						<td style="display:none;" class="ntfy_stat">${personal_system_notifyVO.ntfy_stat}</td>
 					</tr>
 					</c:if>
 				</c:forEach>
@@ -208,35 +184,35 @@ tr:hover {
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <script>
 	$("body").on("click","tr",function(e){
-		let mail_no = e.currentTarget.children[0].innerText;
-		window.location.href="<%=request.getContextPath()%>/member_mail/member_mail.do?mail_no="+ mail_no + "&action=read";
+		let ntfy_no = e.currentTarget.children[0].innerText;
+		window.location.href="<%=request.getContextPath()%>/personal_system_notify/personal_system_notify.do?ntfy_no="+ ntfy_no + "&action=read";
 	});
 
-	for (let i = 0; i < $(".mail_read_stat").length; i++) {
-		if ($(".mail_read_stat")[i].innerText === '1') {
-			$($(".mail_read_stat")[i]).parent()[0].style.backgroundColor = '#eee';
+	for (let i = 0; i < $(".ntfy_stat").length; i++) {
+		if ($(".ntfy_stat")[i].innerText === '1') {
+			$($(".ntfy_stat")[i]).parent()[0].style.backgroundColor = '#eee';
 		}
-		if ($(".mail_read_stat")[i].innerText === '0') {
-			$($(".mail_read_stat")[i]).parent()[0].style.fontWeight = '555';
+		if ($(".ntfy_stat")[i].innerText === '0') {
+			$($(".ntfy_stat")[i]).parent()[0].style.fontWeight = '555';
 		}
 	}
 	
-	let countSearch = 0;
-	$("span").click(function(e){
-		countSearch++;
-		if (countSearch % 2 == 1) {
-			$("#forSearchsMore")[0].style.display="inline";
-			$("#confirmTop")[0].setAttribute("disabled","");
-			$("#confirmTop")[0].style.backgroundColor="#4B7F52";
-			$("#confirmTop")[0].style.color="#80c344";
-			$("#confirmTop")[0].style.cursor="context-menu";
-		} else {
-			$("#forSearchsMore")[0].style.display="none";
-			$("#confirmTop")[0].removeAttribute("disabled");
-			$("#confirmTop")[0].style.backgroundColor="#80c344";
-			$("#confirmTop")[0].style.color="#4e5452";
-		}
-	});
+// 	let countSearch = 0;
+// 	$("span").click(function(e){
+// 		countSearch++;
+// 		if (countSearch % 2 == 1) {
+// 			$("#forSearchsMore")[0].style.display="inline";
+// 			$("#confirmTop")[0].setAttribute("disabled","");
+// 			$("#confirmTop")[0].style.backgroundColor="#4B7F52";
+// 			$("#confirmTop")[0].style.color="#80c344";
+// 			$("#confirmTop")[0].style.cursor="context-menu";
+// 		} else {
+// 			$("#forSearchsMore")[0].style.display="none";
+// 			$("#confirmTop")[0].removeAttribute("disabled");
+// 			$("#confirmTop")[0].style.backgroundColor="#80c344";
+// 			$("#confirmTop")[0].style.color="#4e5452";
+// 		}
+// 	});
 	
 </script>
 </body>

@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 
 import com.product.model.*;
 
+
 @WebServlet("/product/product.do")
 public class ProductServlet extends HttpServlet {
 
@@ -371,6 +372,68 @@ public class ProductServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		//雅凰加的
+		if("上架".equals(action)) {
+			try {
+				if(req.getParameterValues("prod_no").length > 0 ) {
+					String[] prod_nos = req.getParameterValues("prod_no");
+					for(String prod_noString : prod_nos) {
+						Integer prod_no = Integer.valueOf(prod_noString);
+						ProductDAO productDAO = new ProductDAO();
+						productDAO.updateUpOrDown(1, prod_no);
+					}
+					RequestDispatcher successView = req.getRequestDispatcher("/back-end/product/listAllProduct.jsp");
+					successView.forward(req, res);
+				}else {
+					RequestDispatcher successView = req.getRequestDispatcher("/back-end/product/listAllProduct.jsp");
+					successView.forward(req, res);
+				}
+			} catch (Exception e) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/product/listAllProduct.jsp");
+				failureView.forward(req, res);
+			}
+			
+		}
+		if("下架".equals(action)) {
+			try {
+				if(req.getParameterValues("prod_no").length > 0 ) {
+					String[] prod_nos = req.getParameterValues("prod_no");
+					for(String prod_noString : prod_nos) {
+						Integer prod_no = Integer.valueOf(prod_noString);
+						ProductDAO productDAO = new ProductDAO();
+						productDAO.updateUpOrDown(0, prod_no);
+					}
+					RequestDispatcher successView = req.getRequestDispatcher("/back-end/product/listAllProduct.jsp");
+					successView.forward(req, res);
+				}else {
+					RequestDispatcher successView = req.getRequestDispatcher("/back-end/product/listAllProduct.jsp");
+					successView.forward(req, res);
+				}
+			} catch (Exception e) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/product/listAllProduct.jsp");
+				failureView.forward(req, res);
+			}
+			
+		}
+		if("read".equals(action)) {
+			try {
+				ProductService productSvc = new ProductService();
+				ProductVO productVO = productSvc.getOneProduct(Integer.valueOf(req.getParameter("prod_no")));
+				
+				//Bootstrap_modal
+				boolean openModal=true;
+				req.setAttribute("openModal",openModal );
+				
+				req.setAttribute("productVO", productVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/product/listAllProduct_update.jsp");
+				successView.forward(req, res);
+			}catch(Exception e) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product/listAllProduct_update.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		//雅凰加的
 	}
 	
 }
