@@ -105,18 +105,8 @@
                 <input type="password" name="pwd" id="pwd">
             </div>
             <div class="btn-group">
-                <button class="btn">登入</button>  
-                <input type="hidden" name="action" value="login">
-            </div>
-            <br>
-            <div>
-                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/addCampsite_owner.jsp">建立帳號</a>  
-            </div>
-            <div>
-                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/addCampsite_owner.jsp">忘記密碼</a>  
-            </div>
-            <div>
-                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/resend.jsp">重發啟用信</a>  
+                <button class="btn">重發驗證信</button>  
+                <input type="hidden" name="action" value="resend">
             </div>
              <%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
