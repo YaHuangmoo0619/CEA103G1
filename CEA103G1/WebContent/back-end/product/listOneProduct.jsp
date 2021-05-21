@@ -1,7 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="com.product.model.*"%>
+
+<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
+<jsp:useBean id="product_pictureSvc" scope="page" class="com.product_picture.model.Product_pictureService" />
 
 <%
   ProductVO productVO = (ProductVO) request.getAttribute("productVO");
@@ -16,85 +20,88 @@
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 
 <style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
-
-<style>
-  table {
-	width: 600px;
-	background-color: white;
-	margin-top: 5px;
+div.out{
+	display:flex;
+	margin: 1em 3em;
+}
+img.inModal{
+	width: 100%;
+}
+div.mid{
+	width:50%;
+	padding: 10px 20px;
+}
+div.in{
 	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
+}
+div.divR{
+	display:inline;
+	width:30%;	
+}
+div.divL{
+	display:inline;
+	width:70%;
+}
+div.kinds{
+	display:inline;
+	padding-right:20px;
+}
+div.colName{
+	font-weight:555;
+}
+
 </style>
-
 </head>
-<body bgcolor='white'>
-
-<table id="table-1">
-	<tr><td>
-		 <h3>商品 - ListOneProduct.jsp</h3>
-		 <h4><a href="${pageContext.request.contextPath}/back-end/product/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0"></a></h4>
-	</td></tr>
-</table>
-
-<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
-
-<table>
-	<tr>
-		<th>商品編號</th>
-		<th>商品分類名稱</th>
-		<th>商品狀態</th>
-		<th>商品名稱</th>
-		<th>商品價格</th>
-		<th>商品庫存</th>
-		<th>商品資訊</th>
-		<th>商品品牌</th>
-		<th>商品顏色</th>
-		<th>商品大小</th>
-		<th>運送方式</th>
-	</tr>
-	<tr>
-		<td>${productVO.prod_no}</td>
-			<td>
-<%-- 			${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name} --%>
-			</td>
-			<td>
-			<c:if test="${productVO.prod_stat==0}">
-				<c:out value="下架" />
-			</c:if>
-			<c:if test="${productVO.prod_stat==1}">
-				<c:out value="上架" />
-			</c:if>
-			</td>
-			<td>${productVO.prod_name}</td>
-			<td>${productVO.prod_pc}</td>
-			<td>${productVO.prod_stg}</td>
-			<td>${productVO.prod_info}</td>
-			<td>${productVO.prod_bnd}</td>
-			<td>${productVO.prod_clr}</td>
-			<td>${productVO.prod_size}</td>
-			<td>
+<body>
+<div class="out">
+	<div class="mid">
+		<img src="${product_pictureSvc.getOneProduct_picture(productVO.prod_no).getProd_pic()}" class="inModal">
+	</div>
+	<div class="mid">
+		<div class="in">
+			<div class="divR colName">類別：</div>
+			<div class="divL">${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}</div>
+		</div>
+		<div class="in">
+			<div class="divR colName">廠牌：</div>
+			<div class="divL">${productVO.prod_bnd}</div>
+		</div>
+		<div class="in">
+			<div class="divR colName">名稱：</div>
+			<div class="divL">${productVO.prod_name}</div>
+		</div>
+		<div class="in">
+			<div class="divR colName">價格：</div>
+			<div class="divL">${productVO.prod_pc}元</div>
+		</div>
+		<div class="in">
+			<div class="divR colName">庫存：</div>
+			<div class="divL">${productVO.prod_stg}件</div>
+		</div>
+	</div>
+</div>
+<hr style="margin: 0 auto;">
+<div class="out">
+	<div class="in">
+		<div class="colName">資訊：</div>
+		<c:set var="prod_info" value="${productVO.prod_info}"/>
+		<% request.setAttribute("line", "\n"); %>
+		<div>${fn:replace(prod_info, line, '<br>')}</div>
+	</div>
+</div>
+<hr style="margin: 0 auto;">
+<div class="out">
+	<div class="in">
+		<div class="colName">規格：</div>
+		<div class="kinds">顏色：${productVO.prod_clr}</div>
+		<div class="kinds">大小：${productVO.prod_size}</div>
+	</div>
+</div>
+<hr style="margin: 0 auto;">
+<div class="out">
+	<div class="in">
+		<div class="colName">運送方式：</div>
+		<div>
 			<c:if test="${productVO.ship_meth==0}">
 				<c:out value="不限運送方式" />
 			</c:if>
@@ -104,21 +111,11 @@
 			<c:if test="${productVO.ship_meth==2}">
 				<c:out value="限超商取貨" />
 			</c:if>
-			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改">
-			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="刪除">
-			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-			     <input type="hidden" name="action" value="delete"></FORM>
-			</td>
-	</tr>
-</table>
-
+		</div>
+	</div>
+</div>
+		
+			
+			
 </body>
 </html>
