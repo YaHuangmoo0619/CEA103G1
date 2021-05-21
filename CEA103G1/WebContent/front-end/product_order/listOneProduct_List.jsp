@@ -1,10 +1,17 @@
- <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page import="com.product.model.*"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.member.model.*" %>
+<%@ page import="com.shopping_cart.model.*" %>
+<%@ page import="com.product.model.*" %>
 
 <%
-  ProductVO productVO = (ProductVO) request.getAttribute("productVO");
+	MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+	ProductVO productVO = (ProductVO) request.getAttribute("productVO");
+//ProductService productSvc = new ProductService();
+	
+	
 %>
 
 <html>
@@ -99,12 +106,12 @@
 		</c:if>
 		</td>
 		<td>
-			<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order_details/product_order_details.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="°e¥X">
-			     <input type="hidden" name="prod_no" value="${productVO.prod_no}">
-			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-			     <input type="hidden" name="action"	value="insert">
-			</FORM>
+		<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order_details/product_order_details.do" style="margin-bottom: 0px;">
+			 <input type="submit" value="°e¥X">
+			 <input type="hidden" name="prod_no" value="${productVO.prod_no}">
+			 <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+			 <input type="hidden" name="action"	value="insert">
+		</FORM>
 		
 		</td>    
    

@@ -6,6 +6,7 @@
 <%@ page import="com.product_picture.model.*"%>
 <%
 	ProductService productSvc = new ProductService();
+	ProductVO productVO = (ProductVO) request.getAttribute("productVO");
     List<ProductVO> list = productSvc.getShop();
     pageContext.setAttribute("list",list);
 %>

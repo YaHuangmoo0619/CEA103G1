@@ -26,6 +26,8 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 		"delete from Product_Order where PROD_ORD_NO = ?";
 	private static final String GET_ONE_STMT = 
 		"select * from Product_Order where PROD_ORD_NO = ?";
+	private static final String GET_ALLMBR_STMT = 
+		"select * from Product_Order where MBR_NO = ? order by PROD_ORD_NO";
 	private static final String GET_ALL_STMT = 
 		"select * from Product_Order order by PROD_ORD_NO";
 		
@@ -246,6 +248,69 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				product_orderVO = new Product_orderVO();
+				product_orderVO.setProd_ord_no(rs.getInt("PROD_ORD_NO"));
+				product_orderVO.setMbr_no(rs.getInt("MBR_NO"));
+				product_orderVO.setProd_ord_time(rs.getTimestamp("PROD_ORD_TIME"));
+				product_orderVO.setProd_ord_stat(rs.getInt("PROD_ORD_STAT"));
+				product_orderVO.setProd_ord_sum(rs.getInt("PROD_ORD_SUM"));
+				product_orderVO.setUsed_pt(rs.getInt("USED_PT"));
+				product_orderVO.setShip_meth(rs.getInt("SHIP_METH"));
+				product_orderVO.setPay_meth(rs.getInt("PAY_METH"));
+				product_orderVO.setShip_cty(rs.getString("SHIP_CTY"));
+				product_orderVO.setShip_dist(rs.getString("SHIP_DIST"));
+				product_orderVO.setShip_add(rs.getString("SHIP_ADD"));
+				product_orderVO.setReceipt(rs.getInt("RECEIPT"));
+				product_orderVO.setRmk(rs.getString("RMK"));
+				list.add(product_orderVO); 
+			}
+
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Override
+	public List<Product_orderVO> getAllByMbr() {
+		List<Product_orderVO> list = new ArrayList<Product_orderVO>();
+		Product_orderVO product_orderVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALLMBR_STMT);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {

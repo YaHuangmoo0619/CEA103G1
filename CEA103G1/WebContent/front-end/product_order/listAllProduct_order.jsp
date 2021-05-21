@@ -6,7 +6,7 @@
 
 <%
     Product_orderService product_orderSvc = new Product_orderService();
-    List<Product_orderVO> list = product_orderSvc.getAll();
+	List<Product_orderVO> list = product_orderSvc.getAll();
     pageContext.setAttribute("list",list);
 %>
 
@@ -177,15 +177,10 @@
 			<td>${product_orderVO.rmk}</td>
 			<td>
 			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改">
-			     <input type="hidden" name="prod_ord_no"  value="${product_orderVO.prod_ord_no}">
-			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="刪除">
-			     <input type="hidden" name="prod_ord_no"  value="${product_orderVO.prod_ord_no}">
-			     <input type="hidden" name="action" value="delete"></FORM>
+			     <input type="submit" value="查看詳情">
+			     <input type="hidden" name="prod_no"  value="${product_orderVO.prod_ord_no}">
+			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+			     <input type="hidden" name="action"	value="getOne_For_Display"></FORM>
 			</td>
 		</tr>
 	</c:forEach>
