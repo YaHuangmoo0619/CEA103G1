@@ -328,6 +328,8 @@ label.spotlight{
 					<input type="radio" id="prod_ord_stat3" value="3" ${product_orderVO.prod_ord_stat==3?'checked':''} disabled>
 					<label for="prod_ord_stat4" ${product_orderVO.prod_ord_stat==4?'class="spotlight"':''}>未取貨</label>
 					<input type="radio" id="prod_ord_stat4" value="4" ${product_orderVO.prod_ord_stat==4?'checked':''} disabled>
+					<label for="prod_ord_stat5" ${product_orderVO.prod_ord_stat==5?'class="spotlight"':''}>取消訂單</label>
+					<input type="radio" id="prod_ord_stat5" value="5" ${product_orderVO.prod_ord_stat==5?'checked':''} disabled>
 				</div>
 			</td>
 		</tr>
