@@ -11,7 +11,7 @@
 						<li><a href="<%=request.getContextPath()%>/back-end/employee/listAllEmployee.jsp">員工管理</a></li>
 						</c:if>
 						<c:if test="${authorityVO.fx_no == 3}">
-						<li><a href="<%=request.getContextPath() %>/back-end/place_order/PresentPlace_order.jsp">營位訂購平台管理</a></li>
+						<li><a href="<%=request.getContextPath() %>/back-end/campsite/UnreviewCamp.jsp">營位訂購平台管理</a></li>
 						</c:if>
 						<c:if test="${authorityVO.fx_no == 2}">
 						<li><a href="<%=request.getContextPath() %>/back-end/product/listAllProduct.jsp">商城管理</a></li>
@@ -32,6 +32,7 @@
 						<li><a href="">即時小幫手管理</a></li>
 						</c:if>
 						</c:forEach>
+						<li><a href="<%=request.getContextPath()%>/employee/employee.do?action=logout">登出</a></li>
 					</ul>
 				</c:if>
 				<c:if test="${employeeVO == null}"><img style="max-width: 100%; margin-top: 30%;opacity:0.8;" src="<%=request.getContextPath()%>/images/campionLogoCircle.png"></c:if>

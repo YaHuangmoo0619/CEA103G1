@@ -16,5 +16,6 @@ public interface ProductDAO_interface {
           public void updateWithPic(ProductVO productVO,Set<Product_pictureVO> set);
           public void updateUpOrDown(Integer prod_stat, Integer prod_no);
           public List<ProductVO> getAllStat();
+          public void insert(ProductVO productVO,Set<Product_pictureVO> set);
           //¶®°Ä¥[ªº
 }

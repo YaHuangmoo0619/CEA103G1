@@ -176,6 +176,7 @@ tr:hover {
 
 img.inDiv{
 	width:50px;
+	margin:1px;
 }
 div.innerDiv{
  	display:inline;
@@ -197,7 +198,7 @@ hr{
 			<div class="left col-3">
 				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 			<div class="right col-9">
-		 <h3>所有商品列表&nbsp;
+		 <h3>修改商品列表&nbsp;
 			<a class="content" href="<%=request.getContextPath()%>/back-end/product/listAllProduct.jsp">回到商品列表</a>
 		</h3>
 

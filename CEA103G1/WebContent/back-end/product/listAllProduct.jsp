@@ -176,6 +176,7 @@ tr:hover {
 
 img.inDiv{
 	width:50px;
+	margin:1px;
 }
 div.innerDiv{
  	display:inline;

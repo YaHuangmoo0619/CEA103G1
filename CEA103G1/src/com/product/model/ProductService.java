@@ -35,6 +35,27 @@ public class ProductService {
 		return productVO;
 	}
 
+	public ProductVO addProduct(Integer prod_cat_no, Integer prod_stat, String prod_name, Integer prod_pc,
+			Integer prod_stg, String prod_info, String prod_bnd, String prod_clr, String prod_size, Integer ship_meth, Set<Product_pictureVO> set) {
+
+		ProductVO productVO = new ProductVO();
+
+		productVO.setProd_cat_no(prod_cat_no);
+		productVO.setProd_stat(prod_stat);
+		productVO.setProd_name(prod_name);
+		productVO.setProd_pc(prod_pc);
+		productVO.setProd_stg(prod_stg);
+		productVO.setProd_info(prod_info);
+		productVO.setProd_bnd(prod_bnd);
+		productVO.setProd_clr(prod_clr);
+		productVO.setProd_size(prod_size);
+		productVO.setShip_meth(ship_meth);
+		
+		dao.insert(productVO,set);
+
+		return productVO;
+	}
+	
 	public ProductVO updateProduct(Integer prod_no, Integer prod_cat_no, Integer prod_stat, String prod_name, Integer prod_pc,
 			Integer prod_stg, String prod_info, String prod_bnd, String prod_clr, String prod_size, Integer ship_meth) {
 
