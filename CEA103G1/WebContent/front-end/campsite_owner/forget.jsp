@@ -95,28 +95,14 @@
 <body>
     <div class="login">
         <form class="form" method="post" action="<%=request.getContextPath()%>/campsite_owner/campsite_owner.do">
-            <h2>營主登入</h2>
+            <h2>忘記密碼</h2>
             <div class="group">
                 <label for="id">帳號</label>
-                <input type="text" name="acc" id="acc">
-            </div>
-            <div class="group">
-                <label for="pwd">密碼</label>
-                <input type="password" name="pwd" id="pwd">
+                <input type="text" name="acc" id="acc" required>
             </div>
             <div class="btn-group">
-                <button class="btn">登入</button>  
-                <input type="hidden" name="action" value="login">
-            </div>
-            <br>
-            <div>
-                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/addCampsite_owner.jsp">建立帳號</a>  
-            </div>
-            <div>
-                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/forget.jsp">忘記密碼</a>  
-            </div>
-            <div>
-                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/resend.jsp">重發啟用信</a>  
+                <button class="btn">繼續</button>  
+                <input type="hidden" name="action" value="forget">
             </div>
              <%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
@@ -127,19 +113,11 @@
 				</ul>
 			</c:if>
             <br>
-<!--             <div> -->
-<%--     			<a href='<%=request.getContextPath()%>/front-end/member/forgetAccount.jsp'>忘記帳號</a> --%>
-<%--     			<a href='<%=request.getContextPath()%>/front-end/member/forgetPassword.jsp'>&emsp;忘記密碼</a> --%>
-<%--     			<a href='<%=request.getContextPath()%>/front-end/member/redirectMail.jsp'>&emsp;重寄驗證信</a> --%>
-<!--     		</div> -->
         </form>
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-	var enable = "<%=session.getAttribute("enable")%>";
-	if(!(enable === null)){
-		alert(enable);
-	}
+	
 </script>
 </html>

@@ -30,7 +30,7 @@ public class PlaceOrderForMember extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		String jsonObject;
 		String action = req.getParameter("action");
-		MemberVO member = (MemberVO) req.getSession().getAttribute("member");
+		MemberVO member = (MemberVO) req.getSession().getAttribute("memberVO");
 		CampService campSvc = new CampService();
 		PlaceService placeSvc = new PlaceService();
 		Place_OrderService place_orderSvc = new Place_OrderService();

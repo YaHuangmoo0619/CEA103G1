@@ -26,7 +26,7 @@ public class Camp_CollectionServlet extends HttpServlet{
 		PrintWriter out = res.getWriter();
 		Gson gson = new Gson();
 		
-		int mbr_no = ((MemberVO) req.getSession().getAttribute("member")).getMbr_no();
+		int mbr_no = ((MemberVO) req.getSession().getAttribute("memberVO")).getMbr_no();
 		String action = req.getParameter("action");
 		
 		Camp_CollectionService collectionSvc = new Camp_CollectionService();

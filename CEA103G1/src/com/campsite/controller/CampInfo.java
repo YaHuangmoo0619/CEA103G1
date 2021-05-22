@@ -133,7 +133,15 @@ public class CampInfo extends HttpServlet {
 			if ("getall".equals(action)) {
 				PlaceService placeSvc = new PlaceService();
 				List<CampVO> camplist = campSvc.getAll();
-
+				
+				List<CampVO> pass = new ArrayList();
+				for (CampVO campVO : camplist) {
+					if((int)campVO.getReview_Status() == 1 && (int)campVO.getCampsite_Status() == 0) {
+						pass.add(campVO);
+					}
+				}
+				camplist = pass;
+				
 				for (CampVO campVO : camplist) {
 					campVO = seeIfCollect(req, campVO);
 				}
@@ -203,7 +211,7 @@ public class CampInfo extends HttpServlet {
 
 	public CampVO seeIfCollect(HttpServletRequest req, CampVO campVO) {
 		HttpSession session = req.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("member");
+		MemberVO member = (MemberVO) session.getAttribute("memberVO");
 		if (member == null) {
 			campVO.setCollected(1);
 

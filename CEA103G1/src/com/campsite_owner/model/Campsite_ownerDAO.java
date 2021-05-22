@@ -31,6 +31,8 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 		"DELETE FROM campion.campsite_owner where cso_no = ?";
 	private static final String ENABLE = 
 		"UPDATE campion.campsite_owner set stat=? where cso_no=?";
+	private static final String RESET = 
+			"UPDATE campion.campsite_owner set pwd=? where cso_no=?";
 
 	@Override
 	public Campsite_ownerVO insert(Campsite_ownerVO campsite_ownerVO) {
@@ -132,6 +134,43 @@ public class Campsite_ownerDAO implements Campsite_ownerDAO_interface {
 			}
 		}
 
+	}
+	@Override
+	public void reset(Campsite_ownerVO campsite_ownerVO) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(RESET);
+			pstmt.setString(1, campsite_ownerVO.getPwd());
+			pstmt.setInt(2, campsite_ownerVO.getCso_no());
+			pstmt.executeUpdate();
+			
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
 	}
 
 	@Override

@@ -45,6 +45,16 @@ public class Campsite_ownerService {
 		campsite_ownerVO = dao.findByPrimaryKey(cso_no);
 		return campsite_ownerVO;
 	}
+	public Campsite_ownerVO resetCampsite_owner(String pwd, Integer cso_no) {
+		
+		Campsite_ownerVO campsite_ownerVO = new Campsite_ownerVO();
+		
+		campsite_ownerVO.setPwd(pwd);
+		campsite_ownerVO.setCso_no(cso_no);
+		dao.reset(campsite_ownerVO);
+		campsite_ownerVO = dao.findByPrimaryKey(cso_no);
+		return campsite_ownerVO;
+	}
 
 	public void deleteCampsite_owner(Integer rank_no) {
 		dao.delete(rank_no);
