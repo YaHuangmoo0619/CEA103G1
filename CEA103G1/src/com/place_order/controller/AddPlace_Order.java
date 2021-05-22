@@ -134,37 +134,41 @@ public class AddPlace_Order extends HttpServlet {
 				out.println(jsonObject);
 			}
 		} else {
-			place_orderVO = (Place_OrderVO) session.getAttribute("new_place_order");
-			List list = (List) session.getAttribute("new_place_order_details");
-			int mbr_no = place_orderVO.getMbr_no();
-			int camp_no = place_orderVO.getCamp_no();
-			Date ckin_date = place_orderVO.getCkin_date();
-			Date ckout_date = place_orderVO.getCkout_date();
-			int plc_amt = place_orderVO.getPlc_amt();
-			int plc_ord_sum = place_orderVO.getPlc_ord_sum();
-			int ex_ppl = place_orderVO.getEx_ppl();
-			int pay_meth = place_orderVO.getPay_meth();
-			int pay_stat = place_orderVO.getPay_stat();
-			int used_pt = place_orderVO.getUsed_pt();
-			int receipt = place_orderVO.getReceipt();
-			String rmk = place_orderVO.getRmk();
+			try {
+				place_orderVO = (Place_OrderVO) session.getAttribute("new_place_order");
+				List list = (List) session.getAttribute("new_place_order_details");
+				int mbr_no = place_orderVO.getMbr_no();
+				int camp_no = place_orderVO.getCamp_no();
+				Date ckin_date = place_orderVO.getCkin_date();
+				Date ckout_date = place_orderVO.getCkout_date();
+				int plc_amt = place_orderVO.getPlc_amt();
+				int plc_ord_sum = place_orderVO.getPlc_ord_sum();
+				int ex_ppl = place_orderVO.getEx_ppl();
+				int pay_meth = place_orderVO.getPay_meth();
+				int pay_stat = place_orderVO.getPay_stat();
+				int used_pt = place_orderVO.getUsed_pt();
+				int receipt = place_orderVO.getReceipt();
+				String rmk = place_orderVO.getRmk();
 
-			String number = req.getParameter("number");
-			String name = req.getParameter("name");
-			String expiry = req.getParameter("expiry");
-			int cvc = new Integer(req.getParameter("cvc"));
-			System.out.println("卡號:" + number);
-			System.out.println("姓名:" + name);
-			System.out.println("到期日:" + expiry);
-			System.out.println("安全碼:" + cvc);
+				String number = req.getParameter("number");
+				String name = req.getParameter("name");
+				String expiry = req.getParameter("expiry");
+				int cvc = new Integer(req.getParameter("cvc"));
+				System.out.println("卡號:" + number);
+				System.out.println("姓名:" + name);
+				System.out.println("到期日:" + expiry);
+				System.out.println("安全碼:" + cvc);
 
-			place_orderVO = place_orderSvc.addPlace_Order(mbr_no, camp_no, ckin_date, ckout_date, plc_amt, plc_ord_sum,
-					ex_ppl, pay_meth, pay_stat, used_pt, receipt, rmk, list);
-			list = new ArrayList();
-			list.add("已成功付款");
-			list.add("訂單已成立");
-			String jsonObject = gson.toJson(list);
-			out.println(jsonObject);
+				place_orderVO = place_orderSvc.addPlace_Order(mbr_no, camp_no, ckin_date, ckout_date, plc_amt, plc_ord_sum,
+						ex_ppl, pay_meth, pay_stat, used_pt, receipt, rmk, list);
+				session.removeAttribute("new_place_order_details");
+				list = new ArrayList();
+				list.add("已成功付款");
+				list.add("訂單已成立");
+				String jsonObject = gson.toJson(list);
+				out.println(jsonObject);
+			} catch (Exception e) {
+			}
 		}
 	}
 }

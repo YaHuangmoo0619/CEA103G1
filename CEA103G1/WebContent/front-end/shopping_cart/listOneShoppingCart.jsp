@@ -392,19 +392,16 @@ $(".checkout").click(function(){
 // 			 console.log("prod-no"+prod_no);
 			 var num     = $(this).find('.number').val();
 // 			 console.log("num"+num);
-			 map.set(prod_no,num);
+			 map[prod_no]=num;
 		  }
 	  });
-// 	  console.log(map.size);
-// 	  for(let entry of map){ // 逐一取得 map 物件的鍵值對，放入 entry 中
-// 		    console.log("Key:", entry[0], "Value:", entry[1]);
-// 		}
 
-		
+		map = JSON.stringify(map);
+		console.log(map);
 		$.ajax({  
 			type : "post",
-			url : "http://localhost:8081/CEA103G1/shopping_cart/shopping_cart.do",
 			dataType:"json",
+			url : "http://localhost:8081/CEA103G1/shopping_cart/shopping_cart.do",
 			data : {action: "generate",mbr_no:<%=memberVO.getMbr_no()%>,mydata:map},
 			success : function(data) {
 				alert("成功生成暫時訂單資料");
@@ -414,6 +411,6 @@ $(".checkout").click(function(){
     </script>
 
 
-</script>
+
 </body>
 </html>

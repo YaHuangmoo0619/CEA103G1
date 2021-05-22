@@ -82,8 +82,9 @@
 <%@ include file="/article_css/article_css.txt"%>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <link rel="icon" href="campionLogoIcon.png" type="image/png">
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+	    <link rel="stylesheet" href="sample.css" />
+    
 
 <style>
 html, body {
@@ -118,7 +119,7 @@ padding:0px 0px 0px 10px;
 	display:inline-block;
 }
 .article_sort_parent{
-	padding:0px 0px 0px 60px;
+	padding:10px 0px 0px 60px;
 }
 /* -----------------------------¥H¤U¬°°¼Äæcss------------------------------ */
 #sidebar {
@@ -372,7 +373,7 @@ jedis.close();
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	  <!-- Infinite Scroll v3.0.3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.3/infinite-scroll.pkgd.min.js"></script>
-		
+		<script src="jquery.hover.js"></script>
 		
 
 	<script>

@@ -287,7 +287,7 @@ img.person:hover {
 }
 </style>
 </head>
-<body>
+<body onload="connection()">
 	<div class="fixedTop">
 		<div>
 			<a href="/CEA103G1/campion_front.jsp"> <img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
@@ -431,6 +431,8 @@ img.person:hover {
 					$('#havent').css("display","inline-block");
 					$('#havent2').css("display","inline-block");
 				}else{
+					var mbr_no = `${data.mbr_no}`;
+					sessionStorage.setItem('mbr_no', mbr_no);
 					let member_pic = `<img src="/CEA103G1/member/GetPhoto?mbr_no=${data.mbr_no}" class="person">`;
 					$('#have2').after(`${data.name}`);
 					$('#showPerson').append(member_pic);
@@ -597,7 +599,7 @@ img.person:hover {
 				let html;	
 				var href=`listOneCamp.html?camp_no=${data[i].camp_no}&action=getone`;
 				html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="210" height="150" style="margin-right:15px;box-shadow: 0 0 8px #fff;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;"><h5 style="font-weight:bold;font-color:white;">${data[i].camp_name}
-					</h5></a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr color="white"></div>`;
+					</h5></a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;color:yellow;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr color="white"></div>`;
 				$('#all').append(html);
 				$(`#${data[i].camp_no}`).attr("href",href);
 				$(`#${data[i].camp_no}`).attr("target","_blank");
@@ -614,7 +616,7 @@ img.person:hover {
 				if (i) {	
 					var href=`listOneCamp.html?camp_no=${data[i].camp_no}&startdate=` + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val();
 					html = `<div class="camp"><div style="display:inline-block;"><img src="${data[i].first_pic}" width="210" height="150" style="margin-right:15px;box-shadow: 0 0 8px #fff;"></div><div style="display:inline-block;"><a id="${data[i].camp_no}" style="text-decoration:none;"><h5 style="font-weight:bold;font-color:white;">${data[i].camp_name}
-						</h5></a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr color="white"></div>`;
+						</h5></a><ion-icon id="fav${data[i].camp_no}" name="bookmark-outline" onclick="fav(this.id)" style="cursor: pointer;color:yellow;"></ion-icon><p>地址:${data[i].address}</p><p class="pc">每晚最低價:${data[i].low_pc}</p></div><hr color="white"></div>`;
 				} else {
 					html = "<center>所有營區皆已滿</center>";
 				}
@@ -652,6 +654,33 @@ img.person:hover {
 				});
 			}
 		};
+		function writeToScreen(input){
+			let noRead = JSON.parse(input);
+			
+			var notifyMail = document.getElementById('countNoReadMail');
+			notifyMail.innerText = noRead.countNoReadMail;
+			var notifyNotify = document.getElementById('countNoReadNotify');
+			notifyNotify.innerText = noRead.countNoReadNotify;
+		}
+		function connection(){
+			let wsUri = 'ws://' + window.location.host + '/CEA103G1'+'/Member_mailNotify/' + sessionStorage.getItem('mbr_no');
+			websocket = new WebSocket(wsUri);
+			websocket.onopen = function(event){
+				let e = document.createEvent("MouseEvent");
+				e.initEvent("click",true,true);
+				if(document.getElementById('sendNotify') !== null){
+					document.getElementById('sendNotify').dispatchEvent(e);
+				}
+			};
+			websocket.onmessage = function(event){
+				let noRead = event.data;
+				writeToScreen(noRead);
+			};
+		}
+		function sendNotify(){
+			let sendNotify = document.getElementById('sendNotify');
+			websocket.send(sendNotify.innerText);
+		}
 	</script>
 </body>
 </html>

@@ -130,17 +130,17 @@ public class Shopping_cartServlet extends HttpServlet{
 			mbr_no = new Integer(req.getParameter("mbr_no").trim());
 			System.out.println(mbr_no);
 			
-			String jsonStr = "";
-			jsonStr = req.getParameter("map");
-			System.out.println(jsonStr);
-			Map<String, String> map = new HashMap<String, String>();
-			map = JSONObject.fromObject(jsonStr);
-			System.out.println("map的大小" + map.size());
-			for (Map.Entry<String, String> entry : map.entrySet()) {  
-				  
-			    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
-			  
-			}  
+//			String jsonStr = "";
+//			jsonStr = req.getParameter("map");
+			System.out.println(req.getParameter("map"));
+//			Map<String, String> map = new HashMap<String, String>();
+//			map = JSONObject.fromObject(jsonStr);
+//			System.out.println("map的大小" + map.size());
+//			for (Map.Entry<String, String> entry : map.entrySet()) {  
+//				  
+//			    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
+//			  
+//			}  
 
 
 			

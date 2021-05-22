@@ -89,11 +89,11 @@
 	</tr>
 	<tr>
 		<td>密碼</td>
-		<td><input type="password" name="pwd" id="pwd" size="45"/></td>
+		<td><input type="password" name="pwd" id="pwd" size="45" required></td>
 	</tr>
 	<tr>
 		<td>確認密碼</td>
-		<td><input type="password" name="pwd" id="confirm_pwd" size="45"/></td>
+		<td><input type="password" name="pwd" id="confirm_pwd" size="45" required></td>
 	</tr>
 	<tr>
 		<td>身分證字號</td>
@@ -140,7 +140,7 @@
 <input type="hidden" name="action" value="insert">
 <input type="submit" value="送出"></FORM>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
 <script src="<%=request.getContextPath()%>/twzipcode/old/jquery.twzipcode-1.4.1.min.js"></script>
 <script>
 $('#twzipcode').twzipcode();

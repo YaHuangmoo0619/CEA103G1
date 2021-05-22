@@ -205,7 +205,7 @@ p {
 					</div>
 					<div class="col">
 						<div class="countBox">
-							<h5>商品訂單</h5>
+							<a href="<%=request.getContextPath()%>/back-end/product_order/listAllProduct_order_fromList.jsp"><h5>商品訂單</h5></a>
 							<jsp:useBean id="product_orderSvc" class="com.product_order.model.Product_orderService"/>
 							<p>累計共有${product_orderSvc.getAll().size()}筆</p>
 							<p>商品訂單</p>
@@ -223,7 +223,7 @@ p {
 					</div>
 					<div class="col">
 						<div class="countBox">
-							<h5>客服信件</h5>
+							<a href="<%=request.getContextPath()%>/back-end/service_mail/listAllService_mail.jsp"><h5>客服信件</h5></a>
 <%-- 							<jsp:useBean id="article_replay_reportSvc" class="com.article_replay_report.model.Article_Rep_ReportService"/> --%>
 <%-- 							<jsp:useBean id="article_reportSvc" class="com.article_report.model.Article_ReportService"/> --%>
 <%-- 							<jsp:useBean id="campsite_comment_reportSvc" class="com.campsite_comment_report.model.Campsite_comment_reportService"/> --%>

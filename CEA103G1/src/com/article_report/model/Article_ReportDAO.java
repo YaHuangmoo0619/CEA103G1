@@ -27,7 +27,7 @@ public class Article_ReportDAO implements Article_ReportDAO_Interface{
     private static final String INSERT_STMT = 
 		"INSERT INTO ARTICLE_REPORT (art_no,mbr_no,rpt_cont,rpt_time,proc_stat) VALUES (?,?,?,?,?)";
 	private static final String GET_ALL_STMT = 
-		"SELECT art_rpt_no,art_no,mbr_no,rpt_cont,rpt_time,proc_stat FROM ARTICLE_REPORT order by art_rpt_no";
+		"SELECT art_rpt_no,art_no,mbr_no,rpt_cont,rpt_time,proc_stat FROM ARTICLE_REPORT order by art_rpt_no desc";
 	private static final String GET_ONE_STMT = 
 		"SELECT art_rpt_no,art_no,mbr_no,rpt_cont,rpt_time,proc_stat FROM ARTICLE_REPORT where art_rpt_no = ?";
 	private static final String DELETE = 

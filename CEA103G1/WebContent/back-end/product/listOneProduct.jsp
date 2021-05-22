@@ -26,6 +26,7 @@ div.out{
 }
 img.inModal{
 	width: 100%;
+	margin: 5px;
 }
 div.mid{
 	width:50%;
@@ -55,7 +56,10 @@ div.colName{
 <body>
 <div class="out">
 	<div class="mid">
-		<img src="${product_pictureSvc.getOneProduct_picture(productVO.prod_no).getProd_pic()}" class="inModal">
+<%-- 		<img src="${product_pictureSvc.getOneProduct_picture(productVO.prod_no).getProd_pic()}" class="inModal"> --%>
+	<c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
+		<img class="inModal" src="${product_pictureVO.prod_pic}">
+	</c:forEach>
 	</div>
 	<div class="mid">
 		<div class="in">
@@ -75,8 +79,8 @@ div.colName{
 			<div class="divL">${productVO.prod_pc}元</div>
 		</div>
 		<div class="in">
-			<div class="divR colName">庫存：</div>
-			<div class="divL">${productVO.prod_stg}件</div>
+			<div class="divR colName" ${productVO.prod_stg > 5? '':'style="color:red;"'}>庫存：</div>
+			<div class="divL" ${productVO.prod_stg > 5? '':'style="color:red;"'}>${productVO.prod_stg}件</div>
 		</div>
 	</div>
 </div>

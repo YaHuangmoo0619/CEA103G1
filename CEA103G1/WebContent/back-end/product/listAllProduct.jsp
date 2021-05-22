@@ -176,6 +176,7 @@ tr:hover {
 
 img.inDiv{
 	width:50px;
+	margin:1px;
 }
 div.innerDiv{
  	display:inline;
@@ -201,6 +202,7 @@ hr{
 		 <h3>所有商品列表&nbsp;
 			<a class="content" href="<%=request.getContextPath()%>/back-end/product/addProduct.jsp">新增商品</a>
 			<a class="content" href="<%=request.getContextPath()%>/back-end/product/listAllProduct_update.jsp">修改商品</a>
+			<a class="content" href="<%=request.getContextPath()%>/back-end/product_order/listAllProduct_order_fromList.jsp">查閱商品訂單</a>
 			<input type="submit" value="上架" name="action" class="confirm">
 			<input type="submit" value="下架" name="action" class="confirm">
 		</h3>
@@ -223,7 +225,11 @@ hr{
 		<tr ${productVO.prod_stat==0? 'style="opacity:0.5;"':'' }>
 			<td>${productVO.prod_no}</td>
 			<td><input type="checkbox" name="prod_no" value="${productVO.prod_no}"></td>
-			<td><img src="${product_pictureSvc.getOneProduct_picture(productVO.prod_no).getProd_pic()}" class="inDiv"></td>
+			<td>
+			<c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
+				<img class="inDiv" src="${product_pictureVO.prod_pic}">
+			</c:forEach>
+			</td>
 			<td>
 			<div style="color:#4B7F52;">${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}</div>
 			<div style="font-weight:555;">${productVO.prod_bnd}</div>
@@ -257,7 +263,7 @@ hr{
 			</div>
 			</td>
 			<td style="width:15%;">
-				<h5>庫存${productVO.prod_stg}</h5>
+				<h5 ${productVO.prod_stg > 5? '':'style="color:red;"'}>庫存${productVO.prod_stg}</h5>
 				<div>${productVO.prod_pc}元</div>
 				<hr>
 				<div>

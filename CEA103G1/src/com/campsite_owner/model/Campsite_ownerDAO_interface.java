@@ -11,4 +11,5 @@ public interface Campsite_ownerDAO_interface {
           public List<Campsite_ownerVO> getAll();
           //萬用複合查詢(傳入參數型態Map)(回傳 List)
 //        public List<Campsite_ownerVO> getAll(Map<String, String[]> map);
+          public void reset(Campsite_ownerVO campsite_ownerVO);
 }

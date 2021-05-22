@@ -1,4 +1,4 @@
-package com.article_replay_report.model;
+package com.article_reply_report.model;
 import java.util.List;
 import java.util.Map;
 public interface Article_Rep_ReportDAO_Interface {
