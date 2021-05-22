@@ -122,7 +122,7 @@ textarea{
 			<h2>修改商品資料&nbsp;<a class="content" href="<%=request.getContextPath()%>/back-end/product/listAllProduct_update.jsp">回商品修改列表</a></h2>
 			<hr>
 
-<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" name="form1">
+<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" name="form1"  enctype="multipart/form-data">
 <input type="reset" value="重置" class="confirm">
 <input type="button" id="blank" value="清空" class="confirm">
 <input type="submit" value="送出新增商品" name="addFromUpdate" class="confirm">
@@ -198,10 +198,25 @@ textarea{
 			</select>
 		</td>
 	</tr>
-
+	<tr>
+		<td>商品照片:</td>
+		<td>
+			<div id='container'>
+				<label>請上傳圖片檔案：</label>
+			    <input type="file" id='myFile' name='files' multiple>
+				<div id='preview'>
+					<c:if test="${productVO==null}">
+					</c:if>
+					<c:if test="${productVO!=null}">
+						<c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.getProd_no())}">
+							<img src="${product_pictureVO.getProd_pic()}" class="inDiv img">
+						</c:forEach>
+					</c:if>
+				</div>        
+			</div>
+		</td>
+	</tr>
 </table>
-
-
 
 <br>
 <input type="hidden" name="action" value="update">
@@ -220,23 +235,45 @@ textarea{
 		}
 	});
 	
-<%-- 	var prod_cat_no = `<%=productVO.getProd_cat_no()%>`; --%>
-// 	$("#prod_cat_no").find(":option").each(function() {
-// 		if($(this).val()===prod_cat_no){
-// 			$(this).prop("selected",true);
-// 		}
-// 	});
-	
 	$("#blank").click(function(){
-// 		if($("input[type='text']")||$("input[type='number']")){
-// 			$("td > :input").val(null);
-// 		}
 		$("input[type='text']").val('');
 		$("input[type='number']").val('0');
 		$("textarea").val('');
 		$("select").val('no');
 	});
 </script>
+	<script>
+        let myFile = document.getElementById('myFile');
+        let preview = document.getElementById('preview');
+		let imgs = document.getElementsByClassName('img');        
+
+        myFile.addEventListener('change', function(e) {
+	    while(imgs.length != 0){
+		imgs[0].remove();
+	    }
+        	let files = e.target.files;
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].type.indexOf('image') > -1) {
+                    fileName = files[i].name;
+                    //console.log(files[i]);
+                    let reader = new FileReader();
+                    reader.addEventListener('load', function(e) {
+                        let result = e.target.result;
+                        //console.log(result);
+                        let img = document.createElement('img');
+                        img.setAttribute('class', 'img');
+                        img.classList.add('align');
+                        img.src = result;
+                        preview.append(img);
+                    });
+                    reader.readAsDataURL(files[i]);
+                } else {
+                    alert('請上傳圖檔');
+                }
+            }
+        });
+
+    </script>
 </body>
 
 </html>

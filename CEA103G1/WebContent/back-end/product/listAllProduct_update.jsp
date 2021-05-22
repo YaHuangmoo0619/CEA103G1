@@ -218,7 +218,11 @@ hr{
 		
 		<tr ${productVO.prod_no == param.prod_no?'style="background-color:#eee;"':''}>
 			<td>${productVO.prod_no}</td>
-			<td><img src="${product_pictureSvc.getOneProduct_picture(productVO.prod_no).getProd_pic()}" class="inDiv"></td>
+			<td>
+				<c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
+					<img class="inDiv" src="${product_pictureVO.prod_pic}">
+				</c:forEach>
+			</td>
 			<td>
 			<div style="color:#4B7F52;">${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}</div>
 			<div style="font-weight:555;">${productVO.prod_bnd}</div>

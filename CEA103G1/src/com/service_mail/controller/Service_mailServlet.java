@@ -127,7 +127,7 @@ public class Service_mailServlet extends HttpServlet {
 				}
 				
 				Collection<Part> parts = req.getParts();
-				System.out.println(parts.size());
+//				System.out.println(parts.size());
 				if(parts.size() >= 8) {
 					for(Part part : parts) {
 //						System.out.println(part.getHeader("content-disposition"));

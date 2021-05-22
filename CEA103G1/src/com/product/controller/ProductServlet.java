@@ -4,14 +4,23 @@ import java.io.*;
 import java.util.*;
 
 import javax.servlet.*;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import com.product.model.*;
+import com.product_picture.model.Product_pictureVO;
+import com.service_mail.model.Service_mailVO;
+import com.service_mail_picture.model.Service_mail_pictureVO;
 
 
 @WebServlet("/product/product.do")
+@MultipartConfig(fileSizeThreshold=1024*1024, maxFileSize=5*1024*1024, maxRequestSize=5*5*1024*1024)
 public class ProductServlet extends HttpServlet {
+	//雅凰加的
+	String saveDirectory = "/images/product_picture";
+	int count = 1;
+	//雅凰加的
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
@@ -23,7 +32,6 @@ public class ProductServlet extends HttpServlet {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		System.out.println(action);
 		
 		if ("getOne_For_Display".equals(action)) { 
 
@@ -112,12 +120,12 @@ public class ProductServlet extends HttpServlet {
 		
 		
 		if ("update".equals(action)) { 
-			System.out.println("in1");
+//			System.out.println("in1");
 			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
 
 			req.setAttribute("errorMsgs", errorMsgs);
 		
-			try {
+//			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				Integer prod_no = new Integer(req.getParameter("prod_no").trim());
 				
@@ -128,7 +136,7 @@ public class ProductServlet extends HttpServlet {
 					prod_cat_no = 0;
 					errorMsgs.put("prod_cat_no","請選擇商品類別");
 				}
-				System.out.println("middle");
+//				System.out.println("middle");
 				Integer prod_stat = null;
 				try {
 					prod_stat = new Integer(req.getParameter("prod_stat").trim());
@@ -188,7 +196,40 @@ public class ProductServlet extends HttpServlet {
 					ship_meth = 0;
 					errorMsgs.put("ship_meth","請選擇商品運送方式");
 				}
-				System.out.println("through");
+				
+				//準備放照片
+				Set<Product_pictureVO> set = new LinkedHashSet<Product_pictureVO>();
+				//建立放照片的資料夾
+				String realPath = getServletContext().getRealPath(saveDirectory);
+				File fsaveDirectory = new File(realPath);
+				if(!fsaveDirectory.exists()) {
+					fsaveDirectory.mkdirs();
+				}
+				
+				Collection<Part> parts = req.getParts();
+//				System.out.println(parts.size());
+				if(parts.size() >= 13) {
+					for(Part part : parts) {
+//						System.out.println(part.getHeader("content-disposition"));
+//						System.out.println(part.getSubmittedFileName());
+						//能夠取得檔名才存入資料夾
+						if(part.getSubmittedFileName()!=null && !part.getSubmittedFileName().isEmpty()) {
+							String fileType = part.getSubmittedFileName().substring(part.getSubmittedFileName().lastIndexOf("."));
+							
+							File f = new File(fsaveDirectory, "product_picture"+count+fileType);
+							part.write(f.toString());
+							
+							String prod_pic = req.getContextPath()+"/images/product_picture/product_picture"+count+fileType;
+							Product_pictureVO product_pictureVO = new Product_pictureVO();
+							product_pictureVO.setProd_no(prod_no);
+							product_pictureVO.setProd_pic(prod_pic);
+							set.add(product_pictureVO);
+							count++;
+						}
+					}
+				}
+				
+//				System.out.println("through");
 				ProductVO productVO = new ProductVO();
 				productVO.setProd_no(prod_no);
 				productVO.setProd_cat_no(prod_cat_no);
@@ -201,7 +242,7 @@ public class ProductServlet extends HttpServlet {
 				productVO.setProd_clr(prod_clr);
 				productVO.setProd_size(prod_size);
 				productVO.setShip_meth(ship_meth);
-				System.out.println(prod_no+","+ prod_cat_no+","+prod_stat+","+ prod_name+","+ prod_pc+","+prod_stg+","+ prod_info+","+prod_bnd+","+ prod_clr+","+prod_size+","+ship_meth);
+//				System.out.println(prod_no+","+ prod_cat_no+","+prod_stat+","+ prod_name+","+ prod_pc+","+prod_stg+","+ prod_info+","+prod_bnd+","+ prod_clr+","+prod_size+","+ship_meth);
 				if (!errorMsgs.isEmpty()) {
 					System.out.println("error-f");
 					req.setAttribute("productVO", productVO); 
@@ -209,23 +250,33 @@ public class ProductServlet extends HttpServlet {
 					failureView.forward(req, res);
 					return;
 				}
-				System.out.println("here?");
+//				System.out.println("here?");
+//				System.out.println(set);
 				/***************************2.開始修改資料*****************************************/
-				ProductService productSvc = new ProductService();
-				productVO = productSvc.updateProduct(prod_no, prod_cat_no, prod_stat, prod_name, prod_pc, prod_stg, prod_info, prod_bnd, prod_clr, prod_size, ship_meth);
+				if(set.size() == 0) {
+					ProductService productSvc = new ProductService();
+					productVO = productSvc.updateProduct(prod_no, prod_cat_no, prod_stat, prod_name, prod_pc, prod_stg, prod_info, prod_bnd, prod_clr, prod_size, ship_meth);
+					req.setAttribute("productVO", productVO);
+				}else {
+					ProductService productSvc = new ProductService();
+					productVO = productSvc.updateWithPic(prod_no, prod_cat_no, prod_stat, prod_name, prod_pc, prod_stg, prod_info, prod_bnd, prod_clr, prod_size, ship_meth,set);
+					req.setAttribute("productVO", productVO);
+				}
+//				ProductService productSvc = new ProductService();
+//				productVO = productSvc.updateProduct(prod_no, prod_cat_no, prod_stat, prod_name, prod_pc, prod_stg, prod_info, prod_bnd, prod_clr, prod_size, ship_meth);
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("productVO", productVO);
+//				req.setAttribute("productVO", productVO);
 				String url = "/back-end/product/listAllProduct_update.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
-			} catch (Exception e) {
-				System.out.println("error-e");
-				errorMsgs.put("error","修改資料失敗:"+e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product/update_Product_input.jsp");
-				failureView.forward(req, res);
-			}
+//			} catch (Exception e) {
+//				System.out.println("error-e");
+//				errorMsgs.put("error","修改資料失敗:"+e.getMessage());
+//				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product/update_Product_input.jsp");
+//				failureView.forward(req, res);
+//			}
 		}
 
         if ("insert".equals(action)) { 
