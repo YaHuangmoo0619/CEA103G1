@@ -23,7 +23,7 @@ public class ProductServlet extends HttpServlet {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		
+		System.out.println(action);
 		
 		if ("getOne_For_Display".equals(action)) { 
 
@@ -85,8 +85,8 @@ public class ProductServlet extends HttpServlet {
 		
 		if ("getOne_For_Update".equals(action)) { 
 
-			List<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
+//			List<String> errorMsgs = new LinkedList<String>();
+//			req.setAttribute("errorMsgs", errorMsgs);
 			
 			try {
 				/***************************1.接收請求參數****************************************/
@@ -104,7 +104,7 @@ public class ProductServlet extends HttpServlet {
 
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
-				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
+//				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product/listAllProduct.jsp");
 				failureView.forward(req, res);
 			}
@@ -112,8 +112,8 @@ public class ProductServlet extends HttpServlet {
 		
 		
 		if ("update".equals(action)) { 
-			
-			List<String> errorMsgs = new LinkedList<String>();
+			System.out.println("in1");
+			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
 
 			req.setAttribute("errorMsgs", errorMsgs);
 		
@@ -121,44 +121,74 @@ public class ProductServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				Integer prod_no = new Integer(req.getParameter("prod_no").trim());
 				
-				Integer prod_cat_no = new Integer(req.getParameter("prod_cat_no").trim());
-//				if (prod_cat_no == null ) {
-//					errorMsgs.add("請選擇商品類別！");
-//				}	
-				
-				Integer prod_stat = new Integer(req.getParameter("prod_stat"));
+				Integer prod_cat_no = null;
+				try {
+					prod_cat_no = new Integer(req.getParameter("prod_cat_no").trim());
+				} catch (NumberFormatException e) {
+					prod_cat_no = 0;
+					errorMsgs.put("prod_cat_no","請選擇商品類別");
+				}
+				System.out.println("middle");
+				Integer prod_stat = null;
+				try {
+					prod_stat = new Integer(req.getParameter("prod_stat").trim());
+				} catch (NumberFormatException e) {
+					prod_stat = 0;
+					errorMsgs.put("prod_stat","請選擇商品狀態");
+				}
 				
 				String prod_name = req.getParameter("prod_name");
 				if (prod_name == null || prod_name.trim().length() == 0) {
-					errorMsgs.add("請輸入商品名稱！");
+					errorMsgs.put("prod_name","請輸入商品名稱");
 				}	
 				
 				Integer prod_pc = null;
 				try {
 					prod_pc = new Integer(req.getParameter("prod_pc").trim());
+					if (prod_pc <= 0) {
+						errorMsgs.put("prod_pc","商品價格需大於零");
+					}
 				} catch (NumberFormatException e) {
 					prod_pc = 0;
-					errorMsgs.add("商品價格請填數字！");
+					errorMsgs.put("prod_pc","請輸入商品價格");
 				}
 				
-				Integer prod_stg = new Integer(req.getParameter("prod_stg").trim());
+				Integer prod_stg = null;
 				try {
-					prod_pc = new Integer(req.getParameter("prod_pc").trim());
+					prod_stg = new Integer(req.getParameter("prod_stg").trim());
+					if (prod_stg <= 0) {
+						errorMsgs.put("prod_stg","商品庫存需大於零");
+					}
 				} catch (NumberFormatException e) {
-					prod_pc = 0;
-					errorMsgs.add("商品庫存請填數字！");
+					prod_stg = 0;
+					errorMsgs.put("prod_stg","請輸入商品庫存");
 				}
 				
 				String prod_info = req.getParameter("prod_info");
+				if (prod_info == null || prod_info.trim().length() == 0) {
+					errorMsgs.put("prod_info","請輸入商品資訊");
+				}
 				String prod_bnd = req.getParameter("prod_bnd");
+				if (prod_bnd == null || prod_bnd.trim().length() == 0) {
+					errorMsgs.put("prod_bnd","請輸入商品廠牌");
+				}
 				String prod_clr = req.getParameter("prod_clr");
+				if (prod_clr == null || prod_clr.trim().length() == 0) {
+					errorMsgs.put("prod_clr","請輸入商品顏色");
+				}
 				String prod_size = req.getParameter("prod_size");
+				if (prod_size == null || prod_size.trim().length() == 0) {
+					errorMsgs.put("prod_size","請輸入商品大小");
+				}
 				
-				Integer ship_meth = new Integer(req.getParameter("ship_meth").trim());
-//				if (ship_meth == null ) {
-//				errorMsgs.add("請選擇運送方式！");
-//			}	
-				
+				Integer ship_meth = null;
+				try {
+					ship_meth = new Integer(req.getParameter("ship_meth").trim());
+				} catch (NumberFormatException e) {
+					ship_meth = 0;
+					errorMsgs.put("ship_meth","請選擇商品運送方式");
+				}
+				System.out.println("through");
 				ProductVO productVO = new ProductVO();
 				productVO.setProd_no(prod_no);
 				productVO.setProd_cat_no(prod_cat_no);
@@ -171,28 +201,29 @@ public class ProductServlet extends HttpServlet {
 				productVO.setProd_clr(prod_clr);
 				productVO.setProd_size(prod_size);
 				productVO.setShip_meth(ship_meth);
-				
+				System.out.println(prod_no+","+ prod_cat_no+","+prod_stat+","+ prod_name+","+ prod_pc+","+prod_stg+","+ prod_info+","+prod_bnd+","+ prod_clr+","+prod_size+","+ship_meth);
 				if (!errorMsgs.isEmpty()) {
+					System.out.println("error-f");
 					req.setAttribute("productVO", productVO); 
-					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/product/update_Product_input.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product/update_Product_input.jsp");
 					failureView.forward(req, res);
 					return;
 				}
-				
+				System.out.println("here?");
 				/***************************2.開始修改資料*****************************************/
 				ProductService productSvc = new ProductService();
 				productVO = productSvc.updateProduct(prod_no, prod_cat_no, prod_stat, prod_name, prod_pc, prod_stg, prod_info, prod_bnd, prod_clr, prod_size, ship_meth);
-				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("productVO", productVO);
-				String url = "/front-end/product/listOneProduct.jsp";
+				String url = "/back-end/product/listAllProduct_update.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
 			} catch (Exception e) {
-				errorMsgs.add("修改資料失敗:"+e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/product/update_Product_input.jsp");
+				System.out.println("error-e");
+				errorMsgs.put("error","修改資料失敗:"+e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product/update_Product_input.jsp");
 				failureView.forward(req, res);
 			}
 		}

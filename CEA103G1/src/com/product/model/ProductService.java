@@ -36,7 +36,7 @@ public class ProductService {
 			Integer prod_stg, String prod_info, String prod_bnd, String prod_clr, String prod_size, Integer ship_meth) {
 
 		ProductVO productVO = new ProductVO();
-
+		productVO.setProd_no(prod_no);
 		productVO.setProd_cat_no(prod_cat_no);
 		productVO.setProd_stat(prod_stat);
 		productVO.setProd_name(prod_name);

@@ -216,7 +216,7 @@ hr{
 
 	<c:forEach var="productVO" items="${list}" >
 		
-		<tr>
+		<tr ${productVO.prod_no == param.prod_no?'style="background-color:#eee;"':''}>
 			<td>${productVO.prod_no}</td>
 			<td><img src="${product_pictureSvc.getOneProduct_picture(productVO.prod_no).getProd_pic()}" class="inDiv"></td>
 			<td>
@@ -294,7 +294,7 @@ hr{
 						<jsp:include page="listOneProduct.jsp" />
 		            </div>
 		            <div class="modal-footer">
-		            	<form method="post" action="<%=request.getContextPath()%>/product/product.do" enctype="multipart/form-data" style="text-align:right;">
+		            	<form method="post" action="<%=request.getContextPath()%>/product/product.do" style="text-align:right;">
 							<input type="hidden" name="prod_no" value="${productVO.prod_no}">
 							<input type="hidden" name="action" value="getOne_For_Update">
 							<input type="submit" class="btn btn-secondary" value="н╫зя">

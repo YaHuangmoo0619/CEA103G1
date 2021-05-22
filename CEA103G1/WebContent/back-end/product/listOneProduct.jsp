@@ -75,8 +75,8 @@ div.colName{
 			<div class="divL">${productVO.prod_pc}元</div>
 		</div>
 		<div class="in">
-			<div class="divR colName">庫存：</div>
-			<div class="divL">${productVO.prod_stg}件</div>
+			<div class="divR colName" ${productVO.prod_stg > 5? '':'style="color:red;"'}>庫存：</div>
+			<div class="divL" ${productVO.prod_stg > 5? '':'style="color:red;"'}>${productVO.prod_stg}件</div>
 		</div>
 	</div>
 </div>

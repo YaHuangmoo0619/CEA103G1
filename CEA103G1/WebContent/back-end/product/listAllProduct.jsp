@@ -257,7 +257,7 @@ hr{
 			</div>
 			</td>
 			<td style="width:15%;">
-				<h5>®w¦s${productVO.prod_stg}</h5>
+				<h5 ${productVO.prod_stg > 5? '':'style="color:red;"'}>®w¦s${productVO.prod_stg}</h5>
 				<div>${productVO.prod_pc}¤¸</div>
 				<hr>
 				<div>
