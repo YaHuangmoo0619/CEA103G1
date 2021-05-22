@@ -8,6 +8,8 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import com.product.model.ProductService;
+import com.product.model.ProductVO;
 import com.product_order.model.*;
 
 @WebServlet("/product_order/product_order.do")
@@ -257,5 +259,25 @@ public class Product_orderServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		//雅凰加的
+		if("read".equals(action)) {
+			try {
+				Product_orderService product_orderSvc = new Product_orderService();
+				Product_orderVO product_orderVO = product_orderSvc.getOneProduct_order(Integer.valueOf(req.getParameter("prod_ord_no")));
+				
+				//Bootstrap_modal
+				boolean openModal=true;
+				req.setAttribute("openModal",openModal );
+				
+				req.setAttribute("product_orderVO", product_orderVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/product_order/listAllProduct_order_fromList.jsp");
+				successView.forward(req, res);
+			}catch(Exception e) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product_order/listAllProduct_order_fromList.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		//雅凰加的
 	}
 }

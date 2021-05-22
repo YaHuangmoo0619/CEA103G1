@@ -6,6 +6,13 @@ import java.sql.*;
 import javax.naming.*;
 import javax.sql.DataSource;
 
+import com.member_mail.model.Member_mailDAO;
+import com.member_mail.model.Member_mailVO;
+import com.product_picture.model.Product_pictureDAO;
+import com.product_picture.model.Product_pictureVO;
+import com.service_mail_picture.model.Service_mail_pictureDAO;
+import com.service_mail_picture.model.Service_mail_pictureVO;
+
 public class ProductDAO implements ProductDAO_interface {
 
 	private static DataSource ds = null;
@@ -515,5 +522,156 @@ public class ProductDAO implements ProductDAO_interface {
 		return list;
 	}
 	//雅凰加的
+
+	@Override
+	public void updateWithPic(ProductVO productVO, Set<Product_pictureVO> set) {
+
+//		System.out.println("dao?");
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			
+			con.setAutoCommit(false);
+			
+			pstmt = con.prepareStatement(UPDATE);
+
+			pstmt.setInt(1, productVO.getProd_cat_no());
+			pstmt.setInt(2, productVO.getProd_stat());
+			pstmt.setString(3, productVO.getProd_name());
+			pstmt.setInt(4, productVO.getProd_pc());
+			pstmt.setInt(5, productVO.getProd_stg());
+			pstmt.setString(6, productVO.getProd_info());
+			pstmt.setString(7, productVO.getProd_bnd());
+			pstmt.setString(8, productVO.getProd_clr());
+			pstmt.setString(9, productVO.getProd_size());
+			pstmt.setInt(10, productVO.getShip_meth());
+			pstmt.setInt(11, productVO.getProd_no());
+//			System.out.println("productDAO="+productVO.getProd_no());
+
+			pstmt.executeUpdate();
+			
+			Product_pictureDAO product_pictureDAO = new Product_pictureDAO();
+//			System.out.println("set.size()="+set.size());
+
+			product_pictureDAO.updateFromProd(productVO.getProd_no(), set , con);
+			
+			con.commit();
+			con.setAutoCommit(true);
+			// Handle any SQL errors
+		}catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-productDAO");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
 	
+	@Override
+	public void insert(ProductVO productVO,Set<Product_pictureVO> set) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = ds.getConnection();
+			
+			con.setAutoCommit(false);
+			
+			String cols[] = {"prod_no"};
+			pstmt = con.prepareStatement(INSERT_STMT , cols);
+
+			pstmt.setInt(1, productVO.getProd_cat_no());
+			pstmt.setInt(2, productVO.getProd_stat());
+			pstmt.setString(3, productVO.getProd_name());
+			pstmt.setInt(4, productVO.getProd_pc());
+			pstmt.setInt(5, productVO.getProd_stg());
+			pstmt.setString(6, productVO.getProd_info());
+			pstmt.setString(7, productVO.getProd_bnd());
+			pstmt.setString(8, productVO.getProd_clr());
+			pstmt.setString(9, productVO.getProd_size());
+			pstmt.setInt(10, productVO.getShip_meth());
+
+			pstmt.executeUpdate();
+//			System.out.println("whatswrong");
+			String next_prod_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+//			System.out.println(rs);
+			if(rs.next()) {
+				next_prod_no = rs.getString(1);
+			}
+			rs.close();
+//			System.out.println(next_prod_no);
+			Product_pictureDAO product_pictureDAO = new Product_pictureDAO();
+//			System.out.println("set.size()="+set.size());
+
+			for(Product_pictureVO product_pictureVO : set) {
+				product_pictureVO.setProd_no(new Integer(next_prod_no));
+				product_pictureDAO.insert(product_pictureVO, con);
+			}
+//			System.out.println("whatswrongwithyou");
+			con.commit();
+//			System.out.println("whatswrongwithyou2");
+			con.setAutoCommit(true);
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-productDAO");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
 }

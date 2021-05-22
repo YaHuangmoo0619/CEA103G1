@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.util.*"%>
 <%@ page import="com.product.model.*"%>
+<%@ page import="com.product_order.model.*"%>
 <%@ page import="com.employee.model.*"%>
 <jsp:useBean id="product_pictureSvc" class="com.product_picture.model.Product_pictureService"/>
 <jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
@@ -16,8 +17,8 @@
 %>
 
 <%
-	ProductService productSvc = new ProductService();
-    List<ProductVO> list = productSvc.getAll();
+    Product_orderService product_orderSvc = new Product_orderService();
+    List<Product_orderVO> list = product_orderSvc.getAll();
     pageContext.setAttribute("list",list);
 %>
 
@@ -131,7 +132,7 @@ table {
 th, td {
 	text-align: left;
 	/* 	border: 1px solid #4e5452; */
-	padding: 10px 15px;
+	padding: 10px 10px;
 }
 
 td.function {
@@ -186,6 +187,24 @@ hr{
 	width: 30%;
 	border-color:#80c344;
 }
+div.L{
+	display:inline-block;
+	width:6em;
+	font-weight: 555;
+}
+div.R{
+	display:inline-block;
+	width:4em;
+}
+div.inTr{
+	display:inline-block;
+}
+label.spotlight{
+	background-color: #80c344;
+	padding: 2px 5px;
+	border-radius: 5px;
+	color: #fff;
+}
 </style>
 
 
@@ -198,7 +217,7 @@ hr{
 			<div class="left col-3">
 				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 			<div class="right col-9">
-		 <h3>修改商品列表&nbsp;
+		 <h3>商品訂單列表&nbsp;
 			<a class="content" href="<%=request.getContextPath()%>/back-end/product/listAllProduct.jsp">回到商品列表</a>
 		</h3>
 
@@ -215,71 +234,102 @@ hr{
 
 <table>
 
-	<c:forEach var="productVO" items="${list}" >
+	<c:forEach var="product_orderVO" items="${list}" > <%-- begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" --%>
 		
-		<tr ${productVO.prod_no == param.prod_no?'style="background-color:#eee;"':''}>
-			<td>${productVO.prod_no}</td>
-			<td>
-				<c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
-					<img class="inDiv" src="${product_pictureVO.prod_pic}">
-				</c:forEach>
+		
+		<tr>
+			<td style="width:5%;">
+				${product_orderVO.prod_ord_no}
 			</td>
-			<td>
-			<div style="color:#4B7F52;">${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}</div>
-			<div style="font-weight:555;">${productVO.prod_bnd}</div>
-			<h5>${productVO.prod_name}</h5>
-			<hr>
-			<c:set var="prod_info" value="${productVO.prod_info}"/>
-			<c:if test="${prod_info.length()>30}">
-				<div>${fn:substring(prod_info, 0, 30)}...</div>
-			</c:if>
-			<c:if test="${prod_info.length()<=30}">
-				<div>${fn:substring(prod_info, 0, 30)}</div>
-			</c:if>
-			<c:if test="${prod_info.length()==0}">
-				<div>無資訊</div>
-			</c:if>
-			<hr>
-			<div>
-				<div class="innerDiv">${productVO.prod_clr}</div>
-				<div class="innerDiv" style="color:#4B7F52;">${productVO.prod_size}</div>
-				<div class="innerDiv">
-					<c:if test="${productVO.ship_meth==0}">
-						<c:out value="不限運送方式" />
-					</c:if>
-					<c:if test="${productVO.ship_meth==1}">
-						<c:out value="限宅配" />
-					</c:if>
-					<c:if test="${productVO.ship_meth==2}">
-						<c:out value="限超商取貨" />
-					</c:if>
+			<td style="width:35%;">
+				<div class="inTr">
+					<div class="L">會員編號:</div>
+					<div class="R">${product_orderVO.mbr_no}</div>
 				</div>
-			</div>
+				<div class="inTr">
+					<div class="L">訂單總金額:</div>
+					<div class="R">${product_orderVO.prod_ord_sum}元</div>
+				</div>
+				<div class="inTr">
+					<div class="L">使用點數:</div>
+					<div class="R">${product_orderVO.used_pt}</div>
+				</div>
+				<div class="inTr">
+					<div class="L">運送方式:</div>
+					<div class="R">
+						<c:if test="${product_orderVO.ship_meth==1}">
+							<c:out value="宅配" />
+						</c:if>
+						<c:if test="${product_orderVO.ship_meth==2}">
+							<c:out value="超商取貨" />
+						</c:if>
+					</div>
+				</div>
+					
 			</td>
+			
+			<td style="width:45%;">
+				<div class="inTr">
+					<div class="L">付款方式:</div>
+					<div>
+						<c:if test="${product_orderVO.pay_meth==0}">
+							<c:out value="信用卡" />
+						</c:if>
+						<c:if test="${product_orderVO.pay_meth==1}">
+							<c:out value="匯款" />
+						</c:if>
+						<c:if test="${product_orderVO.pay_meth==2}">
+							<c:out value="超商取貨付款" />
+						</c:if>
+					</div>
+				</div>
+				<div class="inTr">
+					<div class="L">發票形式:</div>
+					<div>
+						<c:if test="${product_orderVO.receipt==0}">
+							<c:out value="紙本發票" />
+						</c:if>
+						<c:if test="${product_orderVO.receipt==1}">
+							<c:out value="電子發票" />
+						</c:if>
+						<c:if test="${product_orderVO.receipt==2}">
+							<c:out value="發票捐贈" />
+						</c:if>
+					</div>
+				</div>
+				<div class="inTr">
+					<div class="L">運送地址:</div>
+					<div>
+						<div class="innerDiv">${product_orderVO.ship_cty}</div>
+						<div class="innerDiv">${product_orderVO.ship_dist}</div>
+						<div class="innerDiv">${product_orderVO.ship_add}</div>
+					</div>
+				</div>
+				<div class="inTr">
+					<div class="L">下訂時間:</div>
+					<c:set var="prod_ord_time" value="${product_orderVO.prod_ord_time}" />
+					<div>${fn:substring(prod_ord_time, 0, 19)}</div>
+				</div>
+				<div class="inTr">
+					<div class="L">訂單備註:</div>
+					<div>${product_orderVO.rmk}</div>
+				</div>
+			</td>
+			
 			<td style="width:15%;">
-				<c:if test="${productVO.prod_stg > 5}">
-					<h5>庫存${productVO.prod_stg}</h5>
-				</c:if>
-				<c:if test="${productVO.prod_stg <= 5}">
-					<h5 style="color:red;">庫存${productVO.prod_stg}</h5>
-				</c:if>
-				<div>${productVO.prod_pc}元</div>
-				<hr>
-				<div>
-				<c:if test="${productVO.prod_stat==0}">
-					<c:out value="下架" />
-				</c:if>
-				<c:if test="${productVO.prod_stat==1}">
-					<c:out value="上架" />
-				</c:if>
+				<div class="inTr">
+					<label for="prod_ord_stat0" ${product_orderVO.prod_ord_stat==0?'class="spotlight"':''}>未付款</label>
+					<input type="radio" id="prod_ord_stat0" value="0" ${product_orderVO.prod_ord_stat==0?'checked':''} disabled>
+					<label for="prod_ord_stat1" ${product_orderVO.prod_ord_stat==1?'class="spotlight"':''}>已付款</label>
+					<input type="radio" id="prod_ord_stat1" value="1" ${product_orderVO.prod_ord_stat==1?'checked':''} disabled>
+					<label for="prod_ord_stat2" ${product_orderVO.prod_ord_stat==2?'class="spotlight"':''}>出貨中</label>
+					<input type="radio" id="prod_ord_stat2" value="2" ${product_orderVO.prod_ord_stat==2?'checked':''} disabled>
+					<label for="prod_ord_stat3" ${product_orderVO.prod_ord_stat==3?'class="spotlight"':''}>已收貨</label>
+					<input type="radio" id="prod_ord_stat3" value="3" ${product_orderVO.prod_ord_stat==3?'checked':''} disabled>
+					<label for="prod_ord_stat4" ${product_orderVO.prod_ord_stat==4?'class="spotlight"':''}>未取貨</label>
+					<input type="radio" id="prod_ord_stat4" value="4" ${product_orderVO.prod_ord_stat==4?'checked':''} disabled>
 				</div>
 			</td>
-<!-- 			<td> -->
-<%-- 			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;"> --%>
-<!-- 			     <input type="submit" value="修改"> -->
-<%-- 			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}"> --%>
-<!-- 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM> -->
-<!-- 			</td> -->
 		</tr>
 	</c:forEach>
 </table>
@@ -291,12 +341,12 @@ hr{
 		     <div class="modal-dialog modal-lg" role="document"> 
 		        <div class="modal-content">
 		            <div class="modal-header">
-		                <h5 class="modal-title">${productVO.prod_no}.&nbsp;${productVO.prod_name}&nbsp;${productVO.prod_stat==1?'↑上架↑':'↓下架↓'}</h5>
+		                <h5 class="modal-title">${product_orderVO.mbr_no}會員之訂單編號為${product_orderVO.prod_ord_no}號的詳細資訊</h5>
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
 		            </div>
 		            <div class="modal-body">
 <%-- 		            ${productVOOne.prod_no} --%>
-						<jsp:include page="listOneProduct.jsp" />
+						<jsp:include page="listOneProduct_order.jsp" />
 		            </div>
 		            <div class="modal-footer">
 		            	<form method="post" action="<%=request.getContextPath()%>/product/product.do" style="text-align:right;">
@@ -315,12 +365,11 @@ hr{
 	}); 
 </script>
 </c:if>
-
 <script>
 $("tr").click(function(e){
 	console.log('in');
-	let prod_no = e.currentTarget.children[0].innerText;
-	window.location.href="<%=request.getContextPath()%>/product/product.do?prod_no="+ prod_no + "&action=read";
+	let prod_ord_no = e.currentTarget.children[0].innerText;
+	window.location.href="<%=request.getContextPath()%>/product_order/product_order.do?prod_ord_no="+ prod_ord_no + "&action=read";
 });
 </script>
 <script>
