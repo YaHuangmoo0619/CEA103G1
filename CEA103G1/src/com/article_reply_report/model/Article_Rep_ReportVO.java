@@ -1,4 +1,4 @@
-package com.article_replay_report.model;
+package com.article_reply_report.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

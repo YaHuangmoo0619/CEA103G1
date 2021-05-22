@@ -126,8 +126,7 @@ padding: 0px 0px 20px 0px;
 	</c:if>
 <div class="container">
 	<h3 class=main_div>µoªí¤å³¹</h3>
-	<FORM METHOD="post" ACTION="/CEA103G1/article/article.do" name="form1"
-		autocomplete>
+	<FORM METHOD="post" ACTION="/CEA103G1/article/article.do" name="form1" autocomplete>
 		
 			<jsp:useBean id="bd_clSvc" scope="page"
 				class="com.board_class.model.Board_ClassService" />

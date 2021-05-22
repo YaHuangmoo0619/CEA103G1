@@ -62,10 +62,9 @@
 <jsp:useBean id="bd_clDAO" scope="page"  class="com.board_class.model.Board_ClassDAO" />	
 <html>
 <head>
-<title>文章資料 - listOneArticle.jsp 前台</title>
-<!-- <link rel="stylesheet" -->
-<!-- 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"> -->
-
+<title>文章資料 - listOneArticle.jsp 前台</title>   
+    <style>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <style>
 
    .like{ 
@@ -232,7 +231,7 @@
 		</div>
 		<div class=cont><%=articleVO.getArt_cont().replaceAll("\n","<br>")%></div>
 		
-		
+					<!-- 		如果有登入且該篇文章作者就是自己 那可以執行刪除及修改文章 -->
    							<c:if test="${not empty memberVO &&(articleVO.mbr_no==memberVO.mbr_no)}"> 
 								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article/article.do" style="margin-bottom: 0px;">
 									<input type="submit" value="修改文章"> <input type="hidden" name="art_no" value="${articleVO.art_no}"> 
@@ -248,7 +247,8 @@
 					</c:if>
 	
 		
-
+					<!-- 		如果有登入且該篇文章作者不是自己 那可以執行檢舉文章 -->
+					<button class=reply>檢舉文章</button>
 
 <div class=heart_group>
 <div><img class=heart_for_like src="/CEA103G1/images/heart_for_like.svg" ></div>
@@ -314,7 +314,7 @@
 
 
 
-		<div class="modal fade" id="login_confirm_listOneArticle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="login_confirm_listOneArticle" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -331,12 +331,96 @@
   </div>
 </div>
 
+
+			<div class="modal fade" id="reply_modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>檢舉文章</h5>
+      </div>
+      <div class="modal-body">
+        <form METHOD="post" ACTION="/CEA103G1/article_report/article_report.do" name="form1" autocomplete>
+        	<div class="form-check">
+  				<input class="form-check-input" type="radio" name="replyRadios" value="中傷、歧視、挑釁或謾罵他人">
+  					<label class="form-check-label" for="exampleRadios1">
+    					中傷、歧視、挑釁或謾罵他人
+  					</label>
+	   		 </div>
+	   		         	<div class="form-check">
+  				<input class="form-check-input" type="radio" name="replyRadios" value="中傷、歧視、挑釁或謾罵他人">
+  					<label class="form-check-label" for="exampleRadios1">
+    					商業廣告宣傳內容
+  					</label>
+	   		 </div>
+	   	         	<div class="form-check">
+  				<input class="form-check-input" type="radio" name="replyRadios" value="惡意洗板、重複張貼">
+  					<label class="form-check-label" for="exampleRadios1">
+    					惡意洗板、重複張貼
+  					</label>
+	   	 </div>
+	   	         	<div class="form-check">
+  				<input class="form-check-input" type="radio" name="replyRadios"  value="包含色情、露點、性騷擾或血腥恐怖等讓人不舒服之內容">
+  					<label class="form-check-label" for="exampleRadios1">
+    					包含色情、露點、性騷擾或血腥恐怖等讓人不舒服之內容
+  					</label>
+	   	 </div>
+	   	         	<div class="form-check">
+  				<input class="form-check-input" type="radio" name="replyRadios" value="暴力、傷害他人或傷害動物的內容">
+  					<label class="form-check-label" for="exampleRadios1">
+    					暴力、傷害他人或傷害動物的內容
+  					</label>
+	   	 </div>
+	   	         	<div class="form-check">
+  				<input class="form-check-input" type="radio" name="replyRadios" value="包含廣告、商業宣傳之內容">
+  					<label class="form-check-label" for="exampleRadios1">
+    					包含廣告、商業宣傳之內容
+  					</label>
+	   	 </div>
+	   	         	<div class="form-check">
+  				<input class="form-check-input" type="radio" name="replyRadios"  value="文章發表在不適當的看板">
+  					<label class="form-check-label" for="exampleRadios1">
+    					文章發表在不適當的看板
+  					</label>
+	   	 </div>
+	   	         	<div class="form-check">
+  				<input class="form-check-input" type="radio" name="replyRadios"  value="文章內容空泛或明顯無意義內容">
+  					<label class="form-check-label" for="exampleRadios1">
+    					文章內容空泛或明顯無意義內容
+  					</label>
+	   	 </div>
+	   	         	<div class="form-check">
+  				<input class="form-check-input" type="radio" name="replyRadios"  value="嚴禁發表、轉貼未經證實的謠言或不實訊息">
+  					<label class="form-check-label" for="exampleRadios1">
+    					嚴禁發表、轉貼未經證實的謠言或不實訊息
+  					</label>
+	   	 </div>
+	   	         	<div class="form-check">
+  				<input class="form-check-input" type="radio" name="replyRadios"  value="禁止發表太過偏離主題的文章或留言。">
+  					<label class="form-check-label" for="exampleRadios1">
+    					禁止發表太過偏離主題的文章或留言。
+  					</label>
+  							
+		<input type="hidden" name="mbr_no" value="${memberVO.getMbr_no()}" />
+		<input type="hidden" name="art_no" value="${articleVO.getArt_no()}" />
+		<input type="hidden" name="action" value="insert">
+		
+	   	 </div>
+	   	 <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close_reply_modal" data-bs-dismiss="modal">取消</button>
+        <button type="submit" class="btn btn-primary">完成</button>
+      	</div>
+        </form>
+      </div>
+
+    </div>
+  </div>
 </div>
 
-這裡是<span data-hover="Is Life">易思生活</span>
+</div>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-	<script src="/CEA103G1/front-end/article/jquery.hover.js"></script>
+
 <script>
  var stateObj = { foo: "bar" };
  history.pushState(stateObj, "page 2", "${requestURL}");
@@ -458,6 +542,17 @@
   
   $(".close_modal").click(function(){
 	  $('#login_confirm_listOneArticle').modal('hide');
+  })
+  
+  
+
+      $(".reply").click(function(){
+    	$('#reply_modal').modal('show');
+  })
+  
+  
+    $(".close_reply_modal").click(function(){
+	  $('#reply_modal').modal('hide');
   })
   </script>
 	

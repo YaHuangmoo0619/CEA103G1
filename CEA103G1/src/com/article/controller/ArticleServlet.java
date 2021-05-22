@@ -698,6 +698,7 @@ public class ArticleServlet extends HttpServlet {
 			}
 		}
 
+		
 		if ("getOne_From3".equals(action)) { // 回到看板首頁的燈箱
 
 			try {
@@ -780,6 +781,55 @@ public class ArticleServlet extends HttpServlet {
 		}
 		
 		
+		
+		if ("getOne_From5".equals(action)) { // 回到後台檢舉管理的燈箱
+
+			try {
+
+				String requestURL = req.getHeader("Referer");
+				System.out.println(requestURL);
+				req.setAttribute("requestURL", requestURL);
+				Jedis jedis = new Jedis("localhost", 6379);
+				jedis.auth("123456");
+				jedis.select(6);
+
+//				System.out.println(req.getParameter("art_no"));
+//				for (String str : jedis.smembers("post:"+req.getParameter("art_no")+":tags")) {
+//					System.out.println(str);
+//				}
+				Set<String> tag_list = jedis.smembers("post:" + req.getParameter("art_no") + ":tags");
+
+				jedis.close();
+
+//
+//				    for(String element : tag_list) {
+//				        System.out.println(element);
+//				    }
+//
+				req.setAttribute("tag_list", tag_list); // Redis資料庫取出的tag_list物件,存入req
+
+				// Retrieve form parameters.
+				Integer art_no = new Integer(req.getParameter("art_no"));
+
+				ArticleDAO dao = new ArticleDAO();
+				ArticleVO articleVO = dao.findByPrimaryKey(art_no);
+
+				req.setAttribute("articleVO", articleVO); // 資料庫取出的articleVO物件,存入req
+
+				// Bootstrap_modal
+				boolean openModal = true;
+				System.out.println(openModal);
+				req.setAttribute("openModal", openModal);
+
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/article_report/listAllArticle_Report.jsp");
+				successView.forward(req, res);
+				return;
+
+				// Handle any unusual exceptions
+			} catch (Exception e) {
+				throw new ServletException(e);
+			}
+		}
 		
 		
 		if ("search_tag".equals(action)) {
