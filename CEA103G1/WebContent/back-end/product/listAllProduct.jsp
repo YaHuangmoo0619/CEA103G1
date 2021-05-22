@@ -202,6 +202,7 @@ hr{
 		 <h3>所有商品列表&nbsp;
 			<a class="content" href="<%=request.getContextPath()%>/back-end/product/addProduct.jsp">新增商品</a>
 			<a class="content" href="<%=request.getContextPath()%>/back-end/product/listAllProduct_update.jsp">修改商品</a>
+			<a class="content" href="<%=request.getContextPath()%>/back-end/product_order/listAllProduct_order_fromList.jsp">查閱商品訂單</a>
 			<input type="submit" value="上架" name="action" class="confirm">
 			<input type="submit" value="下架" name="action" class="confirm">
 		</h3>
