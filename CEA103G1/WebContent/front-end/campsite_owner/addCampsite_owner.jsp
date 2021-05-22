@@ -89,11 +89,11 @@
 	</tr>
 	<tr>
 		<td>密碼</td>
-		<td><input type="password" name="pwd" id="pwd" size="45"/></td>
+		<td><input type="password" name="pwd" id="pwd" size="45" required></td>
 	</tr>
 	<tr>
 		<td>確認密碼</td>
-		<td><input type="password" name="pwd" id="confirm_pwd" size="45"/></td>
+		<td><input type="password" name="pwd" id="confirm_pwd" size="45" required></td>
 	</tr>
 	<tr>
 		<td>身分證字號</td>

@@ -1,6 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%
+	int cso_no = new Integer(request.getParameter("cso_no"));
+	pageContext.setAttribute("cso_no", cso_no);
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,28 +98,19 @@
 <body>
     <div class="login">
         <form class="form" method="post" action="<%=request.getContextPath()%>/campsite_owner/campsite_owner.do">
-            <h2>營主登入</h2>
+            <h2>重設密碼</h2>
             <div class="group">
-                <label for="id">帳號</label>
-                <input type="text" name="acc" id="acc">
+                <label for="id">請輸入新密碼</label>
+                <input type="password" name="pwd" id="pwd" required>
             </div>
             <div class="group">
-                <label for="pwd">密碼</label>
-                <input type="password" name="pwd" id="pwd">
+                <label for="id">確認密碼</label>
+                <input type="password" name="pwd" id="confirmPwd" required>
             </div>
             <div class="btn-group">
-                <button class="btn">登入</button>  
-                <input type="hidden" name="action" value="login">
-            </div>
-            <br>
-            <div>
-                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/addCampsite_owner.jsp">建立帳號</a>  
-            </div>
-            <div>
-                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/forget.jsp">忘記密碼</a>  
-            </div>
-            <div>
-                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/resend.jsp">重發啟用信</a>  
+                <button class="btn" id="reset" disabled="true">送出</button>  
+                <input type="hidden" name="action" value="reset">
+                <input type="hidden" name="cso_no" value="${cso_no}">
             </div>
              <%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
@@ -127,19 +121,17 @@
 				</ul>
 			</c:if>
             <br>
-<!--             <div> -->
-<%--     			<a href='<%=request.getContextPath()%>/front-end/member/forgetAccount.jsp'>忘記帳號</a> --%>
-<%--     			<a href='<%=request.getContextPath()%>/front-end/member/forgetPassword.jsp'>&emsp;忘記密碼</a> --%>
-<%--     			<a href='<%=request.getContextPath()%>/front-end/member/redirectMail.jsp'>&emsp;重寄驗證信</a> --%>
-<!--     		</div> -->
         </form>
     </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-	var enable = "<%=session.getAttribute("enable")%>";
-	if(!(enable === null)){
-		alert(enable);
-	}
+	$('#confirmPwd').blur(function(){
+		if(!($('#confirmPwd').val() === $('#pwd').val())){
+			$('br').before(`<li style="color:red">請再確認密碼</li>`);
+		}else{
+			$('#reset').attr("disabled",false);
+		}	
+	})
 </script>
 </html>
