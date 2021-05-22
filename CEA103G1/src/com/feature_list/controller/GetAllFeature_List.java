@@ -51,6 +51,14 @@ public class GetAllFeature_List extends HttpServlet {
 				}
 			}
 			
+			Set<CampVO> pass = new LinkedHashSet();
+			for (CampVO campVO : campset) {
+				if((int)campVO.getReview_Status() == 1 && (int)campVO.getCampsite_Status() == 0) {
+					pass.add(campVO);
+				}
+			}
+			campset = pass;
+			
 			for(CampVO campVO : campset) {
 				List<String> firstPic = camp_pictureSvc.getCamp_Picture(campVO.getCamp_no());
 				if (firstPic.size() == 0) {

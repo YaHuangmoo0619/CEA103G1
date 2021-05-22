@@ -140,7 +140,7 @@
 <input type="hidden" name="action" value="insert">
 <input type="submit" value="°e¥X"></FORM>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
 <script src="<%=request.getContextPath()%>/twzipcode/old/jquery.twzipcode-1.4.1.min.js"></script>
 <script>
 $('#twzipcode').twzipcode();

@@ -6,11 +6,11 @@ import java.util.Map;
 
 
 public interface PlaceDAO_interface {
-	public void insert(PlaceVO placeVO);
+	public void insert(PlaceVO placeVO, Connection con);
 
-	public void update(PlaceVO placeVO);
+	public void update(List<PlaceVO> placelist);
 
-	public void delete(Integer plc_no);
+	public void delete(Integer camp_no, Connection con);
 
 	public PlaceVO findByPrimaryKey(Integer plc_no);
 

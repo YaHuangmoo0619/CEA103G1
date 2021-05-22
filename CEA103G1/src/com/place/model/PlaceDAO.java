@@ -20,7 +20,7 @@ public class PlaceDAO implements PlaceDAO_interface {
 	private static final String GET_ALL_STMT = "SELECT * FROM place order by plc_no";
 	private static final String INSERT_STMT = "INSERT INTO place (camp_no,plc_name,ppl,max_ppl,pc_wkdy,pc_wknd) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE = "UPDATE campsite set camp_name=?,campsite_Status=?,campInfo=?,note=?,config=?,review_Status=?,height=?,wireless=?,pet=?,facility=?,operate_Date=?,park=?,address=?,longtitude=?,latitude=?,total_Star=?,total_Comment=? where campno = ?";
-	private static final String DELETE = "DELETE FROM campsite where camp_no = ?";
+	private static final String DELETE = "DELETE FROM place where camp_no = ?";
 
 	public PlaceVO findByPrimaryKey(Integer plc_no) {
 
@@ -186,27 +186,21 @@ public class PlaceDAO implements PlaceDAO_interface {
 	}
 
 	@Override
-	public void insert(PlaceVO placeVO) {
-		Connection con = null;
+	public void insert(PlaceVO placeVO, Connection con) {
 		PreparedStatement pstmt = null;
 
 		try {
-
-			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
-
-			pstmt.setInt(1, placeVO.getPlc_no());
-			pstmt.setInt(2, placeVO.getCamp_no());
-			pstmt.setString(3, placeVO.getPlc_name());
-			pstmt.setInt(4, placeVO.getPpl());
-			pstmt.setInt(5, placeVO.getMax_ppl());
-			pstmt.setInt(6, placeVO.getPc_wkdy());
-			pstmt.setInt(7, placeVO.getPc_wknd());
-			pstmt.setInt(8, placeVO.getOpen_stat());
-			pstmt.setInt(9, placeVO.getPlc_stat());
+System.out.println("新增營位1");
+			pstmt.setInt(1, placeVO.getCamp_no());
+			pstmt.setString(2, placeVO.getPlc_name());
+			pstmt.setInt(3, placeVO.getPpl());
+			pstmt.setInt(4, placeVO.getMax_ppl());
+			pstmt.setInt(5, placeVO.getPc_wkdy());
+			pstmt.setInt(6, placeVO.getPc_wknd());
 
 			pstmt.executeUpdate();
-
+System.out.println("新增營位2");
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
@@ -220,42 +214,38 @@ public class PlaceDAO implements PlaceDAO_interface {
 					se.printStackTrace(System.err);
 				}
 			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
 		}
 
 	}
 
 	@Override
-	public void update(PlaceVO placeVO) {
+	public void update(List<PlaceVO> placelist) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-
+System.out.println("測試營位1");
 		try {
 
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE);
-
-			pstmt.setInt(1, placeVO.getPlc_no());
-			pstmt.setInt(2, placeVO.getCamp_no());
-			pstmt.setString(3, placeVO.getPlc_name());
-			pstmt.setInt(4, placeVO.getPpl());
-			pstmt.setInt(5, placeVO.getMax_ppl());
-			pstmt.setInt(6, placeVO.getPc_wkdy());
-			pstmt.setInt(7, placeVO.getPc_wknd());
-			pstmt.setInt(8, placeVO.getOpen_stat());
-			pstmt.setInt(9, placeVO.getPlc_stat());
-
-			pstmt.executeUpdate();
-
+			con.setAutoCommit(false);
+System.out.println("測試營位2");		
+			delete(placelist.get(0).getCamp_no(), con);
+System.out.println("測試營位3");		
+			
+			for(PlaceVO placeVO : placelist) {
+				insert(placeVO, con);
+			}
+System.out.println("測試營位4");
+			con.commit();
+			con.setAutoCommit(true);
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
+			if (con != null) {
+				try {
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. " + excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. " + se.getMessage());
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -276,26 +266,19 @@ public class PlaceDAO implements PlaceDAO_interface {
 	@Override
 	public void insert2(PlaceVO placeVO, Connection con) {
 		PreparedStatement pstmt = null;
-System.out.println("營位第一站");
 		try {
 
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			pstmt.setInt(1, placeVO.getCamp_no());
-System.out.println(placeVO.getCamp_no());
 			pstmt.setString(2, placeVO.getPlc_name());
 			pstmt.setInt(3, placeVO.getPpl());
-System.out.println(placeVO.getMax_ppl());
 			pstmt.setInt(4, placeVO.getMax_ppl());
 			pstmt.setInt(5, placeVO.getPc_wkdy());
-System.out.println(placeVO.getPc_wkdy());
 			pstmt.setInt(6, placeVO.getPc_wknd());
-System.out.println(placeVO.getPc_wknd());
-System.out.println("營位第二站");
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("set auto_increment_offset=1;"); //自增主鍵-初始值
 			stmt.executeUpdate("set auto_increment_increment=1;"); // 自增主鍵-遞增
-System.out.println("營位第三站");
 			pstmt.executeUpdate();
 			// Handle any SQL errors
 		} catch (SQLException se) {
@@ -323,19 +306,17 @@ System.out.println("營位第三站");
 	}
 
 	@Override
-	public void delete(Integer plc_no) {
-		Connection con = null;
+	public void delete(Integer camp_no, Connection con) {
 		PreparedStatement pstmt = null;
 
 		try {
-
-			con = ds.getConnection();
+System.out.println("刪除營位1");
 			pstmt = con.prepareStatement(DELETE);
-
-			pstmt.setInt(1, plc_no);
+System.out.println(camp_no);
+			pstmt.setInt(1, camp_no);
 
 			pstmt.executeUpdate();
-
+System.out.println("刪除營位2");
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -345,13 +326,6 @@ System.out.println("營位第三站");
 					pstmt.close();
 				} catch (SQLException se) {
 					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
 				}
 			}
 		}

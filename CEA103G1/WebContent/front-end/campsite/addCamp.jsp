@@ -31,8 +31,6 @@
 	type="image/png">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 <meta charset="BIG5">
 <title>Insert title here</title>
 <%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
@@ -168,13 +166,7 @@ span {
 						</tr>
 						<tr>
 							<td>縣市:</td>
-							<td><input name="county" type="text"
-								value="<%=(campVO == null) ? "桃園市" : campVO.getCounty()%>"></td>
-						</tr>
-						<tr>
-							<td>鄉鎮市區:</td>
-							<td><input name="district" type="text"
-								value="<%=(campVO == null) ? "中壢區" : campVO.getDistrict()%>"></td>
+							<td><div id="twzipcode"></div></td>
 						</tr>
 						<tr>
 							<td>地址:</td>
@@ -279,7 +271,12 @@ span {
 			</div>
 		</div>
 	</div>
+	<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<!-- 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+	<script src="<%=request.getContextPath()%>/twzipcode/old/jquery.twzipcode-1.4.1.min.js"></script>
 	<script>
+		$('#twzipcode').twzipcode();
 		$('#otherfeature').change(function(){
 		   if($(this).prop('checked')){
 			   $('#otherornot').val("yes");

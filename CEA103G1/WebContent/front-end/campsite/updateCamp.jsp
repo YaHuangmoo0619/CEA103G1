@@ -94,7 +94,7 @@ span {
 					</ul>
 				</c:if>
 				<FORM METHOD="post" name="form1"
-					ACTION="<%=request.getContextPath()%>/campsite/insertcamp.do"
+					ACTION="<%=request.getContextPath()%>/camp/camp.do"
 					enctype="multipart/form-data"
 					οnkeydοwn="if(event.keyCode==13){return false;}">
 					<table>
@@ -102,6 +102,11 @@ span {
 							<td>營主編號:</td>
 							<td><input type="TEXT" name="cso_no" size="45"
 								value="<%=campVO.getCso_no()%>" /></td>
+						</tr>
+						<tr style="display: none;">
+							<td>營區編號:</td>
+							<td><input type="TEXT" name="camp_no" size="45"
+								value="<%=campVO.getCamp_no()%>" /></td>
 						</tr>
 						<tr>
 							<td>營區名稱:</td>
@@ -222,19 +227,22 @@ span {
 								<th>平日價格</th>
 								<th>假日價格</th>
 							</tr>
-							<c:forEach var="placeVO" items="${placelist}">
+							<%!int count = 0;%>
+							<c:forEach var="placeVO" items="${placelist}">						
 								<tr>
-									<td><input type="text" value="${placeVO.plc_name.substring(0,placeVO.plc_name.indexOf(','))}" readonly="true"></td>
-									<td><input type="number" pattern="number" value="${placeVO.plc_name.substring(placeVO.plc_name.indexOf(',')+1)}" readonly="true"></td>
-									<td><input type="number" pattern="number" value="${placeVO.ppl}" readonly="true"></td>
-									<td><input type="number" pattern="number" value="${placeVO.max_ppl}" readonly="true"></td>
-									<td><input type="number" pattern="number" value="${placeVO.pc_wkdy}" readonly="true"></td>
-									<td><input type="number" pattern="number" value="${placeVO.pc_wknd}" readonly="true"></td>
+									<td><input type="text" name="plc<%=count%>" value="${placeVO.plc_name.substring(0,placeVO.plc_name.indexOf(','))}" readonly="true"></td>
+									<td><input type="number" pattern="number" name="plc<%=count%>" value="${placeVO.plc_name.substring(placeVO.plc_name.indexOf(',')+1)}" readonly="true"></td>
+									<td><input type="number" pattern="number" name="plc<%=count%>" value="${placeVO.ppl}" readonly="true"></td>
+									<td><input type="number" pattern="number" name="plc<%=count%>" value="${placeVO.max_ppl}" readonly="true"></td>
+									<td><input type="number" pattern="number" name="plc<%=count%>" value="${placeVO.pc_wkdy}" readonly="true"></td>
+									<td><input type="number" pattern="number" name="plc<%=count%>" value="${placeVO.pc_wknd}" readonly="true"></td>
 								</tr>
+								<%count++;%>
 							</c:forEach>
+							<%count--;%>
 						</table>
 					</div>
-					<input id="plc_amt" type="hidden" name="plc_amt">
+					<input id="plc_amt" type="hidden" name="plc_amt" value="<%=count%>">
 					<hr>
 					<input type="file" id="progressbarTWInput" name="photo"
 						accept="image/gif, image/jpeg, image/png" multiple>
@@ -244,7 +252,7 @@ span {
 					</div>
 
 					<hr>
-					<input type="hidden" name="action" value="insert"> <input
+					<input type="hidden" name="action" value="update"> <input
 						type="submit" value="送出修改">
 				</FORM>
 			</div>
@@ -310,6 +318,7 @@ span {
 				$(this).prop("checked", true);
 			}
 		});
+		
 		$('#otherfeature').change(function(){
 			   if($(this).prop('checked')){
 				   $('#otherornot').val("yes");

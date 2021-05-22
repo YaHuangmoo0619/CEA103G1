@@ -305,7 +305,7 @@ td{
 }
 </style>
 </head>
-<body>
+<body onload="connection()">
 	<div class="fixedTop">
 		<div>
 			<a href="/CEA103G1/campion_front.jsp"> <img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
@@ -391,9 +391,9 @@ td{
 			</div>
 			<div class="right col-8">
 				<div>
-					<h1 id="title"></h1>
-					<label><ion-icon id="fav" name="bookmark-outline"
-							size="large" style="cursor: pointer;"></ion-icon></label>
+					<div style="display:inline-block;"><h1 id="title"></h1></div>
+					<div style="display:inline-block;"><label><ion-icon id="fav" name="bookmark-outline"
+							size="large" style="cursor: pointer;color:yellow;"></ion-icon></label></div>
 				</div>
 				<div id="featurelist"></div>
 				<div id="addrblock">
@@ -429,6 +429,8 @@ td{
 					<p id="campInfo"></p>
 				</div>
 				<button type="button" onclick="openConfig()">展開配置圖</button>
+				<br>
+				<br>
 				<div id="showConfig" style="display: none;"><img id="config" width="800" height="500"></div><br> <br>
 				<div style="width:1000px;"><hr><FORM method="get" id="form1" onsubmit="return false"
 					accept-charset="big5">
@@ -574,6 +576,8 @@ td{
 				$('#havent').css("display","inline-block");
 				$('#havent2').css("display","inline-block");
 			}else{
+				var mbr_no = `${data.mbr_no}`;
+				sessionStorage.setItem('mbr_no', mbr_no);
 				let member_pic = `<img src="/CEA103G1/member/GetPhoto?mbr_no=${data.mbr_no}" class="person">`;
 				$('#have2').after(`${data.name}`);
 				$('#showPerson').append(member_pic);
@@ -852,25 +856,39 @@ td{
 			});
 		}
 		$("#fav").click(function(){
-			if($("#fav").attr("name") === "bookmark-outline"){
-				$.ajax({
-					type : "GET",
-					url : "/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + $('#camp_no').val(),
-					success : function(data) {
-						alert(data);
-						$("#fav").attr("name","bookmark");
+			var locat = window.location.href;
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "/CEA103G1/Member.do",
+				data : {uri : locat},
+				success : function(data) {
+					if(data.length === 2){
+						alert(data[0]);
+						window.location.href=data[1];
+					}else{
+						if($("#fav").attr("name") === "bookmark-outline"){
+							$.ajax({
+								type : "GET",
+								url : "/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + $('#camp_no').val(),
+								success : function(data) {
+									alert(data);
+									$("#fav").attr("name","bookmark");
+								}
+							});
+						}else{
+							$.ajax({
+								type : "GET",
+								url : "/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + $('#camp_no').val(),
+								success : function(data) {
+									alert(data);
+									$("#fav").attr("name","bookmark-outline");
+								}
+							});
+						}
 					}
-				});
-			}else{
-				$.ajax({
-					type : "GET",
-					url : "/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + $('#camp_no').val(),
-					success : function(data) {
-						alert(data);
-						$("#fav").attr("name","bookmark-outline");
-					}
-				});
-			}
+				}
+			});
 		});
 
 		function showFeature(data){
@@ -925,10 +943,10 @@ td{
 		function openConfig(){
 			if($('#showConfig').css('display') === "none"){
 				$('#showConfig').css('display','block');
-				$('#showConfig').prev().text("隱藏配置圖");
+				$('#showConfig').prev().prev().prev().text("隱藏配置圖");
 			}else{
 				$('#showConfig').css('display','none');
-				$('#showConfig').prev().text("展開配置圖");
+				$('#showConfig').prev().prev().prev().text("展開配置圖");
 			}
 		}
 		$("#placeInfo").click(function(){
@@ -1143,6 +1161,35 @@ td{
 	                webSocket = null;
 	            };
 	    }
+		function writeToScreen(input){
+			let noRead = JSON.parse(input);
+			
+// 			var notifyMail = document.getElementById('countNoReadMail');
+// 			notifyMail.innerText = noRead.countNoReadMail;
+			$('#countNoReadMail').text(noRead.countNoReadMail);
+// 			var notifyNotify = document.getElementById('countNoReadNotify');
+// 			notifyNotify.innerText = noRead.countNoReadNotify;
+			$('#countNoReadNotify').text(noRead.countNoReadNotify);
+		}
+		function connection(){
+			let wsUri = 'ws://' + window.location.host + '/CEA103G1'+'/Member_mailNotify/' + sessionStorage.getItem('mbr_no');
+			websocket = new WebSocket(wsUri);
+			websocket.onopen = function(event){
+				let e = document.createEvent("MouseEvent");
+				e.initEvent("click",true,true);
+				if(document.getElementById('sendNotify') !== null){
+					document.getElementById('sendNotify').dispatchEvent(e);
+				}
+			};
+			websocket.onmessage = function(event){
+				let noRead = event.data;
+				writeToScreen(noRead);
+			};
+		}
+		function sendNotify(){
+			let sendNotify = document.getElementById('sendNotify');
+			websocket.send(sendNotify.innerText);
+		}
 	</script>
 	<script>
 		let countMenu = 0;
