@@ -112,7 +112,7 @@ table {
 }
 </style>
 </head>
-<body bgcolor='white'>
+<body>
 	<%@ include file="/part-of/partOfCampion_COwnerTop_body.txt"%>
 
 	<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
@@ -235,10 +235,10 @@ table {
 								<td>${placeVO.pc_wkdy}</td>
 								<td>${placeVO.pc_wknd}</td>
 								<c:if test="${placeVO.open_stat==0}">
-									<td name="open"><input type="checkbox" value="${placeVO.plc_no}" name="open_stat"></td>
+									<td><input onclick="openstat(this)" type="checkbox" value="${placeVO.plc_no}" name="open_stat"></td>
 								</c:if>
 								<c:if test="${placeVO.open_stat==1}">
-									<td name="open"><input type="checkbox" value="${placeVO.plc_no}" name="open_stat" checked></td>
+									<td><input onclick="openstat(this)" type="checkbox" value="${placeVO.plc_no}" name="open_stat" checked></td>
 								</c:if>
 							</tr>
 						</c:forEach>
@@ -249,34 +249,31 @@ table {
 		</div>
 	</div>
 <%-- 	<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%> --%>
-</body>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script>
-	$('.open').click(function(){
-		alert("ถู");
-// 		if(e.checked){
-// 			$.ajax({
-// 				type : "GET",
-// 				dataType : "json",
-// 				url : "/CEA103G1/place/place.do?action=updatestat",
-// 				data : {plc_no: e.value, open: 1},
-// 				success : function(data) {
-// 					alert(data);				
-// 				}
-// 			});
-// 		}else{
-// 			$.ajax({
-// 				type : "GET",
-// 				dataType : "json",
-// 				url : "/CEA103G1/place/place.do?action=updatestat",
-// 				data : {plc_no: e.value, open: 0},
-// 				success : function(data) {
-// 					alert(data);
-// 				}
-// 			});
-// 		}		
-	})
-
-
+	function openstat(e){
+		if(e.checked){
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "/CEA103G1/place/place.do?action=updatestat",
+				data : {plc_no: e.value, open_stat:1},
+				success : function(data) {
+					alert(data);				
+				}
+			});
+		}else{
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "/CEA103G1/place/place.do?action=updatestat",
+				data : {plc_no: e.value, open_stat:0},
+				success : function(data) {
+					alert(data);
+				}
+			});
+		}
+	}
 </script>
+</body>
 </html>
