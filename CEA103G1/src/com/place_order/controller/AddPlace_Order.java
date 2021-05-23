@@ -5,7 +5,9 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.campsite.controller.CampWS;
 import com.google.gson.Gson;
 import com.member.model.*;
 import com.place_order.model.Place_OrderService;
@@ -35,6 +38,7 @@ public class AddPlace_Order extends HttpServlet {
 		HttpSession session = req.getSession();
 		Gson gson = new Gson();
 
+		CampWS campWS = new CampWS();
 		String action = req.getParameter("action");
 		Place_OrderService place_orderSvc = new Place_OrderService();
 		Place_OrderVO place_orderVO = new Place_OrderVO();
@@ -126,7 +130,22 @@ public class AddPlace_Order extends HttpServlet {
 
 				place_orderVO = place_orderSvc.addPlace_Order(mbr_no, camp_no, ckin_date, ckout_date, plc_amt,
 						plc_ord_sum, ex_ppl, pay_meth, pay_stat, used_pt, receipt, rmk, list);
-				
+				String campInfo = "camp_no=" + camp_no + "&startdate=" + ckin_date + "&enddate=" + ckout_date;
+				Set<String> plc = new HashSet();
+				for (Place_Order_DetailsVO place_order_details : list) {
+					plc.add(place_order_details.getPlc_no().toString());
+				}
+				String allplc = plc.toString().substring(1, plc.toString().length() - 1);
+				if (!allplc.contains(", ")) {
+					allplc = allplc + "&gone";
+				} else {
+					allplc = allplc.replaceAll(", ", "&&&");
+				}
+				try {
+
+					campWS.receiveMsg(campInfo, allplc, null);
+				} catch (Exception e) {
+				}
 				place_orderVO = place_orderSvc.getOnePlace_Order(place_orderVO.getPlc_ord_no());
 				payWithTransfer.add(place_orderVO);
 				payWithTransfer.add(atm);
@@ -159,8 +178,8 @@ public class AddPlace_Order extends HttpServlet {
 				System.out.println("到期日:" + expiry);
 				System.out.println("安全碼:" + cvc);
 
-				place_orderVO = place_orderSvc.addPlace_Order(mbr_no, camp_no, ckin_date, ckout_date, plc_amt, plc_ord_sum,
-						ex_ppl, pay_meth, pay_stat, used_pt, receipt, rmk, list);
+				place_orderVO = place_orderSvc.addPlace_Order(mbr_no, camp_no, ckin_date, ckout_date, plc_amt,
+						plc_ord_sum, ex_ppl, pay_meth, pay_stat, used_pt, receipt, rmk, list);
 				session.removeAttribute("new_place_order_details");
 				list = new ArrayList();
 				list.add("已成功付款");
