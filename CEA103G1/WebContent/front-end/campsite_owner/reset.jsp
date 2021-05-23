@@ -126,10 +126,11 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-	$('#confirmPwd').blur(function(){
+	$('#confirmPwd').change(function(){
 		if(!($('#confirmPwd').val() === $('#pwd').val())){
 			$('br').before(`<li style="color:red">½Ð¦A½T»{±K½X</li>`);
 		}else{
+			$('form').find('li').remove();
 			$('#reset').attr("disabled",false);
 		}	
 	})

@@ -138,7 +138,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 	var enable = "<%=session.getAttribute("enable")%>";
-	if(!(enable === null)){
+	if(!(enable === "null")){
 		alert(enable);
 	}
 </script>

@@ -155,10 +155,10 @@ table {
 						</FORM></div>
 					</c:if>
 					<table>
-						<tr>
-							<th>營主編號</th>
-							<td>${csoSvc.getOneCampsite_owner(campVO.cso_no).name}</td>
-						</tr>
+<!-- 						<tr> -->
+<!-- 							<th>營主姓名</th> -->
+<%-- 							<td>${csoSvc.getOneCampsite_owner(campVO.cso_no).name}</td> --%>
+<!-- 						</tr> -->
 						<tr>
 							<th>營區名稱</th>
 							<td>${campVO.camp_name}</td>
@@ -224,7 +224,7 @@ table {
 							<th>人數上限</th>
 							<th>平日價格</th>
 							<th>假日價格</th>
-							<th>狀態</th>
+							<th>開放</th>
 						</tr>
 						<c:forEach var="placeVO"
 							items="${placeSvc.getByCamp(campVO.camp_no)}">
@@ -235,10 +235,10 @@ table {
 								<td>${placeVO.pc_wkdy}</td>
 								<td>${placeVO.pc_wknd}</td>
 								<c:if test="${placeVO.open_stat==0}">
-									<td><c:out value="不開放" /></td>
+									<td name="open"><input type="checkbox" value="${placeVO.plc_no}" name="open_stat"></td>
 								</c:if>
 								<c:if test="${placeVO.open_stat==1}">
-									<td><c:out value="開放" /></td>
+									<td name="open"><input type="checkbox" value="${placeVO.plc_no}" name="open_stat" checked></td>
 								</c:if>
 							</tr>
 						</c:forEach>
@@ -248,6 +248,35 @@ table {
 			</div>
 		</div>
 	</div>
-	<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<%-- 	<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%> --%>
 </body>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+	$('.open').click(function(){
+		alert("嗨");
+// 		if(e.checked){
+// 			$.ajax({
+// 				type : "GET",
+// 				dataType : "json",
+// 				url : "/CEA103G1/place/place.do?action=updatestat",
+// 				data : {plc_no: e.value, open: 1},
+// 				success : function(data) {
+// 					alert(data);				
+// 				}
+// 			});
+// 		}else{
+// 			$.ajax({
+// 				type : "GET",
+// 				dataType : "json",
+// 				url : "/CEA103G1/place/place.do?action=updatestat",
+// 				data : {plc_no: e.value, open: 0},
+// 				success : function(data) {
+// 					alert(data);
+// 				}
+// 			});
+// 		}		
+	})
+
+
+</script>
 </html>

@@ -49,6 +49,18 @@ top: 32%;
 	cursor: pointer;
 }
 
+#openConfig{
+	background-color:transparent;
+	border:1px,solid,white;
+ 	border-radius:5px;
+}
+#openConfig:hover{
+	background-color:transparent;
+	border:2px,solid,white;
+ 	border-radius:5px;
+ 	cursor: pointer;
+}
+
 div.left {
 	margin-top: 20px;
 	/* 	margin-right: 100%; */
@@ -175,6 +187,9 @@ img.person:hover {
 		display: none;
 		background-color: #eee;
 	}
+	div.left {
+		display:none;
+	}
 }
 
 @media ( min-width : 576px) and (max-width: 767px) {
@@ -206,6 +221,9 @@ img.person:hover {
 	div.sec {
 		display: none;
 		background-color: #eee;
+	}
+	div.left {
+		display:none;
 	}
 }
 
@@ -239,6 +257,9 @@ img.person:hover {
 		display: none;
 		background-color: #eee;
 	}
+	div.left {
+		display:none;
+	}
 }
 
 @media ( min-width : 992px) and (max-width: 1199px) {
@@ -252,6 +273,9 @@ img.person:hover {
 	div.forSearch {
 		display: none;
 	}
+	div.left {
+		display:none;
+	}
 }
 
 @media ( min-width : 1200px) {
@@ -264,6 +288,9 @@ img.person:hover {
 	}
 	div.forSearch {
 		display: none;
+	}
+	div.left {
+		display:block;
 	}
 }
 
@@ -428,7 +455,7 @@ td{
 				<div id="infoblock">
 					<p id="campInfo"></p>
 				</div>
-				<button type="button" onclick="openConfig()">展開配置圖</button>
+				<button type="button" id="openConfig" onclick="openConfig()">展開配置圖</button>
 				<br>
 				<br>
 				<div id="showConfig" style="display: none;"><img id="config" width="800" height="500"></div><br> <br>
@@ -1115,13 +1142,16 @@ td{
 			location.reload()
 		});
 		function initWebSocket() {
-			const eachQuery = query.split('&');
-			const camp = eachQuery[0].split('=');
-			const startdate = eachQuery[1].split('=');
-			const enddate = eachQuery[2].split('=');
-			const people = eachQuery[3].split('=');
-	        var campInfo = "camp_no=" + camp[1] + "&startdate=" + startdate[1] + "&enddate=" + enddate[1];
-
+			if(query.includes('startdate')){
+				const eachQuery = query.split('&');
+				const camp = eachQuery[0].split('=');
+				const startdate = eachQuery[1].split('=');
+				const enddate = eachQuery[2].split('=');
+				const people = eachQuery[3].split('=');
+		        var campInfo = "camp_no=" + camp[1] + "&startdate=" + startdate[1] + "&enddate=" + enddate[1];
+			}else{
+				var campInfo = "camp_no=" + $('#camp_no').val() + "&startdate=" + sessionStorage.getItem('startdate') + "&enddate=" + sessionStorage.getItem('enddate');
+			}
 //	            alert("您的瀏覽器支援 WebSocket!");
 	            if (webSocket == null) {
 	                var url = "ws://" + window.location.host + "/CEA103G1/webSocket/CampWS/" + campInfo;
@@ -1135,20 +1165,49 @@ td{
 	            };
 
 	            webSocket.onmessage = function (e) {
-	                let plc_no = e.data;
-	                let yesorno = plc_no.split('&')[1];
-	                if(yesorno === "no"){
-	                	$("#placeInfo").find('input').each(function() {
-	                		if($(this).val() === plc_no.split('&')[0]){
-	                			$(this).attr("disabled",true);
+	            	let data = e.data;
+	            	console.log(data);
+	            	if(data.includes("&&&")){
+	            		let allplc = data.split("&&&");
+	            		for(let i = 0; i < allplc.length; i++){
+	            			$("#placeInfo").find('input').each(function() {
+		                		if($(this).val() === allplc[i]){
+		                			$(this).parent().parent().remove();
+		                		}
+		                	});
+	            		}
+	            	}else if(data.includes("&&")){
+	            		let allplc = data.split("&&");
+	            		for(let i = 0; i < allplc.length; i++){
+	            			$("#placeInfo").find('input').each(function() {
+		                		if($(this).val() === allplc[i]){
+		                			$(this).attr("disabled",true);
+		                		}
+		                	});
+	            		}
+	            	}else if(data.includes("gone")){
+	            		let gone = data.split("&");
+	            		$("#placeInfo").find('input').each(function() {
+	                		if($(this).val() === gone[0]){
+	                			$(this).parent().parent().remove();
 	                		}
 	                	});
-	                }else if(yesorno === "yes"){
-	                	$("#placeInfo").find('input').each(function() {
-	                		if($(this).val() === plc_no.split('&')[0]){
-	                			$(this).attr("disabled",false);
-	                		}
-	                	});
+	            	}else{
+		                let plc_no = e.data;
+		                let yesorno = plc_no.split('&')[1];
+		                if(yesorno === "no"){
+		                	$("#placeInfo").find('input').each(function() {
+		                		if($(this).val() === plc_no.split('&')[0]){
+		                			$(this).attr("disabled",true);
+		                		}
+		                	});
+		                }else if(yesorno === "yes"){
+		                	$("#placeInfo").find('input').each(function() {
+		                		if($(this).val() === plc_no.split('&')[0]){
+		                			$(this).attr("disabled",false);
+		                		}
+		                	});
+		                }
 	                }
 	            };
 				

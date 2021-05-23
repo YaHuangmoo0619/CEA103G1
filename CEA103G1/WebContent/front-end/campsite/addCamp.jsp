@@ -260,8 +260,9 @@ span {
 							</tr>
 						</table>
 					</div>
-					<button id="plc" type="button">
-						<ion-icon name="add-circle" size="large"></ion-icon>
+					<br>
+					<button id="plc" type="button" style="border:none;cursor:pointer; background-color:white;">
+						<ion-icon name="add-circle" style="border:none;cursor:pointer" size="large"></ion-icon>
 					</button>
 				</div>
 				<div class="modal-footer">
