@@ -96,7 +96,7 @@ public class MemberServlet extends HttpServlet {
 			}
 		}
 		
-		
+		//雅凰有改
 		if ("getOne_For_Update".equals(action)) { // 來自listAllmember.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -114,7 +114,7 @@ public class MemberServlet extends HttpServlet {
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("memberVO", memberVO);         // 資料庫取出的memberVO物件,存入req
-				String url = "/back-end/member/update_member_input.jsp";
+				String url = "/front-end/member/update_member_input.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_member_input.jsp
 				successView.forward(req, res);
 
@@ -122,11 +122,11 @@ public class MemberServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/member/listAllMember.jsp");
+						.getRequestDispatcher("/front-end/member/viewMember.jsp");
 				failureView.forward(req, res);
 			}
 		}
-		
+		//雅凰有改
 		
 		if ("update".equals(action)) { // 來自update_member_rank_input.jsp的請求
 			

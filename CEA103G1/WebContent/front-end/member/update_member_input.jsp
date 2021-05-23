@@ -104,7 +104,7 @@ div.infoRow{
 	text-align: center;
 }
 input{
- 	border:none; 
+/*  	border:none;  */
 	margin-left: 1em;
 }
 label{
@@ -130,6 +130,9 @@ input.confirm:hover {
 	display:flex;
 	justify-content: center;
 }
+label{
+	font-weight:555;
+}
 </style>
 
 </head>
@@ -154,49 +157,49 @@ input.confirm:hover {
 			<img src="<%=request.getContextPath() %>/images/camera-outline.svg" class="camera" title="更新大頭照" onclick="changePic()">
 		</div>
 		<div class="info">
+			
 			<form method="post" action="<%=request.getContextPath()%>/member/member.do">
 				<div class="infoRow">
-					<label for="mbr_no">會員編號：</label><input type="text" id="mbr_no" name="mbr_no" value="${memberVO.mbr_no}" readonly>
-					<label for="rank_no">會員等級：</label><input type="text" id="rank_no" value="${member_rankSvc.getOneMember_rank(memberVO.rank_no).getRank_name()}" readonly>
+					<label for="mbr_no">會員編號：</label><input type="text" id="mbr_no" name="mbr_no" value="${memberVO.mbr_no}" style="width:3em;border:none;" readonly>
+					<label for="rank_no">會員等級：</label><input type="text" id="rank_no" value="${member_rankSvc.getOneMember_rank(memberVO.rank_no).getRank_name()}" style="width:5em;border:none;" readonly>
+					<label for="pt">點&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;數：</label><input type="text" id="pt" name="pt" value="${memberVO.pt}" style="width:2em;border:none;" readonly>
+					<label for="exp">會員經驗值：</label><input type="text" id="exp" name="exp" value="${memberVO.exp}" style="width:2em;border:none;" readonly>
 				</div>
 				<div class="infoRow">
-					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVO.acc}" readonly>
-					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="text" id="pwd" name="pwd" value="${memberVO.pwd}" readonly>
+					<label for="name">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label><input type="text" id="name" name="name" value="${memberVO.name}">
+					<label for="id">身&nbsp;&nbsp;份&nbsp;證：</label><input type="text" id="id" name="id" value="${memberVO.id}">
 				</div>
 				<div class="infoRow">
-					<label for="name">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label><input type="text" id="name" name="name" value="${memberVO.name}" readonly>
-					<label for="id">身&nbsp;&nbsp;份&nbsp;證：</label><input type="text" id="id" name="id" value="${memberVO.id}" readonly>
+					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVO.acc}">
+					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="text" id="pwd" name="pwd" value="${memberVO.pwd}">
 				</div>
 				<div class="infoRow">
-					<label for="bday">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</label><input type="text" id="bday" name="bday" value="${memberVO.bday}" readonly>
-					<label for="sex">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;別：</label><input type="text" id="sex" value="${memberVO.sex == 1?'女性':'男性'}" readonly>
+					<label for="bday">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</label><input type="text" id="bday" name="bday" value="${memberVO.bday}">
+					<label for="sex">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;別：</label><input type="text" id="sex" value="${memberVO.sex == 1?'女性':'男性'}">
 				</div>
 				<div class="infoRow">
-					<label for="mobile">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;機：</label><input type="text" id="mobile" name="mobile" value="${memberVO.mobile}" readonly>
-					<label for="mail">信&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</label><input type="text" id="mail" name="mobile" value="${memberVO.mail}" readonly>
-				</div>
-				<div class="infoRow">
-					<label for="pt">點&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;數：</label><input type="text" id="pt" name="pt" value="${memberVO.pt}" style="width:10.5em;" readonly>
-					<label for="exp">會員經驗值：</label><input type="text" id="exp" name="exp" value="${memberVO.exp}" style="width:11.5em;" readonly>
+					<label for="mobile">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;機：</label><input type="text" id="mobile" name="mobile" value="${memberVO.mobile}">
+					<label for="mail">信&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</label><input type="text" id="mail" name="mobile" value="${memberVO.mail}">
 				</div>
 				<div class="infoRow">
 					<label>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</label>
-					<input type="text" name="city" value="${memberVO.city}" style="width:4em;" readonly>
-					<input type="text" name="dist" value="${memberVO.dist}" style="width:4em;" readonly>
-					<input type="text" name="add" value="${memberVO.add}" style="width:19.5em;" readonly>
+					<select size="1" name="city"></select>
+<%-- 					<input type="text" name="city" value="${memberVO.city}" style="width:4em;"> --%>
+					<input type="text" name="dist" value="${memberVO.dist}" style="width:4em;">
+					<input type="text" name="add" value="${memberVO.add}" style="width:19.5em;">
 				</div>
 				<div class="infoRow">
 					<label>信用卡卡號：</label>
-					<input type="text" name="card" value="${memberVO.card}" style="width:31em;" readonly>
+					<input type="text" name="card" value="${memberVO.card}" style="width:31em;">
 				</div>
 				<input type="hidden" name="rank_no" value="${memberVO.rank_no}">
 				<input type="hidden" name="sex" value="${memberVO.sex}">
 				<input type="hidden" name="join_time" value="${memberVO.join_time}">
 				<input type="hidden" name="acc_stat" value="${memberVO.acc_stat}">
 				<input type="hidden" name="rmk" value="${memberVO.rmk}">
-				<input type="hidden" name="action" value="getOne_For_Update">
+				<input type="hidden" name="action" value="update">
 				<div class="infoRow">
-					<input type="submit" value="修改會員資料" class="confirm">
+					<input type="submit" value="送出修改" class="confirm">
 				</div>
 			</form>
 		</div>
@@ -228,10 +231,18 @@ input.confirm:hover {
 
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
-
 <script>
-	$("input").focus(function(){
-		$("input").css("outline","none");
+	$("#mbr_no").focus(function(){
+		$("#mbr_no").css("outline","none");
+	});
+	$("#rank_no").focus(function(){
+		$("#rank_no").css("outline","none");
+	});
+	$("#pt").focus(function(){
+		$("#pt").css("outline","none");
+	});
+	$("#exp").focus(function(){
+		$("#exp").css("outline","none");
 	});
 </script>
 <script>
@@ -278,5 +289,20 @@ function showModal() {
 }
 </script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	$.ajax({
+		type: "POST",
+		url: '<%=request.getScheme()%>://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/MemberGetDistrict',
+		data: {action:"city"},
+		dataType: "json",
+		scriptCharset: 'big5',
+		success: function(data){
+			console.log(data);
+		}
+	});
+});
+</script>
 </body>
 </html>
