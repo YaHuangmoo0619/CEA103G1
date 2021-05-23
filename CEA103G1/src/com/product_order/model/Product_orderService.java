@@ -73,4 +73,10 @@ public class Product_orderService {
 	public List<Product_orderVO> getAll() {
 		return dao.getAll();
 	}
+	
+	//雅凰加的
+	public void update_order_stat(Integer prod_ord_stat, Integer prod_ord_no) {
+		dao.update_order_stat(prod_ord_stat, prod_ord_no);
+	}
+	//雅凰加的
 }

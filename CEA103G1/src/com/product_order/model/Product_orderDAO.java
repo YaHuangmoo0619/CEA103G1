@@ -30,6 +30,10 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 		"select * from Product_Order where MBR_NO = ? order by PROD_ORD_NO";
 	private static final String GET_ALL_STMT = 
 		"select * from Product_Order order by PROD_ORD_NO";
+	//雅凰加的
+		private static final String UPDATE_ORDER_STAT = 
+				"update PRODUCT_ORDER set PROD_ORD_STAT = ? where PROD_ORD_NO = ?";
+	//雅凰加的
 		
 	@Override
 	public void insert(Product_orderVO product_orderVO) {
@@ -360,5 +364,44 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 		}
 		return list;
 	}
+
+	//雅凰加的
+	@Override
+	public void update_order_stat(Integer prod_ord_stat, Integer prod_ord_no) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_ORDER_STAT);
+
+			pstmt.setInt(1, prod_ord_stat);
+			pstmt.setInt(2, prod_ord_no);
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	//雅凰加的
 	
 }

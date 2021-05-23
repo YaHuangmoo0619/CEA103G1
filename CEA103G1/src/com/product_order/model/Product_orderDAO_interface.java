@@ -9,4 +9,7 @@ public interface Product_orderDAO_interface {
      public Product_orderVO findByPrimaryKey(Integer prod_ord_no);
      public List<Product_orderVO> getAllByMbr();
      public List<Product_orderVO> getAll();
+     //雅凰加的
+     public void update_order_stat(Integer prod_ord_stat, Integer prod_ord_no);
+     //雅凰加的
 }

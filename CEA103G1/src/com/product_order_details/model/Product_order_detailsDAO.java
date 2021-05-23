@@ -232,6 +232,9 @@ public class Product_order_detailsDAO implements Product_order_detailsDAO_interf
 				product_order_detailsVO.setProd_no(rs.getInt("PROD_NO"));
 				product_order_detailsVO.setProd_amt(rs.getInt("PROD_AMT"));
 				product_order_detailsVO.setProd_unit_pc(rs.getInt("PROD_UNIT_PC"));
+				//雅凰加的
+				list.add(product_order_detailsVO);
+				//雅凰加的
 			}
 
 		} catch (SQLException se) {

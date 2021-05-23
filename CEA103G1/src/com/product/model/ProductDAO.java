@@ -521,7 +521,6 @@ public class ProductDAO implements ProductDAO_interface {
 		}
 		return list;
 	}
-	//雅凰加的
 
 	@Override
 	public void updateWithPic(ProductVO productVO, Set<Product_pictureVO> set) {
@@ -672,6 +671,6 @@ public class ProductDAO implements ProductDAO_interface {
 				}
 			}
 		}
-
 	}
+	//雅凰加的
 }

@@ -219,6 +219,7 @@ label.spotlight{
 			<div class="right col-9">
 		 <h3>商品訂單列表&nbsp;
 			<a class="content" href="<%=request.getContextPath()%>/back-end/product/listAllProduct.jsp">回到商品列表</a>
+			<a href="#focus" class="content">看更新</a>
 		</h3>
 
 <%-- <c:if test="${not empty errorMsgs}"> --%>
@@ -234,12 +235,11 @@ label.spotlight{
 
 <table>
 
-	<c:forEach var="product_orderVO" items="${list}" > <%-- begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" --%>
-		
-		
-		<tr>
+	<c:forEach var="product_orderVO" items="${list}" >
+		<tr ${product_orderVO.prod_ord_no==param.prod_ord_no ? 'bgcolor=#eee' : '' }>
 			<td style="width:5%;">
 				${product_orderVO.prod_ord_no}
+				${product_orderVO.prod_ord_no==param.prod_ord_no ? '<a id="focus"></a>' : '' }
 			</td>
 			<td style="width:35%;">
 				<div class="inTr">
@@ -265,13 +265,9 @@ label.spotlight{
 						</c:if>
 					</div>
 				</div>
-					
-			</td>
-			
-			<td style="width:45%;">
 				<div class="inTr">
 					<div class="L">付款方式:</div>
-					<div>
+					<div class="R">
 						<c:if test="${product_orderVO.pay_meth==0}">
 							<c:out value="信用卡" />
 						</c:if>
@@ -283,9 +279,13 @@ label.spotlight{
 						</c:if>
 					</div>
 				</div>
+				
+			</td>
+			
+			<td style="width:45%;">
 				<div class="inTr">
 					<div class="L">發票形式:</div>
-					<div>
+					<div class="R">
 						<c:if test="${product_orderVO.receipt==0}">
 							<c:out value="紙本發票" />
 						</c:if>
@@ -296,7 +296,7 @@ label.spotlight{
 							<c:out value="發票捐贈" />
 						</c:if>
 					</div>
-				</div>
+				</div>	
 				<div class="inTr">
 					<div class="L">運送地址:</div>
 					<div>
@@ -307,12 +307,11 @@ label.spotlight{
 				</div>
 				<div class="inTr">
 					<div class="L">下訂時間:</div>
-					<c:set var="prod_ord_time" value="${product_orderVO.prod_ord_time}" />
-					<div>${fn:substring(prod_ord_time, 0, 19)}</div>
+					<div><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${product_orderVO.prod_ord_time}"/></div>
 				</div>
 				<div class="inTr">
 					<div class="L">訂單備註:</div>
-					<div>${product_orderVO.rmk}</div>
+					<div style="display:inline-block;width:8em;">${product_orderVO.rmk}</div>
 				</div>
 			</td>
 			
@@ -349,13 +348,6 @@ label.spotlight{
 		            <div class="modal-body">
 <%-- 		            ${productVOOne.prod_no} --%>
 						<jsp:include page="listOneProduct_order.jsp" />
-		            </div>
-		            <div class="modal-footer">
-		            	<form method="post" action="<%=request.getContextPath()%>/product/product.do" style="text-align:right;">
-							<input type="hidden" name="prod_no" value="${productVO.prod_no}">
-							<input type="hidden" name="action" value="getOne_For_Update">
-							<input type="submit" class="btn btn-secondary" value="修改">
-						</form>
 		            </div>
 		       </div>
 		   </div>

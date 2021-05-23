@@ -8,6 +8,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import com.product.model.ProductDAO;
 import com.product.model.ProductService;
 import com.product.model.ProductVO;
 import com.product_order.model.*;
@@ -277,6 +278,25 @@ public class Product_orderServlet extends HttpServlet {
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product_order/listAllProduct_order_fromList.jsp");
 				failureView.forward(req, res);
 			}
+		}
+		if("update_order_stat".equals(action)) {
+			try {
+				Integer prod_ord_stat = Integer.valueOf(req.getParameter("prod_ord_stat"));
+//				System.out.println(prod_ord_stat);
+				Integer prod_ord_no = Integer.valueOf(req.getParameter("prod_ord_no"));
+//				System.out.println(prod_ord_no);
+				
+				Product_orderService product_orderSvc = new Product_orderService();
+				product_orderSvc.update_order_stat(prod_ord_stat, prod_ord_no);
+				Product_orderVO product_orderVO = product_orderSvc.getOneProduct_order(prod_ord_no);
+				req.setAttribute("product_orderVO", product_orderVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/product_order/listAllProduct_order_fromList.jsp");
+				successView.forward(req, res);
+			} catch (Exception e) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product_order/listAllProduct_order_fromList.jsp");
+				failureView.forward(req, res);
+			}
+			
 		}
 		//¶®°Ä¥[ªº
 	}
