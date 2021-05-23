@@ -60,25 +60,37 @@ public class MemberGetDistrict extends HttpServlet {
 		if("dist".equals(action)) {
 			StringBuilder sbr = new StringBuilder();
 			int count = 1;
-			Set<String> set = jedis.smembers(req.getParameter("city"));
-			for(String city :set) {
-				if(sbr.length() == 0) {
-					sbr.append("{" + "key" + count + ":\"" + city + "\"");
-				}else {
-					sbr.append("," +"key" + count + ":\"" + city + "\"");
+			if(!"請選擇縣市".equals(req.getParameter("city").trim())) {
+//				System.out.println(!"請選擇縣市".equals(req.getParameter("city"))+req.getParameter("city"));
+				Set<String> set = jedis.smembers(req.getParameter("city"));
+				for(String city :set) {
+					if(sbr.length() == 0) {
+						sbr.append("{" + "key" + count + ":\"" + city + "\"");
+					}else {
+						sbr.append("," +"key" + count + ":\"" + city + "\"");
+					}
+					count++;
 				}
-				count++;
+				sbr.append("}");
+//				System.out.println(sbr);
+				JSONObject json = null;
+				try {
+					json = new JSONObject(sbr.toString());
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+//				System.out.println(json);
+				out.println(json);
+			}else {
+				JSONObject json = null;
+				try {
+					json = new JSONObject("{key1:''}");
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+//				System.out.println(json);
+				out.println(json);
 			}
-			sbr.append("}");
-			System.out.println(sbr);
-			JSONObject json = null;
-			try {
-				json = new JSONObject(sbr.toString());
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			System.out.println(json);
-			out.println(json);
 		}
 	}
 

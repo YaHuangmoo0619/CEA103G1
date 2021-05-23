@@ -301,7 +301,7 @@ $(document).ready(function(){
 		dataType: "json",
 // 		scriptCharset: 'big5',
 		success: function(data){
-			console.log(Object.values(data).length);
+// 			console.log(Object.values(data).length);
 			for(let i = 0; i < Object.values(data).length; i++){
 				$('#city').append("<option value=\""+ Object.values(data)[i] +"\">"+ Object.values(data)[i] +"</option>");
 			}
@@ -317,7 +317,11 @@ $('#city').change(function(){
 		dataType: "json",
 // 		scriptCharset: 'big5',
 		success: function(data){
-			console.log(Object.values(data).length);
+// 			console.log(Object.values(data).length);
+			if($('#dist').find("*")!==null||$('#dist').find("*")!==undefined){
+				$('#dist').find("*").remove();
+			}
+			
 			for(let i = 0; i < Object.values(data).length; i++){
 				$('#dist').append("<option value=\""+ Object.values(data)[i] +"\">"+ Object.values(data)[i] +"</option>");
 			}
