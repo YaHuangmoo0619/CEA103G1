@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.swing.RepaintManager;
 
 import net.sf.json.JSONObject;
+import redis.clients.jedis.Jedis;
 
 import com.shopping_cart.model.Shopping_cartService;
 import com.shopping_cart.model.Shopping_cartVO;
@@ -125,28 +126,23 @@ public class Shopping_cartServlet extends HttpServlet{
 		if ("generate".equals(action)) { // 為某人新增一筆臨時訂單
 
 			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
-			res.setContentType("application/json;charset=utf-8");
-			Integer mbr_no = null;
-			mbr_no = new Integer(req.getParameter("mbr_no").trim());
-			System.out.println(mbr_no);
+			Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
+			Integer prod_no = new Integer(req.getParameter("prod_no").trim());
+			Integer num = new Integer(req.getParameter("num").trim());
+			String  prod_noAndNum = req.getParameter("prod_no").trim()+":"+req.getParameter("num").trim();
+			//例如 ~ 平底鍋:1
 			
-//			String jsonStr = "";
-//			jsonStr = req.getParameter("map");
-			System.out.println(req.getParameter("map"));
-//			Map<String, String> map = new HashMap<String, String>();
-//			map = JSONObject.fromObject(jsonStr);
-//			System.out.println("map的大小" + map.size());
-//			for (Map.Entry<String, String> entry : map.entrySet()) {  
-//				  
-//			    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
-//			  
-//			}  
-
+			
+			Jedis jedis = new Jedis("localhost", 6379);
+			jedis.auth("123456");
+			jedis.select(4); //4:臨時訂單專用
+			
+			jedis.sadd("order:"+req.getParameter("mbr_no").trim()+":items", prod_noAndNum);
+			//會變成  key >>  order:10001:items    value = 平底鍋:1  、  帳篷:2   ....等等
 
 			
 			/*************************** 2.開始新增資料 ***************************************/
-
-
+			jedis.close();
 		} //end of minus_collection
 	}
 }

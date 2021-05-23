@@ -62,9 +62,9 @@
 <jsp:useBean id="bd_clDAO" scope="page"  class="com.board_class.model.Board_ClassDAO" />	
 <html>
 <head>
-<title>文章資料 - listOneArticle.jsp 前台</title>   
+<title>listOneArticle</title>  
     <style>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
 <style>
 
    .like{ 
@@ -181,6 +181,10 @@
 	.heart_group div{
 	display:inline-block;
 	}
+	.headshotAndAuthor div{
+	display:inline-block;
+	}
+	
 	.heart_for_like{
 	width:24px;
 	height:24px;
@@ -190,7 +194,14 @@
 	color:black;
 	}
 	
+	.btn-close{
+	width: 30px;
+	height:30px;
+	}
 
+	.dropdown{
+	padding-left:500px;
+	}
 </style>
 
 </head>
@@ -201,7 +212,8 @@
 		<div class="main_div headshotAndAuthor">
 		<div class="headshot">
 		<c:forEach var="memberVO" items="${memberDAO.all}">
-		<c:if test="${articleVO.mbr_no==memberVO.mbr_no}">${memberVO.sticker}</c:if>
+		<c:if test="${articleVO.mbr_no==memberVO.mbr_no && not empty memberVO.sticker}">${memberVO.sticker}</c:if>
+		<c:if test="${articleVO.mbr_no==memberVO.mbr_no && empty memberVO.sticker}"><img src="/CEA103G1/images/profile.png" width="30px" height="30px"></c:if>
 		</c:forEach>
 		</div>
 		<!-- 	如果有登入的話  可以連到該發文者的簡介-->
@@ -213,8 +225,25 @@
 		<div class="author to_login_listOneArticle"><c:forEach var="memberVO" items="${memberDAO.all}"><c:if test="${articleVO.mbr_no==memberVO.mbr_no}">${memberVO.acc}</c:if></c:forEach></div>
 		</c:if>
 		</div>
-			
-		
+
+
+	
+		<div class="dropdown">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    選項
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href="#">Something else here</a>
+  </div>
+</div>
+
+
+
+
+
 		<div class=title><h2><%=articleVO.getArt_title()%></h2></div>
 		
 		
@@ -314,7 +343,7 @@
 
 
 
-		<div class="modal fade" id="login_confirm_listOneArticle" tabindex="-1">
+		<div class="modal" id="login_confirm_listOneArticle" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -332,7 +361,7 @@
 </div>
 
 
-			<div class="modal fade" id="reply_modal" tabindex="-1">
+			<div class="modal" id="reply_modal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -419,8 +448,9 @@
 </div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-
+	
 <script>
  var stateObj = { foo: "bar" };
  history.pushState(stateObj, "page 2", "${requestURL}");
@@ -428,6 +458,8 @@
 </script>
 
 	<script>   
+	
+
   	$("#rep_login").click(function(){
 		$.ajax({
 			url:"/CEA103G1/front-end/article_reply/addArticle_reply.jsp?art_no=<%=articleVO.getArt_no()%>&mbr_no=<%=pageContext.getAttribute("ajax_mbr_no")%>",
@@ -457,7 +489,7 @@
  	 	 
 			$.ajax({ //第一個ajax 負責傳到article_likesServlet 新增某人對某文章的按讚  需要的參數: art_no mbr_no 
 				type : "POST",
-				url : "http://localhost:8081/CEA103G1/article_likes/article_likes.do",
+				url : "/CEA103G1/article_likes/article_likes.do",
 				data : {action: "plus_like",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,art_no:<%=articleVO.getArt_no()%>}, //參數傳遞 : action傳遞「加一」 mbr_no art_no 傳遞要加一的資訊
 				success : function(data) {
 					alert("新增"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此篇文章的按讚成功");
@@ -466,7 +498,7 @@
 				
 				$.ajax({ //第二個ajax 負責傳到articleServlet，更新某文章的讚數  需要的參數 art_no
 					type : "POST",
-					url : "http://localhost:8081/CEA103G1/article/article.do",
+					url : "/CEA103G1/article/article.do",
 					data : {action: "plus_like",art_no:<%=articleVO.getArt_no()%>}, //參數傳遞 : action傳遞「加一」 mbr_no art_no 傳遞要加一的資訊
 					success : function(data) {
 						alert("某文章的讚數+1成功");
@@ -486,7 +518,7 @@
  	 	 
  		$.ajax({ //第一個ajax 負責傳到article_likesServlet 刪除某人對某文章的按讚  
 			type : "POST",
-			url : "http://localhost:8081/CEA103G1/article_likes/article_likes.do",
+			url : "/CEA103G1/article_likes/article_likes.do",
 			data : {action: "minus_like",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,art_no:<%=articleVO.getArt_no()%>}, 
 			success : function(data) {
 				alert("收回"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此文章的按讚成功");
@@ -495,7 +527,7 @@
 			
 			$.ajax({ //第二個ajax 負責傳到articleServlet，更新某文章的讚數  需要的參數 art_no
 				type : "POST",
-				url : "http://localhost:8081/CEA103G1/article/article.do",
+				url : "/CEA103G1/article/article.do",
 				data : {action: "minus_like",art_no:<%=articleVO.getArt_no()%>}, 
 				success : function(data) {
 					alert("某文章的讚數-1成功");
@@ -512,7 +544,7 @@
  	 	 	
  	 				$.ajax({ //負責傳到article_collectionServlet 新增某人對某文章的收藏  
  	 				type : "POST",
- 	 				url : "http://localhost:8081/CEA103G1/article_collection/article_collection.do",
+ 	 				url : "/CEA103G1/article_collection/article_collection.do",
  	 				data : {action: "plus_collection",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,art_no:<%=articleVO.getArt_no()%>}, //參數傳遞 : action傳遞「加一」 mbr_no art_no 傳遞要加一的資訊
  	 				success : function(data) {
  	 					alert("新增"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此文章的收藏成功");
@@ -526,7 +558,7 @@
 			
  	 		$.ajax({ //負責傳到article_collectionServlet 刪除某人對某文章的收藏  需要的參數: art_no mbr_no   目前mbr_no寫死 之後要從session get到目前是哪個會員對這篇文章按讚 
  	 				type : "POST",
- 	 				url : "http://localhost:8081/CEA103G1/article_collection/article_collection.do",
+ 	 				url : "/CEA103G1/article_collection/article_collection.do",
  	 				data : {action: "minus_collection",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,art_no:<%=articleVO.getArt_no()%>}, 
  	 				success : function(data) {
  	 					alert("取消"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此文章的收藏成功");

@@ -224,7 +224,7 @@ label {
 <div class="shopping-cart">
 
   <div class="column-labels">
-  	<label class="product-confirm">購買意願</label>
+<!--   	<label class="product-confirm">購買意願</label> -->
     <label class="product-image">照片</label>
     <label class="product-details">產品</label>
     <label class="product-price">單價</label>
@@ -384,29 +384,55 @@ function removeItem(removeButton)
 }
 
 
+// $(".checkout").click(function(){
+// 	let map=new Map();
+// 	  $('.product').each(function () {
+// 		  if($(this).find('.check').prop("checked")==true){
+// 			 var prod_no = $(this).find('.product-no').text();
+// // 			 console.log("prod-no"+prod_no);
+// 			 var num     = $(this).find('.number').val();
+// // 			 console.log("num"+num);
+// 			 map[prod_no]=num;
+// 		  }
+// 	  });
+
+// 		map = JSON.stringify(map);
+// 		console.log(map);
+// 		$.ajax({  
+// 			type : "post",
+// 			dataType:"json",
+// 			url : "http://localhost:8081/CEA103G1/shopping_cart/shopping_cart.do",
+<%-- 			data : {action: "generate",mbr_no:<%=memberVO.getMbr_no()%>,mydata:map}, --%>
+// 			success : function(data) {
+// 				alert("成功生成暫時訂單資料");
+// 			}
+// 		});
+// })
+
 $(".checkout").click(function(){
-	let map=new Map();
+// 	let map=new Map();
 	  $('.product').each(function () {
+//如果按下結帳時 這個商品有被選
 		  if($(this).find('.check').prop("checked")==true){
+//這個商品的prod_no
 			 var prod_no = $(this).find('.product-no').text();
 // 			 console.log("prod-no"+prod_no);
-			 var num     = $(this).find('.number').val();
-// 			 console.log("num"+num);
-			 map[prod_no]=num;
+//紀錄這個商品要的數量
+			 var num     = $(this).find('.number').val();		 
+		  
+		 		$.ajax({
+					type : "POST",
+					url : "/CEA103G1/shopping_cart/shopping_cart.do",
+					data : {action: "generate",mbr_no:<%=memberVO.getMbr_no()%>,prod_no:prod_no,num:num}, 
+					success : function(data) {
+						alert("成功將商品"+prod_no+"加入"+<%=memberVO.getMbr_no()%>+"的臨時訂單");
+					}
+				});		  
 		  }
 	  });
 
-		map = JSON.stringify(map);
-		console.log(map);
-		$.ajax({  
-			type : "post",
-			dataType:"json",
-			url : "http://localhost:8081/CEA103G1/shopping_cart/shopping_cart.do",
-			data : {action: "generate",mbr_no:<%=memberVO.getMbr_no()%>,mydata:map},
-			success : function(data) {
-				alert("成功生成暫時訂單資料");
-			}
-		});
+//轉交到checkout.jsp		
+	  location.href = "/CEA103G1/front-end/shopping_cart/checkout.jsp"
 })
     </script>
 

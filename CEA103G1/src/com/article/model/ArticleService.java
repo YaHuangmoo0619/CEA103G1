@@ -138,6 +138,10 @@ public class ArticleService {
 		return dao.findByBd_cl_no_front(bd_cl_no);
 	}
 	
+	public List<ArticleVO> getByBoard_Class_Front_By_Likes(Integer bd_cl_no){
+		return dao.findByBd_cl_no_front_By_Likes(bd_cl_no);
+	}
+	
 	public List<ArticleVO> getByBoard_Class_Back(Integer bd_cl_no){
 		return dao.findByBd_cl_no_front(bd_cl_no);
 	}
