@@ -183,9 +183,11 @@ label{
 				</div>
 				<div class="infoRow">
 					<label>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</label>
-					<select size="1" name="city"></select>
-<%-- 					<input type="text" name="city" value="${memberVO.city}" style="width:4em;"> --%>
-					<input type="text" name="dist" value="${memberVO.dist}" style="width:4em;">
+					<select size="1" name="city" id="city">
+						<option value="no">請選擇縣市
+					</select>
+					<select size="1" name="dist" id="dist" style="width:4em;"></select>
+<%-- 					<input type="text" name="dist" value="${memberVO.dist}" style="width:4em;"> --%>
 					<input type="text" name="add" value="${memberVO.add}" style="width:19.5em;">
 				</div>
 				<div class="infoRow">
@@ -297,9 +299,28 @@ $(document).ready(function(){
 		url: '<%=request.getScheme()%>://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/MemberGetDistrict',
 		data: {action:"city"},
 		dataType: "json",
-		scriptCharset: 'big5',
+// 		scriptCharset: 'big5',
 		success: function(data){
-			console.log(data);
+			console.log(Object.values(data).length);
+			for(let i = 0; i < Object.values(data).length; i++){
+				$('#city').append("<option value=\""+ Object.values(data)[i] +"\">"+ Object.values(data)[i] +"</option>");
+			}
+		}
+	});
+});
+$('#city').change(function(){
+// 	console.log($('#city').find("option:selected").text());
+	$.ajax({
+		type: "POST",
+		url: '<%=request.getScheme()%>://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/MemberGetDistrict',
+		data: {action:"dist",city:$('#city').find("option:selected").text()},//取得選取的縣市文字
+		dataType: "json",
+// 		scriptCharset: 'big5',
+		success: function(data){
+			console.log(Object.values(data).length);
+			for(let i = 0; i < Object.values(data).length; i++){
+				$('#dist').append("<option value=\""+ Object.values(data)[i] +"\">"+ Object.values(data)[i] +"</option>");
+			}
 		}
 	});
 });

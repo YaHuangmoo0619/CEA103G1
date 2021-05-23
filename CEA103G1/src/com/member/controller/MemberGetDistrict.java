@@ -39,9 +39,33 @@ public class MemberGetDistrict extends HttpServlet {
 			Set<String> set = jedis.smembers("┐дел");
 			for(String city :set) {
 				if(sbr.length() == 0) {
-					sbr.append("{" + count + ":\"" + city + "\"");
+					sbr.append("{" + "key" + count + ":\"" + city + "\"");
 				}else {
-					sbr.append("," + count + ":\"" + city + "\"");
+					sbr.append("," +"key" + count + ":\"" + city + "\"");
+				}
+				count++;
+			}
+			sbr.append("}");
+//			System.out.println(sbr);
+			JSONObject json = null;
+			try {
+				json = new JSONObject(sbr.toString());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+//			System.out.println(json);
+			out.println(json);
+		}
+		
+		if("dist".equals(action)) {
+			StringBuilder sbr = new StringBuilder();
+			int count = 1;
+			Set<String> set = jedis.smembers(req.getParameter("city"));
+			for(String city :set) {
+				if(sbr.length() == 0) {
+					sbr.append("{" + "key" + count + ":\"" + city + "\"");
+				}else {
+					sbr.append("," +"key" + count + ":\"" + city + "\"");
 				}
 				count++;
 			}
@@ -56,7 +80,6 @@ public class MemberGetDistrict extends HttpServlet {
 			System.out.println(json);
 			out.println(json);
 		}
-		
 	}
 
 	public void init() throws ServletException{
