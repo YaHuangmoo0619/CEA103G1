@@ -26,6 +26,7 @@
 <%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 <style>
 .confirm {
 	background-color: #5599FF;
@@ -110,6 +111,9 @@ table {
 	table-layout: fixed;
 	text-align: left;
 }
+#camp_plc tr td input {
+	width: 80%;
+}
 </style>
 </head>
 <body>
@@ -121,7 +125,7 @@ table {
 			<div class="left col-3">
 				<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
 			<div class="right col-9">
-				<div style="display: inline-block;" style="width:50%;">
+				<div style="display: inline-block;" style="width:45%;">
 					<h3>營區資料</h3>
 					<div style="display:inline-block;"><FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/camp/camp.do"
@@ -243,14 +247,122 @@ table {
 							</tr>
 						</c:forEach>
 					</table>
-					
+					<hr>
+					<button type="button" onclick="showModal1()">新增營位</button>
+					<FORM METHOD="get" ACTION="<%=request.getContextPath()%>/place/place.do">
+					<div id="container"></div>
+					<input type="hidden" name=camp_no value="${campVO.camp_no}">
+					<input id="plc_amt" type="hidden" name="plc_amt">
+					</FORM>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal" tabindex="-1" role="dialog" id="test1">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" style="text-align: center;">新增營位</h3>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div id="edit">
+						<table id="camp_plc">
+							<tr id="title">
+								<th>營位名稱</th>
+								<th>數量</th>
+								<th>人數</th>
+								<th>人數上限</th>
+								<th>平日價格</th>
+								<th>假日價格</th>
+							</tr>
+							<tr>
+								<td><input type="text"></td>
+								<td><input type="number" pattern="number"></td>
+								<td><input type="number" pattern="number"></td>
+								<td><input type="number" pattern="number"></td>
+								<td><input type="number" pattern="number"></td>
+								<td><input type="number" pattern="number"></td>
+							</tr>
+						</table>
+					</div>
+					<br>
+					<button id="plc" type="button" style="border:none;cursor:pointer; background-color:white;">
+						<ion-icon name="add-circle" style="border:none;cursor:pointer" size="large"></ion-icon>
+					</button>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="done" value="確定"
+						class="btn btn-secondary" data-dismiss="modal">確定</button>
 				</div>
 			</div>
 		</div>
 	</div>
 <%-- 	<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%> --%>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 <script>
+	function showModal1() {
+		$('#plc_amt').nextAll().remove();
+		$("#edit").append($("#container").children());
+		$("#edit").find('input').attr("readonly",false);
+		$('#test1').modal('show');
+	}
+	$("#done").click(function() {
+		let index = 0;
+		if($("#title").nextAll().length === 1){
+			let flag = true;
+			$("#title").nextAll().find('input').each(function() {
+				if($(this).val() === ""){
+					flag = false;
+				}			
+			});
+			if(flag === false){
+				$("#title").nextAll().find('input').val("");
+			}else{
+				if(!($("#title").nextAll().length === 0)){
+					$("#title").nextAll().each(function(i, dom) {
+						$(dom).find('input').attr("name", "plc" + index);
+						index++;
+					});
+					$("#plc_amt").val(index - 1);
+					$("#container").append($('#edit').children());
+					$("#container").find('input').attr("readonly",true);
+					let html = `<input type="hidden" name="action" value="insert"><input id="send" type="submit" value="刊登營位">`;
+					$("#plc_amt").after(html);
+				}
+			}
+		}else{
+			$("#title").nextAll().find('input').each(function() {
+				if($(this).val() === ""){
+					$(this).parent().parent().remove();
+				}
+			});
+			$("#title").nextAll().each(function(i, dom) {
+				$(dom).find('input').attr("name", "plc" + index);
+				index++;
+			});
+			$("#plc_amt").val(index - 1);
+			$("#container").append($('#edit').children());
+			$("#container").find('input').attr("readonly",true);
+			let html = `<input type="hidden" name="action" value="insert"><input id="send" type="submit" value="刊登營位">`;
+			$("#plc_amt").after(html);
+		}
+	});
+	$("#plc").click(function() {
+		let flag = true;
+		$("#title").nextAll().find('input').each(function() {
+			if($(this).val() === ""){
+				flag = false;
+			}
+		});
+		if(flag === false){
+			return false;				
+		}
+		$("#title").next().clone().find('input').val("").end().appendTo("#camp_plc");
+	});
 	function openstat(e){
 		if(e.checked){
 			$.ajax({
