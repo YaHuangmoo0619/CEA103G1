@@ -142,7 +142,6 @@ public class AddPlace_Order extends HttpServlet {
 					allplc = allplc.replaceAll(", ", "&&&");
 				}
 				try {
-
 					campWS.receiveMsg(campInfo, allplc, null);
 				} catch (Exception e) {
 				}
@@ -180,6 +179,21 @@ public class AddPlace_Order extends HttpServlet {
 
 				place_orderVO = place_orderSvc.addPlace_Order(mbr_no, camp_no, ckin_date, ckout_date, plc_amt,
 						plc_ord_sum, ex_ppl, pay_meth, pay_stat, used_pt, receipt, rmk, list);
+				String campInfo = "camp_no=" + camp_no + "&startdate=" + ckin_date + "&enddate=" + ckout_date;
+				Set<String> plc = new HashSet();
+				for (Object obj : list) {
+					plc.add(((Place_Order_DetailsVO)obj).getPlc_no().toString());
+				}
+				String allplc = plc.toString().substring(1, plc.toString().length() - 1);
+				if (!allplc.contains(", ")) {
+					allplc = allplc + "&gone";
+				} else {
+					allplc = allplc.replaceAll(", ", "&&&");
+				}
+				try {
+					campWS.receiveMsg(campInfo, allplc, null);
+				} catch (Exception e) {
+				}
 				session.removeAttribute("new_place_order_details");
 				list = new ArrayList();
 				list.add("¤w¦¨¥\¥I´Ú");

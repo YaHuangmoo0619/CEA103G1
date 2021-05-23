@@ -251,7 +251,6 @@ public class CampServlet extends HttpServlet {
 			}
 		}
 		if ("update".equals(action)) { // 來自addEmp.jsp的請求
-System.out.println("測試1");
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -264,17 +263,14 @@ System.out.println("測試1");
 				if (part.getSize() == 0) {
 					flag = false;
 				}
-System.out.println("測試11");
 				InputStream in = part.getInputStream();
 				byte[] config = new byte[in.available()];
 				in.read(config);
 				in.close();
-System.out.println("測試12");
 				String camp_name = req.getParameter("camp_name");
 				Integer camp_no = new Integer(req.getParameter("camp_no").trim());
 				String campInfo = req.getParameter("campInfo");
 				String note = req.getParameter("note");
-System.out.println("測試13");
 				String values[] = req.getParameterValues("wireless");
 				String wireless = "";
 				for (int i = 0; i < values.length; i++) {
@@ -284,7 +280,6 @@ System.out.println("測試13");
 						wireless = wireless + values[i] + "、";
 					}
 				}
-System.out.println("測試2");
 				String str = req.getParameter("pet");
 				Integer pet = Integer.parseInt(str);
 
@@ -300,7 +295,6 @@ System.out.println("測試2");
 				} else if (!park.trim().matches(parkReg)) { // 以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("停車方式: 只能是中文");
 				}
-System.out.println("測試3");
 				String county = req.getParameter("county");
 				String countyReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
 				if (county == null || county.trim().length() == 0) {
@@ -322,7 +316,6 @@ System.out.println("測試3");
 				} else if (!address.trim().matches(addressReg)) { // 以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("地址: 只能是中文、數字");
 				}
-System.out.println("測試4");
 //				List<Camp_PictureVO> camp_picturelist = null;
 //				try {
 //					List<String> fileDirectory = savePictureAtLocal(req, camp_name);
@@ -348,12 +341,10 @@ System.out.println("測試4");
 				campVO.setCounty(county);
 				campVO.setDistrict(district);
 				campVO.setAddress(address);
-System.out.println("測試5");
 				String[] feature_list = req.getParameterValues("feature_list");
 				String other = req.getParameter("otherornot");
 				List<Camp_FeatureVO> camp_featurelist = new ArrayList();
 				Camp_FeatureVO camp_featureVO = new Camp_FeatureVO();
-System.out.println("測試6");
 				if ("yes".equals(other) && !("".equals(feature_list[feature_list.length - 1]))) {
 					other = feature_list[feature_list.length - 1];
 					Feature_ListService featureSvc = new Feature_ListService();
@@ -374,48 +365,19 @@ System.out.println("測試6");
 						camp_featurelist.add(camp_featureVO);
 					}
 				}
-System.out.println("測試7");
 				Camp_FeatureService camp_featureSvc = new Camp_FeatureService();				
 				for (Camp_FeatureVO camp_featureVO2 : camp_featurelist) {
 					camp_featureVO2.setCamp_no(camp_no);
 				}
 				camp_featureSvc.updateCamp_Feature(camp_featurelist);
-System.out.println("測試8");			
-				List<PlaceVO> placelist = null;
-				PlaceService placeSvc = new PlaceService();
-				try {
-					Integer plc_amt = new Integer(req.getParameter("plc_amt"));
-					placelist = new ArrayList<PlaceVO>();
-					for (int i = 0; i <= plc_amt; i++) {
-						String[] plc = req.getParameterValues("plc" + i);
-						for (int j = 1; j <= new Integer(plc[1]); j++) {
-							PlaceVO placeVO = new PlaceVO();
-							placeVO.setPlc_name(plc[0] + j);
-							placeVO.setPpl(new Integer(plc[2]));
-							placeVO.setMax_ppl(new Integer(plc[3]));
-							placeVO.setPc_wkdy(new Integer(plc[4]));
-							placeVO.setPc_wknd(new Integer(plc[5]));
-							placelist.add(placeVO);
-						}
-					}
-				} catch (NumberFormatException e) {
-					errorMsgs.add("營位: 至少一個");
-				}
-System.out.println("測試9");			
-				for(PlaceVO placeVO : placelist) {
-					placeVO.setCamp_no(camp_no);
-				}
-				placeSvc.updatePlace(placelist);
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("campVO", campVO); // 含有輸入格式錯誤的campVO物件,也存入req
 					req.setAttribute("camp_featurelist", camp_featurelist);
-					req.setAttribute("placelist", placelist);
-					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite/addCamp.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/campsite/updateCamp.jsp");
 					failureView.forward(req, res);
 					return;
 				}
-System.out.println("測試10");
 				address = county + district + address;
 				List<Double> location = getLocation(address);
 				Double latitude = location.get(0);
@@ -425,7 +387,6 @@ System.out.println("測試10");
 				/*************************** 2.開始新增資料 ***************************************/
 				DistrictService districtSvc = new DistrictService();
 				Integer dist_no = districtSvc.updateDistrict(district, county).getDist_no();
-System.out.println("測試11");
 				CampService campSvc = new CampService();
 				if (flag) {
 					campVO = campSvc.updateCamp(dist_no, camp_name, campInfo, note, config, height, wireless, pet,
@@ -434,6 +395,7 @@ System.out.println("測試11");
 					campVO = campSvc.updateCamp3(dist_no, camp_name, campInfo, note, height, wireless, pet, facility,
 							operate_date, park, address, latitude, longitude, camp_no);
 				}
+				campVO = campSvc.getOneCamp(camp_no);
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				String forwardurl = "/front-end/campsite/listOneCamp.jsp";
 				req.setAttribute("campVO", campVO);

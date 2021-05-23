@@ -215,34 +215,6 @@ span {
 								type="text" id="other" style=" border:1px; border-bottom-style: solid;border-top-style: none;border-left-style:none;border-right-style:none;" disabled="true">
 						</div>
 					</div>
-					<br>
-					<button type="button" onclick="showModal1()">絪胯犁</button>
-					<div id="container">
-						<table id="camp_plc">
-							<tr id="title">
-								<th>犁嘿</th>
-								<th>计秖</th>
-								<th>计</th>
-								<th>计</th>
-								<th>キら基</th>
-								<th>安ら基</th>
-							</tr>
-							<%!int count = 0;%>
-							<c:forEach var="placeVO" items="${placelist}">						
-								<tr>
-									<td><input type="text" name="plc<%=count%>" value="${placeVO.plc_name.substring(0,placeVO.plc_name.indexOf(','))}" readonly="true"></td>
-									<td><input type="number" pattern="number" name="plc<%=count%>" value="${placeVO.plc_name.substring(placeVO.plc_name.indexOf(',')+1)}" readonly="true"></td>
-									<td><input type="number" pattern="number" name="plc<%=count%>" value="${placeVO.ppl}" readonly="true"></td>
-									<td><input type="number" pattern="number" name="plc<%=count%>" value="${placeVO.max_ppl}" readonly="true"></td>
-									<td><input type="number" pattern="number" name="plc<%=count%>" value="${placeVO.pc_wkdy}" readonly="true"></td>
-									<td><input type="number" pattern="number" name="plc<%=count%>" value="${placeVO.pc_wknd}" readonly="true"></td>
-								</tr>
-								<%count++;%>
-							</c:forEach>
-							<%count--;%>
-						</table>
-					</div>
-					<input id="plc_amt" type="hidden" name="plc_amt" value="<%=count%>">
 					<hr>
 					<input type="file" id="progressbarTWInput" name="photo"
 						accept="image/gif, image/jpeg, image/png" multiple>
@@ -255,28 +227,6 @@ span {
 					<input type="hidden" name="action" value="update"> <input
 						type="submit" value="癳э">
 				</FORM>
-			</div>
-		</div>
-	</div>
-	<div class="modal" tabindex="-1" role="dialog" id="test1">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h3 class="modal-title" style="text-align: center;">穝糤犁</h3>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div id="edit">
-					</div>
-					<button id="plc" type="button">
-						<ion-icon name="add-circle" size="large"></ion-icon>
-					</button>
-				</div>
-				<div class="modal-footer">
-					<button type="button" id="done" value="絋﹚"
-						class="btn btn-secondary" data-dismiss="modal">絋﹚</button>
-				</div>
 			</div>
 		</div>
 	</div>

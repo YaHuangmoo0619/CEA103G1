@@ -11,7 +11,7 @@ public class PlaceService {
 	}
 
 	public PlaceVO addPlace(Integer camp_no, String plc_name, Integer ppl, Integer max_ppl, Integer pc_wkdy,
-			Integer pc_wknd, Integer open_stat, Integer plc_stat, Connection con) {
+			Integer pc_wknd, Integer open_stat, Integer plc_stat) {
 
 		PlaceVO placeVO = new PlaceVO();
 		placeVO.setCamp_no(camp_no);
@@ -22,21 +22,15 @@ public class PlaceService {
 		placeVO.setPc_wknd(pc_wknd);
 		placeVO.setOpen_stat(open_stat);
 		placeVO.setPlc_stat(plc_stat);
-		dao.insert(placeVO, con);
+		dao.insert(placeVO);
 
 		return placeVO;
 	}
 
-	public List<PlaceVO> updatePlace(List<PlaceVO> placelist) {
-		dao.update(placelist);
-
-		return placelist;
+	public void updateStat(Integer plc_no, Integer open_stat) {
+		dao.updateStat(plc_no, open_stat);
 	}
-
-	public void deletePlace(Integer camp_no, Connection con) {
-		dao.delete(camp_no, con);
-	}
-
+	
 	public PlaceVO getOnePlace(Integer plc_no) {
 		return dao.findByPrimaryKey(plc_no);
 	}
