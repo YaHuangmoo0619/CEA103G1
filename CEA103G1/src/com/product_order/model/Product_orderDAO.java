@@ -27,7 +27,7 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 	private static final String GET_ONE_STMT = 
 		"select * from Product_Order where PROD_ORD_NO = ?";
 	private static final String GET_ALLMBR_STMT = 
-		"select * from Product_Order where MBR_NO = ? order by PROD_ORD_NO";
+		"select * from Product_Order where MBR_NO = ? order by PROD_ORD_NO DESC";
 	private static final String GET_ALL_STMT = 
 		"select * from Product_Order order by PROD_ORD_NO";
 	//¶®°Ä¥[ªº
@@ -315,8 +315,11 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALLMBR_STMT);
+			
+//			pstmt.setInt(1, MemberVO.getMbr_no);
+			
 			rs = pstmt.executeQuery();
-
+					
 			while (rs.next()) {
 				product_orderVO = new Product_orderVO();
 				product_orderVO.setProd_ord_no(rs.getInt("PROD_ORD_NO"));

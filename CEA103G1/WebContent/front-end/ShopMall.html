@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+	
 	<link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 	<title>商城首頁</title>
@@ -29,6 +30,114 @@
 	<div >
 
     </div>
+ 
+
+  <section class="features8 cid-syeFkbGLP0" xmlns="http://www.w3.org/1999/html" id="features9-12">
+    <div class="container">
+        <div class="card">
+            <div class="card-wrapper">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-4">
+                        <div class="">
+                            <img src="">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md">
+                        <div class="card-box">
+                            <div class="row">
+                                <div class="col-md">
+                                    <p>${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}</p>
+                                    <h6 class="card-title mbr-fonts-style display-5">
+                                        <strong>商品名稱:</strong>
+                                    </h6>
+                                    <p class="mbr-text mbr-fonts-style display-7">
+                                        ${productVO.prod_cat_name}
+                                    </p>
+                                    <p>品牌資訊:${productVO.prod_bnd}</p>
+                                    <p>${productVO.prod_info}</p>                                    
+                                </div>
+                                <div class="col-md-auto">
+                              		<p>商品價格 </p>
+                                    <p class="price mbr-fonts-style display-2">${productVO.prod_pc}</p>
+                                     <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
+									     <input type="submit" value="查看詳情" class="btn btn-white-outline display-4">
+									     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
+									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+									     <input type="hidden" name="action"	value="getOne_For_Display">
+								     </FORM>                                   
+                                    <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do"  style="margin-bottom: 0px;">
+									     <input type="submit" value="直接下訂" class="btn btn-white-outline display-4">
+									     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
+									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+									     <input type="hidden" name="action"	value="buyOne">
+									</FORM>
+                                </div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+</section>
+<script src="assets/web/assets/jquery/jquery.min.js"></script>
+<script src="assets/popper/popper.min.js"></script>
+<script src="assets/tether/tether.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/smoothscroll/smooth-scroll.js"></script>
+<script src="assets/theme/js/script.js"></script>  
+  
+<!--
+<table>
+	<tr>
+		<th>商品編號</th>
+		<th>商品分類名稱</th>
+		<th>商品照片</th>
+		<th>商品名稱</th>
+		<th>商品資訊</th>
+		<th>商品品牌</th>
+		<th>商品顏色</th>
+		<th>商品大小</th>
+		<th>運送方式</th>
+	</tr>
+<%@ include file="page1.file" %> 
+	<c:forEach var="productVO" items="${list}" > <%-- begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" --%>
+		
+		<tr>
+			<!-- <td>${productVO.prod_no}</td> -->
+			<td>
+			${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}
+			</td>
+			<td>
+			<c:forEach var="product_pictureVO" items="${list}" >
+			${product_pictureSvc.getOneProduct_picture(productVO.prod_cat_no).prod_pic}
+			</c:forEach>
+			</td>
+			<td>${productVO.prod_name}</td>
+			<td>${productVO.prod_info}</td>
+			<td>${productVO.prod_bnd}</td>
+			<td>${productVO.prod_clr}</td>
+			
+			<td>
+			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
+			     <input type="submit" value="查看詳情">
+			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
+			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+			     <input type="hidden" name="action"	value="getOne_For_Display"></FORM>
+			</td>
+			<td>
+			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
+			     <input type="submit" value="直接下訂">
+			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
+			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+			     <input type="hidden" name="action"	value="buyOne"></FORM>
+			</td>
+		</tr>
+	</c:forEach>
+	
+</table>
+ 
 </body>
 </html>
 
