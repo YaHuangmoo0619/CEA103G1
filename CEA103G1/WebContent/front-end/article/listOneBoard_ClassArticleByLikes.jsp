@@ -13,25 +13,15 @@
 	jedis.select(6);
 %>
 
-
+<%int bd_cl_no = Integer.parseInt(request.getParameter("bd_cl_no")); %>
 <%
 	ArticleService articleSvc = new ArticleService();
-	List<ArticleVO> list = articleSvc.getAll_Front();
-// 	Map<Integer,String> article_first_img_map = new HashMap<Integer,String>(); //這是一個存有「有首圖」的Map，key為該文章號碼，value為base64編碼
-// 	int start_index;
-// 	int end_index;
-// 	String first_img_base64;
-// 	for(ArticleVO x : list){
-// 		start_index = x.getArt_cont().indexOf("<p><img");
-// 		if(start_index>=0){ //有首圖的話
-// 		System.out.println("start_index:"+start_index);
-// 		end_index   = x.getArt_cont().indexOf("</p>", start_index)+4; //從第一張圖片<p><img的位置以後開始搜尋到的第一個 </p>，即為第一張圖的結束
-// 			first_img_base64 = x.getArt_cont().substring(start_index, end_index); //擷取到第一張圖片的base64編碼
-// 			System.out.println("i'm here");
-// 			System.out.println(first_img_base64);
-// 			article_first_img_map.put(x.getArt_no(), first_img_base64); //放入Map中	
-// 		}
-// 	}
+	List<ArticleVO> list = articleSvc.getByBoard_Class_Front_By_Likes(bd_cl_no);
+	pageContext.setAttribute("bd_cl_no", bd_cl_no);
+	pageContext.setAttribute("list", list);
+%>
+<%
+
 	Map<Integer,String> simple_art_cont = new HashMap<>();
 	for(ArticleVO count : list){
 		if(jedis.exists("post:"+count.getArt_no()+":art_simple_cont")){
@@ -43,7 +33,6 @@
 	
 	System.out.println(simple_art_cont.get("12"));
 	double max_page = Math.ceil(list.size()/5);
-	pageContext.setAttribute("list", list);
 	pageContext.setAttribute("simple_art_cont", simple_art_cont);
 // 	pageContext.setAttribute("article_first_img_map", article_first_img_map);
 %>
@@ -87,12 +76,12 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>列出所有文章</title>
+<title>listOneBoard_ClassArticleByLikes</title>
 <%@ include file="/article_css/article_css.txt"%>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <link rel="icon" href="campionLogoIcon.png" type="image/png">
 <link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-
+	    <link rel="stylesheet" href="sample.css" />
     
 
 <style>
@@ -129,6 +118,11 @@ padding:0px 0px 0px 10px;
 }
 .article_sort_parent{
 	padding:10px 0px 0px 60px;
+}
+
+.bd_title{
+	padding:0px 0px 0px 55px;
+	color: black;
 }
 /* -----------------------------以下為側欄css------------------------------ */
 #sidebar {
@@ -196,7 +190,6 @@ overflow-y: auto;
 <body onload="connection()">
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	
-	
 <!-- 	如果有登入的話 -->
 	<c:if test="${not empty memberVO }"> 
 	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
@@ -260,22 +253,17 @@ overflow-y: auto;
 
 
         <div class="container">
- 
+ 				
+	<c:forEach var="bd_clVO" items="${bd_clDAO.all}">
+			<c:if test="${bd_cl_no==bd_clVO.bd_cl_no}">
+	                   <h2 class=bd_title>${bd_clVO.bd_name}</h2>
+                    </c:if>
+		</c:forEach>
         		<div class=article_sort_parent>
 <%--         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp';">最新</div> --%>
-        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp">最新</a>
+        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${bd_cl_no}">最新</a>
 <%--         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp';">熱門</div> --%>
-        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp">熱門</a>
-					<!-- 	如果有登入的話 -->
-					<c:if test="${not empty memberVO }">
-					<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/addArticle.jsp';">追蹤</div> 
-					</c:if>
-					<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
-					<c:if test="${empty memberVO }"> 
-<!-- 					<div class="article_sort to_login">追蹤</div> -->
-					<a class="article_sort to_login">追蹤</a>
-					</c:if>
-					
+        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticleByLikes.jsp?bd_cl_no=${bd_cl_no}">熱門</a>					
         		</div>
      
      
@@ -356,7 +344,7 @@ overflow-y: auto;
 
 	<c:if test="${openModal!=null}">
 
-		<div class="modal" id="basicModal" tabindex="-1" role="dialog"
+		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
 			aria-labelledby="basicModal" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content" >
@@ -375,7 +363,7 @@ overflow-y: auto;
 
 
 		
-		<div class="modal" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -406,22 +394,14 @@ overflow-y: auto;
 jedis.close();
 %>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	  <!-- Infinite Scroll v3.0.3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.3/infinite-scroll.pkgd.min.js"></script>
-	
+		<script src="jquery.hover.js"></script>
 		
 
 	<script>
-
-    $(document).ready(function(){
-       $('.dropdown-toggle').dropdown()
-   });
-
-	
-	
 		let countMenu = 0;
 		function showMenu() {
 			countMenu++;
@@ -459,7 +439,7 @@ jedis.close();
 		console.log(subscribe_bd_cl_no);
 		$.ajax({ // 負責傳到board_classServlet 新增某人對某看板的訂閱  需要的參數: mbr_no bd_cl_no 
 			type : "POST",
-			url : "http://localhost:8081/CEA103G1/board_class/board_class.do",
+			url : "/CEA103G1/board_class/board_class.do",
 			data : {action: "subscribe",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,bd_cl_no:subscribe_bd_cl_no},
 			success : function(data) {
 				alert("新增"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對看板"+subscribe_bd_cl_no+"的訂閱成功");
@@ -474,7 +454,7 @@ jedis.close();
 		console.log(subscribe_bd_cl_no);
 		$.ajax({ // 負責傳到board_classServlet 取消某人對某看板的訂閱  需要的參數: mbr_no bd_cl_no 
 			type : "POST",
-			url : "http://localhost:8081/CEA103G1/board_class/board_class.do",
+			url : "/CEA103G1/board_class/board_class.do",
 			data : {action: "cancel_subscribe",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,bd_cl_no:subscribe_bd_cl_no},
 			success : function(data) {
 				alert("取消"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對看板"+subscribe_bd_cl_no+"的訂閱成功");
@@ -496,7 +476,7 @@ jedis.close();
   			if ( this.loadCount < <%=max_page%> ) {
   				// 只讀取到最後一頁的資料
   				var nextIndex = this.loadCount + 2; // 2
-  				return "http://localhost:8081/CEA103G1/front-end/article/listAllArticle.jsp?whichPage="+nextIndex;
+  				return "/CEA103G1/front-end/article/listOneBoard_ClassArticleByLikes.jsp?whichPage="+nextIndex;
   			}
   		},
   		append: ".each_article", // 匯入物件類別

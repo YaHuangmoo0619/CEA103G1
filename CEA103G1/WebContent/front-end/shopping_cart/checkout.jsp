@@ -6,21 +6,33 @@
 <%@ page import="com.member.model.*" %>
 <%@ page import="com.shopping_cart.model.*" %>
 <%@ page import="com.product.model.*" %>
+<%@ page import="redis.clients.jedis.Jedis"%>
 <% 
 	MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
 	Shopping_cartService shopping_cartSvc = new Shopping_cartService();
 	ProductService productSvc = new ProductService();
-	List<Shopping_cartVO> list = shopping_cartSvc.getByMbr_no(memberVO.getMbr_no()); //取得我購物車裡面的商品(資訊:商品編號、我要買的數量)
-	//我要這些商品的其他詳細資訊
+	//取得臨時訂單裡面的商品(資訊:商品編號、我要買的數量)
+	Jedis jedis = new Jedis("localhost", 6379);
+	jedis.auth("123456");
+	jedis.select(4);
+	Map<String,String> my_item_list = new HashMap<>();
+	//取得臨時訂單的Map  key為prod_no  value為num
+	for(String element : jedis.smembers("order:"+memberVO.getMbr_no()+":items")){
+		String[]  strs=element.split(":");
+		my_item_list.put(strs[0].toString(), strs[1].toString());
+	}
 	
 	List<ProductVO> detail_list = new ArrayList<>();
-	for(Shopping_cartVO element : list){
-		detail_list.add(productSvc.getOneProduct(element.getProd_no()));	//查詢購物車裡面每個商品的詳細資訊並放入詳細資訊的list     
-	}
-
-	pageContext.setAttribute("list", list);
-	pageContext.setAttribute("detail_list", detail_list);
+			//遍歷map，將每樣商品的VO取出來
+			for (Map.Entry<String, String> entry : my_item_list.entrySet()) {
+			//並存入detail list
+				detail_list.add(productSvc.getOneProduct(Integer.valueOf(entry.getKey())));	
+		}
+			
+			pageContext.setAttribute("my_item_list", my_item_list);
+			pageContext.setAttribute("detail_list", detail_list);
 %>
+
 <%
 
 request.setAttribute("vEnter", "\n");
@@ -40,7 +52,7 @@ request.setAttribute("vEnter", "\n");
 
 <link rel="mask-icon" type="" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
 
-<title>某會員的購物車</title>
+<title>結帳</title>
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 
 <%@ include file="/article_css/article_css.txt"%>
@@ -217,17 +229,68 @@ label {
 
 </head>
 <body>
-	
+	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
+<div class=container>
+	  <h1>${memberVO.name}的購物車</h1>
+
+<div class="shopping-cart">
+
+  <div class="column-labels">
+    <label class="product-image">照片</label>
+    <label class="product-details">產品</label>
+    <label class="product-price">單價</label>
+    <label class="product-quantity">數量</label>
+    <label class="product-removal">移除</label>
+    <label class="product-line-price">小計</label>
+  </div>
+
+	<c:forEach var="detail_list" items="${detail_list}">
+  <div class="product">
+    <div class="product-image">
+      <img src="https://s.cdpn.io/3/dingo-dog-bones.jpg">
+    </div>
+    
+    <div class="product-details">
+      <div class="product-title">${detail_list.prod_name}</div>
+      <p class="product-description">${fn:replace(detail_list.prod_info,vEnter,"<br>")}</p>
+    </div>
+    <div class="product-price">${detail_list.prod_pc}</div>
+    
+    
+    <div class="product-quantity">
+<!--       未解疑問，為何不用set的話第二圈進來跑不動 -->
+		<c:set value="${my_item_list}" var="list2"/>
+         <c:forEach var="list2" items="${list2}">
+			<c:if test="${detail_list.prod_no==list2.key}">${list2.value}</c:if>
+		 </c:forEach>
+    </div>
+    
+      </div>
+
+	</c:forEach>
 	
 
-<script>
-//session_storage印出測試
-for(var i=0;i<sessionStorage.length;i++){
-    var key=sessionStorage.key(i);
-    var value=sessionStorage[key];
-   	console.log("key:"+key);
-   	console.log("value:"+value);
-}
-</script>
+  <div class="totals">
+    <div class="totals-item totals-item-total">
+      <label>總額</label>
+      <div class="totals-value" id="cart-total">0</div>
+    </div>
+  </div>
+      
+      <button class="checkout">去買單</button>
+
+</div>
+</div>
+	<script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+
 </body>
 </html>

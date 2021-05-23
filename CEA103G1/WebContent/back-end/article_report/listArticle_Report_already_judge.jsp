@@ -14,7 +14,7 @@
 <%
 Map<Integer,String> judge_record = new HashMap<>();
 Article_ReportService article_reportSvc = new Article_ReportService();
-List<Article_ReportVO> list = article_reportSvc.getAll();
+List<Article_ReportVO> list = article_reportSvc.get_already_judge();
 for(Article_ReportVO element : list){ //對於每一個檢舉VO
 	if(jedis.exists("article_report:"+element.getArt_rpt_no()+":judge_record")){//查看是否有該筆檢舉的審核紀錄，如果有
 		judge_record.put(element.getArt_rpt_no(), jedis.get("article_report:"+element.getArt_rpt_no()+":judge_record"));//就將處分結果放入judge_record

@@ -53,4 +53,12 @@ public class Article_ReportService {
 	public List<Article_ReportVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public List<Article_ReportVO> get_wait_for_judge() {
+		return dao.get_wait_for_judge();
+	}
+	
+	public List<Article_ReportVO> get_already_judge() {
+		return dao.get_already_judge();
+	}
 }

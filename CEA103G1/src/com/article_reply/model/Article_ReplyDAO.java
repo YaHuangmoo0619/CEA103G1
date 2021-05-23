@@ -11,10 +11,9 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-<<<<<<< HEAD
-=======
 
->>>>>>> f6966ee1616c4261dd7422a8cc72d10a63b10165
+
+
 import com.article.model.ArticleDAO;
 import com.article.model.ArticleVO;
 import com.article_likes.model.Article_LikesDAO;
@@ -26,10 +25,7 @@ import com.member.model.MemberVO;
 import com.personal_system_notify.model.Personal_System_NotifyDAO;
 import com.personal_system_notify.model.Personal_System_NotifyVO;
 
-<<<<<<< HEAD
 
-=======
->>>>>>> f6966ee1616c4261dd7422a8cc72d10a63b10165
 
 public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 	private static DataSource ds = null;
@@ -66,11 +62,7 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 			pstmt.setInt(5, article_ReplyVO.getRep_stat());
 			pstmt.setInt(6, article_ReplyVO.getLikes());
 			pstmt.executeUpdate();
-<<<<<<< HEAD
 
-
-=======
->>>>>>> f6966ee1616c4261dd7422a8cc72d10a63b10165
 			//雅凰嘗試連動新增系統通知
 			//取得文章VO，以獲得文章標題
 			ArticleDAO articleDAO = new ArticleDAO();
@@ -104,10 +96,7 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 			}
 			//雅凰嘗試連動新增系統通知
 			
-<<<<<<< HEAD
 
-=======
->>>>>>> f6966ee1616c4261dd7422a8cc72d10a63b10165
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());

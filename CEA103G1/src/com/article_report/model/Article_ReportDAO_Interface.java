@@ -11,4 +11,8 @@ public interface Article_ReportDAO_Interface {
 	public Article_ReportVO findByPrimaryKey(Integer art_rpt_no);
 
 	public List<Article_ReportVO> getAll();
+	
+	public List<Article_ReportVO> get_wait_for_judge();
+	
+	public List<Article_ReportVO> get_already_judge();
 }

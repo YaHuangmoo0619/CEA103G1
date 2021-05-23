@@ -57,7 +57,9 @@ public class ArticleDAO implements ArticleDAO_Interface{
 		private static final String MINUS_REPLY = 
 				"UPDATE ARTICLE set replies = replies - 1 where art_no = ?";
 		private static final String GET_BY_BD_CL_NO_FRONT =
-			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies,art_first_img FROM ARTICLE where bd_cl_no = ? and art_stat = 0";
+			"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies,art_first_img FROM ARTICLE where bd_cl_no = ? and art_stat = 0 order by art_no desc";
+		private static final String GET_BY_BD_CL_NO_FRONT_BY_LIKES =
+				"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies,art_first_img FROM ARTICLE where bd_cl_no = ? and art_stat = 0 order by likes desc";
 		private static final String GET_BY_BD_CL_NO_BACK =
 				"SELECT art_no,bd_cl_no,mbr_no,art_rel_time,art_title,art_cont,likes,art_stat,replies,art_first_img FROM ARTICLE where bd_cl_no = ?";
 		private static final String GET_LAST =
@@ -534,6 +536,68 @@ public class ArticleDAO implements ArticleDAO_Interface{
 	}
 
 	
+	public List<ArticleVO> findByBd_cl_no_front_By_Likes(Integer bd_cl_no) {
+		List<ArticleVO> list = new ArrayList<ArticleVO>();
+		ArticleVO articleVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_BY_BD_CL_NO_FRONT_BY_LIKES);
+			pstmt.setInt(1, bd_cl_no);
+			rs = pstmt.executeQuery();
+
+
+			while (rs.next()) {
+				articleVO = new ArticleVO();
+				articleVO.setArt_no(rs.getInt("art_no"));
+				articleVO.setBd_cl_no(rs.getInt("bd_cl_no"));
+				articleVO.setMbr_no(rs.getInt("mbr_no"));
+				articleVO.setArt_rel_time(rs.getTimestamp("art_rel_time"));
+				articleVO.setArt_title(rs.getString("art_title"));
+				articleVO.setArt_cont(rs.getString("art_cont"));
+				articleVO.setLikes(rs.getInt("likes"));
+				articleVO.setArt_stat(rs.getInt("art_stat"));
+				articleVO.setReplies(rs.getInt("replies"));
+				articleVO.setArt_first_img(rs.getString("art_first_img"));
+				list.add(articleVO); // Store the row in the list
+			}
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	
+	}
+
 	
 	
 	@Override

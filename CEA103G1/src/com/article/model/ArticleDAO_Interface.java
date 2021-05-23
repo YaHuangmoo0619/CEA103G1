@@ -24,6 +24,8 @@ public interface ArticleDAO_Interface {
 	
 	public List<ArticleVO> findByBd_cl_no_front(Integer bd_cl_no);
 	
+	public List<ArticleVO> findByBd_cl_no_front_By_Likes(Integer bd_cl_no);
+	
 	public List<ArticleVO> findByBd_cl_no_back(Integer bd_cl_no);
 	
 	public List<ArticleVO> getAll_Front();
