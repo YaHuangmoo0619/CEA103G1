@@ -109,4 +109,21 @@ public class MemberService {
 		
 		return memberVO;
 	}
+	
+	public void updateMemberStatus(String acc, Integer acc_stat) {
+		dao.updateMemberStatus(acc, acc_stat);
+	}
+
+	public MemberVO findByEmail(String mail) {
+		return dao.findByEmail(mail);
+	}
+
+	public void updatePwd(String mail, String pwd) {
+		dao.updatePwd(mail, pwd);
+	}
+
+	public MemberVO loginCheck(String acc) {
+		return dao.loginCheck(acc);
+	}
+
 }
