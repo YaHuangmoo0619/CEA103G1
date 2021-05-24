@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.article.model.ArticleDAO;
 import com.article.model.ArticleService;
 import com.article.model.ArticleVO;
+import com.member.model.MemberService;
 import com.member.model.MemberVO;
 
 import redis.clients.jedis.Jedis;
@@ -173,70 +174,7 @@ public class ArticleServlet extends HttpServlet {
 
 		}
 
-//		if ("getOneArticle_ByBoard_Clss_For_Display".equals(action)) { // 來自back-end listAllArticle.jsp的請求
-//
-//			List<String> errorMsgs = new LinkedList<String>();
-//			// Store this set in the request scope, in case we need to
-//			// send the ErrorPage view.
-//			req.setAttribute("errorMsgs", errorMsgs);
-//
-//			try {
-//				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-//				String str = req.getParameter("bd_cl_no");
-//				if (str == null || (str.trim()).length() == 0) {
-//					errorMsgs.add("請輸入看板編號");
-//				}
-//				// Send the use back to the form, if there were errors
-//				if (!errorMsgs.isEmpty()) {
-//					RequestDispatcher failureView = req
-//							.getRequestDispatcher("/back-end/article/select_page.jsp");
-//					failureView.forward(req, res);
-//					return;//程式中斷
-//				}
-//				
-//
-//				Integer bd_cl_no = null;
-//				try {
-//					bd_cl_no = new Integer(str);
-//				} catch (Exception e) {
-//					errorMsgs.add("看板編號格式不正確");
-//				}
-//				// Send the use back to the form, if there were errors
-//				if (!errorMsgs.isEmpty()) {
-//					RequestDispatcher failureView = req
-//							.getRequestDispatcher("/back-end/article/select_page.jsp");
-//					failureView.forward(req, res);
-//					return;//程式中斷
-//				}
-//				
-//				/***************************2.開始查詢資料*****************************************/
-//				ArticleService articleSvc = new ArticleService();
-//				List<ArticleVO> articleVO = articleSvc.getByBoard_Class(bd_cl_no);
-//				if (articleVO == null) {
-//					errorMsgs.add("查無資料");
-//				}
-//				// Send the use back to the form, if there were errors
-//				if (!errorMsgs.isEmpty()) {
-//					RequestDispatcher failureView = req
-//							.getRequestDispatcher("/back-end/article/select_page.jsp");
-//					failureView.forward(req, res);
-//					return;//程式中斷
-//				}
-//				
-//				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
-//				req.setAttribute("articleVO", articleVO); // 資料庫取出的article_replyVO物件,存入req
-//				String url = "/back-end/article/listOneBoard_ClassArticle.jsp";
-//				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneBoard_ClassArticle.jsp
-//				successView.forward(req, res);
-//
-//				/***************************其他可能的錯誤處理*************************************/
-//			} catch (Exception e) {
-//				errorMsgs.add("無法取得資料:" + e.getMessage());
-//				RequestDispatcher failureView = req
-//						.getRequestDispatcher("/back-end/article/select_page.jsp");
-//				failureView.forward(req, res);
-//			}
-//		}	
+	
 
 		if ("getOne_For_Update".equals(action)) { // 來自listAllArticle.jsp的請求
 
@@ -471,21 +409,11 @@ public class ArticleServlet extends HttpServlet {
 				}
 				
 
-			
-				
-				
-				
-				
-//				System.out.println(art_cont);
-//				else if(!art_cont.trim().matches(art_contReg)) { //以下練習正則(規)表示式(regular-expression)
-//					errorMsgs.add("文章內容: 必須在10到10000個字之間");
-//	            }
-				
-				
+
+		
 				Integer likes = 0;
 				Integer art_stat = 0;
 				Integer replies = 0;
-//				String  art_first_img=null;
 				ArticleVO articleVO = new ArticleVO(); // 要新增的文章
 				articleVO.setBd_cl_no(bd_cl_no);
 				articleVO.setMbr_no(mbr_no);
@@ -548,10 +476,47 @@ public class ArticleServlet extends HttpServlet {
 				jedis.close();
 				System.out.println("最後結果:"+save_to_redis);//最後結果，準備加入redis資料庫
 				
-				
-				
+							
 				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no, art_rel_time, art_title, art_cont, likes, art_stat, replies, art_first_img);
+				
+				
+				//新增完文章如果發文看板符合，就開始增加經驗值
+				if(bd_cl_no==1 || bd_cl_no==3 || bd_cl_no ==9) { //露營知識分享、露營日記、部落客分享
+					MemberService memberSvc = new MemberService();
+					MemberVO memberVO = memberSvc.getOneMember(mbr_no);
+					int exp_now = memberVO.getExp();
+					int exp_plus = exp_now+10;
+					int rank_now = memberVO.getRank_no();
+					switch(exp_now) {
+					case 90:
+						memberVO.setExp(exp_plus); //經驗加10
+						memberVO.setRank_no(rank_now+1); //等級加1
+						memberSvc.updateMember(memberVO); //更新資料
+						break;
+					case 190:
+						memberVO.setExp(exp_plus); //經驗加10
+						memberVO.setRank_no(rank_now+1); //等級加1
+						memberSvc.updateMember(memberVO); //更新資料
+						break;
+					case 290:
+						memberVO.setExp(exp_plus); //經驗加10
+						memberVO.setRank_no(rank_now+1); //等級加1
+						memberSvc.updateMember(memberVO); //更新資料
+						break;
+					case 390:
+						memberVO.setExp(exp_plus); //經驗加10
+						memberVO.setRank_no(rank_now+1); //等級加1
+						memberSvc.updateMember(memberVO); //更新資料
+						break;
+					default:
+						memberVO.setExp(exp_plus); //經驗加10
+						memberSvc.updateMember(memberVO); //更新資料
+					}
+					
+				}
+				
 
+				
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				//雅凰加的，為了推播通知
 				req.setAttribute("articleVO", articleVO);
