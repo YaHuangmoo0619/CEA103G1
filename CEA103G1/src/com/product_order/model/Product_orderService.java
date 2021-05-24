@@ -66,8 +66,8 @@ public class Product_orderService {
 		return dao.findByPrimaryKey(prod_ord_no);
 	}
 
-	public List<Product_orderVO> getAllByMbr() {
-		return dao.getAllByMbr();
+	public List<Product_orderVO> getByMbr(Integer mbr_no) {
+		return dao.getByMbr(mbr_no);
 	}
 	
 	public List<Product_orderVO> getAll() {

@@ -19,9 +19,10 @@
 	
 <title>所有商品 </title>
 
-<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 
 <style>
   table#table-1 {
@@ -60,14 +61,9 @@
 	<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 
 </head>
-<body bgcolor='white'>
-
-<table id="table-1">
-	<tr><td>
-		 <h3>所有商品 </h3>
-		 <h4><a href="${pageContext.request.contextPath}/front-end/product/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0"></a></h4>
-	</td></tr>
-</table>
+<body onload="connection()" bgcolor='white'>
+<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 
 <c:if test="${not empty errorMsgs}">
 	<font style="color:red">請修正以下錯誤:</font>
@@ -80,7 +76,8 @@
 
 <jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
 
-<section class="features8 cid-syeFkbGLP0" xmlns="http://www.w3.org/1999/html" id="features9-12">
+<section class="features8 cid-syeFkbGLP0">
+    <c:forEach var="productVO" items="${list}" >
     <div class="container">
         <div class="card">
             <div class="card-wrapper">
@@ -99,7 +96,7 @@
                                         <strong>商品名稱:</strong>
                                     </h6>
                                     <p class="mbr-text mbr-fonts-style display-7">
-                                        ${productVO.prod_cat_name}
+                                        ${productVO.prod_name}
                                     </p>
                                     <p>品牌資訊:${productVO.prod_bnd}</p>
                                     <p>${productVO.prod_info}</p>                                    
@@ -128,7 +125,38 @@
             </div>
         </div>      
     </div>
+    </c:forEach>
 </section>
+<%--
+<c:if test="${openModal!=null}">
+		<div class="modal" tabindex="-1" role="dialog" id="Modal">
+		     <div class="modal-dialog modal-lg" role="document"> 
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title">${productVO.prod_no}.&nbsp;${productVO.prod_name}&nbsp;${productVO.prod_stat==1?'↑上架↑':'↓下架↓'}</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
+		            </div>
+		            <div class="modal-body">
+ 		            ${productVOOne.prod_no} 
+						<jsp:include page="listOneProduct.jsp" />
+		            </div>
+		            <div class="modal-footer">
+		            	<form method="post" action="<%=request.getContextPath()%>/product/product.do" style="text-align:right;">
+							<input type="hidden" name="prod_no" value="${productVO.prod_no}">
+							<input type="hidden" name="action" value="getOne_For_Update">
+							<input type="submit" class="btn btn-secondary" value="修改">
+						</form>
+		            </div>
+		       </div>
+		   </div>
+		</div>
+
+<script>
+	$('#Modal').modal({
+	  	show :true
+	}); 
+</script>
+</c:if>--%>
 
 <%-- <%@ include file="page2.file" %> --%> 
 

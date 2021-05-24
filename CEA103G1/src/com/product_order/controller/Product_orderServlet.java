@@ -8,6 +8,9 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import com.member.model.MemberVO;
+import com.place_order.model.Place_OrderService;
+import com.place_order.model.Place_OrderVO;
 import com.product.model.ProductDAO;
 import com.product.model.ProductService;
 import com.product.model.ProductVO;
@@ -25,7 +28,10 @@ public class Product_orderServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		req.setCharacterEncoding("UTF-8");
+		res.setContentType("text/html; charset=Big5");
 		String action = req.getParameter("action");
+		MemberVO memberVO = (MemberVO) req.getSession().getAttribute("memberVO");
+		
 		
 		
 		if ("getOne_For_Display".equals(action)) { 
@@ -299,5 +305,65 @@ public class Product_orderServlet extends HttpServlet {
 			
 		}
 		//雅凰加的
+		
+		if ("getyMbr".equals(action)) { 
+			
+			Product_orderService product_orderSvc = new Product_orderService();
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+		
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				Integer prod_ord_no = new Integer(req.getParameter("prod_ord_no").trim());
+				Integer mbr_no = new Integer(memberVO.getMbr_no());
+				Timestamp prod_ord_time = java.sql.Timestamp.valueOf(req.getParameter("prod_ord_time").trim());
+				Integer prod_ord_stat = new Integer(req.getParameter("prod_ord_stat").trim());
+				Integer prod_ord_sum = new Integer(req.getParameter("prod_ord_sum").trim());
+				Integer used_pt = new Integer(req.getParameter("used_pt").trim());
+				Integer ship_meth = new Integer(req.getParameter("ship_meth").trim());
+				Integer pay_meth = new Integer(req.getParameter("pay_meth").trim());
+				String ship_cty = req.getParameter("ship_cty");
+				String ship_dist = req.getParameter("ship_dist");
+				String ship_add = req.getParameter("ship_add");
+				Integer receipt = new Integer(req.getParameter("receipt").trim());
+				String rmk = req.getParameter("rmk");
+				
+				Product_orderVO product_orderVO = new Product_orderVO();
+				product_orderVO.setProd_ord_no(prod_ord_no);
+				product_orderVO.setMbr_no(mbr_no);
+				product_orderVO.setProd_ord_time(prod_ord_time);
+				product_orderVO.setProd_ord_stat(prod_ord_stat);
+				product_orderVO.setProd_ord_sum(prod_ord_sum);
+				product_orderVO.setUsed_pt(used_pt);
+				product_orderVO.setShip_meth(ship_meth);
+				product_orderVO.setPay_meth(pay_meth);
+				product_orderVO.setShip_cty(ship_cty);
+				product_orderVO.setShip_dist(ship_dist);
+				product_orderVO.setReceipt(receipt);
+				product_orderVO.setRmk(rmk);
+								
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("product_orderVO", product_orderVO); 
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/product_order/update_Product_order_input.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				
+				/***************************2.開始修改資料*****************************************/
+				product_orderVO = product_orderSvc.updateProduct_order(prod_ord_no, mbr_no, prod_ord_time, prod_ord_stat, prod_ord_sum, used_pt, ship_meth, pay_meth, ship_cty, ship_dist, ship_add, receipt, rmk);
+				
+				/***************************3.修改完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("product_orderVO", product_orderVO);
+				String url = "/front-end/product_order/listOneProduct_order.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/product_order/update_Product_order_input.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 }
