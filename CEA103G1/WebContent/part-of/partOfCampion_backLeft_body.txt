@@ -20,7 +20,7 @@
 						<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
 						</c:if>
 						<c:if test="${authorityVO.fx_no == 5}">
-						<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li>
+						<li><a href="<%=request.getContextPath() %>/back-end/campsite_owner/listAllCampsite_owner.jsp">帳號管理</a></li>
 						</c:if>
 						<c:if test="${authorityVO.fx_no == 9}">
 						<li><a href="<%=request.getContextPath() %>/back-end/announcement/listAllAnnouncement.jsp">公告管理</a></li>
@@ -28,9 +28,9 @@
 						<c:if test="${authorityVO.fx_no == 6}">
 						<li><a href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">客服管理</a></li>
 						</c:if>
-						<c:if test="${authorityVO.fx_no == 7}">
-						<li><a href="">即時小幫手管理</a></li>
-						</c:if>
+<%-- 					<c:if test="${authorityVO.fx_no == 7}"> --%>
+<!-- 					<li><a href="">即時小幫手管理</a></li> -->
+<%-- 					</c:if> --%>
 						</c:forEach>
 						<li><a href="<%=request.getContextPath()%>/employee/employee.do?action=logout">登出</a></li>
 					</ul>

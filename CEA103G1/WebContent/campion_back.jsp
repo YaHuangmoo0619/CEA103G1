@@ -115,6 +115,12 @@ div.countBox {
 	border-radius: 5px;
 	background-color: #eee;
 	padding: 5px;
+	animation: showBox 3s;
+}
+@keyframes showBox
+{
+from{opacity:0;}
+to{opacity: 1;}
 }
 
 h5 {
@@ -162,7 +168,7 @@ p {
 						<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇管理</a></li>
 						</c:if>
 						<c:if test="${authorityVO.fx_no == 5}">
-						<li><a href="<%=request.getContextPath() %>/back-end/member_rank/select_page.jsp">帳號管理</a></li>
+						<li><a href="<%=request.getContextPath() %>/back-end/campsite_owner/listAllCampsite_owner.jsp">帳號管理</a></li>
 						</c:if>
 						<c:if test="${authorityVO.fx_no == 9}">
 						<li><a href="<%=request.getContextPath() %>/back-end/announcement/listAllAnnouncement.jsp">公告管理</a></li>
@@ -170,9 +176,9 @@ p {
 						<c:if test="${authorityVO.fx_no == 6}">
 						<li><a href="<%=request.getContextPath() %>/back-end/service_mail/listAllService_mail.jsp">客服管理</a></li>
 						</c:if>
-						<c:if test="${authorityVO.fx_no == 7}">
-						<li><a href="">即時小幫手管理</a></li>
-						</c:if>
+<%-- 						<c:if test="${authorityVO.fx_no == 7}"> --%>
+<!-- 						<li><a href="">即時小幫手管理</a></li> -->
+<%-- 						</c:if> --%>
 						</c:forEach>
 						<li><a href="<%=request.getContextPath()%>/employee/employee.do?action=logout">登出</a></li>
 					</ul>
@@ -196,7 +202,7 @@ p {
 					
 					<!-- 以下內容可以替換成自記查找出來的表格，或新增修改的畫面 -->
 						<div class="countBox">
-							<h5>用戶總數</h5>
+							<a href="<%=request.getContextPath() %>/back-end/campsite_owner/listAllCampsite_owner.jsp"><h5>用戶總數</h5></a>
 							<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
 							<p>${memberSvc.getAll().size()}位會員</p>
 							<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>
