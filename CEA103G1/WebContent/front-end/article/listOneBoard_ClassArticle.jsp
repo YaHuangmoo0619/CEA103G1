@@ -165,11 +165,15 @@ padding:0px 0px 0px 10px;
   font-family:微軟正黑體;
 }
 
+.board_name{
+width:120px;
+}
+
 /* -----------------------------以下為主欄css------------------------------ */
   div.main_content{
   	  top:60px;
   	  position:absolute;
-	  left:150px;
+	  left:200px;
 	  right:150px;
 	  padding:20px 20px 20px 20px;
 
@@ -217,7 +221,7 @@ overflow-y: auto;
 	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
 	</c:if>
 <!-- 	如果有登入的話但被ban的話 -->
-	<c:if test="${not empty memberVO && banned=0}">
+	<c:if test="${not empty memberVO && banned>0}">
 	<div class="write banned"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
 	</c:if>
 <!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	

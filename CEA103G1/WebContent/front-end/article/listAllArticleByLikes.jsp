@@ -10,14 +10,16 @@
 <%
 	Jedis jedis = new Jedis("localhost", 6379);
 	jedis.auth("123456");
+
+	
 	jedis.select(6);
+	
 %>
 
 
 <%
 	ArticleService articleSvc = new ArticleService();
-	List<ArticleVO> list = new ArrayList<>();
-	list = articleSvc.getAll_By_Likes();
+	List<ArticleVO> list = articleSvc.getAll_By_Likes();
 // 	Map<Integer,String> article_first_img_map = new HashMap<Integer,String>(); //這是一個存有「有首圖」的Map，key為該文章號碼，value為base64編碼
 // 	int start_index;
 // 	int end_index;
@@ -41,6 +43,7 @@
 		};
 	};
 	
+	
 	System.out.println(simple_art_cont.get("12"));
 	double max_page = Math.ceil(list.size()/5);
 	pageContext.setAttribute("list", list);
@@ -56,10 +59,10 @@
 
 <% 
 	MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+	Set<Integer> my_subscribe_board = new HashSet<>();
 	int ajax_mbr_no = 0;
 	long banned=0;
 	String banned_chinese="";
-	//如果memberVO不為空，代表他有登入，接著查詢他是否對這篇文章按過讚
 	if(memberVO!=null){
 		jedis.select(5);
 		//查詢是否有被ban的紀錄
@@ -77,8 +80,16 @@
 				banned_chinese = banned+"分鐘";
 			}
 		}
+		
 		ajax_mbr_no = memberVO.getMbr_no();
 		jedis.select(6);
+		for(String element : jedis.smembers("board:"+ajax_mbr_no+":subscribe")){ //取得我訂閱的看板list
+			if(element!=null && !element.equals("")){
+				my_subscribe_board.add(Integer.valueOf(element).intValue());
+			}
+			
+		}
+		
 	}
 	if(memberVO==null){
 		ajax_mbr_no=0;
@@ -86,6 +97,7 @@
 	pageContext.setAttribute("banned", banned);
 	pageContext.setAttribute("banned_chinese", banned_chinese);
 	pageContext.setAttribute("ajax_mbr_no", ajax_mbr_no);
+	pageContext.setAttribute("my_subscribe_board", my_subscribe_board);
 %>
 
 
@@ -104,10 +116,11 @@
 <%@ include file="/article_css/article_css.txt"%>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <link rel="icon" href="campionLogoIcon.png" type="image/png">
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.3/sweetalert2.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.3/sweetalert2.js" type="text/javascript"></script>
+    
+
 <style>
 html, body {
 	margin: 0;
@@ -141,7 +154,7 @@ padding:0px 0px 0px 10px;
 	display:inline-block;
 }
 .article_sort_parent{
-	padding:0px 0px 0px 60px;
+	padding:10px 0px 0px 60px;
 }
 /* -----------------------------以下為側欄css------------------------------ */
 #sidebar {
@@ -162,11 +175,15 @@ padding:0px 0px 0px 10px;
   font-family:微軟正黑體;
 }
 
+.board_name{
+width:120px;
+}
+
 /* -----------------------------以下為主欄css------------------------------ */
   div.main_content{
   	  top:60px;
   	  position:absolute;
-	  left:150px;
+	  left:200px;
 	  right:150px;
 	  padding:20px 20px 20px 20px;
 
@@ -209,12 +226,13 @@ overflow-y: auto;
 <body onload="connection()">
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	
+	
 <!-- 	如果有登入的話且沒被ban的話 -->
 	<c:if test="${not empty memberVO && banned==0}"> 
 	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
 	</c:if>
 <!-- 	如果有登入的話但被ban的話 -->
-	<c:if test="${not empty memberVO && banned=0}">
+	<c:if test="${not empty memberVO && banned>0}">
 	<div class="write banned"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
 	</c:if>
 <!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
@@ -229,11 +247,38 @@ overflow-y: auto;
   <div class="list">
 			<c:forEach var="board_classVO" items="${bd_list}">
 				<div class="item board board_name" ><a href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${board_classVO.bd_cl_no}"  style="color:white;">${board_classVO.bd_name}</a></div>
-				<div style="display:none">${board_classVO.bd_cl_no}</div>
+				<div class=this_bd_bl_no style="display:none">${board_classVO.bd_cl_no}</div>
+				
+				
 				<!-- 	如果有登入的話 -->
-				<c:if test="${not empty memberVO }"> 
+				<c:if test="${not empty memberVO }">
+				
+				
+				<!--    設一個變數subscribe_status表示我對這個看板的訂閱狀況 預設為0 (未訂閱) -->
+				
+				<c:set var="subscribe_status" value="0"></c:set> 
+				
+				<!--   遍歷我訂閱看板的list 看list中有沒有號碼等於這個看板的bd_cl_no -->
+				<c:set var = "testtest" value="${my_subscribe_board}"></c:set>
+				<c:forEach var="testtest" items="${testtest}">
+				<c:if test="${testtest==board_classVO.bd_cl_no}">
+				
+				
+				<!-- 如果有 那就放實心星星  並設一個參數按下可取消訂閱 -->
+				<div class="board cancel_subscribe"><img src="/CEA103G1/images/star.svg" width="24px" height="24px"></div>
+				<c:set var="subscribe_status" value="1"></c:set>
+				</c:if>
+				</c:forEach>
+
+				
+				<!--    有登入但我我沒有訂閱這個看板 那就放空心星星，可訂閱 -->
+				<c:if test="${subscribe_status==0}">
 				<div class="board subscribe"><img src="/CEA103G1/images/star-outline.svg" width="24px" height="24px"></div>
 				</c:if>
+				
+				</c:if> 
+
+				<!--    沒登入放空心星星，按下跳出登入確認的燈箱   -->
 					<c:if test="${empty memberVO }"> 
 				<div class="board to_login"><img src="/CEA103G1/images/star-outline.svg" width="24px" height="24px"></div>
 				</c:if>
@@ -307,7 +352,7 @@ overflow-y: auto;
                                 </div>
                             </div>
                             <h2 class="title_box">
-                                <a class="title" href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></h2>
+                                <div class="title">${articleVO.art_title}</div></h2>
                             <div class="post">
                                 <div class="post_0">
                                 <p>${simple_art_cont[articleVO.art_no]}</p>
@@ -345,8 +390,7 @@ overflow-y: auto;
 
 	<c:if test="${openModal!=null}">
 
-		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
-			aria-labelledby="basicModal" aria-hidden="true">
+		<div class="modal" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content" >
 					<div class="modal-body">
@@ -364,7 +408,7 @@ overflow-y: auto;
 
 
 		
-		<div class="modal fade" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -395,14 +439,22 @@ overflow-y: auto;
 jedis.close();
 %>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	  <!-- Infinite Scroll v3.0.3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.3/infinite-scroll.pkgd.min.js"></script>
-		
+	
 		
 
 	<script>
+
+    $(document).ready(function(){
+       $('.dropdown-toggle').dropdown()
+   });
+
+	
+	
 		let countMenu = 0;
 		function showMenu() {
 			countMenu++;
@@ -436,9 +488,9 @@ jedis.close();
 		}
 
 	$(".subscribe").click(function(){
-		var subscribe_bd_cl_no = $(this).prev().text();
+		var subscribe_bd_cl_no = $(this).prev(".this_bd_bl_no").text();
 		console.log(subscribe_bd_cl_no);
-		$.ajax({ //第一個ajax 負責傳到board_classServlet 新增某人對某看板的訂閱  需要的參數: mbr_no bd_cl_no 
+		$.ajax({ // 負責傳到board_classServlet 新增某人對某看板的訂閱  需要的參數: mbr_no bd_cl_no 
 			type : "POST",
 			url : "http://localhost:8081/CEA103G1/board_class/board_class.do",
 			data : {action: "subscribe",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,bd_cl_no:subscribe_bd_cl_no},
@@ -446,6 +498,22 @@ jedis.close();
 				alert("新增"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對看板"+subscribe_bd_cl_no+"的訂閱成功");
 			}
 		});
+		window.location.reload();
+ 	})
+ 	
+ 	
+ 		$(".cancel_subscribe").click(function(){
+		var subscribe_bd_cl_no = $(this).prev(".this_bd_bl_no").text();
+		console.log(subscribe_bd_cl_no);
+		$.ajax({ // 負責傳到board_classServlet 取消某人對某看板的訂閱  需要的參數: mbr_no bd_cl_no 
+			type : "POST",
+			url : "http://localhost:8081/CEA103G1/board_class/board_class.do",
+			data : {action: "cancel_subscribe",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,bd_cl_no:subscribe_bd_cl_no},
+			success : function(data) {
+				alert("取消"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對看板"+subscribe_bd_cl_no+"的訂閱成功");
+			}
+		});
+		window.location.reload();
  	})
 
 
@@ -477,7 +545,8 @@ jedis.close();
   })
   
   
-  $(".banned").click(function(){
+  
+ $(".banned").click(function(){
 	 swal({
          title: "由於觸犯板規，您已被禁發文章！",
          text: "處分時間尚餘:"+"${banned_chinese}"+"，3秒後自動關閉視窗",
@@ -491,7 +560,7 @@ jedis.close();
              }
          }
      )
- }); 
+ });
 
   
   
@@ -535,6 +604,7 @@ jedis.close();
 			let sendNotify = document.getElementById('sendNotify');
 			websocket.send(sendNotify.innerText);
 		}
+		
 		
 </script>
   <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->

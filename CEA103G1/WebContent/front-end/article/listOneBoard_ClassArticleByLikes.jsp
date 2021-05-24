@@ -166,11 +166,15 @@ padding:0px 0px 0px 10px;
   font-family:微軟正黑體;
 }
 
+.board_name{
+width:120px;
+}
+
 /* -----------------------------以下為主欄css------------------------------ */
   div.main_content{
   	  top:60px;
   	  position:absolute;
-	  left:150px;
+	  left:200px;
 	  right:150px;
 	  padding:20px 20px 20px 20px;
 
