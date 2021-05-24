@@ -142,11 +142,6 @@ tr {
 /* 	border-top: 1px solid #eee; */
 	border-bottom: 2px solid #eee;
 }
-
-tr:hover {
-	box-shadow: 0 1px 5px 0 #4e5452 inset;
-	cursor: pointer;
-}
 </style>
 
 </head>

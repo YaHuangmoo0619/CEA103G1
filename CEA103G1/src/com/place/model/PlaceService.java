@@ -11,7 +11,7 @@ public class PlaceService {
 	}
 
 	public PlaceVO addPlace(Integer camp_no, String plc_name, Integer ppl, Integer max_ppl, Integer pc_wkdy,
-			Integer pc_wknd, Integer open_stat, Integer plc_stat) {
+			Integer pc_wknd) {
 
 		PlaceVO placeVO = new PlaceVO();
 		placeVO.setCamp_no(camp_no);
@@ -20,8 +20,6 @@ public class PlaceService {
 		placeVO.setMax_ppl(max_ppl);
 		placeVO.setPc_wkdy(pc_wkdy);
 		placeVO.setPc_wknd(pc_wknd);
-		placeVO.setOpen_stat(open_stat);
-		placeVO.setPlc_stat(plc_stat);
 		dao.insert(placeVO);
 
 		return placeVO;

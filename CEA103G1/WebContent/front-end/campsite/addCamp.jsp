@@ -86,8 +86,6 @@ span {
 				<%@ include file="/part-of/partOfCampion_COwnerLeft_body.txt"%></div>
 			<div class="right col-9">
 				<h3>刊登營區</h3>
-				<p>${campVO.operate_Date}</p>
-				<p>${campVO.operate_Date}</p>
 				<%-- 錯誤表列 --%>
 				<c:if test="${not empty errorMsgs}">
 					<font style="color: red">請修正以下錯誤:</font>
