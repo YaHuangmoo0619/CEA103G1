@@ -49,7 +49,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 		private static final String SHOW = 
 				"UPDATE ARTICLE set art_stat = 0 where art_no=?";
 		private static final String UPDATE = 
-				"UPDATE ARTICLE set bd_cl_no=?, mbr_no=?, art_rel_time=? ,art_title=? ,art_cont=? ,likes=? ,art_stat=?, replies=? art_first_img=? where art_no = ?";
+				"UPDATE ARTICLE set bd_cl_no=?, mbr_no=?, art_rel_time=? ,art_title=? ,art_cont=? ,likes=? ,art_stat=?, replies=? ,art_first_img = ? where art_no = ?";
 		private static final String PLUS_LIKE = 
 				"UPDATE ARTICLE set Likes = Likes + 1 where art_no = ?";
 		private static final String MINUS_LIKE = 
@@ -146,6 +146,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
+			
 			pstmt.setInt(1, articleVO.getBd_cl_no());
 			pstmt.setInt(2, articleVO.getMbr_no());
 			pstmt.setTimestamp(3, articleVO.getArt_rel_time());
@@ -156,7 +157,9 @@ public class ArticleDAO implements ArticleDAO_Interface{
 			pstmt.setInt(8, articleVO.getReplies());
 			System.out.println("我來到這:"+articleVO.getReplies());
 			pstmt.setString(9, articleVO.getArt_first_img());
+			System.out.println("我來到這:"+articleVO.getArt_first_img());
 			pstmt.setInt(10, articleVO.getArt_no());
+			System.out.println("我來到這:"+articleVO.getArt_no());
 			pstmt.executeUpdate();
 			
 			

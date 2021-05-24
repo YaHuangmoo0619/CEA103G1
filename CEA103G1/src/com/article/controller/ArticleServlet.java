@@ -205,110 +205,7 @@ public class ArticleServlet extends HttpServlet {
 			}
 		}
 
-//		if ("update".equals(action)) { // 來自update_article_input.jsp的請求
-//
-//			List<String> errorMsgs = new LinkedList<String>();
-//			// Store this set in the request scope, in case we need to
-//			// send the ErrorPage view.
-//			req.setAttribute("errorMsgs", errorMsgs);
-//
-//			try {
-//				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
-//
-//				Integer art_no = new Integer(req.getParameter("art_no").trim());
-////				System.out.println("art_no:" + art_no);
-//
-//				Integer bd_cl_no = new Integer(req.getParameter("bd_cl_no").trim());
-////				System.out.println("bd_cl_no" + bd_cl_no);
-//
-//				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
-//				System.out.println("mbr_no:" + mbr_no);
-//
-//				Timestamp art_rel_time = new Timestamp(System.currentTimeMillis());
-//				art_rel_time = Timestamp.valueOf(req.getParameter("art_rel_time"));
-//				System.out.println("art_rel_time:" + art_rel_time);
-//
-//				String art_title = req.getParameter("art_title");
-//				if (art_title == null || art_title.trim().length() == 0) {
-//					errorMsgs.add("文章標題: 請勿空白");
-//				} 
-////					else if (!art_title.trim().matches(art_titleReg)) { // 以下練習正則(規)表示式(regular-expression)
-////					errorMsgs.add("文章標題: 長度必須在2到30之間");
-////				}
-////				System.out.println(art_title);
-//
-//				String art_cont = req.getParameter("art_cont");
-//				System.out.println("art_cont:" + art_cont);
-//				if (art_cont == null || art_cont.trim().length() == 0) {
-//					errorMsgs.add("文章內容: 請勿空白");
-//				}
-//
-////				System.out.println(art_cont);
-//
-//				Integer likes =  new Integer(req.getParameter("likes").trim());
-//				System.out.println("likes:" + likes);
-//
-//				Integer art_stat =  new Integer(req.getParameter("art_stat").trim());
-//
-//
-////				System.out.println(art_stat);
-//
-//				Integer replies = new Integer(req.getParameter("replies").trim());
-////				System.out.println(replies);
-//				String art_first_img=null;
-//				
-//				ArticleVO articleVO = new ArticleVO();
-//				articleVO.setArt_no(art_no);
-//				articleVO.setBd_cl_no(bd_cl_no);
-//				articleVO.setMbr_no(mbr_no);
-//				articleVO.setArt_rel_time(art_rel_time);
-//				articleVO.setArt_title(art_title);
-//				articleVO.setArt_cont(art_cont);
-//				articleVO.setLikes(likes);
-//				articleVO.setArt_stat(art_stat);
-//				articleVO.setReplies(replies);
-//				
-//				
-//				int begin;
-//				int end;
-//				String base64;
-//				if(art_cont.indexOf("<p><img")>=0) {
-//					begin = art_cont.indexOf("<p><img");
-//					end   = art_cont.indexOf("</p>",begin)+4;
-//					base64 = art_cont.substring(begin, end);
-//					articleVO.setArt_first_img(base64);
-//					
-//				}else {
-//					articleVO.setArt_first_img(null);
-//				}
-//				
-//
-//				// Send the use back to the form, if there were errors
-//				if (!errorMsgs.isEmpty()) {
-//					req.setAttribute("articleVO", articleVO); // 含有輸入格式錯誤的articleVO物件,也存入req
-//					RequestDispatcher failureView = req
-//							.getRequestDispatcher("/front-end/article/update_article_input.jsp");
-//					failureView.forward(req, res);
-//					return; // 程式中斷
-//				}
-//
-//				/*************************** 2.開始修改資料 *****************************************/
-//				ArticleService articleSvc = new ArticleService();
-//				articleVO = articleSvc.updateArticle(art_no, bd_cl_no, mbr_no, art_rel_time, art_title, art_cont, likes, art_stat, replies, art_first_img);
-//
-//				/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
-//				req.setAttribute("articleVO", articleVO); // 資料庫update成功後,正確的的articleVO物件,存入req
-//				String url = "/front-end/article/listAllArticle.jsp";
-//				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneArticle.jsp
-//				successView.forward(req, res);
-//
-//				/*************************** 其他可能的錯誤處理 *************************************/
-//			} catch (Exception e) {
-//				errorMsgs.add("修改資料失敗:" + e.getMessage());
-//				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/article/update_article_input.jsp");
-//				failureView.forward(req, res);
-//			}
-//		}
+
 		
 		
 		
@@ -386,13 +283,15 @@ public class ArticleServlet extends HttpServlet {
 				String reg = "[w][i][d][t][h][:] {1}[1-9]{1}[0-9]{1,}[p][x]";
 				if(art_cont.indexOf("<p><img")>=0) {
 					begin = art_cont.indexOf("<p><img");
-					end   = art_cont.indexOf("</p>",begin)+4;
+					end   = art_cont.indexOf("\">",begin)+2;
 					art_first_img = art_cont.substring(begin, end);
 					art_first_img = art_first_img.replaceAll(reg, "width: 200px");
+					String end_p = "</p>";
+					art_first_img = art_first_img + end_p;
 					articleVO.setArt_first_img(art_first_img);
 					System.out.println("圖片的base64"+art_first_img);
 				}else {
-					art_first_img = null;
+					art_first_img = "";
 					articleVO.setArt_first_img(art_first_img);
 //					System.out.println("我沒圖");
 				}
@@ -560,8 +459,10 @@ public class ArticleServlet extends HttpServlet {
 				String reg = "[w][i][d][t][h][:] {1}[1-9]{1}[0-9]{1,}[p][x]";
 				if(art_cont.indexOf("<p><img")>=0) {
 					begin = art_cont.indexOf("<p><img");
-					end   = art_cont.indexOf("</p>",begin)+4;
+					end   = art_cont.indexOf("\">",begin)+2;
 					art_first_img = art_cont.substring(begin, end);
+					String end_p = "</p>";
+					art_first_img = art_first_img + end_p;
 					art_first_img = art_first_img.replaceAll(reg, "width: 200px");
 					articleVO.setArt_first_img(art_first_img);
 					System.out.println("圖片的base64"+art_first_img);
