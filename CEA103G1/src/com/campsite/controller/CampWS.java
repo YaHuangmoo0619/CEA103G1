@@ -129,7 +129,7 @@ System.out.println(receiver + ":" + forDisconnect.get(campInfo).get(receiver));
 			System.out.println("我有執行1");
 			forDisPlc.remove(plc_no);
 			System.out.println("我有執行2");
-			HashMap<Session, Set<String>> forDisSession = new HashMap<Session, Set<String>>();
+			HashMap<Session, Set<String>> forDisSession = forDisconnect.get(campInfo);
 			forDisSession.put(session, forDisPlc);
 			forDisconnect.put(campInfo, forDisSession);
 			System.out.println("離線用" + forDisconnect.get(campInfo).get(session));
@@ -164,7 +164,7 @@ System.out.println(receiver + ":" + forDisconnect.get(campInfo).get(receiver));
 			} else {
 				forDisPlc.add(plc_no);
 			}
-			HashMap<Session, Set<String>> forDisSession = new HashMap<Session, Set<String>>();
+			HashMap<Session, Set<String>> forDisSession = forDisconnect.get(campInfo);
 			forDisSession.put(session, forDisPlc);
 			forDisconnect.put(campInfo, forDisSession);
 			System.out.println("離線用" + forDisconnect.get(campInfo).get(session));
