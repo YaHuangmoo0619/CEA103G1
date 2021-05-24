@@ -183,7 +183,7 @@ width:120px;
   div.main_content{
   	  top:60px;
   	  position:absolute;
-	  left:150px;
+	  left:200px;
 	  right:150px;
 	  padding:20px 20px 20px 20px;
 
@@ -352,7 +352,7 @@ overflow-y: auto;
                                 </div>
                             </div>
                             <h2 class="title_box">
-                                <a class="title" href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></h2>
+                                <div class="title">${articleVO.art_title}</div></h2>
                             <div class="post">
                                 <div class="post_0">
                                 <p>${simple_art_cont[articleVO.art_no]}</p>
@@ -390,8 +390,7 @@ overflow-y: auto;
 
 	<c:if test="${openModal!=null}">
 
-		<div class="modal" id="basicModal" tabindex="-1" role="dialog"
-			aria-labelledby="basicModal" aria-hidden="true">
+		<div class="modal" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content" >
 					<div class="modal-body">

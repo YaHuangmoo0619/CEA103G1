@@ -116,7 +116,7 @@ margin: 20px 20px 20px 20px;
 </head>
 <body>
 
-		 <div class="board_manage">看板管理</div>
+<div class="board_manage">看板管理</div>
 
 
 

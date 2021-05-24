@@ -24,47 +24,90 @@
 <title>列出所有文章</title>
 
 <style>
-table#table-1 {
-	background-color: #CCCCFF;
-	border: 2px solid black;
-	text-align: center;
+body {
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.25;
 }
 
-table#table-1 h4 {
-	color: red;
-	display: block;
-	margin-bottom: 1px;
-}
-
-h4 {
-	color: blue;
-	display: inline;
-}
-</style>
-
-<style>
 table {
-	width: 800px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
 }
 
-table, th, td {
-	border: 1px solid #CCCCFF;
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
 }
 
-th, td {
-	padding: 5px;
-	text-align: center;
+table tr {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: .35em;
 }
 
-a {
-	text-decoration: none
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
 }
 
-a:hover {
-	text-decoration: none
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
 }
 </style>
 
@@ -73,17 +116,8 @@ a:hover {
 
 
 
-	<table id="table-1">
-		<tr>
-			<td>
-				<h3>列出所有文章</h3>
-				<h4>
-					<a href="/CEA103G1/back-end/article/select_page.jsp"><img src="/CEA103G1/images/Campion.png"
-						width="100" height="100" border="0"></a>
-				</h4>
-			</td>
-		</tr>
-	</table>
+				<h3>文章管理</h3>
+
 
 	<%-- 錯誤表列 --%>
 	<c:if test="${not empty errorMsgs}">
@@ -99,12 +133,11 @@ a:hover {
 		<tr>
 			<th>文章編號</th>
 			<th>看板</th>
-			<th>會員編號</th>
+			<th>作者</th>
 			<th>發表時間</th>
 			<th>文章標題</th>
 			<th>讚數</th>
 			<th>文章狀態</th>
-			<th>修改</th>
 			<th>刪除</th>
 		</tr>
 		<%@ include file="pageforhome.file"%>
@@ -132,19 +165,13 @@ a:hover {
 					<FORM METHOD="post"
 						ACTION="<%=request.getContextPath()%>/article/article.do"
 						style="margin-bottom: 0px;">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="art_no" value="${articleVO.art_no}"> <input
-							type="hidden" name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/article/article.do"
-						style="margin-bottom: 0px;">
 						<input type="submit" value="刪除"> <input type="hidden"
 							name="art_no" value="${articleVO.art_no}"> <input
 							type="hidden" name="action" value="delete">
 					</FORM>
+				</td>
+				<td>
+					<input type="button" value="設為公告">
 				</td>
 			</tr>
 		</c:forEach>

@@ -12,57 +12,24 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <title>文章留言資料修改 - update_article_reply_input.jsp 前台</title>
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
-
-<style>
-  table {
-	width: 450px;
-	background-color: white;
-	margin-top: 1px;
-	margin-bottom: 1px;
-  }
-  table, th, td {
-    border: 0px solid #CCCCFF;
-  }
-  th, td {
-    padding: 1px;
-  }
-  div{
-  width:1000px;
-  height:500px;
-  border:3px;
-  margin:0px auto;
-  }
-  
-
-</style>
-
+<!-- include summernote css/js -->
+<link
+	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+    <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+    <link rel="mask-icon" type="" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
 </head>
 <body bgcolor='white'>
 
-<table id="table-1">
-	<tr><td>
-		 <h3>文章留言資料修改 - update_article_reply_input.jsp 前台</h3>
- <h4><a href="/CEA103G1/back-end/article_reply/select_page.jsp"><img src="/CEA103G1/images/Campion.png"
-						width="100" height="100" border="0"></a></h4>
-	</td></tr>
-</table>
 
 <h3>資料修改:</h3>
 
@@ -77,26 +44,17 @@
 </c:if>
 
 <FORM METHOD="post" ACTION="/CEA103G1/article_reply/article_reply.do" name="form1">
-<table>
+
 
 	
-	<tr>
-		<td>會員編號:</td>
-		<td><%=article_replyVO.getMbr_no()%></td>
-	</tr>
-
-	<tr>
-		<td>發表時間:</td>
-		<td><%=article_replyVO.getRep_time()%></td>
-	</tr>
-
-	<tr>
-		<td>留言內容:</td>
-		<td><input type="TEXT" name="rep_cont" size="45" value="<%=article_replyVO.getRep_cont()%>" /></td>	
-	</tr>
+<textarea id="rep_cont" name="rep_cont"><%=(article_replyVO == null) ? "" : article_replyVO.getRep_cont()%></textarea>
 
 
-</table>
+<%-- 		<input type="TEXT" name="rep_cont" size="45" value="<%=article_replyVO.getRep_cont()%>" />	 --%>
+	
+
+
+
 <br>
 
 <input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>"> <!--接收原送出修改的來源網頁路徑後,再送給Controller準備轉交之用-->
@@ -109,8 +67,25 @@
 <input type="hidden" name="action" value="update">
 <input type="submit" value="送出修改"></FORM>
 
-<br>送出修改的來源網頁路徑:<br><b>
-   <font color=blue>request.getParameter("requestURL"):</font> <%=request.getParameter("requestURL")%><br>
-</body>
 
+
+<script>
+$('#rep_cont').summernote(
+		{
+			placeholder : '請輸入文字',
+			tabsize : 2,
+			height : 300,
+			maxHeight: 300, //固定，不寫的話就可隨意拉開
+			toolbar : [
+			// [groupName, [list of button]]
+			[ 'style', [ 'bold', 'italic', 'underline' ] ],
+					[ 'fontsize', [ 'fontsize' ] ],
+					[ 'color', [ 'color' ] ],
+					[ 'para', [ 'paragraph' ] ],
+					[ 'insert', [ 'picture' ] ], ]
+		});
+</script>
+
+
+</body>
 </html>

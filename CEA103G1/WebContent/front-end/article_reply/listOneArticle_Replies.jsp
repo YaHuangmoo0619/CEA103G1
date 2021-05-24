@@ -57,7 +57,7 @@ display:block;
 <c:forEach var="article_replyVO" items="${list}">
 <div class=reply id=reply<%=floor%>>
 <c:if test="${article_replyVO.getRep_stat() == 0}">
-
+<div class=art_rep_no style="display:none">${article_replyVO.getArt_rep_no()}</div>
 <div class=top>
 			
 		<c:forEach var="member" items="${memberDAO.all}">
@@ -68,34 +68,54 @@ display:block;
         <c:if test="${member2.mbr_no==article_replyVO.mbr_no}"><div class="mbr_no test">${member2.acc}</div></c:if>
         </c:forEach>
         <div class="floorandtime test">
-        <div class="floor">B<%=floor%></div>
+        <div class="floor"><%=floor%>樓</div>
 		<div class="rep_time"><fmt:formatDate value="${article_replyVO.rep_time}" pattern="MM月dd日  HH:mm"/></div>
 		</div>
 		<div class=likes>${article_replyVO.likes}</div>
 		</div>
 		<div class=rep_cont>${article_replyVO.rep_cont}</div>
 		
-
-        <c:if test="${memberVO.mbr_no==article_replyVO.mbr_no}">
-        		<div class=modify>
-			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article_reply/article_reply.do" style="margin-bottom: 0px;">
-				<input type="submit" value="修改">
-				<input type="hidden" name="art_rep_no" value="${article_replyVO.art_rep_no}">
-				<input type="hidden" name="action" value="getOne_For_Update">
-				<input type="hidden" name="requestURL"	value="<%=request.getParameter("requestURL")%>">
-			</FORM>
-		</div>
-		
-		<div class=delete>					
-		<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article_reply/article_reply.do" style="margin-bottom: 0px;">
-		<input type="submit" value="刪除"> <input type="hidden" name="art_rep_no" value="${article_replyVO.art_rep_no}">
-		<input type="hidden" name="action" value="hide">
-		</FORM>
-		</div>
-        
-        </c:if>
+			
+			
+		<!-- 有登入的人才看的到 -->
+<c:if test="${not empty memberVO}">	
+		<div class="dropdown">
+	<img class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="/CEA103G1/images/threedots.svg" width="30px" height="30px">
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+  					<!-- 		如果有登入且該篇留言作者就是自己 那可以執行刪除及修改文章 -->
+   	<c:if test="${not empty memberVO &&(memberVO.mbr_no==article_replyVO.mbr_no)}">
+   	<div style="display:none">${article_replyVO.art_rep_no}</div>
+   	<div style="display:none">getOne_For_Update</div> 
+    <a class="dropdown-item modify" href="#">修改留言</a>
+    <div style="display:none">${article_replyVO.art_rep_no}</div>
+   	<div style="display:none">hide</div>
+    <a class="dropdown-item hide" href="#">刪除留言</a>
+    </c:if>
+    <c:if test="${not empty memberVO &&(memberVO.mbr_no!=article_replyVO.mbr_no)}">
+    <a class="dropdown-item reply_a" href="#">檢舉留言</a>
+    </c:if>
+  </div>
+</div>
+</c:if>	
 			
 	</c:if>
+	<!-- 遭到刪除的文章 -->
+<c:if test="${article_replyVO.getRep_stat() == 1}">
+<div class=art_rep_no style="display:none">${article_replyVO.getArt_rep_no()}</div>
+<div class=top>
+			
+		<div class=sticker><img class = reply_author src="/CEA103G1/images/profile.png"></div>
+
+        <div class="mbr_no test">這則回應已被刪除</div>
+
+        <div class="floorandtime test">
+        <div class="floor"><%=floor%>樓</div>
+		<div class="rep_time"><fmt:formatDate value="${article_replyVO.rep_time}" pattern="MM月dd日  HH:mm"/></div>
+		</div>
+		</div>
+		<div class=rep_cont>已經刪除的內容就像變了心的女友一樣，錯過是無法再相見的！</div>
+		</c:if>
+	
 			<div style="display:none"><%=floor++%></div>		
 	</div>		
 		</c:forEach>
@@ -121,16 +141,18 @@ display:block;
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	<script>
 	$('.oneReply').click(function(){
-		var floor_html = $(this).html(); //抓到你要tag的人的html 例如 #B1 
+		var floor_html = $(this).html(); //抓到你要tag的人的html 例如 #B1
+		console.log("floor_html:"+floor_html);
 		var Array_Split = floor_html.split("B"); //用B切割  獲得你要的是幾樓  例如「1」
-// 		alert("現在被點到的是幾樓:"+Array_Split[1]); //test
-		var real_rep_no_wait_split = $('#reply'+Array_Split[1]).children("div.art_rep_no").html(); //獲得1樓的留言編號，等等才能進行ajax查詢
-		var real_rep_no_split = real_rep_no_wait_split.split(":");
+		alert("現在被點到的是幾樓:"+Array_Split[1]); //test
+		var real_rep_no_wait_split = $('#reply'+Array_Split[1]).children(".art_rep_no").html(); //獲得1樓的留言編號，等等才能進行ajax查詢
+		alert("real_rep_no_wait_split:"+real_rep_no_wait_split);
+// 		var real_rep_no_split = real_rep_no_wait_split.split(":");
 // 		alert("它的留言編號為:"+real_rep_no_split[1]); //抓到想要的人的留言編號 test
 		$.ajax({ //負責傳到article_replyServlet 
 			type : "POST",
 			url : "http://localhost:8081/CEA103G1/article_reply/article_reply.do",
-			data : {action: "getOneReply_For_Display_front",art_rep_no:real_rep_no_split[1]}, //參數傳遞 
+			data : {action: "getOneReply_For_Display_front",art_rep_no:real_rep_no_wait_split}, //參數傳遞 
 			success : function(data) {
 				$('#rep_cont_div').html(data); //把資料放到modal中
 				$("#test2").modal('show'); //讓modal秀出
@@ -141,7 +163,25 @@ display:block;
 		}); 
 	});
 	
-
+	$(".modify").click(function(){
+		//open modify modal
+	})
+	
+	$(".hide").click(function(){
+		var action=$(this).prev().text();
+		console.log("action:"+action);
+		var art_rep_no=$(this).prev().prev().text();
+		console.log("art_rep_no:"+art_rep_no);
+		// ajax to sever >> hide
+		$.ajax({ //負責傳到article_replyServlet 
+			type : "POST",
+			url : "http://localhost:8081/CEA103G1/article_reply/article_reply.do",
+			data : {action: action,art_rep_no:art_rep_no}, //參數傳遞 
+			success : function(data) {
+				alert("刪除留言成功");
+			}
+		}); 
+	})
 	</script>
 </body>
 </html>

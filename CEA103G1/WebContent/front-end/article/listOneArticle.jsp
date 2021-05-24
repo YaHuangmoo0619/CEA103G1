@@ -149,6 +149,7 @@
 	padding: 0px 50px 0px 50px;
 	/* background:#ff7d40; */
 	}
+
 	
 	.headshotAndAuthor{
 	padding: 0px 0px 10px 0px;
@@ -202,12 +203,21 @@
 	.dropdown{
 	padding-left:500px;
 	}
+	
+	
+/* 	.tool div{ */
+/* 	display:inline-block */
+/* 	} */
+
+
+	
+	
 </style>
 
 </head>
 <body bgcolor='white'>
 
-<div class=container>
+<div class="container custom-container-width">
 
 		<div class="main_div headshotAndAuthor">
 		<div class="headshot">
@@ -226,29 +236,29 @@
 		</c:if>
 		</div>
 
-
-	
+<!-- 有登入的人才看的到 -->
+<c:if test="${not empty memberVO}">	
 		<div class="dropdown">
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    選項
-  </a>
+<!--   <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
 
+<!--   </a> -->
+	<img class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="/CEA103G1/images/threedots.svg" width="30px" height="30px">
   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
+  					<!-- 		如果有登入且該篇文章作者就是自己 那可以執行刪除及修改文章 -->
+   	<c:if test="${not empty memberVO &&(articleVO.mbr_no==memberVO.mbr_no)}"> 
+    <a class="dropdown-item" href="<%=request.getContextPath()%>/article/article.do?action=getOne_For_Update&art_no=${articleVO.art_no}">修改文章</a>
+    <a class="dropdown-item" href="<%=request.getContextPath()%>/article/article.do?action=hide&art_no=${articleVO.art_no}">刪除文章</a>
+    </c:if>
+    <c:if test="${not empty memberVO &&(articleVO.mbr_no!=memberVO.mbr_no)}">
+    <a class="dropdown-item reply_a" href="#">檢舉文章</a>
+    </c:if>
   </div>
 </div>
-
-
-
+</c:if>
 
 
 		<div class=title><h2><%=articleVO.getArt_title()%></h2></div>
-		
-		
-
-		
+				
 		<div>
 		
 		<div class="bd bdAandReltime">
@@ -260,24 +270,7 @@
 		</div>
 		<div class=cont><%=articleVO.getArt_cont().replaceAll("\n","<br>")%></div>
 		
-					<!-- 		如果有登入且該篇文章作者就是自己 那可以執行刪除及修改文章 -->
-   							<c:if test="${not empty memberVO &&(articleVO.mbr_no==memberVO.mbr_no)}"> 
-								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article/article.do" style="margin-bottom: 0px;">
-									<input type="submit" value="修改文章"> <input type="hidden" name="art_no" value="${articleVO.art_no}"> 
-									<input type="hidden" name="action" value="getOne_For_Update">
-								</FORM>
-							</c:if>
 
-					<c:if test="${not empty memberVO &&(articleVO.mbr_no==memberVO.mbr_no)}">
-						<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article/article.do" style="margin-bottom: 0px;">
-							<input type="submit" value="刪除文章"> 
-							<input type="hidden" name="art_no" value="${articleVO.art_no}"> <input type="hidden" name="action" value="hide">
-						</FORM>
-					</c:if>
-	
-		
-					<!-- 		如果有登入且該篇文章作者不是自己 那可以執行檢舉文章 -->
-					<button class=reply>檢舉文章</button>
 
 <div class=heart_group>
 <div><img class=heart_for_like src="/CEA103G1/images/heart_for_like.svg" ></div>
@@ -448,6 +441,7 @@
 
 </div>
 
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
@@ -579,7 +573,7 @@
   
   
 
-      $(".reply").click(function(){
+      $(".reply_a").click(function(){
     	$('#reply_modal').modal('show');
   })
   
