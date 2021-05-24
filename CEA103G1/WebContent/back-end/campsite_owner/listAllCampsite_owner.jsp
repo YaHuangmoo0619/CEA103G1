@@ -3,11 +3,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.util.*"%>
-<%@ page import="com.product.model.*"%>
-<%@ page import="com.product_order.model.*"%>
+<%@ page import="com.campsite_owner.model.*"%>
 <%@ page import="com.employee.model.*"%>
-<jsp:useBean id="product_pictureSvc" class="com.product_picture.model.Product_pictureService"/>
-<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
+<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>
 <% 
 	EmployeeVO employeeVO = (EmployeeVO)session.getAttribute("employeeVO");
 	if(employeeVO == null){
@@ -16,13 +14,6 @@
 	}
 %>
 
-<%
-    Product_orderService product_orderSvc = new Product_orderService();
-    List<Product_orderVO> list = product_orderSvc.getAll();
-    pageContext.setAttribute("list",list);
-%>
-
-
 <html>
 <head>
 <meta charset="UTF-8">
@@ -30,7 +21,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<title>所有商品列表 </title>
+<title>營主帳號管理列表 </title>
 <%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -73,6 +64,20 @@ input.confirm {
 input.confirm:hover {
 	background-color: #4B7F52;
 	color: #80c344;
+	cursor: pointer;
+}
+
+input.confirmStop{
+	background-color: red;
+	color: white;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+input.confirmStop:hover{
+	background-color: pink;
+	color: red;
 	cursor: pointer;
 }
 
@@ -172,7 +177,7 @@ tr {
 
 tr:hover {
 	box-shadow: 0 1px 5px 0 #4e5452 inset;
- 	cursor: pointer;
+/*  	cursor: pointer; */
 }
 
 img.inDiv{
@@ -191,10 +196,17 @@ div.L{
 	display:inline-block;
 	width:6em;
 	font-weight: 555;
+	margin-bottom: 0.5em;
 }
 div.R{
 	display:inline-block;
 	width:4em;
+}
+div.number{
+	text-align: center;
+}
+div.address{
+	width:10em;
 }
 div.inTr{
 	display:inline-block;
@@ -204,6 +216,9 @@ label.spotlight{
 	padding: 2px 5px;
 	border-radius: 5px;
 	color: #fff;
+}
+textarea{
+	resize: none;
 }
 </style>
 
@@ -217,8 +232,8 @@ label.spotlight{
 			<div class="left col-3">
 				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 			<div class="right col-9">
-		 <h3>商品訂單列表&nbsp;
-			<a class="content" href="<%=request.getContextPath()%>/back-end/product/listAllProduct.jsp">回到商品列表</a>
+		 <h3>營主帳號管理列表 &nbsp;
+			<a class="content" href="<%=request.getContextPath()%>/back-end/member/listAllMember.jsp">會員帳號管理列表</a>
 			<a href="#focus" class="content">看更新</a>
 		</h3>
 
@@ -235,102 +250,77 @@ label.spotlight{
 
 <table>
 
-	<c:forEach var="product_orderVO" items="${list}" >
-		<tr ${product_orderVO.prod_ord_no==param.prod_ord_no ? 'bgcolor=#eee' : '' }>
+	<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}" >
+		<tr ${campsite_ownerVO.cso_no==param.cso_no ? 'bgcolor=#eee' : '' }>
 			<td style="width:5%;">
-				${product_orderVO.prod_ord_no}
-				${product_orderVO.prod_ord_no==param.prod_ord_no ? '<a id="focus"></a>' : '' }
+				<a class="content" href="<%=request.getContextPath()%>/campsite_owner/campsite_owner.do?action=getOne_For_Update_Back&cso_no=${campsite_ownerVO.cso_no}">${campsite_ownerVO.cso_no}</a>
+				${campsite_ownerVO.cso_no==param.cso_no ? '<a id="focus"></a>' : '' }
 			</td>
 			<td style="width:35%;">
 				<div class="inTr">
-					<div class="L">會員編號:</div>
-					<div class="R">${product_orderVO.mbr_no}</div>
+					<div class="L">營主姓名:</div>
+					<div class="R">${campsite_ownerVO.name}</div>
 				</div>
 				<div class="inTr">
-					<div class="L">訂單總金額:</div>
-					<div class="R">${product_orderVO.prod_ord_sum}元</div>
+					<div class="L">帳號:</div>
+					<div class="R">${campsite_ownerVO.acc}</div>
+				</div>
+			<td style="width:70%;">
+				<div class="inTr">
+					<div class="L">手機:</div>
+					<div class="R number">${campsite_ownerVO.mobile}</div>
 				</div>
 				<div class="inTr">
-					<div class="L">使用點數:</div>
-					<div class="R">${product_orderVO.used_pt}</div>
+					<div class="L">信箱</div>
+					<div class="R number">${campsite_ownerVO.mail}</div>
 				</div>
-				<div class="inTr">
-					<div class="L">運送方式:</div>
-					<div class="R">
-						<c:if test="${product_orderVO.ship_meth==1}">
-							<c:out value="宅配" />
-						</c:if>
-						<c:if test="${product_orderVO.ship_meth==2}">
-							<c:out value="超商取貨" />
-						</c:if>
-					</div>
+				<br>
+				<div class="L">地址:</div>
+				<div class="R address">
+					${campsite_ownerVO.city}${campsite_ownerVO.dist}${campsite_ownerVO.add}
 				</div>
-				<div class="inTr">
-					<div class="L">付款方式:</div>
-					<div class="R">
-						<c:if test="${product_orderVO.pay_meth==0}">
-							<c:out value="信用卡" />
-						</c:if>
-						<c:if test="${product_orderVO.pay_meth==1}">
-							<c:out value="匯款" />
-						</c:if>
-						<c:if test="${product_orderVO.pay_meth==2}">
-							<c:out value="超商取貨付款" />
-						</c:if>
-					</div>
-				</div>
-				
 			</td>
-			
 			<td style="width:45%;">
 				<div class="inTr">
-					<div class="L">發票形式:</div>
-					<div class="R">
-						<c:if test="${product_orderVO.receipt==0}">
-							<c:out value="紙本發票" />
-						</c:if>
-						<c:if test="${product_orderVO.receipt==1}">
-							<c:out value="電子發票" />
-						</c:if>
-						<c:if test="${product_orderVO.receipt==2}">
-							<c:out value="發票捐贈" />
-						</c:if>
+					<div>
+						<input type="button" value="帳號停權" style="margin:0.5em;" class="confirmStop">
+						<input type="button" value="恢復帳號" style="margin:0.5em;" class="confirm">
 					</div>
 				</div>	
-				<div class="inTr">
-					<div class="L">運送地址:</div>
-					<div>
-						<div class="innerDiv">${product_orderVO.ship_cty}</div>
-						<div class="innerDiv">${product_orderVO.ship_dist}</div>
-						<div class="innerDiv">${product_orderVO.ship_add}</div>
-					</div>
-				</div>
-				<div class="inTr">
-					<div class="L">下訂時間:</div>
-					<div><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${product_orderVO.prod_ord_time}"/></div>
-				</div>
-				<div class="inTr">
-					<div class="L">訂單備註:</div>
-					<div style="display:inline-block;width:8em;">${product_orderVO.rmk}</div>
-				</div>
-			</td>
+<!-- 				<div class="inTr"> -->
+<!-- 					<div class="L">運送地址:</div> -->
+<!-- 					<div> -->
+<%-- 						<div class="innerDiv">${product_orderVO.ship_cty}</div> --%>
+<%-- 						<div class="innerDiv">${product_orderVO.ship_dist}</div> --%>
+<%-- 						<div class="innerDiv">${product_orderVO.ship_add}</div> --%>
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 				<div class="inTr"> -->
+<!-- 					<div class="L">下訂時間:</div> -->
+<%-- 					<div><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${product_orderVO.prod_ord_time}"/></div> --%>
+<!-- 				</div> -->
+<!-- 				<div class="inTr"> -->
+<!-- 					<div class="L">訂單備註:</div> -->
+<%-- 					<div style="display:inline-block;width:8em;">${product_orderVO.rmk}</div> --%>
+<!-- 				</div> -->
+<!-- 			</td> -->
 			
-			<td style="width:15%;">
-				<div class="inTr">
-					<label for="prod_ord_stat0" ${product_orderVO.prod_ord_stat==0?'class="spotlight"':''}>未付款</label>
-					<input type="radio" id="prod_ord_stat0" value="0" ${product_orderVO.prod_ord_stat==0?'checked':''} disabled>
-					<label for="prod_ord_stat1" ${product_orderVO.prod_ord_stat==1?'class="spotlight"':''}>已付款</label>
-					<input type="radio" id="prod_ord_stat1" value="1" ${product_orderVO.prod_ord_stat==1?'checked':''} disabled>
-					<label for="prod_ord_stat2" ${product_orderVO.prod_ord_stat==2?'class="spotlight"':''}>出貨中</label>
-					<input type="radio" id="prod_ord_stat2" value="2" ${product_orderVO.prod_ord_stat==2?'checked':''} disabled>
-					<label for="prod_ord_stat3" ${product_orderVO.prod_ord_stat==3?'class="spotlight"':''}>已收貨</label>
-					<input type="radio" id="prod_ord_stat3" value="3" ${product_orderVO.prod_ord_stat==3?'checked':''} disabled>
-					<label for="prod_ord_stat4" ${product_orderVO.prod_ord_stat==4?'class="spotlight"':''}>未取貨</label>
-					<input type="radio" id="prod_ord_stat4" value="4" ${product_orderVO.prod_ord_stat==4?'checked':''} disabled>
-					<label for="prod_ord_stat5" ${product_orderVO.prod_ord_stat==5?'class="spotlight"':''}>取消訂單</label>
-					<input type="radio" id="prod_ord_stat5" value="5" ${product_orderVO.prod_ord_stat==5?'checked':''} disabled>
-				</div>
-			</td>
+<!-- 			<td style="width:15%;"> -->
+<!-- 				<div class="inTr"> -->
+<%-- 					<label for="prod_ord_stat0" ${product_orderVO.prod_ord_stat==0?'class="spotlight"':''}>未付款</label> --%>
+<%-- 					<input type="radio" id="prod_ord_stat0" value="0" ${product_orderVO.prod_ord_stat==0?'checked':''} disabled> --%>
+<%-- 					<label for="prod_ord_stat1" ${product_orderVO.prod_ord_stat==1?'class="spotlight"':''}>已付款</label> --%>
+<%-- 					<input type="radio" id="prod_ord_stat1" value="1" ${product_orderVO.prod_ord_stat==1?'checked':''} disabled> --%>
+<%-- 					<label for="prod_ord_stat2" ${product_orderVO.prod_ord_stat==2?'class="spotlight"':''}>出貨中</label> --%>
+<%-- 					<input type="radio" id="prod_ord_stat2" value="2" ${product_orderVO.prod_ord_stat==2?'checked':''} disabled> --%>
+<%-- 					<label for="prod_ord_stat3" ${product_orderVO.prod_ord_stat==3?'class="spotlight"':''}>已收貨</label> --%>
+<%-- 					<input type="radio" id="prod_ord_stat3" value="3" ${product_orderVO.prod_ord_stat==3?'checked':''} disabled> --%>
+<%-- 					<label for="prod_ord_stat4" ${product_orderVO.prod_ord_stat==4?'class="spotlight"':''}>未取貨</label> --%>
+<%-- 					<input type="radio" id="prod_ord_stat4" value="4" ${product_orderVO.prod_ord_stat==4?'checked':''} disabled> --%>
+<%-- 					<label for="prod_ord_stat5" ${product_orderVO.prod_ord_stat==5?'class="spotlight"':''}>取消訂單</label> --%>
+<%-- 					<input type="radio" id="prod_ord_stat5" value="5" ${product_orderVO.prod_ord_stat==5?'checked':''} disabled> --%>
+<!-- 				</div> -->
+<!-- 			</td> -->
 		</tr>
 	</c:forEach>
 </table>
@@ -346,17 +336,18 @@ label.spotlight{
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
 		            </div>
 		            <div class="modal-body">
+		            ${campsite_ownerVO.cso_no}
 <%-- 		            ${productVOOne.prod_no} --%>
-						<jsp:include page="listOneCampsite_owner.jsp" />
+<%-- 						<jsp:include page="listOneProduct_order.jsp" /> --%>
 		            </div>
 		       </div>
 		   </div>
 		</div>
 
 <script>
-	$('#Modal').modal({
-	  	show :true
-	}); 
+ 	$('#Modal').modal({
+ 	  	show :true
+ 	}); 
 </script>
 </c:if>
 <script>
@@ -375,6 +366,9 @@ label.spotlight{
 			backToTop[1].style.display = "block";
 		}
 	});
+</script>
+<script>
+
 </script>
 </body>
 </html>
