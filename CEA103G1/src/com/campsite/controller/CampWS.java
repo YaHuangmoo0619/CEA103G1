@@ -1,9 +1,16 @@
 package com.campsite.controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,10 +63,6 @@ public class CampWS {
 
 	@OnClose
 	public void disConnect(@PathParam("campInfo") String campInfo, Session session) {
-for (Session receiver : camps.get(campInfo)) {
-if (receiver != session) {
-System.out.println(receiver + ":" + forDisconnect.get(campInfo).get(receiver));
-}}
 		System.out.println("disconnect:" + campInfo + " " + session);
 		Set<String> forDisPlc = forDisconnect.get(campInfo).get(session);
 		System.out.println("disconnect:" + forDisPlc);
@@ -102,10 +105,6 @@ System.out.println(receiver + ":" + forDisconnect.get(campInfo).get(receiver));
 				}
 			}
 		}
-for (Session receiver : camps.get(campInfo)) {
-if (receiver != session) {
-System.out.println(receiver + ":" + forDisconnect.get(campInfo).get(receiver));
-}}
 		camps.get(campInfo).remove(session);
 		if (camps.get(campInfo).size() == 0) {
 			history.put(campInfo, null);
@@ -126,9 +125,7 @@ System.out.println(receiver + ":" + forDisconnect.get(campInfo).get(receiver));
 			history.put(campInfo, historyPlc);
 
 			Set<String> forDisPlc = forDisconnect.get(campInfo).get(session);
-			System.out.println("我有執行1");
 			forDisPlc.remove(plc_no);
-			System.out.println("我有執行2");
 			HashMap<Session, Set<String>> forDisSession = forDisconnect.get(campInfo);
 			forDisSession.put(session, forDisPlc);
 			forDisconnect.put(campInfo, forDisSession);
@@ -182,5 +179,61 @@ System.out.println(receiver + ":" + forDisconnect.get(campInfo).get(receiver));
 	@OnError
 	public void onerror(Session session, Throwable throwable) {
 		System.out.println("error…");
+	}
+	
+	public Set<String> DateInside(Map<String, Set<Session>> camps, String campInfo) throws ParseException {
+		Set<String> pass = new HashSet<String>();
+		DateFormat dateFo = new SimpleDateFormat("yyyy-MM-dd");	
+		String start = campInfo.split("&")[1].split("=")[1];
+		String end = campInfo.split("&")[2].split("=")[1];
+		long startdate = dateFo.parse(start).getTime();
+		long enddate = dateFo.parse(end).getTime();
+		List<String> interval = new ArrayList<String>();
+		while(startdate != enddate) {
+			startdate = startdate + 24*60*60*1000;
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(startdate);
+			interval.add(dateFo.format(calendar.getTime()));
+		}
+		interval.remove(interval.size()-1);
+		return pass;
+	}
+	
+	public Set<String> DateOutside(Map<String, Set<Session>> camps, String campInfo) throws ParseException {
+		Set<String> pass = new HashSet<String>();
+		DateFormat dateFo = new SimpleDateFormat("yyyy-MM-dd");	
+		String camp_no = campInfo.split("&")[0].split("=")[1];
+		String start = campInfo.split("&")[1].split("=")[1];
+		String end = campInfo.split("&")[2].split("=")[1];
+		
+		for(String eachInfo : camps.keySet()) {		
+			String eachCamp_no = eachInfo.split("&")[0].split("=")[1];
+			String eachStart = eachInfo.split("&")[1].split("=")[1];
+			String eachEnd = eachInfo.split("&")[2].split("=")[1];
+			
+			List<String> temp = new ArrayList<String>();
+			long startdate = dateFo.parse(eachStart).getTime();
+			long enddate = dateFo.parse(eachEnd).getTime();
+			temp.add(eachStart);
+			temp.add(eachEnd);
+			while(startdate != enddate) {
+				startdate = startdate + 24*60*60*1000;
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(startdate);
+				temp.add(dateFo.format(calendar.getTime()));
+			}
+			temp.remove(temp.size()-1);
+			
+			if(!eachCamp_no.equals(camp_no) || temp.get(0).equals(end) || temp.get(1).equals(start)) {
+				continue;
+			}else {
+				for(int i = 2; i < temp.size(); i++) {
+					if((temp.get(i).equals(start) || temp.get(i).equals(end)) && eachCamp_no.equals(camp_no)) {
+						pass.add(eachInfo);
+					}
+				}				
+			}
+		}
+		return pass;
 	}
 }
