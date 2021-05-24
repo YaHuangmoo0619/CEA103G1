@@ -1185,6 +1185,16 @@ td{
 		                		}
 		                	});
 	            		}
+	            	} else if(data.includes("&dis&")){
+	            		let allplc = data.split("&dis&");
+	            		console.log(allplc);
+	            		for(let i = 0; i < allplc.length; i++){
+	            			$("#placeInfo").find('input').each(function() {
+		                		if($(this).val() === allplc[i]){
+		                			$(this).attr("disabled",false);
+		                		}
+		                	});
+	            		}
 	            	}else if(data.includes("gone")){
 	            		let gone = data.split("&");
 	            		$("#placeInfo").find('input').each(function() {
