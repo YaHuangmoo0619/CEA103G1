@@ -4,6 +4,10 @@
 <%@ page import="java.util.*" %>
 <%@ page import="com.member.model.*" %>
 
+<%
+	MemberVO memberVOUpdate = (MemberVO) request.getAttribute("memberVOUpdate");
+%>
+
 <jsp:useBean id="member_rankSvc" class="com.member_rank.model.Member_rankService"/>
 <!DOCTYPE html>
 <html>
@@ -143,7 +147,7 @@ input.confirm:hover {
 			<li><a href="<%=request.getContextPath() %>/front-end/campsite_collection/listAllCollection.html">營區收藏管理</a></li>
 			<li><a href="<%=request.getContextPath() %>/back-end/product_order/listAllProduct_order.jsp">商城訂單管理</a></li>
 			<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇資訊管理</a></li>
-			<li><a href="">修改會員資料</a></li>
+			<li><a href="<%=request.getContextPath() %>/front-end/member/update_member_input.jsp">修改會員資料</a></li>
 		</ul>
 	</div>
 	<div class="right">
@@ -160,20 +164,20 @@ input.confirm:hover {
 					<label for="rank_no">會員等級：</label><input type="text" id="rank_no" value="${member_rankSvc.getOneMember_rank(memberVO.rank_no).getRank_name()}" readonly>
 				</div>
 				<div class="infoRow">
-					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVO.acc}" readonly>
-					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="text" id="pwd" name="pwd" value="${memberVO.pwd}" readonly>
+					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVOUpdate != null ? memberVOUpdate.acc:memberVO.acc}" readonly>
+					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="text" id="pwd" name="pwd" value="${memberVOUpdate != null ? memberVOUpdate.pwd:memberVO.pwd}" readonly>
 				</div>
 				<div class="infoRow">
-					<label for="name">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label><input type="text" id="name" name="name" value="${memberVO.name}" readonly>
-					<label for="id">身&nbsp;&nbsp;份&nbsp;證：</label><input type="text" id="id" name="id" value="${memberVO.id}" readonly>
+					<label for="name">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label><input type="text" id="name" name="name" value="${memberVOUpdate != null ? memberVOUpdate.name:memberVO.name}" readonly>
+					<label for="id">身&nbsp;&nbsp;份&nbsp;證：</label><input type="text" id="id" name="id" value="${memberVOUpdate != null ? memberVOUpdate.id:memberVO.id}" readonly>
 				</div>
 				<div class="infoRow">
-					<label for="bday">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</label><input type="text" id="bday" name="bday" value="${memberVO.bday}" readonly>
-					<label for="sex">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;別：</label><input type="text" id="sex" value="${memberVO.sex == 1?'女性':'男性'}" readonly>
+					<label for="bday">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</label><input type="text" id="bday" name="bday" value="${memberVOUpdate != null ? memberVOUpdate.bday:memberVO.bday}" readonly>
+					<label for="sex">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;別：</label><input type="text" id="sex" value="${memberVOUpdate != null ? memberVOUpdate.sex == 1?'女性':'男性':memberVO.sex == 1?'女性':'男性'}" readonly>
 				</div>
 				<div class="infoRow">
-					<label for="mobile">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;機：</label><input type="text" id="mobile" name="mobile" value="${memberVO.mobile}" readonly>
-					<label for="mail">信&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</label><input type="text" id="mail" name="mobile" value="${memberVO.mail}" readonly>
+					<label for="mobile">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;機：</label><input type="text" id="mobile" name="mobile" value="${memberVOUpdate != null ? memberVOUpdate.mobile:memberVO.mobile}" readonly>
+					<label for="mail">信&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</label><input type="text" id="mail" name="mobile" value="${memberVOUpdate != null ? memberVOUpdate.mail:memberVO.mail}" readonly>
 				</div>
 				<div class="infoRow">
 					<label for="pt">點&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;數：</label><input type="text" id="pt" name="pt" value="${memberVO.pt}" style="width:10.5em;" readonly>
@@ -181,13 +185,13 @@ input.confirm:hover {
 				</div>
 				<div class="infoRow">
 					<label>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</label>
-					<input type="text" name="city" value="${memberVO.city}" style="width:4em;" readonly>
-					<input type="text" name="dist" value="${memberVO.dist}" style="width:4em;" readonly>
-					<input type="text" name="add" value="${memberVO.add}" style="width:19.5em;" readonly>
+					<input type="text" name="city" value="${memberVOUpdate != null ? memberVOUpdate.city:memberVO.city}" style="width:4em;" readonly>
+					<input type="text" name="dist" value="${memberVOUpdate != null ? memberVOUpdate.dist:memberVO.dist}" style="width:4em;" readonly>
+					<input type="text" name="add" value="${memberVOUpdate != null ? memberVOUpdate.add:memberVO.add}" style="width:19.5em;" readonly>
 				</div>
 				<div class="infoRow">
 					<label>信用卡卡號：</label>
-					<input type="text" name="card" value="${memberVO.card}" style="width:31em;" readonly>
+					<input type="text" name="card" value="${memberVOUpdate != null ? memberVOUpdate.card:memberVO.card}" style="width:31em;" readonly>
 				</div>
 				<input type="hidden" name="rank_no" value="${memberVO.rank_no}">
 				<input type="hidden" name="sex" value="${memberVO.sex}">

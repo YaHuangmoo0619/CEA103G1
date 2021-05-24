@@ -27,8 +27,6 @@ import javax.servlet.http.Part;
 
 import com.campsite_owner.model.Campsite_ownerService;
 import com.campsite_owner.model.Campsite_ownerVO;
-import com.member.model.MemberService;
-import com.member.model.MemberVO;
 
 @MultipartConfig
 @WebServlet("/campsite_owner/campsite_owner.do")
@@ -440,6 +438,42 @@ System.out.println(pwd + " " + cso_no);
 				failureView.forward(req, res);
 			}
 		}
+		
+		//雅凰加的
+		if ("getOne_For_Update_Back".equals(action)) { // 來自listAllmember.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***************************1.接收請求參數****************************************/
+				Integer cso_no = new Integer(req.getParameter("cso_no"));
+						
+				/***************************2.開始查詢資料****************************************/
+				Campsite_ownerService campsite_ownerSvc = new Campsite_ownerService();
+				Campsite_ownerVO campsite_ownerVO = campsite_ownerSvc.getOneCampsite_owner(cso_no);
+										
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				//Bootstrap_modal
+				boolean openModal=true;
+				req.setAttribute("openModal",openModal );
+				
+				req.setAttribute("campsite_ownerVO", campsite_ownerVO);        
+				String url = "/back-end/campsite_owner/listAllCampsite_owner.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/campsite_owner/listAllCampsite_owner.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		//雅凰加的
 	}
 
 	public void mail(HttpServletRequest req, Campsite_ownerVO campsite_ownerVO) {
