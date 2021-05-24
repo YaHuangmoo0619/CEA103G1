@@ -203,7 +203,7 @@ public class Article_ReplyServlet extends HttpServlet{
 			try {
 				/***************************1.接收請求參數****************************************/
 				Integer art_rep_no = new Integer(req.getParameter("art_rep_no"));
-				
+				System.out.println(art_rep_no);
 				/***************************2.開始查詢資料****************************************/
 				Article_ReplyService article_replySvc = new Article_ReplyService();
 				Article_ReplyVO article_replyVO = article_replySvc.getOneArticle_Reply(art_rep_no);
@@ -224,86 +224,91 @@ public class Article_ReplyServlet extends HttpServlet{
 		}
 		
 		
-		if ("update".equals(action)) { // 來自update_article_reply_input.jsp的請求
-			
+		if ("update".equals(action)) { // 來自addArticle_Reply.jsp的請求  
+			System.out.println("我有來");
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
-		    
-			String requestURL = req.getParameter("requestURL"); // 送出修改的來源網頁路徑:
-			System.out.println(requestURL);
+
 			try {
-				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-				//更新留言時，留言編號、文章編號、會員編號、發布時間、讚數 都是不可更動的，因此無須錯誤驗證，接收參數即可
+				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				Integer art_rep_no = new Integer(req.getParameter("art_rep_no").trim());
 				Integer art_no = new Integer(req.getParameter("art_no").trim());
+				System.out.println("art_no"+art_no);
 				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
+				System.out.println("mbr_no"+mbr_no);
 				Timestamp rep_time = new Timestamp(System.currentTimeMillis());
-				rep_time = Timestamp.valueOf(req.getParameter("rep_time"));
 
-	
+				String rep_cont = req.getParameter("rep_cont");
+				System.out.println("rep_cont"+rep_cont);
 
 				
-				String rep_cont = req.getParameter("rep_cont");
-				String rep_contReg = "^.{10,10000}$";
 
+//				標註樓層實作開始
+//				Step1:查看目前這篇文章共有幾篇留言 (從資料庫取留言數+1，因為要算上即將加入的這一筆)
+				ArticleVO articleVO_for_search = new ArticleVO();
+				ArticleService articleSvc = new ArticleService();
+				articleVO_for_search = articleSvc.getOneArticle(art_no);
+				int replies_num = articleVO_for_search.getReplies(); //取得留言數
+
+//				Step2: 然後for迴圈去replaceAll文章內容裡符合「#B1 」、「#B2 」......「#Bn 」的字              為「<a src="查看B1留言的路徑">#B1</a>」				
+//				標註樓層實作結束
+				int i;
+				for(i=1;i<=replies_num;i++) {
+					//如果原本的rep_cont含有特定的字符
+					if(rep_cont.contains("#B"+i+" ")) {
+						//就進行查詢，被tag的這樓留言，真實的留言編號為何，準備進行替換
+
+						rep_cont=rep_cont.replace("#B"+i+" ","<div class=oneReply>#B"+i+" </div>" );	
+					}
+					
+				}
+				
 				if (rep_cont == null || rep_cont.trim().length() == 0) {
 					errorMsgs.add("留言內容: 請勿空白");
 				} 
-				else if(!rep_cont.trim().matches(rep_contReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("留言內容: 必須在10到10000個字之間");
-	            }
-			
-				Integer likes = new Integer(req.getParameter("likes").trim());
-				
-				Integer rep_stat = null;
-				try {
-					rep_stat = new Integer(req.getParameter("rep_stat").trim());
-				} catch (NumberFormatException e) {
-					rep_stat = 0;
-					errorMsgs.add("留言狀態請填數字0 or 1.");
-				} 
 
-								
+				Integer likes = new Integer(req.getParameter("likes").trim()); 
+
+				Integer rep_stat = new Integer(req.getParameter("rep_stat").trim());
+
 				Article_ReplyVO article_replyVO = new Article_ReplyVO();
 				article_replyVO.setArt_rep_no(art_rep_no);
 				article_replyVO.setArt_no(art_no);
 				article_replyVO.setMbr_no(mbr_no);
-				article_replyVO.setRep_cont(rep_cont);
 				article_replyVO.setRep_time(rep_time);
-				article_replyVO.setRep_stat(rep_stat);
+				article_replyVO.setRep_cont(rep_cont);
 				article_replyVO.setLikes(likes);
+				article_replyVO.setRep_stat(rep_stat);
+				
+
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("article_replyVO",article_replyVO); // 含有輸入格式錯誤的article_replyVO物件,也存入req
+					req.setAttribute("article_replyVO", article_replyVO); // 含有輸入格式錯誤的article_replyVO物件,也存入req
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/article_reply/update_article_reply_input.jsp");
+							.getRequestDispatcher("/front-end/article_reply/addArticle_reply.jsp");
 					failureView.forward(req, res);
-					return; //程式中斷
+					return;
 				}
-				
-				/***************************2.開始修改資料*****************************************/
-				
+				/***************************2.開始新增資料***************************************/
+				System.out.println("我要新增囉");
+				//更新一筆留言資料
 				Article_ReplyService article_replySvc = new Article_ReplyService();
-				article_replyVO = article_replySvc.updateArticle_Reply(art_rep_no,art_no,mbr_no,rep_cont,rep_time,rep_stat,likes);
-				
-				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("article_replyVO", article_replyVO); // 資料庫update成功後,正確的的article_replyVO物件,存入req
-				String url = requestURL;
-				System.out.println(requestURL);								//front-end/article/listOneArticle.jsp?art_no=5&action=getOne_From
-				RequestDispatcher successView = req.getRequestDispatcher("/article/article.do?art_no=5&action=getOne_From"); // 修改成功後,轉交listOneArticle_Reply.jsp
-				successView.forward(req, res);
-				
-				
-				
+				article_replyVO = article_replySvc.updateArticle_Reply(art_rep_no, art_no, mbr_no, rep_cont, rep_time, rep_stat, likes);
 
-				/***************************其他可能的錯誤處理*************************************/
+				
+				/***************************3.新增完成,準備轉交(Send the Success view)***********/
+				String url = "/front-end/article/listAllArticle.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllArticle.jsp
+				successView.forward(req, res);				
+				
+				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
-				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/article_reply/update_article_reply_input.jsp");
+						.getRequestDispatcher("/front-end/article/listAllArticle.jsp");
 				failureView.forward(req, res);
 			}
 		}

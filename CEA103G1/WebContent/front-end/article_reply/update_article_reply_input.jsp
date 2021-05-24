@@ -4,10 +4,12 @@
 
 <%@ page import="java.sql.Timestamp"%>
 
-<%
+<%	
 	Article_ReplyVO article_replyVO = (Article_ReplyVO) request.getAttribute("article_replyVO");
 %>
-
+<%
+	System.out.println(request.getHeader("referer"));
+%>
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>

@@ -84,9 +84,9 @@ display:block;
   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
   					<!-- 		如果有登入且該篇留言作者就是自己 那可以執行刪除及修改文章 -->
    	<c:if test="${not empty memberVO &&(memberVO.mbr_no==article_replyVO.mbr_no)}">
-   	<div style="display:none">${article_replyVO.art_rep_no}</div>
+   	<div class=modify_art_rep_no style="display:none">${article_replyVO.art_rep_no}</div>
    	<div style="display:none">getOne_For_Update</div> 
-    <a class="dropdown-item modify" href="#">修改留言</a>
+    <a class="dropdown-item modify" href="<%=request.getContextPath()%>/article_reply/article_reply.do?action=getOne_For_Update&art_rep_no=${article_replyVO.art_rep_no}">修改留言</a>
     <div style="display:none">${article_replyVO.art_rep_no}</div>
    	<div style="display:none">hide</div>
     <a class="dropdown-item hide" href="#">刪除留言</a>
@@ -136,6 +136,22 @@ display:block;
 </div>
 	
 
+		<div class="modal" id="modify_modal" tabindex="-1" aria-labelledby="modify_modal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>修改留言內容</h5>
+      </div>
+      <div class="modal-body">
+        <div class="modal_rep_cont"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close_modal" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/front-end/member/login.jsp'">登入</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
@@ -163,9 +179,8 @@ display:block;
 		}); 
 	});
 	
-	$(".modify").click(function(){
-		//open modify modal
-	})
+	
+
 	
 	$(".hide").click(function(){
 		var action=$(this).prev().text();

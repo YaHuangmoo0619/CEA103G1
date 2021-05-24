@@ -154,6 +154,7 @@ public class ArticleDAO implements ArticleDAO_Interface{
 			pstmt.setInt(6, articleVO.getLikes());
 			pstmt.setInt(7, articleVO.getArt_stat());
 			pstmt.setInt(8, articleVO.getReplies());
+			System.out.println("我來到這:"+articleVO.getReplies());
 			pstmt.setString(9, articleVO.getArt_first_img());
 			pstmt.setInt(10, articleVO.getArt_no());
 			pstmt.executeUpdate();
