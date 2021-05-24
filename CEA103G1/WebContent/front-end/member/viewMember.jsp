@@ -141,7 +141,7 @@ input.confirm:hover {
 		<ul> 
 			<li><a href="<%=request.getContextPath() %>/front-end/place_order/listAllPlace_order.html">營位訂單管理</a></li>
 			<li><a href="<%=request.getContextPath() %>/front-end/campsite_collection/listAllCollection.html">營區收藏管理</a></li>
-			<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城訂單管理</a></li>
+			<li><a href="<%=request.getContextPath() %>/back-end/product_order/listAllProduct_order.jsp">商城訂單管理</a></li>
 			<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇資訊管理</a></li>
 			<li><a href="">修改會員資料</a></li>
 		</ul>

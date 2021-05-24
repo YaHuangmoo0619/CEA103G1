@@ -13,6 +13,6 @@ public interface Product_orderDAO_interface {
      public void update_order_stat(Integer prod_ord_stat, Integer prod_ord_no);
      //¶®°Ä¥[ªº
 
-     public List<Product_orderVO> getAllByMbr();
+     public List<Product_orderVO> getByMbr(Integer mbr_no);
 
 }

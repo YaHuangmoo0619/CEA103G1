@@ -6,6 +6,8 @@ import java.sql.*;
 import javax.naming.*;
 import javax.sql.DataSource;
 
+import com.member.model.MemberVO;
+
 public class Product_orderDAO implements Product_orderDAO_interface {
 
 	private static DataSource ds = null;
@@ -303,7 +305,7 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 	}
 	
 	@Override
-	public List<Product_orderVO> getAllByMbr() {
+	public List<Product_orderVO> getByMbr(Integer mbr_no) {
 		List<Product_orderVO> list = new ArrayList<Product_orderVO>();
 		Product_orderVO product_orderVO = null;
 
@@ -316,7 +318,7 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALLMBR_STMT);
 			
-//			pstmt.setInt(1, MemberVO.getMbr_no);
+			pstmt.setInt(1, mbr_no);
 			
 			rs = pstmt.executeQuery();
 					
