@@ -175,19 +175,22 @@ label{
 				</div>
 				<div class="infoRow">
 					<label for="bday">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</label><input type="text" id="bday" name="bday" value="${memberVO.bday}">
-					<label for="sex">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;別：</label><input type="text" id="sex" value="${memberVO.sex == 1?'女性':'男性'}">
+					<label for="sex">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;別：</label>
+					<input type="radio" id="sexM" name="sex" value="0" ${memberVO.sex == 0?'checked':'' }>
+					<label for="sexM">男&nbsp;&nbsp;&nbsp;&nbsp;性</label>
+					<input type="radio" id="sexF" name="sex" value="1" ${memberVO.sex == 1?'checked':'' }>
+					<label for="sexF">女&nbsp;&nbsp;&nbsp;&nbsp;性</label>
 				</div>
 				<div class="infoRow">
 					<label for="mobile">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;機：</label><input type="text" id="mobile" name="mobile" value="${memberVO.mobile}">
-					<label for="mail">信&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</label><input type="text" id="mail" name="mobile" value="${memberVO.mail}">
+					<label for="mail">信&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</label><input type="text" id="mail" name="mail" value="${memberVO.mail}">
 				</div>
 				<div class="infoRow">
 					<label>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</label>
 					<select size="1" name="city" id="city">
 						<option value="no">請選擇縣市
 					</select>
-					<select size="1" name="dist" id="dist" style="width:4em;"></select>
-<%-- 					<input type="text" name="dist" value="${memberVO.dist}" style="width:4em;"> --%>
+					<select size="1" name="dist" id="dist" style="width:5em;"></select>
 					<input type="text" name="add" value="${memberVO.add}" style="width:19.5em;">
 				</div>
 				<div class="infoRow">
@@ -195,11 +198,10 @@ label{
 					<input type="text" name="card" value="${memberVO.card}" style="width:31em;">
 				</div>
 				<input type="hidden" name="rank_no" value="${memberVO.rank_no}">
-				<input type="hidden" name="sex" value="${memberVO.sex}">
 				<input type="hidden" name="join_time" value="${memberVO.join_time}">
 				<input type="hidden" name="acc_stat" value="${memberVO.acc_stat}">
 				<input type="hidden" name="rmk" value="${memberVO.rmk}">
-				<input type="hidden" name="action" value="update">
+				<input type="hidden" name="action" value="update_info">
 				<div class="infoRow">
 					<input type="submit" value="送出修改" class="confirm">
 				</div>
@@ -294,6 +296,7 @@ function showModal() {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
+// 	console.log('${memberVO.city}');
 	$.ajax({
 		type: "POST",
 		url: '<%=request.getScheme()%>://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/MemberGetDistrict',
@@ -303,11 +306,38 @@ $(document).ready(function(){
 		success: function(data){
 // 			console.log(Object.values(data).length);
 			for(let i = 0; i < Object.values(data).length; i++){
-				$('#city').append("<option value=\""+ Object.values(data)[i] +"\">"+ Object.values(data)[i] +"</option>");
+// 				console.log(Object.values(data)[i] + "/" +'${memberVO.city}');
+				if(Object.values(data)[i] === '${memberVO.city}'){
+					$('#city').append("<option value=\""+ Object.values(data)[i] +"\" selected>"+ Object.values(data)[i] +"</option>");
+				}else{
+					$('#city').append("<option value=\""+ Object.values(data)[i] +"\">"+ Object.values(data)[i] +"</option>");
+				}
 			}
+			$.ajax({
+				type: "POST",
+				url: '<%=request.getScheme()%>://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/MemberGetDistrict',
+				data: {action:"dist",city:$('#city').find("option:selected").text()},//取得選取的縣市文字
+				dataType: "json",
+//		 		scriptCharset: 'big5',
+				success: function(data){
+//		 			console.log(Object.values(data).length);
+					if($('#dist').find("*")!==null||$('#dist').find("*")!==undefined){
+						$('#dist').find("*").remove();
+					}
+					
+					for(let i = 0; i < Object.values(data).length; i++){
+						if(Object.values(data)[i] === '${memberVO.dist}'){
+							$('#dist').append("<option value=\""+ Object.values(data)[i] +"\" selected>"+ Object.values(data)[i] +"</option>");
+						}else{
+							$('#dist').append("<option value=\""+ Object.values(data)[i] +"\">"+ Object.values(data)[i] +"</option>");
+						}
+					}
+				}
+			});
 		}
 	});
 });
+
 $('#city').change(function(){
 // 	console.log($('#city').find("option:selected").text());
 	$.ajax({
@@ -323,7 +353,11 @@ $('#city').change(function(){
 			}
 			
 			for(let i = 0; i < Object.values(data).length; i++){
-				$('#dist').append("<option value=\""+ Object.values(data)[i] +"\">"+ Object.values(data)[i] +"</option>");
+				if(Object.values(data)[i] === '${memberVO.dist}'){
+					$('#dist').append("<option value=\""+ Object.values(data)[i] +"\" selected>"+ Object.values(data)[i] +"</option>");
+				}else{
+					$('#dist').append("<option value=\""+ Object.values(data)[i] +"\">"+ Object.values(data)[i] +"</option>");
+				}
 			}
 		}
 	});

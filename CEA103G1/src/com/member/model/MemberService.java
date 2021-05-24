@@ -109,4 +109,39 @@ public class MemberService {
 		
 		return memberVO;
 	}
+	
+	//雅凰加的
+	public MemberVO update_info(Integer mbr_no, Integer rank_no, String acc, String pwd, String id, String name, Date bday, Integer sex, String mobile, String mail, String city, String dist, String add, Timestamp join_time, String card, Integer pt, Integer acc_stat, Integer exp,String rmk) {
+		
+		MemberVO memberVO = new MemberVO();
+		
+		memberVO.setMbr_no(mbr_no);
+		memberVO.setRank_no(rank_no);
+		memberVO.setAcc(acc);
+		memberVO.setPwd(pwd);
+		memberVO.setId(id);
+		memberVO.setName(name);
+		memberVO.setBday(bday);
+		memberVO.setSex(sex);
+		memberVO.setMobile(mobile);
+		memberVO.setMail(mail);
+		memberVO.setCity(city);
+		memberVO.setDist(dist);
+		memberVO.setAdd(add);
+		memberVO.setJoin_time(join_time);
+		memberVO.setCard(card);
+		memberVO.setPt(pt);
+		memberVO.setAcc_stat(acc_stat);
+		memberVO.setExp(exp);
+		memberVO.setRmk(rmk);
+		
+		dao.update_info(memberVO);
+		
+		return memberVO;
+	}
+	
+	public String findByAcc(String acc) {
+		return dao.findByAcc(acc);
+	}
+	//雅凰加的
 }

@@ -12,6 +12,10 @@ public interface MemberDAO_interface {
           public MemberVO findByPrimaryKey_login(String acc, String pwd);
           public List<MemberVO> getAll();
 
+          //雅凰加的
+          public MemberVO update_info(MemberVO memberVO);
+          public String findByAcc(String acc);
+          //雅凰加的
           //萬用複合查詢(傳入參數型態Map)(回傳 List)
 //        public List<MemberVO> getAll(Map<String, String[]> map)	
 }
