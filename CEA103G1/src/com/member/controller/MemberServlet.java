@@ -823,9 +823,16 @@ public class MemberServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("Exception" + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/campion_front.jsp");
+				failureView.forward(req, res);
+				}
+			}
 
 		//雅凰加的
 		if ("update_info".equals(action)) { // 來自update_member_rank_input.jsp的請求
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
@@ -1013,6 +1020,9 @@ public class MemberServlet extends HttpServlet {
 		}
 
 		if ("getOne_For_Update_Back".equals(action)) { // 來自listAllmember.jsp的請求
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
 			try {
 				/***************************1.接收請求參數****************************************/
 				Integer mbr_no = new Integer(req.getParameter("mbr_no"));
