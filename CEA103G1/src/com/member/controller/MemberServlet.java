@@ -735,20 +735,14 @@ public class MemberServlet extends HttpServlet {
 			}
 		}
 		
-<<<<<<< HEAD
+
 		//忘記密碼
 		if ("forgetPwd".equals(action)) {
 
-=======
-		//雅凰加的
-		if ("update_info".equals(action)) { // 來自update_member_rank_input.jsp的請求
-			
->>>>>>> 8e7ffca81417310b61a8af379c26d26c5054451f
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
-<<<<<<< HEAD
 			
 
 			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
@@ -829,8 +823,9 @@ public class MemberServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("Exception" + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/campion_front.jsp");
-=======
-		
+
+		//雅凰加的
+		if ("update_info".equals(action)) { // 來自update_member_rank_input.jsp的請求
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
@@ -968,38 +963,19 @@ public class MemberServlet extends HttpServlet {
 				errorMsgs.add("修改資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/back-end/member/update_member_input.jsp");
->>>>>>> 8e7ffca81417310b61a8af379c26d26c5054451f
 				failureView.forward(req, res);
 			}
 		}
-		
-<<<<<<< HEAD
+		//雅凰加的
+
 		//會員驗證
 		if("verifiction".equals(action)) {
-=======
-		if ("checkAcc".equals(action)) {
-//			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-//			req.setAttribute("errorMsgs",errorMsgs);
-			
-			String acc = req.getParameter("acc");
-			MemberService memberSvc = new MemberService();
-			String accFound = memberSvc.findByAcc(acc);
-			if(accFound!=null) {
-				out.println("可以使用");
-			}else {
-				out.println("已被使用");
-			}
-		}
 
-		if ("getOne_For_Update_Back".equals(action)) { // 來自listAllmember.jsp的請求
-
->>>>>>> 8e7ffca81417310b61a8af379c26d26c5054451f
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 			
-<<<<<<< HEAD
 			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 			String acc = req.getParameter("acc");
 			
@@ -1020,7 +996,23 @@ public class MemberServlet extends HttpServlet {
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 			successView.forward(req, res);
 		}
-=======
+
+		//雅凰加的
+		if ("checkAcc".equals(action)) {
+//			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+//			req.setAttribute("errorMsgs",errorMsgs);
+			
+			String acc = req.getParameter("acc");
+			MemberService memberSvc = new MemberService();
+			String accFound = memberSvc.findByAcc(acc);
+			if(accFound!=null) {
+				out.println("可以使用");
+			}else {
+				out.println("已被使用");
+			}
+		}
+
+		if ("getOne_For_Update_Back".equals(action)) { // 來自listAllmember.jsp的請求
 			try {
 				/***************************1.接收請求參數****************************************/
 				Integer mbr_no = new Integer(req.getParameter("mbr_no"));
@@ -1048,6 +1040,5 @@ public class MemberServlet extends HttpServlet {
 			}
 		}
 		//雅凰加的
->>>>>>> 8e7ffca81417310b61a8af379c26d26c5054451f
 	}
 }

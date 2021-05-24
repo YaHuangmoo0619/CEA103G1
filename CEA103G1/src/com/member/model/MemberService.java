@@ -110,7 +110,7 @@ public class MemberService {
 		return memberVO;
 	}
 	
-<<<<<<< HEAD
+
 	public void updateMemberStatus(String acc, Integer acc_stat) {
 		dao.updateMemberStatus(acc, acc_stat);
 	}
@@ -127,7 +127,6 @@ public class MemberService {
 		return dao.loginCheck(acc);
 	}
 
-=======
 	//雅凰加的
 	public MemberVO update_info(Integer mbr_no, Integer rank_no, String acc, String pwd, String id, String name, Date bday, Integer sex, String mobile, String mail, String city, String dist, String add, Timestamp join_time, String card, Integer pt, Integer acc_stat, Integer exp,String rmk) {
 		
@@ -162,5 +161,4 @@ public class MemberService {
 		return dao.findByAcc(acc);
 	}
 	//雅凰加的
->>>>>>> 8e7ffca81417310b61a8af379c26d26c5054451f
 }

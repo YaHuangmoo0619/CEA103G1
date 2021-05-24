@@ -465,7 +465,7 @@ public class MemberDAO implements MemberDAO_interface {
 			}
 		}
 	}
-<<<<<<< HEAD
+
 	//改變會員狀態
 	public void updateMemberStatus(String acc, Integer acc_stat) {
 		Connection con = null;
@@ -482,44 +482,7 @@ public class MemberDAO implements MemberDAO_interface {
 			pstmt.executeUpdate();
 
 			// Handle any SQL errors
-=======
-	
-	//雅凰加的
-	@Override
-	public MemberVO update_info(MemberVO memberVO) {
 
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
-		try {
-
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE_INFO);
-
-			pstmt.setInt(1, memberVO.getRank_no());
-			pstmt.setString(2, memberVO.getAcc());
-			pstmt.setString(3, memberVO.getPwd());
-			pstmt.setString(4, memberVO.getId());
-			pstmt.setString(5, memberVO.getName());
-			pstmt.setDate(6, memberVO.getBday());
-			pstmt.setInt(7, memberVO.getSex());
-			pstmt.setString(8, memberVO.getMobile());
-			pstmt.setString(9, memberVO.getMail());
-			pstmt.setString(10, memberVO.getCity());
-			pstmt.setString(11, memberVO.getDist());
-			pstmt.setString(12, memberVO.getAdd());
-			pstmt.setTimestamp(13, memberVO.getJoin_time());
-			pstmt.setString(14, memberVO.getCard());
-			pstmt.setInt(15, memberVO.getPt());
-			pstmt.setInt(16, memberVO.getAcc_stat());
-			pstmt.setInt(17, memberVO.getExp());
-			pstmt.setString(18, memberVO.getRmk());
-			pstmt.setInt(19, memberVO.getMbr_no());
-
-			pstmt.executeUpdate();
-
-			// Handle any driver errors
->>>>>>> 8e7ffca81417310b61a8af379c26d26c5054451f
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -541,7 +504,7 @@ public class MemberDAO implements MemberDAO_interface {
 			}
 		}
 		
-<<<<<<< HEAD
+
 	}
 	//改變密碼
 	public void updatePwd(String mail, String pwd) {
@@ -582,15 +545,7 @@ public class MemberDAO implements MemberDAO_interface {
 	//會員驗證信
 	public MemberVO findByEmail(String mail) {
 		MemberVO memberVO = null;
-=======
-		return memberVO;
-	}
-	
-	@Override
-	public String findByAcc(String acc) {
-		
-		String accFound = null;
->>>>>>> 8e7ffca81417310b61a8af379c26d26c5054451f
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -598,20 +553,16 @@ public class MemberDAO implements MemberDAO_interface {
 		try {
 
 			con = ds.getConnection();
-<<<<<<< HEAD
+
 			pstmt = con.prepareStatement(FIND_BY_EMAIL);
 
 			pstmt.setString(1, mail);
-=======
-			pstmt = con.prepareStatement(GET_ONE_ACC_STMT);
 
-			pstmt.setString(1, acc);
->>>>>>> 8e7ffca81417310b61a8af379c26d26c5054451f
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-<<<<<<< HEAD
+
 				memberVO = new MemberVO();
 				memberVO.setMbr_no(rs.getInt("mbr_no"));
 				memberVO.setRank_no(rs.getInt("rank_no"));
@@ -633,9 +584,7 @@ public class MemberDAO implements MemberDAO_interface {
 				memberVO.setExp(rs.getInt("exp"));
 				memberVO.setSticker(rs.getBytes("sticker"));
 				memberVO.setRmk(rs.getString("rmk"));
-=======
-				accFound = rs.getString("acc");
->>>>>>> 8e7ffca81417310b61a8af379c26d26c5054451f
+
 			}
 
 			// Handle any driver errors
@@ -666,7 +615,7 @@ public class MemberDAO implements MemberDAO_interface {
 				}
 			}
 		}
-<<<<<<< HEAD
+
 		return memberVO;
 	}
 	//檢查帳號狀態
@@ -736,10 +685,117 @@ public class MemberDAO implements MemberDAO_interface {
 		}
 		return memberVO;
 	}
-=======
+
+
+	//雅凰加的
+	@Override
+	public MemberVO update_info(MemberVO memberVO) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_INFO);
+
+			pstmt.setInt(1, memberVO.getRank_no());
+			pstmt.setString(2, memberVO.getAcc());
+			pstmt.setString(3, memberVO.getPwd());
+			pstmt.setString(4, memberVO.getId());
+			pstmt.setString(5, memberVO.getName());
+			pstmt.setDate(6, memberVO.getBday());
+			pstmt.setInt(7, memberVO.getSex());
+			pstmt.setString(8, memberVO.getMobile());
+			pstmt.setString(9, memberVO.getMail());
+			pstmt.setString(10, memberVO.getCity());
+			pstmt.setString(11, memberVO.getDist());
+			pstmt.setString(12, memberVO.getAdd());
+			pstmt.setTimestamp(13, memberVO.getJoin_time());
+			pstmt.setString(14, memberVO.getCard());
+			pstmt.setInt(15, memberVO.getPt());
+			pstmt.setInt(16, memberVO.getAcc_stat());
+			pstmt.setInt(17, memberVO.getExp());
+			pstmt.setString(18, memberVO.getRmk());
+			pstmt.setInt(19, memberVO.getMbr_no());
+
+			pstmt.executeUpdate();
+
+			// Handle any driver errors
+	} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	return memberVO;
+	}
+	
+	@Override
+	public String findByAcc(String acc) {
 		
+		String accFound = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ONE_ACC_STMT);
+
+			pstmt.setString(1, acc);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				accFound = rs.getString("acc");
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	
 		return accFound;
 	}
 	//雅凰加的
->>>>>>> 8e7ffca81417310b61a8af379c26d26c5054451f
 }
