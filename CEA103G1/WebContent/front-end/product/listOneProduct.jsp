@@ -102,100 +102,105 @@
 </head>
 <body bgcolor='white'>
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
-<table id="table-1">
-	<tr><td>
-		 <h3>商品 - ListOneProduct.jsp</h3>
-		 <h4><a href="${pageContext.request.contextPath}/front-end/product/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0"></a></h4>
-	</td></tr>
-</table>
 
 <jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
-
-<table>
-	<tr>
-		<th>商品編號</th>
-		<th>商品分類名稱</th>
-		<th>商品名稱</th>
-		<th>商品價格</th>
-		<th>商品資訊</th>
-		<th>商品品牌</th>
-		<th>商品顏色</th>
-		<th>商品大小</th>
-		<th>運送方式</th>
-		<th></th>
-		<th>數量</th>
-		<th>庫存量</th>
-		<th></th>
-	</tr>
-	<tr>
-		<td>${productVO.prod_no}</td>
-			<td>
-			${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}
-			</td>
-			<td>${productVO.prod_name}</td>
-			<td>${productVO.prod_pc}</td>
-			<td>${productVO.prod_info}</td>
-			<td>${productVO.prod_bnd}</td>
-			<td>${productVO.prod_clr}</td>
-			<td>${productVO.prod_size}</td>
-			<td>
-			<c:if test="${productVO.ship_meth==0}">
-				<c:out value="不限運送方式" />
-			</c:if>
-			<c:if test="${productVO.ship_meth==1}">
-				<c:out value="限宅配" />
-			</c:if>
-			<c:if test="${productVO.ship_meth==2}">
-				<c:out value="限超商取貨" />
-			</c:if>
-			</td>
-			<td>
-			  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="直接下訂">
-			     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-			     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-			     <input type="hidden" name="action"	value="buyOne"></FORM>
-			</td>
-			<td>
-			  <button class="_btn _column product-subtract">&minus;</button>
-              <div class="_column product-qty" id="product-qty">0</div>
-              <button class="_btn _column product-plus">&plus;</button>
-			</td>
 			
-			
-			
-			<td id="max_num">${productVO.prod_stg}</td>
-			<!-- 	如果有登入的話 -->	
-			<c:if test="${not empty memberVO }"> 
-			<td><button class=addshopping_cart>加入購物車</button></td>
-			</c:if>
-			<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
-			<c:if test="${empty memberVO }"> 
-			<td><button class=to_login>加入購物車</button></td>
-			</c:if>
-			
-	</tr>
-</table>
-	
-			<div class="modal fade" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5>您尚未登入</h5>
-      </div>
-      <div class="modal-body">
-        <div>想要一起加入討論，要先登入 Campion 唷！</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary close_modal" data-bs-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/front-end/member/login.jsp'">登入</button>
-      </div>
+<section>
+    <div class="container">
+        <div class="card">
+            <div class="card-wrapper">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-3">
+                        <div class="">
+                            <img src="">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md">
+                        <div class="card-box">
+                            <div class="row">
+                                <div class="col-md">
+                                    <p>${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}</p>
+                                    <h6 class="card-title mbr-fonts-style display-5">
+                                        <strong>商品名稱:</strong>
+                                    </h6>
+                                    <p class="mbr-text mbr-fonts-style display-7">
+                                        ${productVO.prod_name}
+                                    </p>
+                                    <p><strong>品牌:</strong>${productVO.prod_bnd}</p>
+                                    <p><strong>商品資訊:</strong></p>
+                                    <p>${productVO.prod_info}</p>
+									<p><strong>商品顏色:</strong>${productVO.prod_clr}</p>
+									<p><strong>商品大小:</strong>${productVO.prod_size}</p>
+									<p>
+									<c:if test="${productVO.ship_meth==0}">
+										<c:out value="不限運送方式" />
+									</c:if>
+									<c:if test="${productVO.ship_meth==1}">
+										<c:out value="限宅配" />
+									</c:if>
+									<c:if test="${productVO.ship_meth==2}">
+										<c:out value="限超商取貨" />
+									</c:if>
+									</p>                               
+                                </div>
+                                <div class="col-md-auto">
+                              		<p>商品價格 </p>
+                                    <p class="price mbr-fonts-style display-4">${productVO.prod_pc}</p>
+                                   <div>
+							  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
+							     <input type="submit" value="直接下訂">
+							     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
+							     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+							     <input type="hidden" name="action"	value="buyOne"></FORM>
+							</div>
+							<div>
+							  <button class="_btn _column product-subtract">&minus;</button>
+				              <div class="_column product-qty" id="product-qty">0</div>
+				              <button class="_btn _column product-plus">&plus;</button>
+							</div>
+							
+							<div id="max_num">${productVO.prod_stg}</div>
+							<!-- 	如果有登入的話 -->	
+							<c:if test="${not empty memberVO }"> 
+							<td><button class=addshopping_cart>加入購物車</button></td>
+							</c:if>
+							<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
+							<c:if test="${empty memberVO }"> 
+							<td><button class=to_login>加入購物車</button></td>
+							</c:if>
+                                </div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>      
     </div>
-  </div>
-</div>
-	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script
+
+			
+			
+			
+	<div class="modal fade" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5>您尚未登入</h5>
+	      </div>
+	      <div class="modal-body">
+	        <div>想要一起加入討論，要先登入 Campion 唷！</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary close_modal" data-bs-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/front-end/member/login.jsp'">登入</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
 
