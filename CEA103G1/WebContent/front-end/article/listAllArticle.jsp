@@ -10,7 +10,10 @@
 <%
 	Jedis jedis = new Jedis("localhost", 6379);
 	jedis.auth("123456");
+
+	
 	jedis.select(6);
+	
 %>
 
 
@@ -58,11 +61,31 @@
 	MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
 	Set<Integer> my_subscribe_board = new HashSet<>();
 	int ajax_mbr_no = 0;
+	long banned=0;
+	String banned_chinese="";
 	if(memberVO!=null){
+		jedis.select(5);
+		//查詢是否有被ban的紀錄
+		if(jedis.exists("article_report:"+memberVO.getMbr_no()+":banned")){
+			//如果有，還有多久小時 
+			banned = Long.valueOf(jedis.ttl("article_report:"+memberVO.getMbr_no()+":banned"));
+			if(banned>86400){//還超過一天的話  用天數報
+				banned = banned/86400;
+				banned_chinese = banned+"天";
+			}else if(banned<86400 && banned >= 3600){
+				banned = banned/3600;
+				banned_chinese = banned+"小時";
+			}else if(banned<3600){
+				banned = banned/60;
+				banned_chinese = banned+"分鐘";
+			}
+		}
+		
 		ajax_mbr_no = memberVO.getMbr_no();
+		jedis.select(6);
 		for(String element : jedis.smembers("board:"+ajax_mbr_no+":subscribe")){ //取得我訂閱的看板list
 			if(element!=null && !element.equals("")){
-				my_subscribe_board.add(Integer.valueOf(element).intValue());	
+				my_subscribe_board.add(Integer.valueOf(element).intValue());
 			}
 			
 		}
@@ -71,6 +94,8 @@
 	if(memberVO==null){
 		ajax_mbr_no=0;
 	}
+	pageContext.setAttribute("banned", banned);
+	pageContext.setAttribute("banned_chinese", banned_chinese);
 	pageContext.setAttribute("ajax_mbr_no", ajax_mbr_no);
 	pageContext.setAttribute("my_subscribe_board", my_subscribe_board);
 %>
@@ -92,7 +117,8 @@
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <link rel="icon" href="campionLogoIcon.png" type="image/png">
 <link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.3/sweetalert2.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.3/sweetalert2.js" type="text/javascript"></script>
     
 
 <style>
@@ -149,6 +175,10 @@ padding:0px 0px 0px 10px;
   font-family:微軟正黑體;
 }
 
+.board_name{
+width:120px;
+}
+
 /* -----------------------------以下為主欄css------------------------------ */
   div.main_content{
   	  top:60px;
@@ -197,9 +227,13 @@ overflow-y: auto;
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	
 	
-<!-- 	如果有登入的話 -->
-	<c:if test="${not empty memberVO }"> 
+<!-- 	如果有登入的話且沒被ban的話 -->
+	<c:if test="${not empty memberVO && banned==0}"> 
 	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
+	</c:if>
+<!-- 	如果有登入的話但被ban的話 -->
+	<c:if test="${not empty memberVO && banned>0}">
+	<div class="write banned"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
 	</c:if>
 <!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
 	<c:if test="${empty memberVO }"> 
@@ -513,6 +547,21 @@ jedis.close();
   
   
   
+ $(".banned").click(function(){
+	 swal({
+         title: "由於觸犯板規，您已被禁發文章！",
+         text: "處分時間尚餘:"+"${banned_chinese}"+"，3秒後自動關閉視窗",
+         timer: 3000
+     }).then(
+         function() {},
+         // handling the promise rejection
+         function(dismiss) {
+             if (dismiss === 'timer') {
+                 console.log('I was closed by the timer')
+             }
+         }
+     )
+ });
 
   
   
@@ -556,6 +605,7 @@ jedis.close();
 			let sendNotify = document.getElementById('sendNotify');
 			websocket.send(sendNotify.innerText);
 		}
+		
 		
 </script>
   <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->

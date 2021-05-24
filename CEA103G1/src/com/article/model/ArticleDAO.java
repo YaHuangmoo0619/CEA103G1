@@ -46,6 +46,8 @@ public class ArticleDAO implements ArticleDAO_Interface{
 			"DELETE FROM ARTICLE where art_no = ?";
 		private static final String HIDE = 
 				"UPDATE ARTICLE set art_stat = 1 where art_no=?";
+		private static final String SHOW = 
+				"UPDATE ARTICLE set art_stat = 0 where art_no=?";
 		private static final String UPDATE = 
 				"UPDATE ARTICLE set bd_cl_no=?, mbr_no=?, art_rel_time=? ,art_title=? ,art_cont=? ,likes=? ,art_stat=?, replies=? art_first_img=? where art_no = ?";
 		private static final String PLUS_LIKE = 
@@ -144,7 +146,6 @@ public class ArticleDAO implements ArticleDAO_Interface{
 
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
-
 			pstmt.setInt(1, articleVO.getBd_cl_no());
 			pstmt.setInt(2, articleVO.getMbr_no());
 			pstmt.setTimestamp(3, articleVO.getArt_rel_time());
@@ -673,6 +674,43 @@ public class ArticleDAO implements ArticleDAO_Interface{
 		try {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(HIDE);
+
+			pstmt.setInt(1, articleVO.getArt_no());
+			pstmt.executeUpdate();
+			
+			
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+	} //end of hide
+	
+	
+	public void show(ArticleVO articleVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(SHOW);
 
 			pstmt.setInt(1, articleVO.getArt_no());
 			pstmt.executeUpdate();

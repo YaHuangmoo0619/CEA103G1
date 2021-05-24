@@ -231,7 +231,7 @@ label {
 <body>
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <div class=container>
-	  <h1>${memberVO.name}的購物車</h1>
+<%-- 	  <h1>${memberVO.name}的購物車</h1> --%>
 
 <div class="shopping-cart">
 
@@ -240,7 +240,6 @@ label {
     <label class="product-details">產品</label>
     <label class="product-price">單價</label>
     <label class="product-quantity">數量</label>
-    <label class="product-removal">移除</label>
     <label class="product-line-price">小計</label>
   </div>
 
@@ -252,7 +251,6 @@ label {
     
     <div class="product-details">
       <div class="product-title">${detail_list.prod_name}</div>
-      <p class="product-description">${fn:replace(detail_list.prod_info,vEnter,"<br>")}</p>
     </div>
     <div class="product-price">${detail_list.prod_pc}</div>
     
@@ -261,10 +259,12 @@ label {
 <!--       未解疑問，為何不用set的話第二圈進來跑不動 -->
 		<c:set value="${my_item_list}" var="list2"/>
          <c:forEach var="list2" items="${list2}">
-			<c:if test="${detail_list.prod_no==list2.key}">${list2.value}</c:if>
+			<c:if test="${detail_list.prod_no==list2.key}"><c:set var="num_this" value="${list2.value}"></c:set>${list2.value}</c:if>
 		 </c:forEach>
     </div>
-    
+    <div class=line-price>
+    ${detail_list.prod_pc*num_this}
+    </div>
       </div>
 
 	</c:forEach>
@@ -277,6 +277,10 @@ label {
     </div>
   </div>
       
+      
+      <form>
+      
+      </form>
       <button class="checkout">去買單</button>
 
 </div>
@@ -285,7 +289,6 @@ label {
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-
 
 
 

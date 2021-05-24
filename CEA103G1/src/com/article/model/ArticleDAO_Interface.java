@@ -17,6 +17,8 @@ public interface ArticleDAO_Interface {
 	public void delete(Integer art_no);
 	
 	public void hide(ArticleVO articleVO);
+	
+	public void show(ArticleVO articleVO);
 
 	public ArticleVO findByPrimaryKey(Integer art_no);
 	

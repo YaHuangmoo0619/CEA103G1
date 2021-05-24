@@ -281,7 +281,7 @@
 
 <div class=heart_group>
 <div><img class=heart_for_like src="/CEA103G1/images/heart_for_like.svg" ></div>
-<div>${articleVO.likes}</div>
+<div id=like_td>${articleVO.likes}</div>
 <div><img class=heart_for_like src="/CEA103G1/images/reply.svg" ></div>
 <div>${articleVO.replies}</div>
 </div>
@@ -291,8 +291,9 @@
 	<c:if test="${not empty memberVO}"> 
 	<!--    判斷這篇文章是否按過讚，如果還沒，那先出現的就是按讚   收回讚則設為隱藏 -->
 	<c:if test="${like_status eq true }">
+	<div>
 	<button class="like likegroup" style="display:none;"></button>
-	<button class="unlike likegroup" ></button>
+	<button class="unlike likegroup" ></button>	
 	</c:if>
 	<c:if test="${like_status eq false }">
 	<button class="like likegroup" ></button>
@@ -303,11 +304,11 @@
 	<button class="collection likegroup" style="display:none;"></button>
 	<button class="uncollection likegroup"></button>
 	</c:if>
-	
 	<c:if test="${collection_status eq false }">
 	<button class="collection likegroup"></button>
 	<button class="uncollection likegroup" style="display:none;"></button>
 	</c:if>
+	
 	</c:if>
 <!-- 	如果沒有登入的話  只會顯示按讚、收藏的按紐，點擊要打開名為登入的燈箱-->	
 	<c:if test="${empty memberVO}"> 

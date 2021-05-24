@@ -201,7 +201,7 @@ public class Article_reportServlet extends HttpServlet{
 						jedis.del("article_report:"+articleVO.getMbr_no()+":banned");
 						} 
 					if(articleVO.getArt_stat()==1) { //3.如果該篇文章之前被隱藏了  要改回顯示
-						articleSvc.updateArticle(articleVO.getArt_no(), articleVO.getBd_cl_no(), articleVO.getMbr_no(), articleVO.getArt_rel_time(), articleVO.getArt_title(), articleVO.getArt_cont(), articleVO.getLikes(), 0, articleVO.getReplies(), articleVO.getArt_first_img());
+						articleSvc.show(art_no);
 					}
 					break;
 				}
@@ -212,7 +212,7 @@ public class Article_reportServlet extends HttpServlet{
 						jedis.del("article_report:"+articleVO.getMbr_no()+":banned");
 						} 
 					if(articleVO.getArt_stat()==0) { //3.如果該篇文章之前是不處分的了  要隱藏文章
-						articleSvc.updateArticle(articleVO.getArt_no(), articleVO.getBd_cl_no(), articleVO.getMbr_no(), articleVO.getArt_rel_time(), articleVO.getArt_title(), articleVO.getArt_cont(), articleVO.getLikes(), 1, articleVO.getReplies(), articleVO.getArt_first_img());
+						articleSvc.hide(art_no);
 					}
 					break;
 				}
@@ -225,7 +225,7 @@ public class Article_reportServlet extends HttpServlet{
 					jedis.set("article_report:"+articleVO.getMbr_no()+":banned", "604800"); //再設定新的ban
 					jedis.expire("article_report:"+articleVO.getMbr_no()+":banned", 604800);
 					if(articleVO.getArt_stat()==0) { //3.如果該篇文章之前是不處分的了  要隱藏文章
-						articleSvc.updateArticle(articleVO.getArt_no(), articleVO.getBd_cl_no(), articleVO.getMbr_no(), articleVO.getArt_rel_time(), articleVO.getArt_title(), articleVO.getArt_cont(), articleVO.getLikes(), 1, articleVO.getReplies(), articleVO.getArt_first_img());
+						articleSvc.hide(art_no);
 					}
 					
 					break;
@@ -239,7 +239,7 @@ public class Article_reportServlet extends HttpServlet{
 					jedis.set("article_report:"+articleVO.getMbr_no()+":banned", "1296000");
 					jedis.expire("article_report:"+articleVO.getMbr_no()+":banned", 1296000);
 					if(articleVO.getArt_stat()==0) { //3.如果該篇文章之前是不處分的了  要隱藏文章
-						articleSvc.updateArticle(articleVO.getArt_no(), articleVO.getBd_cl_no(), articleVO.getMbr_no(), articleVO.getArt_rel_time(), articleVO.getArt_title(), articleVO.getArt_cont(), articleVO.getLikes(), 1, articleVO.getReplies(), articleVO.getArt_first_img());
+						articleSvc.hide(art_no);
 					}
 					break;
 				}
@@ -252,7 +252,7 @@ public class Article_reportServlet extends HttpServlet{
 					jedis.set("article_report:"+articleVO.getMbr_no()+":banned", "2592000"); 
 					jedis.expire("article_report:"+articleVO.getMbr_no()+":banned", 2592000);
 					if(articleVO.getArt_stat()==0) { //3.如果該篇文章之前是不處分的了  要隱藏文章
-						articleSvc.updateArticle(articleVO.getArt_no(), articleVO.getBd_cl_no(), articleVO.getMbr_no(), articleVO.getArt_rel_time(), articleVO.getArt_title(), articleVO.getArt_cont(), articleVO.getLikes(), 1, articleVO.getReplies(), articleVO.getArt_first_img());
+						articleSvc.hide(art_no);
 					}
 					break;
 				}

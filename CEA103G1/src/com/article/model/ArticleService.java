@@ -113,7 +113,17 @@ public class ArticleService {
 
 		return articleVO;
 	}
+	
+	public ArticleVO show(Integer art_no) {
 
+		ArticleVO articleVO = new ArticleVO();
+
+		articleVO.setArt_no(art_no);
+		dao.show(articleVO);
+
+		return articleVO;
+	}
+	
 	public ArticleVO getOneArticle(Integer art_no) {
 		return dao.findByPrimaryKey(art_no);
 	}

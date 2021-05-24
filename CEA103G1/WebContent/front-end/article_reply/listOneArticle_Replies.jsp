@@ -13,51 +13,40 @@
   pageContext.setAttribute("list", list); 
 %>
 
-
+<jsp:useBean id="memberDAO" scope="page"
+	class="com.member.model.MemberDAO" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="BIG5">
 <title>listOneArticle_Replies 前台</title>
 <style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
+
+.top div{
+display:inline-block;
+}
+
+.reply_author{
+width:25px;
+height:25px;
+}
+
+.reply{
+padding:0px 0px 15px 0px;
+
+}
+
+.test{
+display:block;
+}
 </style>
 
-<style>
-  table {
-	width: 600px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
-  
-</style>
 
 </head>
 <body bgcolor='white'>
 
 
-<table>
+
 
 
 <!-- 用於樓層統計		 -->
@@ -69,39 +58,49 @@
 <div class=reply id=reply<%=floor%>>
 <c:if test="${article_replyVO.getRep_stat() == 0}">
 
+<div class=top>
 			
-				<%=floor%>樓
-		<div class=art_rep_no>留言編號:${article_replyVO.art_rep_no}</div>
-		<div>文章編號:${article_replyVO.art_no}</div>
-        <div>會員編號:${article_replyVO.mbr_no}</div>
-        <div>留言內容:${article_replyVO.rep_cont}</div>
-		<div><fmt:formatDate value="${article_replyVO.rep_time}" pattern="MM月dd日  HH:mm"/></div>
-		<div>留言讚數:${article_replyVO.likes}</div>
-		<div>
+		<c:forEach var="member" items="${memberDAO.all}">
+        <c:if test="${member.mbr_no==article_replyVO.mbr_no && not empty member.sticker}"><div class=sticker>${member.sticker}</div></c:if>
+        <c:if test="${member.mbr_no==article_replyVO.mbr_no && empty member.sticker}"><div class=sticker><img class = reply_author src="/CEA103G1/images/profile.png"></div></c:if>
+        </c:forEach>
+        <c:forEach var="member2" items="${memberDAO.all}">
+        <c:if test="${member2.mbr_no==article_replyVO.mbr_no}"><div class="mbr_no test">${member2.acc}</div></c:if>
+        </c:forEach>
+        <div class="floorandtime test">
+        <div class="floor">B<%=floor%></div>
+		<div class="rep_time"><fmt:formatDate value="${article_replyVO.rep_time}" pattern="MM月dd日  HH:mm"/></div>
+		</div>
+		<div class=likes>${article_replyVO.likes}</div>
+		</div>
+		<div class=rep_cont>${article_replyVO.rep_cont}</div>
+		
+
+        <c:if test="${memberVO.mbr_no==article_replyVO.mbr_no}">
+        		<div class=modify>
 			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article_reply/article_reply.do" style="margin-bottom: 0px;">
 				<input type="submit" value="修改">
 				<input type="hidden" name="art_rep_no" value="${article_replyVO.art_rep_no}">
 				<input type="hidden" name="action" value="getOne_For_Update">
 				<input type="hidden" name="requestURL"	value="<%=request.getParameter("requestURL")%>">
-<!-- 						 將listOneArticle的URL往article_replyServlet丟 -->
 			</FORM>
 		</div>
-		<div>					
+		
+		<div class=delete>					
 		<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/article_reply/article_reply.do" style="margin-bottom: 0px;">
 		<input type="submit" value="刪除"> <input type="hidden" name="art_rep_no" value="${article_replyVO.art_rep_no}">
 		<input type="hidden" name="action" value="hide">
 		</FORM>
 		</div>
-
-
-
+        
+        </c:if>
 			
 	</c:if>
-			<%=floor++%>		
+			<div style="display:none"><%=floor++%></div>		
 	</div>		
 		</c:forEach>
 						
-	</table>
+
 <%-- 	<%@ include file="page2.file"%> --%>
 	
 	
