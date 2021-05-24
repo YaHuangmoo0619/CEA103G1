@@ -10,6 +10,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
+import com.member.model.JedisHandler;
 import com.member.model.MemberDAO;
 import com.member.model.MemberService;
 import com.member.model.MemberVO;
@@ -697,6 +698,23 @@ public class MemberServlet extends HttpServlet {
 				MemberService memberSvc = new MemberService();
 				memberVO = memberSvc.registerMember(acc, pwd, id, name, bday, sex, mobile, mail, city, dist, add);
 				
+				MemberMailService mms = new MemberMailService();
+				
+				JedisHandler jh = new JedisHandler();				
+				String authCode = jh.setAuthCode(acc);
+				
+				String to = mail;
+				String subject = "Campion營家會員帳號驗證通知信";
+				String messageText = acc + "您好 :\n\n" 
+						+ "感謝您使用本平臺，為了確認您的資料正確性，平臺需要驗證後才能啟用您的帳號。\n\n" 
+						+ "請點擊以下連結進行驗證 :\n" 
+						+ req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() 
+						+ req.getContextPath() + req.getServletPath() + "?action=verifiction&acc="
+						+ acc + "&authCode=" + authCode + "\n\n"
+						+ "Campion營家團隊 敬上。";
+				
+				mms.sendMail(to, subject, messageText);
+				
 				/***************************3.新增(註冊)完成,準備轉交(Send the Success view)***********/
 				String url = "/front-end/member/success.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllMember_rank.jsp
@@ -709,6 +727,125 @@ public class MemberServlet extends HttpServlet {
 						.getRequestDispatcher("/front-end/member/register.jsp");
 				failureView.forward(req, res);
 			}
+		}
+		
+		//忘記密碼
+		if ("forgetPwd".equals(action)) {
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+
+			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+			String mail = req.getParameter("mail").trim();
+			/*************************** 2.開始查詢資料 *****************************************/
+			MemberService memberSvc = new MemberService();
+			MemberMailService mms = new MemberMailService();
+			
+			MemberVO memberVO = memberSvc.findByEmail(mail);
+			
+			if (memberVO != null) {
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+				
+				String to = mail;
+				String subject = "Campion營家-臨時密碼";
+				
+				String temPwd = JedisHandler.randAuthCode();
+				String messageText = memberVO.getAcc() + "您好:\n\n"
+						+ "以下是您的臨時密碼，請用此密碼登入後，至會員專區重設您的密碼:\n\n"
+						+ temPwd + "\n\n" + "Campion營家團隊 敬上。";
+
+				mms.sendMail(to, subject, messageText);
+
+				// 密碼變更為臨時密碼temPwd
+				memberSvc.updatePwd(mail, temPwd);
+				
+				RequestDispatcher SuccessView = req.getRequestDispatcher("/front-end/member/forgetPassword_Email.jsp");
+				SuccessView.forward(req, res);
+				return;
+			
+			} else {
+				errorMsgs.add("信箱不存在");
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/member/forgetPassword.jsp");
+				failureView.forward(req, res);
+				return;
+			}
+		}
+						
+		//會員驗證信箱	
+		if ("sendAuthMail".equals(action)) {
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				
+				/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
+				String acc = req.getParameter("acc").trim();
+				
+				/*************************** 2.開始新增資料 ***************************************/
+				MemberService memberSvc = new MemberService();
+				MemberVO memberVO = memberSvc.loginCheck(acc);
+				
+				MemberMailService mms = new MemberMailService();
+				
+				// 產生隨機認證碼存入redis
+				JedisHandler jh = new JedisHandler();				
+				String authCode = jh.setAuthCode(acc);
+				
+				String to = memberVO.getMail();
+				String subject = "Campion營家帳號驗證通知信";
+				String messageText = acc + "您好 :\n\n" 
+						+ "感謝您使用本平臺，為了確認您的資料正確性，平臺需要驗證後才能啟用您的帳號。\n\n" 
+						+ "請點擊以下連結進行驗證 :\n" 
+						+ req.getScheme() + "://" + req.getServerName() + ":"  + req.getServerPort()
+						+ req.getContextPath() + req.getServletPath() + "?action=verification&acc="
+						+ acc + "&authCode=" + authCode + "\n\n"
+						+ "Campion營家團隊 敬上。";
+				
+				mms.sendMail(to, subject, messageText);
+				
+				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
+				req.setAttribute("acc", acc);
+				String url = "/front-end/member/unverifiction.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
+				successView.forward(req, res);
+				
+			} catch (Exception e) {
+				errorMsgs.add("Exception" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/campion_front.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		//會員驗證
+		if("verifiction".equals(action)) {
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
+			String acc = req.getParameter("acc");
+			
+			String authCode = req.getParameter("authCode");
+			
+			String savedCode = JedisHandler.getAuthCode(acc);
+			if (savedCode == null) {
+				errorMsgs.add("驗證信已過期，請重新申請");
+			} else if (savedCode.equals(authCode)){
+				System.out.println("驗證成功!");
+				MemberService memberSvc = new MemberService();
+				memberSvc.updateMemberStatus(acc, (int) 1);
+			} else {
+				errorMsgs.add("驗證有誤，請重新申請");
+			}
+			/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
+			String url = "/front-end/member/verificationMail.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+			successView.forward(req, res);
 		}
 	}
 }

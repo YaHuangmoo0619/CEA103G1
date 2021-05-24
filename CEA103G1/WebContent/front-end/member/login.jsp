@@ -126,9 +126,7 @@
 			</c:if>
             <br>
             <div>
-    			<a href='<%=request.getContextPath()%>/front-end/member/forgetAccount.jsp'>忘記帳號</a>
     			<a href='<%=request.getContextPath()%>/front-end/member/forgetPassword.jsp'>&emsp;忘記密碼</a>
-    			<a href='<%=request.getContextPath()%>/front-end/member/redirectMail.jsp'>&emsp;重寄驗證信</a>
     		</div>
         </form>
     </div>

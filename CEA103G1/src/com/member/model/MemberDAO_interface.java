@@ -10,8 +10,11 @@ public interface MemberDAO_interface {
           public void register_Member(MemberVO memberVO);
           public MemberVO findByPrimaryKey(Integer mbr_no);
           public MemberVO findByPrimaryKey_login(String acc, String pwd);
+          public MemberVO findByEmail(String mail);
+          public MemberVO loginCheck(String acc);
+          public void updatePwd(String mail, String pwd);
+          public void updateMemberStatus(String acc, Integer acc_stat);
           public List<MemberVO> getAll();
-
           //萬用複合查詢(傳入參數型態Map)(回傳 List)
 //        public List<MemberVO> getAll(Map<String, String[]> map)	
 }
