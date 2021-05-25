@@ -90,7 +90,7 @@ img.inDiv:hover{
 		</div>
 		<div class="in">
 			<div class="divR colName">帳號狀態：</div>
-			<div class="divL">
+			<div class="divL statChange">
 			${campsite_ownerVO.stat == 0?'未審核':''}
 			${campsite_ownerVO.stat == 1?'已審核':''}
 			${campsite_ownerVO.stat == 2?'已停權':''}

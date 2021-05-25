@@ -284,8 +284,9 @@ textarea{
 			<td style="width:18%;">
 				<div class="inTr">
 					<div>
+					
 						<input type="radio" id="stat0" value="${campsite_ownerVO.stat}" style="margin:0.5em;" ${campsite_ownerVO.stat==0?'checked':''} disabled>
-						<label for="stat0" ${campsite_ownerVO.stat==0?'class="spotlight"':''}>未審核</label>
+						<label for="stat0" ${campsite_ownerVO.stat==0?'class="spotlight" style="background-color:red;color:#fff;"':''}>未審核</label>
 						<input type="radio" id="stat1" value="${campsite_ownerVO.stat}" style="margin:0.5em;"  ${campsite_ownerVO.stat==1?'checked':''} disabled>
 						<label for="stat1" ${campsite_ownerVO.stat==1?'class="spotlight"':''}>已審核</label>
 						<input type="radio" id="stat2" value="${campsite_ownerVO.stat}" style="margin:0.5em;"  ${campsite_ownerVO.stat==2?'checked':''} disabled>
@@ -310,8 +311,16 @@ textarea{
 						<jsp:include page="listOneCampsite_owner.jsp" />
 		            </div>
 		            <div class="modal-footer">
-		            	<input type="button" value="通過" style="margin:0.5em;" class="confirmStop">
-						<input type="button" value="停權" style="margin:0.5em;" class="confirm">
+		            	<form method="post" action="<%=request.getContextPath()%>/Campsite_ownerChangeStat">
+		            		<input type="submit" value="通過" style="margin:0.5em;" class="confirm">
+		            		<input type="hidden" name="action" value="pass">
+		            		<input type="hidden" name="cso_no" value="${campsite_ownerVO.cso_no}" >
+		            	</form>
+		            	<form method="post" action="<%=request.getContextPath()%>/Campsite_ownerChangeStat">
+							<input type="submit" value="停權" style="margin:0.5em;" class="confirmStop">
+							<input type="hidden" name="action" value="stop">
+		            		<input type="hidden" name="cso_no" value="${campsite_ownerVO.cso_no}" >
+						</form>
 		            </div>
 		       </div>
 		   </div>
@@ -339,9 +348,6 @@ textarea{
 			backToTop[1].style.display = "block";
 		}
 	});
-</script>
-<script>
-
 </script>
 </body>
 </html>
