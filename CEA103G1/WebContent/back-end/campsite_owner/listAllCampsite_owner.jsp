@@ -201,12 +201,13 @@ div.L{
 div.R{
 	display:inline-block;
 	width:4em;
+	margin-bottom: 0.5em;
 }
 div.number{
 	text-align: center;
 }
 div.address{
-	width:10em;
+	width:11em;
 }
 div.inTr{
 	display:inline-block;
@@ -256,7 +257,7 @@ textarea{
 				<a class="content" href="<%=request.getContextPath()%>/campsite_owner/campsite_owner.do?action=getOne_For_Update_Back&cso_no=${campsite_ownerVO.cso_no}">${campsite_ownerVO.cso_no}</a>
 				${campsite_ownerVO.cso_no==param.cso_no ? '<a id="focus"></a>' : '' }
 			</td>
-			<td style="width:35%;">
+			<td style="width:32%;">
 				<div class="inTr">
 					<div class="L">營主姓名:</div>
 					<div class="R">${campsite_ownerVO.name}</div>
@@ -265,11 +266,11 @@ textarea{
 					<div class="L">帳號:</div>
 					<div class="R">${campsite_ownerVO.acc}</div>
 				</div>
-			<td style="width:70%;">
 				<div class="inTr">
 					<div class="L">手機:</div>
 					<div class="R number">${campsite_ownerVO.mobile}</div>
 				</div>
+			<td style="width:45%;">
 				<div class="inTr">
 					<div class="L">信箱</div>
 					<div class="R number">${campsite_ownerVO.mail}</div>
@@ -280,47 +281,17 @@ textarea{
 					${campsite_ownerVO.city}${campsite_ownerVO.dist}${campsite_ownerVO.add}
 				</div>
 			</td>
-			<td style="width:45%;">
+			<td style="width:18%;">
 				<div class="inTr">
 					<div>
-						<input type="button" value="帳號停權" style="margin:0.5em;" class="confirmStop">
-						<input type="button" value="恢復帳號" style="margin:0.5em;" class="confirm">
+						<input type="radio" id="stat0" value="${campsite_ownerVO.stat}" style="margin:0.5em;" ${campsite_ownerVO.stat==0?'checked':''} disabled>
+						<label for="stat0" ${campsite_ownerVO.stat==0?'class="spotlight"':''}>未審核</label>
+						<input type="radio" id="stat1" value="${campsite_ownerVO.stat}" style="margin:0.5em;"  ${campsite_ownerVO.stat==1?'checked':''} disabled>
+						<label for="stat1" ${campsite_ownerVO.stat==1?'class="spotlight"':''}>已審核</label>
+						<input type="radio" id="stat2" value="${campsite_ownerVO.stat}" style="margin:0.5em;"  ${campsite_ownerVO.stat==2?'checked':''} disabled>
+						<label for="stat2" ${campsite_ownerVO.stat==2?'class="spotlight"':''}>已停權</label>
 					</div>
 				</div>	
-<!-- 				<div class="inTr"> -->
-<!-- 					<div class="L">運送地址:</div> -->
-<!-- 					<div> -->
-<%-- 						<div class="innerDiv">${product_orderVO.ship_cty}</div> --%>
-<%-- 						<div class="innerDiv">${product_orderVO.ship_dist}</div> --%>
-<%-- 						<div class="innerDiv">${product_orderVO.ship_add}</div> --%>
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 				<div class="inTr"> -->
-<!-- 					<div class="L">下訂時間:</div> -->
-<%-- 					<div><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${product_orderVO.prod_ord_time}"/></div> --%>
-<!-- 				</div> -->
-<!-- 				<div class="inTr"> -->
-<!-- 					<div class="L">訂單備註:</div> -->
-<%-- 					<div style="display:inline-block;width:8em;">${product_orderVO.rmk}</div> --%>
-<!-- 				</div> -->
-<!-- 			</td> -->
-			
-<!-- 			<td style="width:15%;"> -->
-<!-- 				<div class="inTr"> -->
-<%-- 					<label for="prod_ord_stat0" ${product_orderVO.prod_ord_stat==0?'class="spotlight"':''}>未付款</label> --%>
-<%-- 					<input type="radio" id="prod_ord_stat0" value="0" ${product_orderVO.prod_ord_stat==0?'checked':''} disabled> --%>
-<%-- 					<label for="prod_ord_stat1" ${product_orderVO.prod_ord_stat==1?'class="spotlight"':''}>已付款</label> --%>
-<%-- 					<input type="radio" id="prod_ord_stat1" value="1" ${product_orderVO.prod_ord_stat==1?'checked':''} disabled> --%>
-<%-- 					<label for="prod_ord_stat2" ${product_orderVO.prod_ord_stat==2?'class="spotlight"':''}>出貨中</label> --%>
-<%-- 					<input type="radio" id="prod_ord_stat2" value="2" ${product_orderVO.prod_ord_stat==2?'checked':''} disabled> --%>
-<%-- 					<label for="prod_ord_stat3" ${product_orderVO.prod_ord_stat==3?'class="spotlight"':''}>已收貨</label> --%>
-<%-- 					<input type="radio" id="prod_ord_stat3" value="3" ${product_orderVO.prod_ord_stat==3?'checked':''} disabled> --%>
-<%-- 					<label for="prod_ord_stat4" ${product_orderVO.prod_ord_stat==4?'class="spotlight"':''}>未取貨</label> --%>
-<%-- 					<input type="radio" id="prod_ord_stat4" value="4" ${product_orderVO.prod_ord_stat==4?'checked':''} disabled> --%>
-<%-- 					<label for="prod_ord_stat5" ${product_orderVO.prod_ord_stat==5?'class="spotlight"':''}>取消訂單</label> --%>
-<%-- 					<input type="radio" id="prod_ord_stat5" value="5" ${product_orderVO.prod_ord_stat==5?'checked':''} disabled> --%>
-<!-- 				</div> -->
-<!-- 			</td> -->
 		</tr>
 	</c:forEach>
 </table>
@@ -332,13 +303,15 @@ textarea{
 		     <div class="modal-dialog modal-lg" role="document"> 
 		        <div class="modal-content">
 		            <div class="modal-header">
-		                <h5 class="modal-title">${product_orderVO.mbr_no}會員之訂單編號為${product_orderVO.prod_ord_no}號的詳細資訊</h5>
+		                <h5 class="modal-title">${campsite_ownerVO.cso_no}號會員之詳細資料</h5>
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
 		            </div>
 		            <div class="modal-body">
-		            ${campsite_ownerVO.cso_no}
-<%-- 		            ${productVOOne.prod_no} --%>
-<%-- 						<jsp:include page="listOneProduct_order.jsp" /> --%>
+						<jsp:include page="listOneCampsite_owner.jsp" />
+		            </div>
+		            <div class="modal-footer">
+		            	<input type="button" value="通過" style="margin:0.5em;" class="confirmStop">
+						<input type="button" value="停權" style="margin:0.5em;" class="confirm">
 		            </div>
 		       </div>
 		   </div>
