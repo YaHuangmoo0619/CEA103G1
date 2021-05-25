@@ -236,7 +236,7 @@ public class ValidPlace extends HttpServlet {
 		for (CampVO campVO : camplist) {
 			campVO = seeIfCollect(req, campVO);
 		}
-
+System.out.println("§Ú¦³°õ¦æ");
 		String jsonObject = gson.toJson(camplist);
 		out.println(jsonObject);
 	}

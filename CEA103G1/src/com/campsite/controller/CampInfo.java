@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.annotation.WebServlet;
@@ -133,7 +134,7 @@ public class CampInfo extends HttpServlet {
 			if ("getall".equals(action)) {
 				PlaceService placeSvc = new PlaceService();
 				List<CampVO> camplist = campSvc.getAll();
-				
+System.out.println(camplist);
 				List<CampVO> pass = new ArrayList();
 				for (CampVO campVO : camplist) {
 					if((int)campVO.getReview_Status() == 1 && (int)campVO.getCampsite_Status() == 0) {
@@ -145,7 +146,6 @@ public class CampInfo extends HttpServlet {
 				for (CampVO campVO : camplist) {
 					campVO = seeIfCollect(req, campVO);
 				}
-
 				for (CampVO campVO : camplist) {
 					list.add(campVO);
 				}
@@ -157,7 +157,6 @@ public class CampInfo extends HttpServlet {
 					}
 					((CampVO) campVO).setFirst_pic(firstPic.get(0));
 				}
-
 				for (Object campVO : list) {
 					List<Integer> low_pc = new ArrayList();
 					List<PlaceVO> plclist = placeSvc.getByCamp(((CampVO) campVO).getCamp_no());
@@ -171,7 +170,13 @@ public class CampInfo extends HttpServlet {
 					System.out.println(low_pc);
 					((CampVO) campVO).setLow_pc(low_pc.get(0));
 				}
-
+				Set<Object> set = new HashSet<Object>();
+				for(int i = 0; set.size() < 5; i++) {
+					set.add(list.get((int)(Math.random()*(list.size()-1))));
+				}
+				list = new ArrayList();
+				list.addAll(set);
+				
 			} else if ("getone".equals(action)) {
 				Integer camp_no = new Integer(req.getParameter("camp_no"));
 				CampVO campVO = campSvc.getOneCamp(camp_no);
@@ -182,6 +187,8 @@ public class CampInfo extends HttpServlet {
 				list.add(camp_pictureSvc.getCamp_Picture(camp_no));
 			}
 		}
+
+System.out.println(list);
 		jsonObject = gson.toJson(list);
 		out.println(jsonObject);
 	}

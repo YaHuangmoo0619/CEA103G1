@@ -117,7 +117,7 @@ span {
 						</tr>
 						<tr>
 							<td>°t¸m¹Ï:</td>
-							<td><input type="file" id="config" name="config" required><input
+							<td><input type="file" id="config" name="config"><input
 								type="hidden" name="image"
 								value="<%=(campVO == null) ? "µL" : campVO.getConfig()%>">
 								<div class="container">
