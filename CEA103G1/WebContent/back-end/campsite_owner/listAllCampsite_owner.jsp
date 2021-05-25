@@ -304,7 +304,7 @@ textarea{
 		     <div class="modal-dialog modal-lg" role="document"> 
 		        <div class="modal-content">
 		            <div class="modal-header">
-		                <h5 class="modal-title">${campsite_ownerVO.cso_no}號會員之詳細資料</h5>
+		                <h5 class="modal-title">${campsite_ownerVO.cso_no}號營主之詳細資料</h5>
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
 		            </div>
 		            <div class="modal-body">

@@ -79,7 +79,7 @@ public class ImportFirstBlob extends HttpServlet{
 				pstmt = con.prepareStatement(UPDATE_BLOB_IDF);
 				int cso_no = rs.getInt("cso_no");
 				pstmt.setInt(2, cso_no);
-				InputStream in = getServletContext().getResourceAsStream("/images/an_pic/an_pic2.jpg");
+				InputStream in = getServletContext().getResourceAsStream("/images/an_pic/id_picf.jpg");
 				byte[] pic2 = new byte[in.available()];
 				in.read(pic2);
 					
@@ -93,7 +93,7 @@ public class ImportFirstBlob extends HttpServlet{
 				pstmt = con.prepareStatement(UPDATE_BLOB_IDB);
 				int cso_no = rs.getInt("cso_no");
 				pstmt.setInt(2, cso_no);
-				InputStream in = getServletContext().getResourceAsStream("/images/an_pic/an_pic3.jpg");
+				InputStream in = getServletContext().getResourceAsStream("/images/an_pic/id_picb.jpg");
 				byte[] pic2 = new byte[in.available()];
 				in.read(pic2);
 					
@@ -107,7 +107,7 @@ public class ImportFirstBlob extends HttpServlet{
 				pstmt = con.prepareStatement(UPDATE_BLOB_IDF2);
 				int cso_no = rs.getInt("cso_no");
 				pstmt.setInt(2, cso_no);
-				InputStream in = getServletContext().getResourceAsStream("/images/an_pic/an_pic4.jpg");
+				InputStream in = getServletContext().getResourceAsStream("/images/an_pic/id_pic2f.jpg");
 				byte[] pic2 = new byte[in.available()];
 				in.read(pic2);
 					
