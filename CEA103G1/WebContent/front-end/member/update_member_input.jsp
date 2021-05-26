@@ -11,6 +11,8 @@
 <meta charset="UTF-8">
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
 <title>修改會員資料</title>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
@@ -76,7 +78,7 @@ div.photo{
 	justify-content: center;
 }
 div.photo:hover{
-	cursor: pointer;
+/* 	cursor: pointer; */
 }
 img.personBig{
 /* 	width:100%; */
@@ -142,18 +144,17 @@ label{
 		<ul> 
 			<li><a href="<%=request.getContextPath() %>/front-end/place_order/listAllPlace_order.html">營位訂單管理</a></li>
 			<li><a href="<%=request.getContextPath() %>/front-end/campsite_collection/listAllCollection.html">營區收藏管理</a></li>
-			<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城訂單管理</a></li>
-			<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇資訊管理</a></li>
-			<li><a href="">修改會員資料</a></li>
+			<li><a href="<%=request.getContextPath() %>/back-end/product_order/listAllProduct_order.jsp">商城訂單管理</a></li>
+			<li><a href="<%=request.getContextPath() %>/front-end/article/listFollowBoardArticle.jsp">已收藏看板中的文章列表</a></li>
 		</ul>
 	</div>
 	<div class="right">
 		<div class="photo">
-			<img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="personBig" onclick="changePic()">
+			<img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="personBig" /*onclick="changePic()"*/>
 		</div>
-		<div id="changePic">
-			<img src="<%=request.getContextPath() %>/images/camera-outline.svg" class="camera" title="更新大頭照" onclick="changePic()">
-		</div>
+<!-- 		<div id="changePic"> -->
+<%-- 			<img src="<%=request.getContextPath() %>/images/camera-outline.svg" class="camera" title="更新大頭照" onclick="changePic()"> --%>
+<!-- 		</div> -->
 		<div class="info">
 			<%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
@@ -229,7 +230,7 @@ label{
 		            </div>
 		            <div class="modal-footer">
 		            	<form method="post" action="<%=request.getContextPath()%>/member/GetPhoto" enctype="multipart/form-data" style="text-align:right;">
-							<input type="file" id="file-upload-button" name="sticker" style="display:none;">
+<!-- 							<input type="file" id="file-upload-button" name="sticker" style="display:none;"> -->
 							<input type="hidden" name="mbr_no" value="${memberVO.mbr_no}">
 							<input type="hidden" name="action" value="updatePic">
 							<input type="submit" class="btn btn-secondary" value="確定上傳">
@@ -295,13 +296,11 @@ myFile.addEventListener('change',function(e){
 	}
 });
 </script>
-
 <script>
 function showModal() {
 	 $('#Modal').modal('show'); 
 }
 </script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
