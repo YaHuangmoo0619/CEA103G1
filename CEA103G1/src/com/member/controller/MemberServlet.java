@@ -34,10 +34,10 @@ public class MemberServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
-		//雅凰加的
-		res.setContentType("text/html; charset=Big5");
-		PrintWriter out = res.getWriter();
-		//雅凰加的
+//		//雅凰加的
+//		res.setContentType("text/html; charset=Big5");
+//		PrintWriter out = res.getWriter();
+//		//雅凰加的
 		
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
@@ -1004,20 +1004,20 @@ public class MemberServlet extends HttpServlet {
 			successView.forward(req, res);
 		}
 
-		//雅凰加的
-		if ("checkAcc".equals(action)) {
-//			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-//			req.setAttribute("errorMsgs",errorMsgs);
-			
-			String acc = req.getParameter("acc");
-			MemberService memberSvc = new MemberService();
-			String accFound = memberSvc.findByAcc(acc);
-			if(accFound!=null) {
-				out.println("可以使用");
-			}else {
-				out.println("已被使用");
-			}
-		}
+//		//雅凰加的
+//		if ("checkAcc".equals(action)) {
+////			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+////			req.setAttribute("errorMsgs",errorMsgs);
+//			
+//			String acc = req.getParameter("acc");
+//			MemberService memberSvc = new MemberService();
+//			String accFound = memberSvc.findByAcc(acc);
+//			if(accFound!=null) {
+//				out.println("可以使用");
+//			}else {
+//				out.println("已被使用");
+//			}
+//		}
 
 		if ("getOne_For_Update_Back".equals(action)) { // 來自listAllmember.jsp的請求
 			List<String> errorMsgs = new LinkedList<String>();

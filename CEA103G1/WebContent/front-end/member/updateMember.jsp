@@ -14,7 +14,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<title>所有會員站內信列表</title>
+<title>會員資料修改</title>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <%-- <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%> --%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -134,7 +134,6 @@ label{
 	font-weight:555;
 }
 </style>
-
 </head>
 <body onload="connection()">
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
@@ -208,8 +207,7 @@ label{
 			</form>
 		</div>
 	</div>
-</div>	
-
+</div>
 		<div class="modal" tabindex="-1" role="dialog" id="Modal">
 		     <div class="modal-dialog" role="document"> 
 		        <div class="modal-content">
@@ -230,9 +228,7 @@ label{
 		            </div>
 		       </div>
 		   </div>
-		</div>
-		
-
+		 </div>
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 <script>
@@ -363,5 +359,9 @@ $('#city').change(function(){
 	});
 });
 </script>
+<form method="post" action="<%=request.getContextPath()%>/MemberChangeInfo">
+<input type="text" name="name">
+<input type="submit">
+</form>
 </body>
 </html>
