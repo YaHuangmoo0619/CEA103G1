@@ -47,6 +47,7 @@ public class MemberChangeInfo extends HttpServlet {
 				String accReg = "^[(a-zA-Z0-9_)]{2,20}$";
 				if (acc == null || acc.trim().length() == 0) {
 					errorMsgs.add("會員帳號: 請勿空白");
+					acc = acc.trim();
 				} else if(!acc.trim().matches(accReg)) { //以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("會員帳號: 只能是英文字母、數字和_ , 且長度必需在2到20之間");
 	            }
@@ -61,6 +62,11 @@ public class MemberChangeInfo extends HttpServlet {
 	            }
 				System.out.println("pwd="+req.getParameter("pwd"));
 				
+				String pwd2 = new String(req.getParameter("pwd2").trim());
+				if (pwd2 == null || pwd2.trim().length() == 0) {
+					errorMsgs.add("密碼: 請輸入第二次密碼");
+				}
+				
 				String name = req.getParameter("name");
 				String nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,60}$";
 				if (name == null || name.trim().length() == 0) {
@@ -69,19 +75,22 @@ public class MemberChangeInfo extends HttpServlet {
 					errorMsgs.add("會員姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到60之間");
 	            }
 				System.out.println("name="+req.getParameter("name"));
-					
-				SimpleDateFormat dsf = new SimpleDateFormat("yyyy-MM-dd");
+				
+				java.sql.Date bday;
 				String bdayStr = req.getParameter("bday");
 				if (bdayStr == null || bdayStr.trim().length() == 0) {
+					bday = new java.sql.Date(System.currentTimeMillis());
 					errorMsgs.add("請填寫生日");
+				}else {
+					SimpleDateFormat dsf = new SimpleDateFormat("yyyy-MM-dd");
+					java.util.Date dateU = null;
+					try {
+						dateU = dsf.parse(bdayStr);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					bday = new java.sql.Date(dateU.getTime());
 				}
-				java.util.Date dateU = null;
-				try {
-					dateU = dsf.parse(req.getParameter("bday"));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				java.sql.Date bday = new java.sql.Date(dateU.getTime());
 				System.out.println("bdayStr="+req.getParameter("bdayStr"));
 				
 				Integer sex = new Integer(req.getParameter("sex"));
@@ -104,6 +113,7 @@ public class MemberChangeInfo extends HttpServlet {
 				String mobile = req.getParameter("mobile");
 				String mobileReg = "^[(0-9)]{10}$";
 				if (mobile == null || mobile.trim().length() == 0) {
+					mobile = mobile.trim();
 					errorMsgs.add("手機號碼: 請勿空白");
 				} else if(!mobile.trim().matches(mobileReg)) { //以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("手機號碼: 只能是數字 , 且長度必需是10");

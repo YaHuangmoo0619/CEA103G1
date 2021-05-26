@@ -165,7 +165,7 @@ input.confirm:hover {
 				</div>
 				<div class="infoRow">
 					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVOUpdate != null ? memberVOUpdate.acc:memberVO.acc}" readonly>
-					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="text" id="pwd" name="pwd" value="${memberVOUpdate != null ? memberVOUpdate.pwd:memberVO.pwd}" readonly>
+					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="password" id="pwd" name="pwd" value="${memberVOUpdate != null ? memberVOUpdate.pwd:memberVO.pwd}" readonly>
 				</div>
 				<div class="infoRow">
 					<label for="name">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label><input type="text" id="name" name="name" value="${memberVOUpdate != null ? memberVOUpdate.name:memberVO.name}" readonly>
@@ -234,6 +234,7 @@ input.confirm:hover {
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 
 <script>
+//使特定input在focus時不要有外框
 	$("input").focus(function(){
 		$("input").css("outline","none");
 	});

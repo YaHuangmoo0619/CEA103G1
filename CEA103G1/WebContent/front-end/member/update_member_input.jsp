@@ -11,10 +11,8 @@
 <meta charset="UTF-8">
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<title>所有會員站內信列表</title>
+<title>修改會員資料</title>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <%-- <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%> --%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -180,7 +178,7 @@ label{
 				<div class="infoRow">
 					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVO.acc}" style="width:6em;">
 					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="password" id="pwd" name="pwd" value="${memberVO.pwd}" style="width:5em;">
-					<label for="pwd2">再次輸入密碼：</label><input type="password" id="pwd2" style="width:5em;">
+					<label for="pwd2">再次輸入密碼：</label><input type="password" id="pwd2" name="pwd2" value="${memberVO.pwd}" style="width:5em;">
 				</div>
 				<div class="infoRow">
 					<label for="bday">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</label><input type="text" id="bday" name="bday" value="${memberVO.bday}">
@@ -245,6 +243,7 @@ label{
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 <script>
+//使特定input在focus時不要有外框
 	$("#mbr_no").focus(function(){
 		$("#mbr_no").css("outline","none");
 	});
@@ -296,11 +295,13 @@ myFile.addEventListener('change',function(e){
 	}
 });
 </script>
+
 <script>
 function showModal() {
 	 $('#Modal').modal('show'); 
 }
 </script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
@@ -384,9 +385,10 @@ $('#acc').keyup(function(e){
 		success: function(data){
 // 			alert('${memberVO.acc}');
 			
-			if($('#acc').val().trim() !== '${memberVO.acc}'.trim() && data.acc === "duplicate"){
-				console.log($('#acc').val());
-				console.log($('#acc').val().trim() !== '${memberVO.acc}'.trim());
+			if('${memberVO.acc}'.trim() !== '' && $('#acc').val().trim() !== '${memberVO.acc}'.trim() && data.acc === "duplicate"){
+				console.log(typeof $('#acc').val());
+				console.log(typeof '${memberVO.acc}'.trim());
+				console.log($('#acc').val().trim() != '${memberVO.acc}'.trim());
 				$('#acc').css("outline-color","red");
 			}else if(data.acc === "notFound" && $('#acc').val().trim() !== ''){
 				$('#acc').css("outline-color","#80c344");
@@ -412,8 +414,20 @@ $('#pwd2').keyup(function(e){
 	}
 });
 
-
 </script>
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
+<script>
+<!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
+$.datetimepicker.setLocale('zh');
+$(function(){
+	 $('#bday').datetimepicker({
+	  format:'Y-m-d',
+	  maxDate:'-1970/01/01',
+	  timepicker:false
+	 });
 
+});
+</script>
 </body>
 </html>
