@@ -2,8 +2,10 @@ package com.member.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,31 +31,37 @@ public class MemberChangeInfo extends HttpServlet {
 		System.out.println(req.getParameter("name"));
 		if ("update_info".equals(action)) { // 來自update_member_rank_input.jsp的請求
 			
-			List<String> errorMsgs = new LinkedList<String>();
+			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
+				Integer mbr_no = new Integer(req.getParameter("mbr_no"));
 				
-				Integer rank_no = new Integer(req.getParameter("rank_no").trim());
+				Integer rank_no = new Integer(req.getParameter("rank_no"));
 				
 				String acc = req.getParameter("acc");
 				String accReg = "^[(a-zA-Z0-9_)]{2,20}$";
 				if (acc == null || acc.trim().length() == 0) {
-					errorMsgs.add("會員帳號: 請勿空白");
+					errorMsgs.put("acc","會員帳號: 請勿空白");
 				} else if(!acc.trim().matches(accReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("會員帳號: 只能是英文字母、數字和_ , 且長度必需在2到20之間");
+					errorMsgs.put("acc","會員帳號: 只能是英文字母、數字和_ , 且長度必需在2到20之間");
 	            }
 				
 				String pwd = new String(req.getParameter("pwd").trim());
+				String pwdReg = "^[(a-zA-Z0-9_)]{2,20}$";
+				if (pwd == null || pwd.trim().length() == 0) {
+					errorMsgs.put("pwd","密碼: 請勿空白");
+				} else if(!acc.trim().matches(pwdReg)) { //以下練習正則(規)表示式(regular-expression)
+					errorMsgs.put("pwd","密碼: 只能是英文字母、數字和_ , 且長度必需在2到20之間");
+	            }
 				
 				String name = req.getParameter("name");
 				String nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,60}$";
 				if (name == null || name.trim().length() == 0) {
-					errorMsgs.add("會員姓名: 請勿空白");
+					errorMsgs.put("name","會員姓名: 請勿空白");
 				} else if(!name.trim().matches(nameReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("會員姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到60之間");
+					errorMsgs.put("name","會員姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到60之間");
 	            }
 					
 				SimpleDateFormat dsf = new SimpleDateFormat("yyyy-MM-dd");
@@ -65,25 +73,25 @@ public class MemberChangeInfo extends HttpServlet {
 				String id = req.getParameter("id");
 				String idReg = "^[(\u4e00-\u9fa5)(A-Z0-9)]{10}$";
 				if (id == null || id.trim().length() == 0) {
-					errorMsgs.add("身分證字號: 請勿空白");
+					errorMsgs.put("id","身分證字號: 請勿空白");
 				} else if(!id.trim().matches(idReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("身分證字號: 只能是大寫英文字母、數字 , 且長度必需是10");
+					errorMsgs.put("id","身分證字號: 只能是大寫英文字母、數字 , 且長度必需是10");
 	            }
 				
 				String mobile = req.getParameter("mobile");
 				String mobileReg = "^[(0-9)]{10}$";
 				if (mobile == null || mobile.trim().length() == 0) {
-					errorMsgs.add("手機號碼: 請勿空白");
+					errorMsgs.put("mobile","手機號碼: 請勿空白");
 				} else if(!mobile.trim().matches(mobileReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("手機號碼: 只能是數字 , 且長度必需是10");
+					errorMsgs.put("mobile","手機號碼: 只能是數字 , 且長度必需是10");
 	            }
 				
 				String mail = req.getParameter("mail");
 //				String mailReg = "^[(a-zA-Z0-9_)]{2,100}$";
 //				if (mail == null || mail.trim().length() == 0) {
-//					errorMsgs.add("會員信箱: 請勿空白");
+//					errorMsgs.put("會員信箱: 請勿空白");
 //				} else if(!mail.trim().matches(mailReg)) { //以下練習正則(規)表示式(regular-expression)
-//					errorMsgs.add("會員信箱: 只能是英文字母、數字和_ , 且長度必需在2到100之間");
+//					errorMsgs.put("會員信箱: 只能是英文字母、數字和_ , 且長度必需在2到100之間");
 //				}
 				
 				String city = new String(req.getParameter("city").trim());
@@ -92,7 +100,7 @@ public class MemberChangeInfo extends HttpServlet {
 				
 				String add = req.getParameter("add").trim();
 				if (add == null || add.trim().length() == 0) {
-					errorMsgs.add("地址請勿空白");
+					errorMsgs.put("add","地址請勿空白");
 				}
 				
 				SimpleDateFormat dsf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -102,9 +110,9 @@ public class MemberChangeInfo extends HttpServlet {
 				String card = req.getParameter("card");
 				String cardReg = "^[(A-Z0-9)]{2,100}$";
 				if (card == null || card.trim().length() == 0) {
-					errorMsgs.add("信用卡號: 請勿空白");
+					errorMsgs.put("card","信用卡號: 請勿空白");
 				} else if(!card.trim().matches(cardReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("信用卡號: 只能是英文字母、數字, 且長度必需在2到100之間");
+					errorMsgs.put("card","信用卡號: 只能是英文字母、數字, 且長度必需在2到100之間");
 	            }
 				
 				Integer pt = new Integer(req.getParameter("pt").trim());
@@ -115,7 +123,7 @@ public class MemberChangeInfo extends HttpServlet {
 				
 				String rmk = req.getParameter("rmk");
 //				if(rmk == null || rmk.trim().isEmpty()) {
-//					errorMsgs.add("請撰寫內文");
+//					errorMsgs.put("請撰寫內文");
 //				}
 				
 
@@ -143,9 +151,6 @@ public class MemberChangeInfo extends HttpServlet {
 				System.out.println(mbr_no+","+ rank_no+","+ acc+","+ pwd+","+ id+","+ name+","+ bday+","+ sex+","+ mobile+","+ mail+","+ city+","+ dist+","+ add+","+ join_time+","+ card+","+ pt+","+ acc_stat+","+ exp+","+ rmk);
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					for(String error:errorMsgs) {
-						System.out.println(error);
-					}
 					System.out.println("check2");
 					req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的member_rankVO物件,也存入req
 					RequestDispatcher failureView = req
@@ -166,7 +171,7 @@ public class MemberChangeInfo extends HttpServlet {
 
 				/***************************其他可能的錯誤處理*************************************/
 			} catch (Exception e) {
-				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				errorMsgs.put("error","修改資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/back-end/member/update_member_input.jsp");
 				failureView.forward(req, res);

@@ -170,8 +170,9 @@ label{
 					<label for="id">身&nbsp;&nbsp;份&nbsp;證：</label><input type="text" id="id" name="id" value="${memberVO.id}">
 				</div>
 				<div class="infoRow">
-					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVO.acc}">
-					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="text" id="pwd" name="pwd" value="${memberVO.pwd}">
+					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVO.acc}" style="width:6em;">
+					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="password" id="pwd" name="pwd" value="${memberVO.pwd}" style="width:5em;">
+					<label for="pwd2">再次輸入密碼：</label><input type="password" id="pwd2" style="width:5em;">
 				</div>
 				<div class="infoRow">
 					<label for="bday">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</label><input type="text" id="bday" name="bday" value="${memberVO.bday}">
@@ -231,7 +232,7 @@ label{
 		       </div>
 		   </div>
 		</div>
-		
+
 
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
@@ -362,6 +363,47 @@ $('#city').change(function(){
 		}
 	});
 });
+
+$('#acc').keyup(function(e){
+	console.log(e);
+	console.log($(this).val());
+	
+	$.ajax({
+		type: "POST",
+		url: '<%=request.getScheme()%>://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/member/MemberCheck',
+		data: {action:"checkAcc",acc:$(this).val()},
+		dataType: "json",
+		success: function(data){
+// 			alert('${memberVO.acc}');
+			
+			if($('#acc').val() !== '${memberVO.acc}' && data.acc === "duplicate"){
+				$('#acc').css("outline-color","red");
+			}else if(data.acc === "notFound" && $('#acc').val().trim() !== ''){
+				$('#acc').css("outline-color","#80c344");
+			}else{
+				$('#acc').css("outline-color","black");
+			}
+		}
+	});
+});
+
+$('#pwd2').keyup(function(e){
+	console.log($('#pwd').val() !== $('#pwd2').val());
+	$('#pwd').css("outline-color","red");
+	if($('#pwd').val() !== $('#pwd2').val()){
+		$('#pwd').css("outline-color","red");
+		$('#pwd').css("border-color","red");
+	}else if($('#pwd').val() === $('#pwd2').val()){
+		$('#pwd').css("outline-color","#80c344");
+		$('#pwd').css("border-color","#80c344");
+	}else{
+		$('#pwd').css("outline-color","black");
+		$('#pwd').css("border-color","black");
+	}
+});
+
+
 </script>
+
 </body>
 </html>
