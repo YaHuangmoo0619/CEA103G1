@@ -68,6 +68,7 @@ img.menu:hover {
 
 img.person {
 	width: 40px;
+	height:40px;
 	margin: 10px;
 	right: 1px;
 }
@@ -104,6 +105,15 @@ img.person:hover {
 	div.sec {
 		display: none;
 		background-color: #eee;
+	}
+	div.countNoRead{
+		display: none;
+	}
+	img.countNoRead{
+		display: none;
+	}
+	#logoutBt{
+		display: none;
 	}
 }
 

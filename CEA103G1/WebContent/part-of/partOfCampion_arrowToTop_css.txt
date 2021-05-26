@@ -2,7 +2,7 @@
 img.backToTop {
 	width: 40px;
 	position: fixed;
-	left: 90%;
+	left: 85%;
 	bottom: 5%;
 	background-color: #80c344;
 	border-radius: 50%;

@@ -105,7 +105,7 @@ label, select, input {
 }
 
 table{
-	width: 700px;
+	width: 100%;
 	margin: 30px auto;
 /* 	border: 1px solid #4e5452; */
 }

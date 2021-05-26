@@ -16,7 +16,9 @@
 <html>
 
 <head>
-	
+<link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <title>所有商品 </title>
 
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
@@ -115,8 +117,8 @@
 									     <input type="hidden" name="mbr_no"  value="${memberVO.mbr_no}">
 									     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
 									     <input type="hidden" name="ship_cty"  value="${memberVO.city}">
-									     <input type="hidden" name="ship_dist"  value="${productVO.dist}">
-									     <input type="hidden" name="ship_add"  value="${productVO.add}">
+									     <input type="hidden" name="ship_dist"  value="${memberVO.dist}">
+									     <input type="hidden" name="ship_add"  value="${memberVO.add}">
 									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 									     <input type="hidden" name="action" value="insert">
 									 </FORM>                                   

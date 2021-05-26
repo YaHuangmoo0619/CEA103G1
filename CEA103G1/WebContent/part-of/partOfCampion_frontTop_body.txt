@@ -12,12 +12,12 @@
 		<div>
 <%-- 			 <img src="<%=request.getContextPath() %>/front-images/search-circle-outline.svg" id="searchIcon" class="searchIcon"> --%>
 			<div class="btn-group" role="group" aria-label="Basic example">
-				<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">露營</button></a>
+				<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.html"><button type="button" class="btn btn-secondary">露營</button></a>
 				<a class="button" href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
 				<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 			</div>
 			<a href="<%=request.getContextPath() %>/front-end/shopping_cart/listOneShoppingCart.jsp"><img src="<%=request.getContextPath() %>/front-images/cart-outline.svg" class="cart"></a>
-			<a href="<%=request.getContextPath() %>/front-end/announcement/listAllAnnouncement.jsp"><img src="<%=request.getContextPath() %>/front-images/megaphone-outline.svg" class="announcement"></a>
+			<a href="<%=request.getContextPath() %>/front-end/announcement/listAllAnnouncement.jsp"><img src="<%=request.getContextPath() %>/front-images/megaphone-outline.svg" class="announcement countNoRead"></a>
 			<c:if test="${memberVO == null}">
 			<div class="btn-group" role="group" aria-label="Basic example">
 				<a class="button" href="<%=request.getContextPath() %>/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
@@ -29,21 +29,21 @@
 			</c:if>
 			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu">
 			<c:if test="${memberVO != null}">
-				<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp">
-					<div style="position:relative;display:inline;">
-						<img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement">
-						<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadMail"></div>
-					</div>
-				</a>
-				<a href="<%=request.getContextPath() %>/front-end/personal_system_notify/listAllPersonal_system_notify.jsp">
-					<div style="position:relative;display:inline;">
-						<img src="<%=request.getContextPath() %>/front-images/notifications-outline.svg" class="announcement">
-						<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadNotify"></div>
-					</div>
-				</a>
-				<a class="button" href="<%=request.getContextPath()%>/member/member.do?action=logout"><button type="button" class="btn btn-outline-secondary">登出</button></a>
-				${memberVO.name}
-				<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"><div class="person" style="display:inline;"> <img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="person" style="border-radius:50%;"></div></a>
+			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp">
+				<div style="position:relative;display:inline;" class="countNoRead">
+					<img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement countNoRead">
+					<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadMail" class="countNoRead"></div>
+				</div>
+			</a>
+			<a href="<%=request.getContextPath() %>/front-end/personal_system_notify/listAllPersonal_system_notify.jsp">
+				<div style="position:relative;display:inline;" class="countNoRead">
+					<img src="<%=request.getContextPath() %>/front-images/notifications-outline.svg" class="announcement countNoRead">
+					<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadNotify"  class="countNoRead"></div>
+				</div>
+			</a>
+			<a class="button" href="<%=request.getContextPath()%>/member/member.do?action=logout"><button type="button" class="btn btn-outline-secondary" id="logoutBt">登出</button></a>
+			${memberVO.name}	
+			<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"><div class="person" style="display:inline;"> <img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="person" style="border-radius:50%;"></div></a>
 			</c:if>
 		</div>
 	</div>
@@ -70,4 +70,22 @@
 <!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 		</div>
 		</c:if>
+		<c:if test="${memberVO != null}">
+		<div class="btn-group sec" role="group" aria-label="Basic example">
+			<a href="<%=request.getContextPath() %>/front-end/announcement/listAllAnnouncement.jsp"><img src="<%=request.getContextPath() %>/front-images/megaphone-outline.svg" class="announcement"></a>
+			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp">
+				<div style="position:relative;display:inline;">
+					<img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement">
+					<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;text-align:center;"  id="countNoReadMail2"></div>
+				</div>
+			</a>
+			<a href="<%=request.getContextPath() %>/front-end/personal_system_notify/listAllPersonal_system_notify.jsp">
+				<div style="position:relative;display:inline;">
+					<img src="<%=request.getContextPath() %>/front-images/notifications-outline.svg" class="announcement">
+					<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;text-align:center;"  id="countNoReadNotify2"></div>
+				</div>
+			</a>
+			<a class="button" href="<%=request.getContextPath()%>/member/member.do?action=logout"><button type="button" class="btn btn-outline-secondary">登出</button></a>
+	</div>
+	</c:if>
 	</div>

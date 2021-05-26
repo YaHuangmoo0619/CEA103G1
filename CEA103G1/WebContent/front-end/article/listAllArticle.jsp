@@ -693,5 +693,6 @@ jedis.close();
 			})
 </script>
   <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
+  <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 </body>
 </html>
