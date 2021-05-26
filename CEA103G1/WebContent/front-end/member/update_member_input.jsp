@@ -157,8 +157,15 @@ label{
 			<img src="<%=request.getContextPath() %>/images/camera-outline.svg" class="camera" title="更新大頭照" onclick="changePic()">
 		</div>
 		<div class="info">
-<%-- 			${errorMsgs.acc}${errorMsgs.pwd}${errorMsgs.name}${errorMsgs.id}${errorMsgs.bdayStr}${errorMsgs.mobile}${errorMsgs.mail}${errorMsgs.city}${errorMsgs.dist}${errorMsgs.add}${errorMsgs.card} --%>
-			${errorMsgs}
+			<%-- 錯誤表列 --%>
+<c:if test="${not empty errorMsgs}">
+	<font style="color:red;margin-left:5px;">請修正以下錯誤:</font>
+	
+		<c:forEach var="message" items="${errorMsgs}">
+			<font style="color:red">${message}</font>&nbsp;
+		</c:forEach>
+	
+</c:if>
 			<form method="post" action="<%=request.getContextPath()%>/MemberChangeInfo">
 				<div class="infoRow">
 					<label for="mbr_no">會員編號：</label><input type="text" id="mbr_no" name="mbr_no" value="${memberVO.mbr_no}" style="width:3em;border:none;" readonly>
@@ -377,7 +384,9 @@ $('#acc').keyup(function(e){
 		success: function(data){
 // 			alert('${memberVO.acc}');
 			
-			if($('#acc').val() !== '${memberVO.acc}' && data.acc === "duplicate"){
+			if($('#acc').val().trim() !== '${memberVO.acc}'.trim() && data.acc === "duplicate"){
+				console.log($('#acc').val());
+				console.log($('#acc').val().trim() !== '${memberVO.acc}'.trim());
 				$('#acc').css("outline-color","red");
 			}else if(data.acc === "notFound" && $('#acc').val().trim() !== ''){
 				$('#acc').css("outline-color","#80c344");
