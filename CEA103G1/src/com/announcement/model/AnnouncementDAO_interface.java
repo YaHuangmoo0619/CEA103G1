@@ -10,5 +10,6 @@ public interface AnnouncementDAO_interface {
      public void delete(Integer an_no);
      public AnnouncementVO findByPrimaryKey(Integer an_no);
      public List<AnnouncementVO> getAll();
+     public List<AnnouncementVO> getAlltoShow();
      public List<AnnouncementVO> getDateEmp_no(Date an_skd_date);
 }

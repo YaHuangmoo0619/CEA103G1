@@ -32,6 +32,8 @@ public class AnnouncementDAO implements AnnouncementDAO_interface {
 			"INSERT INTO campion.announcement (emp_no,an_cont,an_skd_date,an_pic) VALUES (?, ?, ?, ?)";
 		private static final String GET_ALL_STMT = 
 			"SELECT an_no,emp_no,an_cont,an_skd_date,an_pic FROM campion.announcement order by an_no desc";
+		private static final String GET_ALL_TO_SHOW_STMT = 
+				"SELECT an_no,emp_no,an_cont,an_skd_date,an_pic FROM campion.announcement  where DATEDIFF(an_skd_date , sysdate()) <= 0 order by an_no desc";
 		private static final String GET_ALL_DATE_EMP_NO_STMT = 
 				"SELECT an_no,emp_no,an_cont,an_skd_date,an_pic FROM campion.announcement where an_skd_date = ?";
 		private static final String GET_ONE_STMT = 
@@ -289,6 +291,61 @@ public class AnnouncementDAO implements AnnouncementDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_DATE_EMP_NO_STMT);
 			pstmt.setDate(1, an_skd_date);
+			rs = pstmt.executeQuery();
+
+
+			while (rs.next()) {
+				announcementVO = new AnnouncementVO();
+				announcementVO.setAn_no(rs.getInt("an_no"));
+				announcementVO.setEmp_no(rs.getInt("emp_no"));
+				announcementVO.setAn_cont(rs.getString("an_cont"));
+				announcementVO.setAn_skd_date(rs.getDate("an_skd_date"));
+				list.add(announcementVO);
+			}
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<AnnouncementVO> getAlltoShow() {
+		List<AnnouncementVO> list = new ArrayList<AnnouncementVO>();
+		AnnouncementVO announcementVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_TO_SHOW_STMT);
 			rs = pstmt.executeQuery();
 
 

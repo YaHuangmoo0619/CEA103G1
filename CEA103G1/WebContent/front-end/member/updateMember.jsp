@@ -14,7 +14,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<title>所有會員站內信列表</title>
+<title>會員資料修改</title>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <%-- <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%> --%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -134,7 +134,6 @@ label{
 	font-weight:555;
 }
 </style>
-
 </head>
 <body onload="connection()">
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
@@ -157,15 +156,7 @@ label{
 			<img src="<%=request.getContextPath() %>/images/camera-outline.svg" class="camera" title="更新大頭照" onclick="changePic()">
 		</div>
 		<div class="info">
-			<%-- 錯誤表列 --%>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red;margin-left:5px;">請修正以下錯誤:</font>
-	
-		<c:forEach var="message" items="${errorMsgs}">
-			<font style="color:red">${message}</font>&nbsp;
-		</c:forEach>
-	
-</c:if>
+			
 			<form method="post" action="<%=request.getContextPath()%>/MemberChangeInfo">
 				<div class="infoRow">
 					<label for="mbr_no">會員編號：</label><input type="text" id="mbr_no" name="mbr_no" value="${memberVO.mbr_no}" style="width:3em;border:none;" readonly>
@@ -178,9 +169,8 @@ label{
 					<label for="id">身&nbsp;&nbsp;份&nbsp;證：</label><input type="text" id="id" name="id" value="${memberVO.id}">
 				</div>
 				<div class="infoRow">
-					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVO.acc}" style="width:6em;">
-					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="password" id="pwd" name="pwd" value="${memberVO.pwd}" style="width:5em;">
-					<label for="pwd2">再次輸入密碼：</label><input type="password" id="pwd2" style="width:5em;">
+					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVO.acc}">
+					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="text" id="pwd" name="pwd" value="${memberVO.pwd}">
 				</div>
 				<div class="infoRow">
 					<label for="bday">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</label><input type="text" id="bday" name="bday" value="${memberVO.bday}">
@@ -217,8 +207,7 @@ label{
 			</form>
 		</div>
 	</div>
-</div>	
-
+</div>
 		<div class="modal" tabindex="-1" role="dialog" id="Modal">
 		     <div class="modal-dialog" role="document"> 
 		        <div class="modal-content">
@@ -239,9 +228,7 @@ label{
 		            </div>
 		       </div>
 		   </div>
-		</div>
-
-
+		 </div>
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 <script>
@@ -371,49 +358,10 @@ $('#city').change(function(){
 		}
 	});
 });
-
-$('#acc').keyup(function(e){
-	console.log(e);
-	console.log($(this).val());
-	
-	$.ajax({
-		type: "POST",
-		url: '<%=request.getScheme()%>://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/member/MemberCheck',
-		data: {action:"checkAcc",acc:$(this).val()},
-		dataType: "json",
-		success: function(data){
-// 			alert('${memberVO.acc}');
-			
-			if($('#acc').val().trim() !== '${memberVO.acc}'.trim() && data.acc === "duplicate"){
-				console.log($('#acc').val());
-				console.log($('#acc').val().trim() !== '${memberVO.acc}'.trim());
-				$('#acc').css("outline-color","red");
-			}else if(data.acc === "notFound" && $('#acc').val().trim() !== ''){
-				$('#acc').css("outline-color","#80c344");
-			}else{
-				$('#acc').css("outline-color","black");
-			}
-		}
-	});
-});
-
-$('#pwd2').keyup(function(e){
-	console.log($('#pwd').val() !== $('#pwd2').val());
-	$('#pwd').css("outline-color","red");
-	if($('#pwd').val() !== $('#pwd2').val()){
-		$('#pwd').css("outline-color","red");
-		$('#pwd').css("border-color","red");
-	}else if($('#pwd').val() === $('#pwd2').val()){
-		$('#pwd').css("outline-color","#80c344");
-		$('#pwd').css("border-color","#80c344");
-	}else{
-		$('#pwd').css("outline-color","black");
-		$('#pwd').css("border-color","black");
-	}
-});
-
-
 </script>
-
+<form method="post" action="<%=request.getContextPath()%>/MemberChangeInfo">
+<input type="text" name="name">
+<input type="submit">
+</form>
 </body>
 </html>

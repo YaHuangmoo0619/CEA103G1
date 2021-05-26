@@ -7,7 +7,7 @@
 
 <%
 	AnnouncementService announcementSvc = new AnnouncementService();
-	List<AnnouncementVO> list = announcementSvc.getAll();
+	List<AnnouncementVO> list = announcementSvc.getAlltoShow();
 	pageContext.setAttribute("list",list);
 	
 	//取得現在時間

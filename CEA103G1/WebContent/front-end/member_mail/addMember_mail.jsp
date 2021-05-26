@@ -150,7 +150,7 @@ img{
 						<select size="1" name="rcpt_no" id="rcpt_no">
 						<option value="99">--½Ð¿ï¾Ü--</option>
 						<c:forEach var="memberVO" items="${memberSvc.all}">
-							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.send_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
+							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.send_no || memberVO.mbr_no == param.mbr_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
 						</c:forEach>
 						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
 							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.send_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
