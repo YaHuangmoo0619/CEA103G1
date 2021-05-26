@@ -157,7 +157,8 @@ label{
 			<img src="<%=request.getContextPath() %>/images/camera-outline.svg" class="camera" title="更新大頭照" onclick="changePic()">
 		</div>
 		<div class="info">
-			
+<%-- 			${errorMsgs.acc}${errorMsgs.pwd}${errorMsgs.name}${errorMsgs.id}${errorMsgs.bdayStr}${errorMsgs.mobile}${errorMsgs.mail}${errorMsgs.city}${errorMsgs.dist}${errorMsgs.add}${errorMsgs.card} --%>
+			${errorMsgs}
 			<form method="post" action="<%=request.getContextPath()%>/MemberChangeInfo">
 				<div class="infoRow">
 					<label for="mbr_no">會員編號：</label><input type="text" id="mbr_no" name="mbr_no" value="${memberVO.mbr_no}" style="width:3em;border:none;" readonly>

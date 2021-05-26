@@ -4,16 +4,17 @@ public class TestId {
 
 	public static void main(String[] args) {
 
-		String check = testId("G221989078");
+		String check = testId("A123456789");
 		System.out.println(check);
 	}
 
 	public static String testId(String id) {
-		char[] idCode = id.toCharArray();
-		char[] local = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'W', 'Z', 'I', 'O'};
+		String[] idCode = id.split("");
+//		System.out.println(idCode[0]);
+		String[] local = {"A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "W", "Z", "I", "O"};
 		int num = 10;
 		for(int i = 0; i < local.length; i++){
-			if(idCode[0] == (local[i])){
+			if(idCode[0].equals(local[i])){
 				num += i;
 			}
 		}
