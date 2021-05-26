@@ -112,4 +112,11 @@ System.out.println("²Ä¤@¯¸");
 	public List<CampVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public void updateConfig(byte[] config, Integer camp_no) {
+		CampVO campVO = new CampVO();
+		campVO.setConfig(config);
+		campVO.setCamp_no(camp_no);
+		dao.updateConfig(campVO);
+	}
 }

@@ -23,4 +23,6 @@ public interface CampDAO_interface {
 	public void update2(CampVO campVO);
 
 	public void update3(CampVO campVO);
+
+	public void updateConfig(CampVO campVO);
 }

@@ -34,7 +34,8 @@ public class CampDAO implements CampDAO_interface {
 	private static final String UPDATE2 = "UPDATE campsite set campsite_status=?,review_status=? where camp_no = ?";
 	private static final String UPDATE3 = "UPDATE campsite set dist_no=?,camp_name=?,campInfo=?,note=?,height=?,wireless=?,pet=?,facility=?,operate_Date=?,park=?,address=?,latitude=?,longitude=? where camp_no = ?";
 	private static final String DELETE = "DELETE FROM campsite where camp_no = ?";
-
+	private static final String CONFIG = "UPDATE campsite set config=? where camp_no = ?";
+	
 	public CampVO findByPrimaryKey(Integer camp_no) {
 
 		CampVO campVO = null;
@@ -235,6 +236,41 @@ public class CampDAO implements CampDAO_interface {
 
 			pstmt.executeUpdate();
 
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void updateConfig(CampVO campVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(CONFIG);
+
+			pstmt.setBytes(1, campVO.getConfig());
+			pstmt.setInt(2, campVO.getCamp_no());
+			
+			pstmt.executeUpdate();
+			
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		} finally {
