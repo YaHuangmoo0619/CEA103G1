@@ -39,6 +39,7 @@ public class MemberServlet extends HttpServlet {
 		PrintWriter out = res.getWriter();
 		//雅凰加的
 		
+		
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
