@@ -109,11 +109,17 @@
 									     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
 									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 									     <input type="hidden" name="action"	value="getOne_For_Display">
-								     </FORM>                                   
-									 <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/front-end/product_order/addProduct_order.jsp" style="margin-bottom: 0px;">
+								     </FORM>
+								     <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
 									     <input type="submit" value="ª½±µ¤U­q">
+									     <input type="hidden" name="mbr_no"  value="${memberVO.mbr_no}">
 									     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-									 </FORM>
+									     <input type="hidden" name="ship_cty"  value="${memberVO.city}">
+									     <input type="hidden" name="ship_dist"  value="${productVO.dist}">
+									     <input type="hidden" name="ship_add"  value="${productVO.add}">
+									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+									     <input type="hidden" name="action" value="insert">
+									 </FORM>                                   
                                 </div>
                                 <div></div>
                             </div>
