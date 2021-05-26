@@ -110,12 +110,10 @@
 									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 									     <input type="hidden" name="action"	value="getOne_For_Display">
 								     </FORM>                                   
-                                    <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do"  style="margin-bottom: 0px;">
-									     <input type="submit" value="直接下訂" class="btn btn-white-outline display-4">
+									 <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/front-end/product_order/addProduct_order.jsp" style="margin-bottom: 0px;">
+									     <input type="submit" value="直接下訂">
 									     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-									     <input type="hidden" name="action"	value="buyOne">
-									</FORM>
+									 </FORM>
                                 </div>
                                 <div></div>
                             </div>

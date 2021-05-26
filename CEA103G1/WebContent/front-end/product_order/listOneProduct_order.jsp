@@ -369,17 +369,11 @@ img.person:hover {
 
 </head>
 <body bgcolor='white'>
-
-<table id="table-1">
-	<tr><td>
-		 <h3>商品訂單 - ListOneProduct_order.jsp</h3>
-		 <h4><a href="${pageContext.request.contextPath}/front-end/product_order/select_page.jsp"><img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100" border="0"></a></h4>
-	</td></tr>
-</table>
-
+<section>
+	編號：${product_orderVO.prod_ord_no}號訂單
+</section>
 <table>
 	<tr>
-		<th>商品訂單編號</th>
 		<th>下訂時間</th>
 		<th>訂單狀態</th>
 		<th>訂單總金額</th>
@@ -393,7 +387,6 @@ img.person:hover {
 		<th>訂單備註</th>
 	</tr>
 	<tr>
-		<td>${product_orderVO.prod_ord_no}</td>
 		<td>${product_orderVO.prod_ord_time}</td>
 		<td>
 		<c:if test="${product_orderVO.prod_ord_stat==0}">
@@ -450,9 +443,11 @@ img.person:hover {
 		<td>${product_orderVO.rmk}</td>
 		<td>
 		<td>
+		<c:if test="${product_orderVO.prod_ord_stat<=1}">
 		<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
 		    <input type="submit" value="退貨" class="btn btn-white-outline display-4">
 	   </FORM>
+	   </c:if>
 		</td>
 </table>
 
