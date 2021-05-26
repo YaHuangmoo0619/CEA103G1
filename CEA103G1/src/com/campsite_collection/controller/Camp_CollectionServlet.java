@@ -17,6 +17,8 @@ import com.campsite_collection.model.*;
 import com.campsite_picture.model.Camp_PictureService;
 import com.google.gson.Gson;
 import com.member.model.MemberVO;
+import com.place.model.PlaceService;
+import com.place.model.PlaceVO;
 
 @WebServlet("/campsite_colection/collection.do")
 public class Camp_CollectionServlet extends HttpServlet{
@@ -51,6 +53,17 @@ public class Camp_CollectionServlet extends HttpServlet{
 				if(collectionVO.getMbr_no() == mbr_no) {
 					camplist.add(campSvc.getOneCamp(collectionVO.getCamp_no()));
 				}
+			}
+			PlaceService placeSvc = new PlaceService();
+			for(CampVO campVO : camplist) {
+				List<PlaceVO> placelist = placeSvc.getByCamp(campVO.getCamp_no());
+				int low = placelist.get(0).getPc_wkdy();
+				for(PlaceVO placeVO : placelist) {
+					if(placeVO.getPc_wkdy() <= low) {
+						low = placeVO.getPc_wkdy();
+					}
+				}
+				campVO.setLow_pc(low);
 			}
 			for(CampVO campVO : camplist) {
 				campVO = seeIfCollect(req, campVO);

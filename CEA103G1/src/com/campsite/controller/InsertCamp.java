@@ -41,7 +41,7 @@ import com.place_order_details.model.Place_Order_DetailsService;
 @WebServlet("/campsite/insertcamp.do")
 public class InsertCamp extends HttpServlet {
 	private static final long serialVersionUID = 2L;
-	String saveDirectory = "/images";
+	String saveDirectory = "/images/camp_picture";
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		doPost(req, res);
@@ -121,7 +121,7 @@ public class InsertCamp extends HttpServlet {
 				errorMsgs.add("鄉鎮市區: 只能是中文");
 			}
 			String address = req.getParameter("address");
-			String addressReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
+			String addressReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,50}$";
 			if (address == null || address.trim().length() == 0) {
 				errorMsgs.add("地址: 請勿空白");
 			} else if (!address.trim().matches(addressReg)) { // 以下練習正則(規)表示式(regular-expression)

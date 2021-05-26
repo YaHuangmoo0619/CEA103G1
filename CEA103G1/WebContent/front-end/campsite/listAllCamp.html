@@ -102,6 +102,7 @@ div.fixedTop {
 	padding: 0px 15px;
 }
 
+
 img.logo {
 	width: 150px;
 	margin: 10px;
@@ -640,25 +641,39 @@ img.person:hover {
 		function fav(e){
 			let icon = document.getElementById(e);
 			let camp_no = e.split("v")[1];
-			if(icon.getAttribute("name") === "bookmark-outline"){
-				$.ajax({
-					type : "GET",
-					url : "/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + camp_no,
-					success : function() {
-						alert(data);
-						icon.setAttribute("name","bookmark");
+			var locat = window.location.href;
+			$.ajax({
+				type : "GET",
+				dataType : "json",
+				url : "/CEA103G1/Member.do",
+				data : {uri : locat},
+				success : function(data) {
+					if(data.length === 2){
+						alert(data[0]);
+						window.location.href=data[1];
+					}else{
+						if(icon.getAttribute("name") === "bookmark-outline"){
+							$.ajax({
+								type : "GET",
+								url : "/CEA103G1/campsite_colection/collection.do?action=add&camp_no=" + camp_no,
+								success : function() {
+									alert(data);
+									icon.setAttribute("name","bookmark");
+								}
+							});
+						}else{
+							$.ajax({
+								type : "GET",
+								url : "/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + camp_no,
+								success : function() {
+									alert(data);
+									icon.setAttribute("name","bookmark-outline");
+								}
+							});
+						}
 					}
-				});
-			}else{
-				$.ajax({
-					type : "GET",
-					url : "/CEA103G1/campsite_colection/collection.do?action=delete&camp_no=" + camp_no,
-					success : function() {
-						alert(data);
-						icon.setAttribute("name","bookmark-outline");
-					}
-				});
-			}
+				}
+			});
 		};
 		function writeToScreen(input){
 			let noRead = JSON.parse(input);
