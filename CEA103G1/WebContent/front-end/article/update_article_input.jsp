@@ -171,13 +171,13 @@ padding: 0px 0px 20px 0px;
 					tabsize : 2,
 					height : 300,
 					maxHeight: 300, //固定，不寫的話就可隨意拉開
-					toolbar : [
-					// [groupName, [list of button]]
-					[ 'style', [ 'bold', 'italic', 'underline' ] ],
-							[ 'fontsize', [ 'fontsize' ] ],
-							[ 'color', [ 'color' ] ],
-							[ 'para', [ 'paragraph' ] ],
-							[ 'insert', [ 'picture' ] ], ]
+// 					toolbar : [
+// 					// [groupName, [list of button]]
+// 					[ 'style', [ 'bold', 'italic', 'underline' ] ],
+// 							[ 'fontsize', [ 'fontsize' ] ],
+// 							[ 'color', [ 'color' ] ],
+// 							[ 'para', [ 'paragraph' ] ],
+// 							[ 'insert', [ 'picture' ] ], ]
 				});
 
 

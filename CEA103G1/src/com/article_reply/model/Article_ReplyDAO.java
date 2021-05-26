@@ -220,7 +220,7 @@ public class Article_ReplyDAO implements Article_ReplyDAO_Interface {
 
 			while (rs.next()) {
 				article_ReplyVO = new Article_ReplyVO();
-				article_ReplyVO.setArt_rep_no(rs.getInt("art_no"));
+				article_ReplyVO.setArt_rep_no(rs.getInt("art_rep_no"));
 				article_ReplyVO.setArt_no(rs.getInt("art_no"));
 				article_ReplyVO.setMbr_no(rs.getInt("mbr_no"));
 				article_ReplyVO.setRep_cont(rs.getString("rep_cont"));

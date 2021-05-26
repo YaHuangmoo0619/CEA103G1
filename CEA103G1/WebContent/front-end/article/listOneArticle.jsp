@@ -73,7 +73,7 @@
    height:18px;
    border:0px; 
    background-size: 20px 18px; 
-   background-repeat: no-repeat; 
+   background-repeat: no-repeat;  
    } 
    
    .like:hover{
@@ -328,7 +328,7 @@
 <div id="demo"></div>
 		<!-- 	如果有登入的話  可以對文章留言-->
 	<c:if test="${not empty memberVO}"> 
-	<button id=rep_login>新增文章留言</button>
+	<button id=rep_login onclick="location.href='/CEA103G1/front-end/article_reply/addArticle_reply.jsp?art_no=<%=articleVO.getArt_no()%>&mbr_no=<%=memberVO.getMbr_no()%>'">我要回應</button>
 	</c:if>
 <!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
 	<c:if test="${empty memberVO}"> 
@@ -455,15 +455,15 @@
 	<script>   
 	
 
-  	$("#rep_login").click(function(){
-		$.ajax({
-			url:"/CEA103G1/front-end/article_reply/addArticle_reply.jsp?art_no=<%=articleVO.getArt_no()%>&mbr_no=<%=pageContext.getAttribute("ajax_mbr_no")%>",
-			type: "GET",
-			success: function(data){
-				$("#addrep").html(data);
-			}
-		});
-  	});
+//   	$("#rep_login").click(function(){
+// 		$.ajax({
+<%-- 			url:"/CEA103G1/front-end/article_reply/addArticle_reply.jsp?art_no=<%=articleVO.getArt_no()%>&mbr_no=<%=pageContext.getAttribute("ajax_mbr_no")%>", --%>
+// 			type: "GET",
+// 			success: function(data){
+// 				$("#addrep").html(data);
+// 			}
+// 		});
+//   	});
 	
 
 		$.ajax({

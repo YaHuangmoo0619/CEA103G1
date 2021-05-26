@@ -6,6 +6,7 @@
 
 <%	
 	Article_ReplyVO article_replyVO = (Article_ReplyVO) request.getAttribute("article_replyVO");
+	System.out.println("修改頁面的留言編號"+article_replyVO.getArt_rep_no());
 %>
 <%
 	System.out.println(request.getHeader("referer"));
@@ -13,7 +14,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>文章留言資料修改 - update_article_reply_input.jsp 前台</title>
+<title>留言修改 - update_article_reply_input.jsp 前台</title>
 <!-- include libraries(jQuery, bootstrap) -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -33,7 +34,7 @@
 <body bgcolor='white'>
 
 
-<h3>資料修改:</h3>
+<h3>留言修改:</h3>
 
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">

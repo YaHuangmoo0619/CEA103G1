@@ -7,6 +7,7 @@
 <%@ page import="com.board_class.model.*"%>
 <%@ page import="com.member.model.*" %>
 <%@ page import="redis.clients.jedis.Jedis"%>
+<%@ page import="com.article_collection.model.*"%>
 <%
 	Jedis jedis = new Jedis("localhost", 6379);
 	jedis.auth("123456");
@@ -80,6 +81,16 @@
 	if(memberVO==null){
 		ajax_mbr_no=0;
 	}
+	
+	
+	
+	Article_CollectionService article_collectionSvc = new Article_CollectionService();
+	//取得我收藏的文章的
+	List<Article_CollectionVO> my_collection_list	= article_collectionSvc.findbymbr_no(memberVO.getMbr_no());
+	
+
+	
+	pageContext.setAttribute("my_collection_list", my_collection_list);
 	pageContext.setAttribute("banned", banned);
 	pageContext.setAttribute("banned_chinese", banned_chinese);
 	pageContext.setAttribute("ajax_mbr_no", ajax_mbr_no);
@@ -112,7 +123,7 @@ html, body {
 	margin: 0;
 	padding: 0;
 	/*background-color: #4e5452;*/
-	background-color: #4e5452;
+	background-color: 		#8FBC8F;
 	color: #80c344;
 }
 
@@ -138,6 +149,9 @@ padding:0px 0px 0px 10px;
 }
 .article_sort{
 	display:inline-block;
+	font-family: Microsoft JhengHei;
+	font-size:20px;
+	padding: 0px 10px 0px 0px;
 }
 .article_sort_parent{
 	padding:10px 0px 0px 60px;
@@ -158,6 +172,13 @@ padding:0px 0px 0px 10px;
   transition:all 300ms linear;
 }
 
+.link_to_board{
+color:FFFDD0;
+font-family: Microsoft JhengHei;
+}
+.sidebar_around:hover{
+ background-color:	#019858;
+}
 
 #sidebar div.list div.item {
   padding:15px 10px;
@@ -255,7 +276,7 @@ overflow-y: auto;
 				
 				
 				<!-- 如果有 那就放實心星星  並設一個參數按下可取消訂閱 -->
-				<div class="board cancel_subscribe"><img src="/CEA103G1/images/star.svg" width="24px" height="24px"></div>
+				<div class="board cancel_subscribe"><img src="/CEA103G1/images/star_new.svg" width="24px" height="24px"></div>
 				<c:set var="subscribe_status" value="1"></c:set>
 				</c:if>
 				</c:forEach>
@@ -263,14 +284,14 @@ overflow-y: auto;
 				
 				<!--    有登入但我我沒有訂閱這個看板 那就放空心星星，可訂閱 -->
 				<c:if test="${subscribe_status==0}">
-				<div class="board subscribe"><img src="/CEA103G1/images/star-outline.svg" width="24px" height="24px"></div>
+				<div class="board subscribe"><img src="/CEA103G1/images/star-outline_new.svg" width="24px" height="24px"></div>
 				</c:if>
 				
 				</c:if> 
 
 				<!--    沒登入放空心星星，按下跳出登入確認的燈箱   -->
 					<c:if test="${empty memberVO }"> 
-				<div class="board to_login"><img src="/CEA103G1/images/star-outline.svg" width="24px" height="24px"></div>
+				<div class="board to_login"><img src="/CEA103G1/images/star-outline_new.svg" width="24px" height="24px"></div>
 				</c:if>
 				
 				<br>
@@ -356,9 +377,15 @@ overflow-y: auto;
                                 </div>
                                 <div class="archieve">
                                     <div class="archieve_0">
-                                        <svg viewBox="0 0 24 24" focusable="false" role="img" aria-hidden="true" class="icon_size archieve_pic">
-                                            <path d="M17.65 21.39L12 17.5l-5.65 3.88A1.5 1.5 0 014 20.15V5a2.5 2.5 0 012.5-2.5h11A2.5 2.5 0 0120 5v15.15a1.5 1.5 0 01-2.35 1.24z"></path>
-                                        </svg>
+                              				<c:set var="collection_status" value="0"></c:set>
+                              				<c:set var="my_collection_list_replace" value="${my_collection_list}"></c:set>
+                 							<c:forEach var="my_collection_list_replace" items="${my_collection_list_replace}">
+                 							<c:set var="collection_status" value="1"></c:set>
+                 							<c:if test="${my_collection_list_replace.art_no==articleVO.art_no}">
+                 							<img src="/CEA103G1/images/bookmarks.svg" width="15px" height="15px">
+                 							</c:if>
+											</c:forEach>
+											<c:if test="${collection_status==0}"><img src="/CEA103G1/images/bookmarks-outline.svg" width="15px" height="15px"></c:if>
                                         <span>收藏</span></div>
                                 </div>
                             </div>

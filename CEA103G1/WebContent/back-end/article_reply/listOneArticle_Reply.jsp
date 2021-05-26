@@ -3,7 +3,8 @@
 <%@ page import="com.article_reply.model.*"%>
 
 <%
-  Article_ReplyVO article_replyVO = (Article_ReplyVO) request.getAttribute("article_replyVO"); //Article_ReplyServlet.java(Concroller), 存入req的articleVO物件
+  	Article_ReplyVO article_replyVO = (Article_ReplyVO) request.getAttribute("article_replyVO"); //Article_ReplyServlet.java(Concroller), 存入req的articleVO物件
+	pageContext.setAttribute("article_replyVO", article_replyVO);
 %>
 
 
@@ -48,23 +49,13 @@
 </head>
 <body bgcolor='white'>
 
-<table id="table-1">
-	<tr><td>
-		 <h3>單一留言資料 - listOneArticle_Reply.jsp</h3>
-		 <h4><a href="/CEA103G1/back-end/article_reply/select_page.jsp"><img src="/CEA103G1/images/Campion.png"
-						width="100" height="100" border="0"></a></h4>
-	</td></tr>
-</table>
+<c:if test="${article_replyVO.rep_stat==1}">
+<h1>本篇留言已經被刪除囉!!</h1>
+</c:if>
 
+<c:if test="${article_replyVO.rep_stat==0}">
 <table>
-	<tr>
-		<td>文章留言編號</td>
-		<td><%=article_replyVO.getArt_rep_no()%></td>
-   </tr>
-	<tr>
-		<td>文章編號</td>
-		<td><%=article_replyVO.getArt_no()%></td>
-   </tr>
+
     <tr>
 		<td>會員編號</td>
 		<td><%=article_replyVO.getMbr_no()%></td>
@@ -77,18 +68,8 @@
 		<td>留言時間</td>
 		<td><%=article_replyVO.getRep_time()%></td>
   </tr>
-   <tr>
-		<td>留言狀態</td>
-		<td>
-		    <c:if test="${article_replyVO.getRep_stat() == 0}">顯示</c:if>
-		    <c:if test="${article_replyVO.getRep_stat() == 1}">不顯示</c:if>
-	   </td>
-   </tr>
-      <tr>
-		<td>留言讚數</td>
-		<td><%=article_replyVO.getLikes()%></td>
-  </tr>
-</table>
 
+</table>
+</c:if>
 </body>
 </html>

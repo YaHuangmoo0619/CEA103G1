@@ -211,21 +211,34 @@ padding: 0px 0px 20px 0px;
 
 
 	<script>
-		$('#art_cont').summernote(
-				{
-					placeholder : '請輸入文字',
-					tabsize : 2,
-					height : 300,
-					maxHeight: 300, //固定，不寫的話就可隨意拉開
-					toolbar : [
-					// [groupName, [list of button]]
-					[ 'style', [ 'bold', 'italic', 'underline' ] ],
-							[ 'fontsize', [ 'fontsize' ] ],
-							[ 'color', [ 'color' ] ],
-							[ 'para', [ 'paragraph' ] ],
-							[ 'insert', [ 'picture' ] ], ]
-				});
-
+	
+// 	window.onbeforeunload = function(){
+// 		$("span").remove();
+// 		}
+	
+// 		$('#art_cont').summernote(
+// 				{
+// 					placeholder : '請輸入文字',
+// 					tabsize : 2,
+// 					height : 300,
+// 					maxHeight: 300, //固定，不寫的話就可隨意拉開
+// 					toolbar : [
+// 					// [groupName, [list of button]]
+// 					[ 'style', [ 'bold', 'italic', 'underline' ] ],
+// 							[ 'fontsize', [ 'fontsize' ] ],
+// 							[ 'color', [ 'color' ] ],
+// 							[ 'para', [ 'paragraph' ] ],
+// 							[ 'insert', [ 'picture' ] ], ]
+// 				});
+		$(document).ready(function () {
+		    $('#art_cont').summernote({
+		        onPaste: function (e) {
+		            var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+		            e.preventDefault();
+		            document.execCommand('insertText', false, bufferText);
+		        }
+		    });
+		});
 
 		$("body").on("click",".tag_selected_parent",function() { //當標籤被點的時候，要加到預新增的標籤列表中並隱藏被點擊的標籤
 // 			if($(this).children("div:first") >0){ //如果.tag_selected_parent底下有div的話

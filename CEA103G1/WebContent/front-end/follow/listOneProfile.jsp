@@ -138,7 +138,7 @@ clear: both;
 
 					
 
-                    <button class="btn profile-edit-btn" onclick="location.href='/CEA103G1/front-end/member_mail/addMember_mail.jsp'">發送站內信</button>
+                    <button class="btn profile-edit-btn" onclick="location.href='/CEA103G1/front-end/member_mail/addMember_mail.jsp?mbr_no=<%=mbr_no%>'">發送站內信</button>
                     <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
                 </div>
                 <div class="profile-stats">

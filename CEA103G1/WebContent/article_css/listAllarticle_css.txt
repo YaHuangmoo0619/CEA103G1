@@ -1,0 +1,111 @@
+<style>
+html, body {
+	margin: 0;
+	padding: 0;
+	/*background-color: #4e5452;*/
+	background-color: 		#8FBC8F;
+	color: #80c344;
+}
+
+section {
+	text-align: center;
+}
+
+.author{
+	color:black;
+}
+
+
+.board{
+	display:inline-block;
+}
+
+.board_name{
+padding:0px 10px 0px 10px;
+}
+}
+.subscribe{
+padding:0px 0px 0px 10px;
+}
+.article_sort{
+	display:inline-block;
+	font-family: Microsoft JhengHei;
+	font-size:20px;
+	padding: 0px 10px 0px 0px;
+}
+.article_sort_parent{
+	padding:10px 0px 0px 60px;
+	
+}
+/* -----------------------------以下為側欄css------------------------------ */
+#sidebar {
+  position:absolute;
+  top:115px;
+  left:0px;
+  width:208px;
+  height:100%;
+/*   background:#151719; */
+  transition:all 300ms linear;
+}
+
+.link_to_board{
+color:FFFDD0;
+font-family: Microsoft JhengHei;
+}
+.sidebar_around:hover{
+ background-color:	#019858;
+}
+
+#sidebar div.list div.item {
+  padding:15px 10px;
+  text-transform:uppercase;
+  font-size:14px;
+  font-family:微軟正黑體;
+}
+
+.board_name{
+width:120px;
+}
+
+/* -----------------------------以下為主欄css------------------------------ */
+  div.main_content{
+  	  top:60px;
+  	  position:absolute;
+	  left:200px;
+	  right:150px;
+	  padding:20px 20px 20px 20px;
+
+	  
+}
+
+/* --------------------------------------------------------------------- */
+.write{
+  position: fixed;
+  bottom: 100px;
+  right: 75px;
+}
+
+.pic img{
+width: 90px !important;
+height: 90px !important;
+}
+
+.pic{
+margin: 0px !important;
+border: 0px !important;
+}
+
+
+#basicModal{
+
+height: 500px;
+overflow-y: initial !important;
+overflow-y: auto;
+
+}
+
+
+.modal{
+	color: black
+}
+</style>

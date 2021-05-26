@@ -481,14 +481,15 @@ public class ArticleServlet extends HttpServlet {
 					failureView.forward(req, res);
 					return;
 				}
-
+				
+				
 				/*************************** 2.開始新增資料 ***************************************/
 
 				ArticleService articleSvc = new ArticleService();
 				articleVO2 = articleSvc.findLast();
 				Integer no = articleVO2.getArt_no() + 1; // 取得最後一筆文章+1 即目前所要新增文章的文章號碼
 				System.out.println("no:" + no); // 印出測試
-
+				
 //				Jedis jedis = new Jedis("localhost", 6379);
 //				jedis.auth("123456");
 //				jedis.select(6);

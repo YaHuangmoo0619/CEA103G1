@@ -192,7 +192,7 @@ public class Article_ReplyServlet extends HttpServlet{
 		
 		
 		if ("getOne_For_Update".equals(action)) { // 來自listAllArticle_Reply.jsp的請求
-
+			System.out.println("我在getOne_For_Update");
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -203,10 +203,11 @@ public class Article_ReplyServlet extends HttpServlet{
 			try {
 				/***************************1.接收請求參數****************************************/
 				Integer art_rep_no = new Integer(req.getParameter("art_rep_no"));
-				System.out.println(art_rep_no);
+				System.out.println("這邊的留言編號:"+art_rep_no);
 				/***************************2.開始查詢資料****************************************/
 				Article_ReplyService article_replySvc = new Article_ReplyService();
 				Article_ReplyVO article_replyVO = article_replySvc.getOneArticle_Reply(art_rep_no);
+				System.out.println("article_replyVO:"+article_replyVO.getArt_rep_no());
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("article_replyVO", article_replyVO);         // 資料庫取出的article_replyVO物件,存入req
@@ -234,6 +235,7 @@ public class Article_ReplyServlet extends HttpServlet{
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				Integer art_rep_no = new Integer(req.getParameter("art_rep_no").trim());
+				System.out.println("art_rep_no"+art_rep_no);
 				Integer art_no = new Integer(req.getParameter("art_no").trim());
 				System.out.println("art_no"+art_no);
 				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());

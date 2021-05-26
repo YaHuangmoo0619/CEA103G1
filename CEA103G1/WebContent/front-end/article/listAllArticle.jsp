@@ -5,6 +5,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.article.model.*"%>
 <%@ page import="com.board_class.model.*"%>
+<%@ page import="com.article_collection.model.*"%>
 <%@ page import="com.member.model.*" %>
 <%@ page import="redis.clients.jedis.Jedis"%>
 <%
@@ -20,21 +21,6 @@
 <%
 	ArticleService articleSvc = new ArticleService();
 	List<ArticleVO> list = articleSvc.getAll_Front();
-// 	Map<Integer,String> article_first_img_map = new HashMap<Integer,String>(); //這是一個存有「有首圖」的Map，key為該文章號碼，value為base64編碼
-// 	int start_index;
-// 	int end_index;
-// 	String first_img_base64;
-// 	for(ArticleVO x : list){
-// 		start_index = x.getArt_cont().indexOf("<p><img");
-// 		if(start_index>=0){ //有首圖的話
-// 		System.out.println("start_index:"+start_index);
-// 		end_index   = x.getArt_cont().indexOf("</p>", start_index)+4; //從第一張圖片<p><img的位置以後開始搜尋到的第一個 </p>，即為第一張圖的結束
-// 			first_img_base64 = x.getArt_cont().substring(start_index, end_index); //擷取到第一張圖片的base64編碼
-// 			System.out.println("i'm here");
-// 			System.out.println(first_img_base64);
-// 			article_first_img_map.put(x.getArt_no(), first_img_base64); //放入Map中	
-// 		}
-// 	}
 	Map<Integer,String> simple_art_cont = new HashMap<>();
 	for(ArticleVO count : list){
 		if(jedis.exists("post:"+count.getArt_no()+":art_simple_cont")){
@@ -94,6 +80,16 @@
 	if(memberVO==null){
 		ajax_mbr_no=0;
 	}
+	
+	
+	
+	Article_CollectionService article_collectionSvc = new Article_CollectionService();
+	//取得我收藏的文章的
+	List<Article_CollectionVO> my_collection_list	= article_collectionSvc.findbymbr_no(memberVO.getMbr_no());
+	
+
+	
+	pageContext.setAttribute("my_collection_list", my_collection_list);
 	pageContext.setAttribute("banned", banned);
 	pageContext.setAttribute("banned_chinese", banned_chinese);
 	pageContext.setAttribute("ajax_mbr_no", ajax_mbr_no);
@@ -126,7 +122,7 @@ html, body {
 	margin: 0;
 	padding: 0;
 	/*background-color: #4e5452;*/
-	background-color: #4e5452;
+	background-color: 		#8FBC8F;
 	color: #80c344;
 }
 
@@ -152,9 +148,13 @@ padding:0px 0px 0px 10px;
 }
 .article_sort{
 	display:inline-block;
+	font-family: Microsoft JhengHei;
+	font-size:20px;
+	padding: 0px 10px 0px 0px;
 }
 .article_sort_parent{
 	padding:10px 0px 0px 60px;
+	
 }
 /* -----------------------------以下為側欄css------------------------------ */
 #sidebar {
@@ -167,6 +167,13 @@ padding:0px 0px 0px 10px;
   transition:all 300ms linear;
 }
 
+.link_to_board{
+color:FFFDD0;
+font-family: Microsoft JhengHei;
+}
+.sidebar_around:hover{
+ background-color:	#019858;
+}
 
 #sidebar div.list div.item {
   padding:15px 10px;
@@ -229,15 +236,15 @@ overflow-y: auto;
 	
 <!-- 	如果有登入的話且沒被ban的話 -->
 	<c:if test="${not empty memberVO && banned==0}"> 
-	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
+	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp" data-toggle="tooltip" data-placement="top" title="發表文章"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
 	</c:if>
 <!-- 	如果有登入的話但被ban的話 -->
 	<c:if test="${not empty memberVO && banned>0}">
-	<div class="write banned"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
+	<div class="write banned" data-toggle="tooltip" data-placement="top" title="發表文章"><img src="/CEA103G1/images/write.svg" width="24px" height="24px" ></div>
 	</c:if>
 <!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
 	<c:if test="${empty memberVO }"> 
-	<div class="no_login write to_login"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
+	<div class="no_login write to_login" data-toggle="tooltip" data-placement="top" title="發表文章"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
 	</c:if>
 
 
@@ -246,7 +253,8 @@ overflow-y: auto;
 <div id="sidebar">
   <div class="list">
 			<c:forEach var="board_classVO" items="${bd_list}">
-				<div class="item board board_name" ><a href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${board_classVO.bd_cl_no}"  style="color:white;">${board_classVO.bd_name}</a></div>
+				<div class="sidebar_around">
+				<div class="item board board_name" ><a class=link_to_board href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${board_classVO.bd_cl_no}" >${board_classVO.bd_name}</a></div>
 				<div class=this_bd_bl_no style="display:none">${board_classVO.bd_cl_no}</div>
 				
 				
@@ -265,7 +273,7 @@ overflow-y: auto;
 				
 				
 				<!-- 如果有 那就放實心星星  並設一個參數按下可取消訂閱 -->
-				<div class="board cancel_subscribe"><img src="/CEA103G1/images/star.svg" width="24px" height="24px"></div>
+				<div class="board cancel_subscribe"><img src="/CEA103G1/images/star_new.svg" width="24px" height="24px"></div>
 				<c:set var="subscribe_status" value="1"></c:set>
 				</c:if>
 				</c:forEach>
@@ -273,17 +281,16 @@ overflow-y: auto;
 				
 				<!--    有登入但我我沒有訂閱這個看板 那就放空心星星，可訂閱 -->
 				<c:if test="${subscribe_status==0}">
-				<div class="board subscribe"><img src="/CEA103G1/images/star-outline.svg" width="24px" height="24px"></div>
+				<div class="board subscribe"><img src="/CEA103G1/images/star-outline_new.svg" width="24px" height="24px"></div>
 				</c:if>
 				
 				</c:if> 
 
 				<!--    沒登入放空心星星，按下跳出登入確認的燈箱   -->
 					<c:if test="${empty memberVO }"> 
-				<div class="board to_login"><img src="/CEA103G1/images/star-outline.svg" width="24px" height="24px"></div>
+				<div class="board to_login"><img src="/CEA103G1/images/star-outline_new.svg" width="24px" height="24px"></div>
 				</c:if>
-				
-				<br>
+				</div>
 			</c:forEach>
   </div>
 </div>
@@ -343,16 +350,13 @@ overflow-y: auto;
 		</c:forEach></div>					
 <%--                                             <div class="date"><fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm" /></div> --%>
                                             <div class="author"><c:forEach var="memberVO_loop" items="${memberDAO.all}">
-			<c:if test="${articleVO.mbr_no==memberVO_loop.mbr_no}">
-	                    ${memberVO_loop.acc}
-                    </c:if>
+			<c:if test="${articleVO.mbr_no==memberVO_loop.mbr_no}">&nbsp;&nbsp;${memberVO_loop.acc}</c:if>
 		</c:forEach></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <h2 class="title_box">
-                                <div class="title">${articleVO.art_title}</div></h2>
+                            <h2 class="title_box"><div class="title">${articleVO.art_title}</div></h2>
                             <div class="post">
                                 <div class="post_0">
                                 <p>${simple_art_cont[articleVO.art_no]}</p>
@@ -371,9 +375,16 @@ overflow-y: auto;
                                 </div>
                                 <div class="archieve">
                                     <div class="archieve_0">
-                                        <svg viewBox="0 0 24 24" focusable="false" role="img" aria-hidden="true" class="icon_size archieve_pic">
-                                            <path d="M17.65 21.39L12 17.5l-5.65 3.88A1.5 1.5 0 014 20.15V5a2.5 2.5 0 012.5-2.5h11A2.5 2.5 0 0120 5v15.15a1.5 1.5 0 01-2.35 1.24z"></path>
-                                        </svg>
+                              				<c:set var="collection_status" value="0"></c:set>
+                              				<c:set var="my_collection_list_replace" value="${my_collection_list}"></c:set>
+                 							<c:forEach var="my_collection_list_replace" items="${my_collection_list_replace}">
+                 							<c:set var="collection_status" value="1"></c:set>
+                 							<c:if test="${my_collection_list_replace.art_no==articleVO.art_no}">
+                 							<img src="/CEA103G1/images/bookmarks.svg" width="15px" height="15px">
+                 							</c:if>
+											</c:forEach>
+											<c:if test="${collection_status==0}"><img src="/CEA103G1/images/bookmarks-outline.svg" width="15px" height="15px"></c:if>
+											
                                         <span>收藏</span></div>
                                 </div>
                             </div>
@@ -521,7 +532,9 @@ jedis.close();
 			show : true
 		});
 		
-	
+// 		$('#basicModal').on('hide.bs.modal', function () {
+// 			location.reload();
+// 		}
 
   	var infScroll = new InfiniteScroll( ".container", {
   		path: function() {
@@ -606,6 +619,10 @@ jedis.close();
 		}
 		
 		
+		
+		$(function () {
+			  $('[data-toggle="tooltip"]').tooltip()
+			})
 </script>
   <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
 </body>
