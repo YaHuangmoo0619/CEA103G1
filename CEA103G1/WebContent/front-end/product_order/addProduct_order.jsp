@@ -98,37 +98,37 @@
 	<tr>
 		<td>運送方式:</td>
 		<td><input type="TEXT" name="ship_meth" size="45" 
-			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getShip_meth()%>" /></td>
 	</tr>
 	<tr>
 		<td>付款方式:</td>
 		<td><input type="TEXT" name="pay_meth" size="45" 
-			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getPay_meth()%>" /></td>
 	</tr>
 	<tr>
 		<td>運送地址_縣市:</td>
 		<td><input type="TEXT" name="ship_cty" size="45" 
-			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getShip_cty()%>" /></td>
 	</tr>
 	<tr>
 		<td>運送地址_區域:</td>
 		<td><input type="TEXT" name="ship_dist" size="45" 
-			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getShip_dist()%>" /></td>
 	</tr>
 	<tr>
 		<td>運送地址:</td>
 		<td><input type="TEXT" name="ship_add" size="45" 
-			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getShip_add()%>" /></td>
 	</tr>
 	<tr>
 		<td>發票形式:</td>
 		<td><input type="TEXT" name="receipt" size="45" 
-			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getReceipt()%>" /></td>
 	</tr>
 	<tr>
 		<td>訂單備註:</td>
 		<td><input type="TEXT" name="rmk" size="45" 
-			 value="<%= (product_orderVO==null)? "" : product_orderVO.getMbr_no()%>" /></td>
+			 value="<%= (product_orderVO==null)? "" : product_orderVO.getRmk()%>" /></td>
 	</tr>
 
 </table>
