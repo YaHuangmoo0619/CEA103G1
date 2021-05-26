@@ -60,6 +60,10 @@ public class AnnouncementService {
 		return dao.getAll();
 	}
 	
+	public List<AnnouncementVO> getAlltoShow() {
+		return dao.getAlltoShow();
+	}
+	
 	public List<AnnouncementVO> getDateEmp_no(Date an_skd_date) {
 		return dao.getDateEmp_no(an_skd_date);
 	}
