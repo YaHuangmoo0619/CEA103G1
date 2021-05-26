@@ -141,12 +141,12 @@ public class ProductServlet extends HttpServlet {
 //				System.out.println("middle");
 				Integer prod_stat = null;
 				try {
-					prod_stat = new Integer(req.getParameter("prod_stat").trim());
+					prod_stat = new Integer(req.getParameter("prod_stat"));
 				} catch (NumberFormatException e) {
 					prod_stat = 0;
 					errorMsgs.put("prod_stat","請選擇商品狀態");
 				}
-				
+//				System.out.println("middle2");
 				String prod_name = req.getParameter("prod_name");
 				if (prod_name == null || prod_name.trim().length() == 0) {
 					errorMsgs.put("prod_name","請輸入商品名稱");
@@ -162,7 +162,7 @@ public class ProductServlet extends HttpServlet {
 					prod_pc = 0;
 					errorMsgs.put("prod_pc","請輸入商品價格");
 				}
-				
+//				System.out.println("middle3");
 				Integer prod_stg = null;
 				try {
 					prod_stg = new Integer(req.getParameter("prod_stg").trim());
@@ -173,7 +173,7 @@ public class ProductServlet extends HttpServlet {
 					prod_stg = 0;
 					errorMsgs.put("prod_stg","請輸入商品庫存");
 				}
-				
+//				System.out.println("middle4");
 				String prod_info = req.getParameter("prod_info");
 				if (prod_info == null || prod_info.trim().length() == 0) {
 					errorMsgs.put("prod_info","請輸入商品資訊");
@@ -186,6 +186,7 @@ public class ProductServlet extends HttpServlet {
 				if (prod_clr == null || prod_clr.trim().length() == 0) {
 					errorMsgs.put("prod_clr","請輸入商品顏色");
 				}
+//				System.out.println("middle5");
 				String prod_size = req.getParameter("prod_size");
 				if (prod_size == null || prod_size.trim().length() == 0) {
 					errorMsgs.put("prod_size","請輸入商品大小");
@@ -198,7 +199,7 @@ public class ProductServlet extends HttpServlet {
 					ship_meth = 0;
 					errorMsgs.put("ship_meth","請選擇商品運送方式");
 				}
-				
+//				System.out.println("middle5");
 				//準備放照片
 				Set<Product_pictureVO> set = new LinkedHashSet<Product_pictureVO>();
 				//建立放照片的資料夾
@@ -246,7 +247,7 @@ public class ProductServlet extends HttpServlet {
 				productVO.setShip_meth(ship_meth);
 //				System.out.println(prod_no+","+ prod_cat_no+","+prod_stat+","+ prod_name+","+ prod_pc+","+prod_stg+","+ prod_info+","+prod_bnd+","+ prod_clr+","+prod_size+","+ship_meth);
 				if (!errorMsgs.isEmpty()) {
-					System.out.println("error-f");
+//					System.out.println("error-f");
 					req.setAttribute("productVO", productVO); 
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/product/update_Product_input.jsp");
 					failureView.forward(req, res);

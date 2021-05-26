@@ -124,7 +124,7 @@ textarea{
 
 <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" name="form1"  enctype="multipart/form-data">
 <input type="reset" value="重置" class="confirm">
-<input type="button" id="blank" value="清空" class="confirm">
+<!-- <input type="button" id="blank" value="清空" class="confirm"> -->
 
 <table>
 	<tr>

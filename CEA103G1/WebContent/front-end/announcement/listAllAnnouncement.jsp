@@ -2,12 +2,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.sql.*" %>
 <%@ page import="com.announcement.model.*" %>
 
 <%
 	AnnouncementService announcementSvc = new AnnouncementService();
 	List<AnnouncementVO> list = announcementSvc.getAll();
 	pageContext.setAttribute("list",list);
+	
+	//取得現在時間
+	Calendar rightNow = Calendar.getInstance();
+	System.out.println(rightNow.getTime());
+	
+// 	java.sql.Date annDate = new java.sql.Date().valueOf(getTime());
 %>
 <!-- 回復刪除的檔案 -->
 <!DOCTYPE html>
@@ -174,27 +181,13 @@ tr:hover {
 					</c:forEach>
 				</ul>
 			</c:if>
-			<!-- <div id="focusButton"><a href="#focus">查看當筆新增或修改的資料</a><a id="first"></a></div> -->
 
 			<table>
-<!-- 				<tr> -->
-<!-- 					<th style="width:50px">編號</th> -->
-<!-- 					<th style="width:80px">發文者</th> -->
-<!-- 					<th style="width:170px">部分發文內容</th> -->
-<!-- 					<th style="width:100px">公告日期</th> -->
-<!-- 					<th style="width:200px">照片</th> -->
-				
-<!-- 				</tr> -->
 				<jsp:useBean id="employeeSvc" scope="page" class="com.employee.model.EmployeeService" />
-				<c:forEach var="announcementVO" items="${list}" >	
+				<c:forEach var="announcementVO" items="${list}" >
+	
 					<tr>
-<%-- 							<c:if test="${announcementVO.an_no==param.an_no || announcementVO.an_no==an_no}"> --%>
-<%-- 								<td id="focus">${announcementVO.an_no}<a  style="display: none;"></a></td> --%>
-<%-- 							</c:if> --%>
-<%-- 							<c:if test="${announcementVO.an_no!=param.an_no && announcementVO.an_no!=an_no}"> --%>
-								<td style="display:none;">${announcementVO.an_no}</td>
-<%-- 							</c:if> --%>
-<%-- 						<td>${employeeSvc.getOneEmployee(announcementVO.emp_no).name}</td> --%>
+						<td style="display:none;">${announcementVO.an_no}</td>
 						<c:set var="an_cont" value="${announcementVO.an_cont}"/>
 						<td class="cont" >
 							<c:if test="${an_cont.length() > 30}">
@@ -203,24 +196,9 @@ tr:hover {
 							<c:if test="${an_cont.length() <= 30}">
 								<td>${an_cont}</td>
 							</c:if>
-<%-- 						<button onclick="showModal${announcementVO.an_no}()">看全文</button> --%>
 						</td>
 						<td><img src="<%=request.getContextPath()%>/announcement/GetPhoto?an_no=${announcementVO.an_no}" style="width:200px"></td>
 						<td style="width:150px;">${announcementVO.an_skd_date}</td>
-					
-			<!-- 			<td> -->
-			<%-- 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/announcement/announcement.do" style="margin-bottom: 0px;"> --%>
-			<!-- 			     <input type="submit" value="修改"> -->
-			<%-- 			     <input type="hidden" name="an_no"  value="${announcementVO.an_no}"> --%>
-			<!-- 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM> -->
-			<!-- 			</td> -->
-			<!-- 			<td> -->
-			<%-- 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/announcement/announcement.do" style="margin-bottom: 0px;"> --%>
-			<!-- 			     <input type="submit" value="刪除"> -->
-			<%-- 			     <input type="hidden" name="an_no"  value="${announcementVO.an_no}"> --%>
-			<!-- 			     <input type="hidden" name="action" value="delete"></FORM> -->
-			<!-- 			</td> -->
-			<!-- 			<td id="back" style="width: 80px;"><a href="#first" style="font-size: 0.5em;">回到第一筆</a></td> -->
 					</tr>
 				</c:forEach>
 			</table>
@@ -234,7 +212,7 @@ tr:hover {
 		let an_no = e.currentTarget.children[0].innerText;
 		window.location.href="<%=request.getContextPath()%>/announcement/announcement.do?an_no="+ an_no + "&action=read";
 	});
-
+;
 </script>
 
 </body>
