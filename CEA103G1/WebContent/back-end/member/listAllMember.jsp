@@ -233,13 +233,12 @@ textarea{
 			<div class="right col-9">
 		 <h3>會員帳號管理列表 &nbsp;
 			<a class="content" href="<%=request.getContextPath()%>/back-end/campsite_owner/listAllCampsite_owner.jsp">營主帳號管理列表</a>
-			<a href="#focus" class="content">看更新</a>
 		</h3>
 
 <table>
 
 	<c:forEach var="memberVO" items="${memberSvc.all}" >
-		<tr ${memberVO.mbr_no==param.mbr_no ? 'bgcolor=#eee' : '' }>
+		<tr ${memberVO.mbr_no==param.mbr_no ? 'bgcolor=#eee ' : '' }${memberVO.acc_stat==3 ? 'style="opacity:0.5;"' : '' }>
 			<td style="width:5%;">
 				<a class="content" href="<%=request.getContextPath()%>/member/member.do?action=getOne_For_Update_Back&mbr_no=${memberVO.mbr_no}">${memberVO.mbr_no}</a>
 				${memberVO.mbr_no==param.mbr_no ? '<a id="focus"></a>' : '' }
@@ -274,10 +273,11 @@ textarea{
 			<td style="width:45%;">
 				<div class="inTr">
 					<div>
-						<input type="button" value="帳號停權" style="margin:0.5em;" class="confirmStop">
-						<input type="button" value="恢復帳號" style="margin:0.5em;" class="confirm">
+						<input type="button" value="帳號停權" style="margin:0.5em;" class="confirmStop stop" id="stop">
+						<input type="button" value="恢復帳號" style="margin:0.5em;" class="confirm recover" id="recover">
 					</div>
-				</div>	
+				</div>
+			</td>	
 		</tr>
 	</c:forEach>
 </table>
@@ -321,6 +321,66 @@ textarea{
 	$("textarea").focus(function(){
 		$("textarea").css("outline","none");
 	});
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$('.stop').click(function(){
+ 	$.ajax({
+		type: "POST",
+		url: '<%=request.getScheme()%>://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/MemberChangeStat',
+		data: {action:"stop",mbr_no:$(this).parents("tr").children()[0].innerText},
+		dataType: "json",
+		success: function(data){
+			for(let i =0; i< $("tr").length;i++){
+				if($("tr")[i].children[0].innerText == data.stop){
+					$("tr")[i].style.opacity=0.5;
+				}
+			}
+		}
+	});
+});
+
+$('.recover').click(function(){
+ 	$.ajax({
+		type: "POST",
+		url: '<%=request.getScheme()%>://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/MemberChangeStat',
+		data: {action:"recover",mbr_no:$(this).parents("tr").children()[0].innerText},
+		dataType: "json",
+		success: function(data){
+			for(let i =0; i< $("tr").length;i++){
+				if($("tr")[i].children[0].innerText == data.recover){
+					$("tr")[i].style.opacity=1;
+				}
+			}
+		}
+	});
+});
+
+$('textarea').dblclick(function(){
+ 	$(this).prop("readonly",false);
+});
+$('textarea').blur(function(){
+	$(this).prop("readonly",true);
+});
+
+$('textarea').keydown(function(e){
+	console.log(e);
+	if(e.originalEvent.keyCode == 13){
+		console.log($(this).val());
+		$(this).prop("readonly",true);
+		$.ajax({
+	 		type: "POST",
+			url: '<%=request.getScheme()%>://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/MemberChangeStat',
+	 		data: {action:"write",rmk:$(this).val(),mbr_no:$(this).parents("tr").children()[0].innerText},
+	 		dataType: "json",
+	 		success: function(data){
+	 			console.log('back');
+	 		}
+	 	});
+	}
+});
+
+
 </script>
 </body>
 </html>

@@ -346,7 +346,6 @@ label.spotlight{
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
 		            </div>
 		            <div class="modal-body">
-<%-- 		            ${productVOOne.prod_no} --%>
 						<jsp:include page="listOneProduct_order.jsp" />
 		            </div>
 		       </div>

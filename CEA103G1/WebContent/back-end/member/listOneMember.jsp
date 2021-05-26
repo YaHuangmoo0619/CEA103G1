@@ -81,7 +81,7 @@ div.colName{
 		</div>
 		<div class="in">
 			<div class="divR colName">加入時間：</div>
-			<div class="divL">${memberVO.join_time}</div>
+			<div class="divL"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${memberVO.join_time}"/></div>
 		</div>
 		<div class="in">
 			<div class="divR colName">帳號狀態：</div>
