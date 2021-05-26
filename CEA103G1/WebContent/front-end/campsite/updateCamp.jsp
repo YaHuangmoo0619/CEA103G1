@@ -10,13 +10,13 @@
 
 <%
 	CampVO campVO = (CampVO) request.getAttribute("campVO");
-	Camp_PictureService camp_pictureSvc = new Camp_PictureService();
-	List<String> camp_piclist = camp_pictureSvc.getCamp_Picture(campVO.getCamp_no());
+// 	Camp_PictureService camp_pictureSvc = new Camp_PictureService();
+// 	List<String> camp_piclist = camp_pictureSvc.getCamp_Picture(campVO.getCamp_no());
 	List<Camp_FeatureVO> camp_featurelist = (List)request.getAttribute("camp_featurelist");
 	Feature_ListService feature_listSvc = new Feature_ListService();
 	List<Feature_ListVO> list = feature_listSvc.getAll();
 	pageContext.setAttribute("list", list);
-	pageContext.setAttribute("camp_piclist", camp_piclist);
+// 	pageContext.setAttribute("camp_piclist", camp_piclist);
 %>
 <html>
 <head>
@@ -216,12 +216,12 @@ span {
 						</div>
 					</div>
 					<hr>
-					<input type="file" id="progressbarTWInput" name="photo"
-						accept="image/gif, image/jpeg, image/png" multiple>
-					<div id="preview_progressbarTW_imgs"
-						style="width: 100%; height: 300px; overflow: scroll;">
-						<p>目前沒有圖片</p>
-					</div>
+<!-- 					<input type="file" id="progressbarTWInput" name="photo" -->
+<!-- 						accept="image/gif, image/jpeg, image/png" multiple> -->
+<!-- 					<div id="preview_progressbarTW_imgs" -->
+<!-- 						style="width: 100%; height: 300px; overflow: scroll;"> -->
+<!-- 						<p>目前沒有圖片</p> -->
+<!-- 					</div> -->
 
 					<hr>
 					<input type="hidden" name="action" value="update"> <input
@@ -232,18 +232,18 @@ span {
 	</div>
 	<!-- 	/CEA103G1/camp/campconfig.do? -->
 	<script>
-		$("#preview_progressbarTW_imgs").html("");
-		var camp_pic = `${camp_piclist}`;
-		if(!(camp_pic === "[]")){
-			camp_pic = camp_pic.substring(1,camp_pic.length-1);
-			camp_pic = camp_pic.split(", ");
-			console.log(camp_pic);
+// 		$("#preview_progressbarTW_imgs").html("");
+// 		var camp_pic = `${camp_piclist}`;
+// 		if(!(camp_pic === "[]")){
+// 			camp_pic = camp_pic.substring(1,camp_pic.length-1);
+// 			camp_pic = camp_pic.split(", ");
+// 			console.log(camp_pic);
 			
-			for(let i = 0; i < camp_pic.length; i++){
-				var img = $("<img width='500' height='500'>").attr('src', camp_pic[i]);
-				$("#preview_progressbarTW_imgs").append(img);
-			}
-		}
+// 			for(let i = 0; i < camp_pic.length; i++){
+// 				var img = $("<img width='500' height='500'>").attr('src', camp_pic[i]);
+// 				$("#preview_progressbarTW_imgs").append(img);
+// 			}
+// 		}
 		var src = `/CEA103G1/camp/campconfig.do?camp_no=<%=campVO.getCamp_no()%>`;
 		$("#showconfig").attr('src', src);
 		
