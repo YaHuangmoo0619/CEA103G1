@@ -29,9 +29,6 @@
 	cursor: pointer;
 }
 
-.camp:hover {
-	background-color: #F0FFF0;
-}
 
 .camp {
 	margin: 0px;
@@ -62,7 +59,7 @@ section {
 
 div.fixedTop {
 	background-color: #eee;
-	position: fixed;
+ 	position: relative;
 	z-index: 10;
 	left: 50%;
 	transform: translateX(-50%);
@@ -75,7 +72,8 @@ div.fixedTop {
 }
 
 .hey{
-margin-top:100px;
+	margin-top:50px;
+	text-align: center;
 }
 
 img.logo {
@@ -335,8 +333,7 @@ img.person:hover {
 <!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">Ápµ¸§Ú­Ì</button></a> -->
 		</div>
 	</div>
-	</div>
-	<div class="hey" id="all"></div>
+	<div class="hey"><div id="all"></div></div>
 	<script>
 		var locat = window.location.href;
 		$.ajax({
@@ -384,10 +381,10 @@ img.person:hover {
 				$('#all').append(html);
 				$(`#${data[i].camp_no}`).attr("href",href);
 				$(`#${data[i].camp_no}`).attr("target","_blank");
-				if(`${data[i].collected}` == 0){
-					$(`#fav${data[i].camp_no}`).attr("name","bookmark");
-				} else {
+				if(`${data[i].collected}` === '0'){
 					$(`#fav${data[i].camp_no}`).attr("name","bookmark-outline");
+				} else {
+					$(`#fav${data[i].camp_no}`).attr("name","bookmark");
 				}
 			}
 		}

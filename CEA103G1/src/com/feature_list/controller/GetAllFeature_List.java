@@ -13,15 +13,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.campsite.model.CampService;
 import com.campsite.model.CampVO;
+import com.campsite_collection.model.Camp_CollectionService;
+import com.campsite_collection.model.Camp_CollectionVO;
 import com.campsite_feature.model.Camp_FeatureService;
 import com.campsite_feature.model.Camp_FeatureVO;
 import com.campsite_picture.model.Camp_PictureService;
 import com.feature_list.model.Feature_ListService;
 import com.feature_list.model.Feature_ListVO;
 import com.google.gson.Gson;
+import com.member.model.MemberVO;
 import com.place.model.PlaceService;
 import com.place.model.PlaceVO;
 
@@ -68,6 +72,7 @@ public class GetAllFeature_List extends HttpServlet {
 			}
 			
 			for (CampVO campVO : campset) {
+				campVO = seeIfCollect(req, campVO);
 				List<Integer> low_pc = new ArrayList();
 				List<PlaceVO> plclist = placeSvc.getByCamp(campVO.getCamp_no());
 				if (plclist.size() == 0) {// ¼È®É
@@ -90,5 +95,29 @@ public class GetAllFeature_List extends HttpServlet {
 			String jsonObject = gson.toJson(feature_list);
 			out.println(jsonObject);
 		}
+	}
+	public CampVO seeIfCollect(HttpServletRequest req, CampVO campVO) {
+		HttpSession session = req.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("memberVO");
+		if (member == null) {
+			campVO.setCollected(1);
+
+			return campVO;
+		}
+
+		Camp_CollectionService collectionSvc = new Camp_CollectionService();
+		List<Camp_CollectionVO> collectionlist = collectionSvc.getAll();
+
+		for (Camp_CollectionVO camp_collectionVO : collectionlist) {
+
+			if ((int) campVO.getCamp_no() == (int) camp_collectionVO.getCamp_no()
+					&& (int) member.getMbr_no() == (int) camp_collectionVO.getMbr_no()) {
+				campVO.setCollected(0);
+				return campVO;
+			}
+		}
+		campVO.setCollected(1);
+
+		return campVO;
 	}
 }
