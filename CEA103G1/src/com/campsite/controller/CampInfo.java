@@ -134,7 +134,6 @@ public class CampInfo extends HttpServlet {
 			if ("getall".equals(action)) {
 				PlaceService placeSvc = new PlaceService();
 				List<CampVO> camplist = campSvc.getAll();
-System.out.println(camplist);
 				List<CampVO> pass = new ArrayList();
 				for (CampVO campVO : camplist) {
 					if((int)campVO.getReview_Status() == 1 && (int)campVO.getCampsite_Status() == 0) {
@@ -187,8 +186,6 @@ System.out.println(camplist);
 				list.add(camp_pictureSvc.getCamp_Picture(camp_no));
 			}
 		}
-
-System.out.println(list);
 		jsonObject = gson.toJson(list);
 		out.println(jsonObject);
 	}
@@ -209,9 +206,6 @@ System.out.println(list);
 				Feature_ListVO feature_listVO = feature_listSvc.getOneFeature_List(camp_featureVO.getCamp_fl_no());
 				featurelist.add(feature_listVO);
 			}
-		}
-		for (Feature_ListVO feature_listVO : featurelist) {
-			System.out.println(feature_listVO.getCamp_fl_name());
 		}
 		return featurelist;
 	}

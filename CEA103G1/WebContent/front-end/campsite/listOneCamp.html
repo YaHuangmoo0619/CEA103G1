@@ -40,8 +40,9 @@ top: 32%;
 }
 .formtoplace {
 	width:20%;
-	display:inline-block;
-	margin:2px;
+	display:block;
+	position: relative;
+	margin-left:2px;
 }
 .confirm:hover {
 	background-color: #4B7F52;
@@ -63,22 +64,27 @@ top: 32%;
 
 div.left {
 	margin-top: 20px;
+/* 	background-color: #DEB887; */
+	border-radius: 5px;
+	color: #fff;
 	/* 	margin-right: 100%; */
 }
 
 div.right {
-/* 	background-color: #fff; */
+ 	background-color: #fff; 
+ 	color: #00AA00;
 	margin-top: 20px;
+	margin-bottom: 20px;
 	/* 	padding: 50px 50px; */
 	border-radius: 5px;
+	color: #8B4513;
 }
 
 html, body {
 	margin: 0;
 	padding: 0;
 	/*background-color: #4e5452;*/
-	background-color: #fff;
-	color: #4B7F52;
+	background-color: #888888;
 }
 
 div.fixedTop {
@@ -397,7 +403,7 @@ td{
 <!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 		</div>
 	</div>
-	<div style="margin-top:15px;text-align:center;">
+	<div style="padding-top:15px;text-align:center;background-color: #fff;">
 		<FORM method="get" id="condition" onsubmit="return false"
 			accept-charset="big5">
 			<!-- 		縣市:<select id="county" name="county"></select> -->
@@ -410,11 +416,11 @@ td{
 		</FORM>
 		<hr>
 	</div>
-	<div class="container" style="margin-left: 0;margin-top: 0;margin-right: 0;">
+	<div class="container" style="margin-left: 0;margin-top: 0;margin-right: 0; padding:0;">
 		<div class="row">
 			<div class="left col-4" style="border-right:solid 1px #DDDDDD;">
 				<div id="map"></div>
-				<div id="spot"><h3>附近景點</h3></div>
+				<div id="spot" style="margin-left:10px;font-weight:2000px;"><h3>附近景點</h3></div>
 			</div>
 			<div class="right col-8">
 				<div>
@@ -458,15 +464,15 @@ td{
 				<button type="button" id="openConfig" onclick="openConfig()">展開配置圖</button>
 				<br>
 				<br>
-				<div id="showConfig" style="display: none;"><img id="config" width="800" height="500"></div><br> <br>
-				<div style="width:1000px;"><hr><FORM method="get" id="form1" onsubmit="return false"
+				<div id="showConfig" style="display: none;"><img id="config" width="100%" height="500"></div><br> <br>
+				<div style="width:100%; background-color:#F0FFF0;"><hr><FORM method="get" id="form1" onsubmit="return false"
 					accept-charset="big5">
-					<div class="formtoplace">入住日期:<input id="startdate" name="startdate" type="text" required></div>
+					<div><div class="formtoplace">入住日期:<input id="startdate" name="startdate" type="text" required></div>
 					<div class="formtoplace">退房日期:<input id="enddate" name="enddate" type="text" required></div>
-					<div class="formtoplace">人數:<input name="people" id="people" type="text" required></div>
+					<div class="formtoplace">人數:<input name="people" id="people" type="text" required></div><br>
 					<div class="formtoplace"><input type="hidden" id="camp_no" name="camp_no">
 					<input type="hidden" value="restart" name="action">
-					<input type="button" id="restart" value="更改" class="btn btn-outline-success my-2 my-sm-0" style="margin-bottom:20px;"></div>
+					<input type="button" id="restart" value="更改" class="btn btn-outline-success my-2 my-sm-0" style="margin-bottom:20px;"></div></div>
 				</FORM><hr></div>
 				<input id="stdt" name="startdate" type="hidden"> <input
 					id="eddt" name="enddate" type="hidden"> <input name="pp"
@@ -774,9 +780,6 @@ td{
 
 		}
 		function showPhoto(data) {
-			$('body').css('background-image', `linear-gradient(rgba(255,255,255,6), rgba(255,255,255,.6)), url("${data[data.length-1][0]}")`);
-			$('body').css('background-size', "100%");
-			$('body').css('background-attachment', "fixed");
 			let count = 1;
 			for(i in data[data.length-1]){
 				let alt = "custom_html_banner" + count;
@@ -806,60 +809,62 @@ td{
 			});
 		}
 		$("#search").click(function(){
-			let start = Date.parse($('#startdate').val()).valueOf();
-	    	let end = Date.parse($('#enddate').val()).valueOf();
-	    	if (start >= end) {
-				alert("入住日期不得大於或等於退房日期");
-				return false;
-			};
-			$('#placeInfo').empty();
-			$('#order').css("display","none");
-				$.ajax({
-					type : "GET",
-					dataType : "json",
-					url : "/CEA103G1/campsite/CampInfo.do",
-					data : $('#form1').serialize(),
-					success : function(data) {
-						showPlace(data);
-					}
-				});
-				$('#search').attr("value", "更改");
-				$('#search').attr("id", "restart");
-				sessionStorage.setItem("people", $('#people').val());
-				sessionStorage.setItem("startdate", $('#startdate').val());
-				sessionStorage.setItem("enddate", $('#enddate').val());
-				let split = url.split('action');
-				window.history.pushState({}, document.title, split[0] + "startdate=" + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val());
-				initWebSocket();
+// 			let start = Date.parse($('#startdate').val()).valueOf();
+// 	    	let end = Date.parse($('#enddate').val()).valueOf();
+// 	    	if (start >= end) {
+// 				alert("入住日期不得大於或等於退房日期");
+// 				return false;
+// 			};
+// 			$('#placeInfo').empty();
+// 			$('#order').css("display","none");
+// 				$.ajax({
+// 					type : "GET",
+// 					dataType : "json",
+// 					url : "/CEA103G1/campsite/CampInfo.do",
+// 					data : $('#form1').serialize(),
+// 					success : function(data) {
+// 						showPlace(data);
+// 					}
+// 				});
+// 				$('#search').attr("value", "更改");
+// 				$('#search').attr("id", "restart");
+// 				sessionStorage.setItem("people", $('#people').val());
+// 				sessionStorage.setItem("startdate", $('#startdate').val());
+// 				sessionStorage.setItem("enddate", $('#enddate').val());
+// 				let split = url.split('action');
+// 				window.history.pushState({}, document.title, split[0] + "startdate=" + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val());
+// 				initWebSocket();
+				window.location.href= url.substring(0,url.indexOf('&')+1) + "startdate=" + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val();
 		});
 		$("#restart").click(function(){
-			let start = Date.parse($('#startdate').val()).valueOf();
-	    	let end = Date.parse($('#enddate').val()).valueOf();
-	    	if (start >= end) {
-				alert("入住日期不得大於或等於退房日期");
-				return false;
-			};
-				$('#placeInfo').empty();
-				$('#order').css("display","none");
-				$.ajax({
-					type : "GET",
-					dataType : "json",
-					url : "/CEA103G1/campsite/CampInfo.do",
-					data : $('#form1').serialize(),
-					success : function(data) {
-						showPlace(data);
-					}
-				});
-				if(!($('#people').val()==="")){
-					sessionStorage.setItem("people", $('#people').val());					
-				}
-				if(!($('#startdate').val()==="")|| !($('#enddate').val()==="")){
-					sessionStorage.setItem("startdate", $('#startdate').val());				
-					sessionStorage.setItem("enddate", $('#enddate').val());					
-				}
-				let split = url.split('&');
-				window.history.pushState({}, document.title, url.substring(0,url.indexOf('&')+1) + "startdate=" + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val());
-				initWebSocket();
+// 			let start = Date.parse($('#startdate').val()).valueOf();
+// 	    	let end = Date.parse($('#enddate').val()).valueOf();
+// 	    	if (start >= end) {
+// 				alert("入住日期不得大於或等於退房日期");
+// 				return false;
+// 			};
+// 				$('#placeInfo').empty();
+// 				$('#order').css("display","none");
+// 				$.ajax({
+// 					type : "GET",
+// 					dataType : "json",
+// 					url : "/CEA103G1/campsite/CampInfo.do",
+// 					data : $('#form1').serialize(),
+// 					success : function(data) {
+// 						showPlace(data);
+// 					}
+// 				});
+// 				if(!($('#people').val()==="")){
+// 					sessionStorage.setItem("people", $('#people').val());					
+// 				}
+// 				if(!($('#startdate').val()==="")|| !($('#enddate').val()==="")){
+// 					sessionStorage.setItem("startdate", $('#startdate').val());				
+// 					sessionStorage.setItem("enddate", $('#enddate').val());					
+// 				}
+// 				let split = url.split('&');
+// 				window.history.pushState({}, document.title, url.substring(0,url.indexOf('&')+1) + "startdate=" + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val());
+// 				initWebSocket();
+			window.location.href= url.substring(0,url.indexOf('&')+1) + "startdate=" + $('#startdate').val() + "&enddate=" + $('#enddate').val() + "&people=" + $('#people').val();
 		});
 		var map;
 		function initMap(data) {
