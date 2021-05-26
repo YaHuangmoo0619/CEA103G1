@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page import="java.util.*"%>
+<%@ page import="com.member.model.*" %>
 <%@ page import="com.article_reply.model.*"%>
 
 
@@ -11,6 +12,8 @@
   Article_ReplyService article_replySvc = new Article_ReplyService();
   List<Article_ReplyVO> list = article_replySvc.getOneArticle_Replies(art_no);
   pageContext.setAttribute("list", list); 
+  MemberVO memberVO_mine = (MemberVO)session.getAttribute("memberVO");
+  pageContext.setAttribute("memberVO_mine", memberVO_mine);
 %>
 
 <jsp:useBean id="memberDAO" scope="page"
@@ -61,19 +64,22 @@ display:block;
 <div class=top>
 			
 		<c:forEach var="member" items="${memberDAO.all}">
-        <c:if test="${member.mbr_no==article_replyVO.mbr_no && not empty member.sticker}"><div class=sticker>${member.sticker}</div></c:if>
+        <c:if test="${member.mbr_no==article_replyVO.mbr_no && not empty member.sticker}"><div class=sticker><img class=author_sticker width="50px" height="50px" src="<%=request.getContextPath()%>/member/GetPhoto?mbr_no=${member.mbr_no} "></div></c:if>
+        
         <c:if test="${member.mbr_no==article_replyVO.mbr_no && empty member.sticker}"><div class=sticker><img class = reply_author src="/CEA103G1/images/profile.png"></div></c:if>
         </c:forEach>
         <c:forEach var="member2" items="${memberDAO.all}">
-        <c:if test="${member2.mbr_no==article_replyVO.mbr_no}"><div class="mbr_no test">${member2.acc}</div></c:if>
+        <c:if test="${member2.mbr_no==article_replyVO.mbr_no}"><c:if test="${not empty memberVO_mine}"><div class="mbr_no test"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${member2.mbr_no}&action=getProfile&mbr_no_mine=<%= memberVO_mine.getMbr_no()%>">${member2.acc}</a></div></c:if></c:if>
+        <c:if test="${member2.mbr_no==article_replyVO.mbr_no}"><c:if test="${empty memberVO_mine}"><div><a class=to_login href="#">${member2.acc}</a></div></c:if></c:if>
         </c:forEach>
         <div class="floorandtime test">
-        <div class="floor"><%=floor%>樓</div>
-		<div class="rep_time"><fmt:formatDate value="${article_replyVO.rep_time}" pattern="MM月dd日  HH:mm"/></div>
+<%--         <div class="floor"><%=floor%>樓</div> --%>
+		<div class="rep_time"><%=floor%>樓&nbsp;|&nbsp;<fmt:formatDate value="${article_replyVO.rep_time}" pattern="MM月dd日  HH:mm"/></div>
 		</div>
 		<div class=likes>${article_replyVO.likes}</div>
 		</div>
 		<div class=rep_cont>${article_replyVO.rep_cont}</div>
+		
 		
 			
 			
@@ -153,9 +159,36 @@ display:block;
   </div>
 </div>
 
+
+		<div class="modal" id="login_confirm_listOneArticle" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>您尚未登入</h5>
+      </div>
+      <div class="modal-body">
+        <div>想要一起加入討論，要先登入 Campion 唷！</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close_modal" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='<%=request.getContextPath()%>/front-end/member/login.jsp'">登入</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	<script>
+    $(".to_login").click(function(){
+    	$('#login_confirm_listOneArticle').modal('show');
+  })
+  
+  $(".close_modal").click(function(){
+	  $('#login_confirm_listOneArticle').modal('hide');
+  })
+	
+	
 	$('.oneReply').click(function(){
 		var floor_html = $(this).html(); //抓到你要tag的人的html 例如 #B1
 		console.log("floor_html:"+floor_html);

@@ -77,6 +77,15 @@
 			
 		}
 		
+		
+		
+		Article_CollectionService article_collectionSvc = new Article_CollectionService();
+		//取得我收藏的文章的
+		List<Article_CollectionVO> my_collection_list	= article_collectionSvc.findbymbr_no(memberVO.getMbr_no());
+		
+
+		
+		pageContext.setAttribute("my_collection_list", my_collection_list);
 	}
 	if(memberVO==null){
 		ajax_mbr_no=0;
@@ -84,13 +93,7 @@
 	
 	
 	
-	Article_CollectionService article_collectionSvc = new Article_CollectionService();
-	//取得我收藏的文章的
-	List<Article_CollectionVO> my_collection_list	= article_collectionSvc.findbymbr_no(memberVO.getMbr_no());
-	
 
-	
-	pageContext.setAttribute("my_collection_list", my_collection_list);
 	pageContext.setAttribute("banned", banned);
 	pageContext.setAttribute("banned_chinese", banned_chinese);
 	pageContext.setAttribute("ajax_mbr_no", ajax_mbr_no);
@@ -534,7 +537,7 @@ jedis.close();
 <%--   			if ( this.loadCount < <%=max_page%> ) { --%>
 //   				// 只讀取到最後一頁的資料
 //   				var nextIndex = this.loadCount + 2; // 2
-//   				return "/CEA103G1/front-end/article/listOneBoard_ClassArticleByLikes.jsp?whichPage="+nextIndex;
+<%--   				return "/CEA103G1/front-end/article/listOneBoard_ClassArticleByLikes.jsp?bd_cl_no=<%=bd_cl_no%>whichPage="+nextIndex; --%>
 //   			}
 //   		},
 //   		append: ".each_article", // 匯入物件類別
