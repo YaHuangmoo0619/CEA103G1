@@ -90,6 +90,7 @@ padding: 8px 16px;
 .clear{
 clear: both;
 }
+
 </style>
 <title>Profile</title>
 
@@ -100,7 +101,8 @@ clear: both;
         <div class="container">
             <div class="profile">
                 <div class="profile-image">
-                    <img src="/CEA103G1/images/profile.png" width="150px" height="150px">
+<!--                     <img src="/CEA103G1/images/profile.png" width="150px" height="150px"> -->
+                    <img class=author_sticker width="150px" height="150px" src="<%=request.getContextPath()%>/member/GetPhoto?mbr_no=<%=mbr_no%>">
                 </div>
                 <div class="profile-user-settings">
                     <h1 class="profile-user-name"><%=mbr_no%></h1>

@@ -63,86 +63,96 @@
 <html>
 <head>
 <title>listOneArticle</title>  
-    <style>
+ 
 
 <style>
 
    .like{ 
-   background-image:url('/CEA103G1/images/heart-outline.svg');
-   width:20px; 
-   height:18px;
-   border:0px; 
-   background-size: 20px 18px; 
-   background-repeat: no-repeat;  
+   background-image:url('/CEA103G1/images/heart_notyet.svg');
+   width:40px; 
+   height:40px; 
+   background-size: 40px 40px; 
+   background-repeat: no-repeat;
+   float:right;
+   margin: 0px 15px 0px 0px;  
    } 
    
    .like:hover{
-   background-image:url('/CEA103G1/images/heart.svg'); 
+   background-image:url('/CEA103G1/images/heart_already.svg'); 
    }
    
    
   	.like_no_login{ 
-   background-image:url('/CEA103G1/images/heart-outline.svg');
-   width:20px; 
-   height:18px;
-   border:0px; 
-   background-size: 20px 18px; 
-   background-repeat: no-repeat; 
+   background-image:url('/CEA103G1/images/heart_notyet.svg');
+   width:40px; 
+   height:40px; 
+   background-size: 40px 40px; 
+   background-repeat: no-repeat;
+   float:right;
+   margin: 0px 15px 0px 0px;  
    } 
    
    .like_no_login:hover{
-   background-image:url('/CEA103G1/images/heart.svg'); 
+   background-image:url('/CEA103G1/images/heart_already.svg'); 
    }
    
    
    .unlike{ 
-   background-image:url('/CEA103G1/images/heart.svg'); 
-   width:20px; 
-   height:18px; 
+   background-image:url('/CEA103G1/images/heart_already.svg'); 
+   width:40px; 
+   height:40px; 
    border:0px; 
-   background-size: 20px 18px; 
-   background-repeat: no-repeat; 
+   background-size: 40px 40px; 
+   background-repeat: no-repeat;
+   float:right;
+   margin: 0px 15px 0px 0px;  
    }
 
    
    
    
    .collection{ 
-   background-image:url('/CEA103G1/images/bookmarks-outline.svg');
-   width:20px; 
-   height:18px;
+   background-image:url('/CEA103G1/images/bookmark_notyet.svg');
+   width:35px; 
+   height:35px;
    border:0px; 
-   background-size: 20px 18px; 
-   background-repeat: no-repeat; 
+   background-size: 35px 35px; 
+   background-repeat: no-repeat;
+   float:right;
+   margin-right: 55px; 
    } 
    
    .collection:hover{
-   background-image:url('/CEA103G1/images/bookmarks.svg'); 
+   background-image:url('/CEA103G1/images/bookmark_already.svg'); 
    }
 
    .collection_no_login{ 
-   background-image:url('/CEA103G1/images/bookmarks-outline.svg');
-   width:20px; 
-   height:18px;
+   background-image:url('/CEA103G1/images/bookmark_notyet.svg');
+   width:35px; 
+   height:35px;
    border:0px; 
-   background-size: 20px 18px; 
-   background-repeat: no-repeat; 
+   background-size: 35px 35px; 
+   background-repeat: no-repeat;
+   float:right;
+   margin-right: 55px; 
    } 
    
    .collection_no_login:hover{
-   background-image:url('/CEA103G1/images/bookmarks.svg'); 
+   background-image:url('/CEA103G1/images/bookmark_already.svg'); 
    }   
    
    .uncollection{ 
-   background-image:url('/CEA103G1/images/bookmarks.svg'); 
-   width:20px; 
-   height:18px; 
+   background-image:url('/CEA103G1/images/bookmark_already.svg'); 
+   width:35px; 
+   height:35px; 
    border:0px; 
-   background-size: 20px 18px; 
-   background-repeat: no-repeat; 
+   background-size: 35px 35px; 
+   background-repeat: no-repeat;
+   float:right;
+   margin-right: 55px;
    }
    .uncollection:hover{
-   background-image:url('/CEA103G1/images/bookmarks-outline.svg'); 
+   background-image:url('/CEA103G1/images/bookmark_notyet.svg'); 
    } 
 	
 	.container{
@@ -152,18 +162,19 @@
 
 	
 	.headshotAndAuthor{
-	padding: 0px 0px 10px 0px;
+	padding: 0px 0px 30px 0px;
 	width:auto; 
 	display:inline-block !important; 
 	display:inline;
 	}
 	
+	.headshot{
+	padding:0px 20px 0px 0px;
+	}
 	.bdAandReltime{
 	display:inline-block;
 	}
-	.likegroup{
-	display:inline-block;
-	}
+
 	.rel_time{
 	color:rgba(0, 0, 0, 0.35);
 	white-space: nowrap;
@@ -187,8 +198,8 @@
 	}
 	
 	.heart_for_like{
-	width:24px;
-	height:24px;
+	width:35px;
+	height:35px;
 	padding:2px;
 	}
 	.modal div{
@@ -202,16 +213,39 @@
 
 	.dropdown{
 	padding-left:500px;
+	margin:0px 0px 30px 0px;
 	}
 	
+	.only_for_like_reply{
+/* 	padding:0px 0px 0px 400px; */
+	float:right;
+	}
+
+
+	.author_sticker{
+	border-radius: 50%;
+	}
 	
-/* 	.tool div{ */
-/* 	display:inline-block */
+	.dropdown-toggle{
+	float:right;
+	margin:0px 50px 0px 0px;
+	width:40px;
+	height:40px;
+	}
+	
+	.title{
+	padding:0px 0px 10px 0px;
+	}
+	
+	.aritcle_tag{
+	padding:0px 0px 15px 0px;
+	}
+	
+/* 	.to_login_listOneArticle{ */
+/*   	position: fixed; */
+/*   	bottom: 150px; */
+/*   	right: 350px; */
 /* 	} */
-
-
-	
-	
 </style>
 
 </head>
@@ -222,7 +256,7 @@
 		<div class="main_div headshotAndAuthor">
 		<div class="headshot">
 		<c:forEach var="memberVO" items="${memberDAO.all}">
-		<c:if test="${articleVO.mbr_no==memberVO.mbr_no && not empty memberVO.sticker}">${memberVO.sticker}</c:if>
+		<c:if test="${articleVO.mbr_no==memberVO.mbr_no && not empty memberVO.sticker}"><img class=author_sticker width="70px" height="70px" src="<%=request.getContextPath()%>/member/GetPhoto?mbr_no=${memberVO.mbr_no} "></c:if>
 		<c:if test="${articleVO.mbr_no==memberVO.mbr_no && empty memberVO.sticker}"><img src="/CEA103G1/images/profile.png" width="30px" height="30px"></c:if>
 		</c:forEach>
 		</div>
@@ -238,10 +272,6 @@
 
 <!-- 有登入的人才看的到 -->
 <c:if test="${not empty memberVO}">	
-		<div class="dropdown">
-<!--   <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
-
-<!--   </a> -->
 	<img class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="/CEA103G1/images/threedots.svg" width="30px" height="30px">
   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
   					<!-- 		如果有登入且該篇文章作者就是自己 那可以執行刪除及修改文章 -->
@@ -253,7 +283,6 @@
     <a class="dropdown-item reply_a" href="#">檢舉文章</a>
     </c:if>
   </div>
-</div>
 </c:if>
 
 
@@ -277,48 +306,45 @@
 <div id=like_td>${articleVO.likes}</div>
 <div><img class=heart_for_like src="/CEA103G1/images/reply.svg" ></div>
 <div>${articleVO.replies}</div>
-</div>
-<div>
 
+
+<!-- <div class=only_for_like_reply> -->
 	<!-- 	如果有登入的話  可以對文章按/收回讚 加入/取消收藏-->
 	<c:if test="${not empty memberVO}"> 
-	<!--    判斷這篇文章是否按過讚，如果還沒，那先出現的就是按讚   收回讚則設為隱藏 -->
-	<c:if test="${like_status eq true }">
-	<div>
-	<button class="like likegroup" style="display:none;"></button>
-	<button class="unlike likegroup" ></button>	
-	</c:if>
-	<c:if test="${like_status eq false }">
-	<button class="like likegroup" ></button>
-	<button class="unlike likegroup"style="display:none;"></button>	
-	</c:if>
+
 	<!--    判斷這篇文章是否收藏過，如果還沒，那先出現的就是加入收藏   取消收藏則設為隱藏 -->
 	<c:if test="${collection_status eq true }">
-	<button class="collection likegroup" style="display:none;"></button>
-	<button class="uncollection likegroup"></button>
+	<div class="collection" style="display:none;"></div>
+	<div class="uncollection"></div>
 	</c:if>
 	<c:if test="${collection_status eq false }">
-	<button class="collection likegroup"></button>
-	<button class="uncollection likegroup" style="display:none;"></button>
+	<div class="collection"></div>
+	<div class="uncollection" style="display:none;"></div>
 	</c:if>
-	
+		<!--    判斷這篇文章是否按過讚，如果還沒，那先出現的就是按讚   收回讚則設為隱藏 -->
+	<c:if test="${like_status eq true }">
+	<div class="like" style="display:none;"></div>
+	<div class="unlike" ></div>	
+	</c:if>
+	<c:if test="${like_status eq false }">
+	<div class="like" ></div>
+	<div class="unlike"style="display:none;"></div>	
+	</c:if>
 	</c:if>
 <!-- 	如果沒有登入的話  只會顯示按讚、收藏的按紐，點擊要打開名為登入的燈箱-->	
 	<c:if test="${empty memberVO}"> 
-	<button class="like_no_login to_login_listOneArticle likegroup" type="button"></button>
-	<button class="collection_no_login to_login_listOneArticle likegroup" type="button"></button>
+	<div class="collection_no_login to_login_listOneArticle"></div>
+	<div class="like_no_login to_login_listOneArticle"></div>
 	</c:if>
-	
-	
+<!-- 	</div> -->
+	</div>
 
-</div>
 
-<br>
-<br>
-<br>
+
 <br>
 
-<div>文章標籤</div>
+
+<div class=aritcle_tag>文章標籤</div>
 <c:forEach var="tag_list" items="${tag_list}">
 <div><a href="<%=request.getContextPath()%>/article/article.do?tag=${tag_list}&action=getArticlesByTagFor_Display">${tag_list}</a></div>
 </c:forEach>

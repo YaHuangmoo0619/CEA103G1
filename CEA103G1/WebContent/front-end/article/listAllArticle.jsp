@@ -76,6 +76,15 @@
 			
 		}
 		
+		Article_CollectionService article_collectionSvc = new Article_CollectionService();
+		//取得我收藏的文章的
+		List<Article_CollectionVO> my_collection_list	= article_collectionSvc.findbymbr_no(memberVO.getMbr_no());
+		
+
+		
+		pageContext.setAttribute("my_collection_list", my_collection_list);
+		
+		
 	}
 	if(memberVO==null){
 		ajax_mbr_no=0;
@@ -83,13 +92,7 @@
 	
 	
 	
-	Article_CollectionService article_collectionSvc = new Article_CollectionService();
-	//取得我收藏的文章的
-	List<Article_CollectionVO> my_collection_list	= article_collectionSvc.findbymbr_no(memberVO.getMbr_no());
-	
 
-	
-	pageContext.setAttribute("my_collection_list", my_collection_list);
 	pageContext.setAttribute("banned", banned);
 	pageContext.setAttribute("banned_chinese", banned_chinese);
 	pageContext.setAttribute("ajax_mbr_no", ajax_mbr_no);
@@ -122,7 +125,7 @@ html, body {
 	margin: 0;
 	padding: 0;
 	/*background-color: #4e5452;*/
-	background-color: 		#8FBC8F;
+	background-color: 	#007979;
 	color: #80c344;
 }
 
@@ -153,7 +156,7 @@ padding:0px 0px 0px 10px;
 	padding: 0px 10px 0px 0px;
 }
 .article_sort_parent{
-	padding:10px 0px 0px 60px;
+	padding:10px 0px 20px 60px;
 	
 }
 /* -----------------------------以下為側欄css------------------------------ */
@@ -186,6 +189,10 @@ font-family: Microsoft JhengHei;
 width:120px;
 }
 
+.board_icon{
+padding:0px 0px 0px 10px;
+}
+
 /* -----------------------------以下為主欄css------------------------------ */
   div.main_content{
   	  top:60px;
@@ -205,7 +212,7 @@ width:120px;
 }
 
 .pic img{
-width: 90px !important;
+width: 110px !important;
 height: 90px !important;
 }
 
@@ -218,15 +225,63 @@ border: 0px !important;
 #basicModal{
 
 height: 500px;
-overflow-y: initial !important;
-overflow-y: auto;
+ overflow-y: initial !important; 
+ overflow-y: auto; 
 
 }
 
+/* #basicModal.modal-dialog{ */
 
-.modal{
-	color: black
+/* overflow-y: initial !important */
+
+/* } */
+
+/* #basicModal.modal-body{ */
+
+/* height: 500px; */
+
+/* overflow-y: auto; */
+
+/* } */
+/* .modal{ */
+/* 	color: black */
+/* } */
+
+.title_box{
+padding: 0px 0px 10px 0px;
 }
+
+.btn-group-article_sort{
+float:right;
+margin:0px 50px 0px 0px;
+}
+.sort_text{
+float:right;
+font-size:14px;
+color:black;
+margin:10px 0px 0px 0px;
+}
+
+.drop-family{
+display:inline-block;
+}
+
+a.dropdown-item{
+padding:0px;
+}
+
+.dropdown-menu{
+min-width:0;
+width:78px;
+}
+
+#dropdownbtn{
+min-width:75px;
+min-hight:38px;
+}
+/* div.fixedTop{ */
+/* background-color:; */
+/* } */
 </style>
 
 </head>
@@ -254,6 +309,7 @@ overflow-y: auto;
   <div class="list">
 			<c:forEach var="board_classVO" items="${bd_list}">
 				<div class="sidebar_around">
+				<div class="board_icon board"><img src="/CEA103G1/images/board_class_icon/${board_classVO.bd_cl_no}.svg" width="24px" height="24px"></div>
 				<div class="item board board_name" ><a class=link_to_board href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${board_classVO.bd_cl_no}" >${board_classVO.bd_name}</a></div>
 				<div class=this_bd_bl_no style="display:none">${board_classVO.bd_cl_no}</div>
 				
@@ -304,9 +360,9 @@ overflow-y: auto;
  
         		<div class=article_sort_parent>
 <%--         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp';">最新</div> --%>
-        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp">最新</a>
+        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp">全部</a>
 <%--         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp';">熱門</div> --%>
-        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp">熱門</a>
+<%--         			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp">熱門</a> --%>
 					<!-- 	如果有登入的話 -->
 					<c:if test="${not empty memberVO }">
 					<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/addArticle.jsp';">追蹤</div> 
@@ -317,9 +373,20 @@ overflow-y: auto;
 					<a class="article_sort to_login">追蹤</a>
 					</c:if>
 					
+				
+  <div class="btn-group article_sort btn-group-article_sort">
+  <button type="button" id="dropdownbtn" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  最新
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item drop-family" href="<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp"><img class=drop-family src="/CEA103G1/images/hot.svg" width="24px" height="24px" >&nbsp;&nbsp;熱門</a>
+  </div>
+</div>
+
+	<div class="article_sort sort_text">文章排序依</div>
         		</div>
      
-     
+
      
 
         
@@ -356,7 +423,7 @@ overflow-y: auto;
                                     </div>
                                 </div>
                             </div>
-                            <h2 class="title_box"><div class="title">${articleVO.art_title}</div></h2>
+                           <div class="title title_box">${articleVO.art_title}</div>
                             <div class="post">
                                 <div class="post_0">
                                 <p>${simple_art_cont[articleVO.art_no]}</p>
@@ -366,7 +433,7 @@ overflow-y: auto;
                                 <div class="emoji">
                                     <div class="emoji_inner">
                                         <div class="emoji_pic">
-                                            <img src="https://megapx-assets.dcard.tw/images/52057289-337a-4f2f-88c0-cb8a77ee422a/orig.png" title="愛心" style="z-index:3" class=" icon_size icon_pic"></div>
+                                            <img src="/CEA103G1/images/heart_already.svg" width="25px" height="25px"></div>
                                         <div class=" amount">${articleVO.likes}</div>
                                     </div>
                                 </div>
@@ -378,12 +445,12 @@ overflow-y: auto;
                               				<c:set var="collection_status" value="0"></c:set>
                               				<c:set var="my_collection_list_replace" value="${my_collection_list}"></c:set>
                  							<c:forEach var="my_collection_list_replace" items="${my_collection_list_replace}">
-                 							<c:set var="collection_status" value="1"></c:set>
                  							<c:if test="${my_collection_list_replace.art_no==articleVO.art_no}">
-                 							<img src="/CEA103G1/images/bookmarks.svg" width="15px" height="15px">
+                 							<c:set var="collection_status" value="1"></c:set>
+                 							<img src="/CEA103G1/images/bookmark_already.svg" width="20px" height="20px">
                  							</c:if>
 											</c:forEach>
-											<c:if test="${collection_status==0}"><img src="/CEA103G1/images/bookmarks-outline.svg" width="15px" height="15px"></c:if>
+											<c:if test="${collection_status==0}"><img src="/CEA103G1/images/bookmark_notyet.svg" width="20px" height="20px"></c:if>
 											
                                         <span>收藏</span></div>
                                 </div>
@@ -555,8 +622,9 @@ jedis.close();
   
   $('.close_modal').click(function(){
 	  $('#login_confirm').modal('hide');
+	  
   })
-  
+
   
   
  $(".banned").click(function(){
