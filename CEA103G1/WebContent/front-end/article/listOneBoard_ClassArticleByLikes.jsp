@@ -589,9 +589,9 @@ jedis.close();
 			show : true
 		});
 		
-// 		$('#basicModal').on('hide.bs.modal', function () {
-// 			location.reload();
-// 		}
+	$('#basicModal').on('hidden.bs.modal', function () { 
+		window.history.go(-1);
+	})
 
   	var infScroll = new InfiniteScroll( ".container", {
   		path: function() {

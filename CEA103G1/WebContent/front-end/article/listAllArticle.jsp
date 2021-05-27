@@ -599,9 +599,9 @@ jedis.close();
 			show : true
 		});
 		
-// 		$('#basicModal').on('hide.bs.modal', function () {
-// 			location.reload();
-// 		}
+	$('#basicModal').on('hidden.bs.modal', function () { 
+		window.history.go(-1);
+	})
 
   	var infScroll = new InfiniteScroll( ".container", {
   		path: function() {
@@ -694,6 +694,6 @@ jedis.close();
 
 </script>
   <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
-  <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
+<%--   <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%> --%>
 </body>
 </html>

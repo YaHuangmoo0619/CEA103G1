@@ -6,12 +6,22 @@
 <%@ page import="com.follow.model.*"%>
 <%@ page import="com.article.model.*"%>
 <%@ page import="com.member.model.*" %>
+<%@ page import="redis.clients.jedis.Jedis"%>
+<%
+	Jedis jedis = new Jedis("localhost", 6379);
+	jedis.auth("123456");
+
+	
+	jedis.select(6);
+	
+%>
 
 <%int fans_num = (Integer)request.getAttribute("fans_num"); %>
 <%int follows_num = (Integer)request.getAttribute("follows_num"); %>
 <%int article_num = (Integer)request.getAttribute("article_num"); %>
 <%String mbr_no = String.valueOf(request.getAttribute("mbr_no"));
   int mbr_no_author = Integer.valueOf(mbr_no);
+  String author_profile = jedis.get("user:"+mbr_no+":profile");
 %>
 <%MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
 <%int mbr_no_self=memberVO.getMbr_no(); %>
@@ -26,7 +36,8 @@
   List<FollowVO> follows_list = (List<FollowVO>)request.getAttribute("followVO_follows"); //這個人追蹤的人
   List<Integer> followVO_mine = (List<Integer>)request.getAttribute("followVO_mine"); //我追蹤的人
   ArrayList<Integer> follow_mine = new ArrayList<Integer>(); //專門用來放我追蹤的人的號碼
-  
+  pageContext.setAttribute("author_profile", author_profile);
+  pageContext.setAttribute("mbr_no_self", mbr_no_self);
   pageContext.setAttribute("mbr_no_author", mbr_no_author);
   pageContext.setAttribute("fans_list", fans_list); 
   pageContext.setAttribute("follows_list", follows_list); 
@@ -82,9 +93,19 @@ list-style:none;
 .fans_list{
 display:inline-block;
 }
+
+
 .follows_list
 {
 display:inline-block;
+}
+
+.transform_text{
+cursor: pointer;
+}
+
+.transform_text:hover{
+transform:scale(1.5);
 }
 
 .follow{
@@ -258,6 +279,10 @@ min-hight:38px;
 padding:50px 0px 0px 0px;
 width:1000px;
 }
+
+.modal-title{
+margin:0px 0px 0px 20px;
+}
 </style>
 <title>Profile</title>
 
@@ -303,7 +328,7 @@ width:1000px;
 					
 <!-- 					如果這個人就是我，那就出現「編輯個人檔案」 -->
 					<c:if test="<%=Integer.valueOf(mbr_no)==mbr_no_self%>"> 
-					<button class="btn profile-edit-btn">編輯個人檔案</button>
+					<button class="btn profile-edit-btn profile-edit-btn-self">編輯簡介</button>
 					</c:if>
 
 					
@@ -314,12 +339,12 @@ width:1000px;
                 <div class="profile-stats">
                         <div class="profile-stat-count article"><%=article_num%> 貼文</div>
 
-                        <div class="profile-stat-count fans" onclick="showModal1()"><span id=follower><%=fans_num%></span>追蹤者</div>
+                        <div class="profile-stat-count " onclick="showModal1()"><span id=follower><%=fans_num%></span>追蹤者</div>
                         <div class="profile-stat-count follows" onclick="showModal2()"><span id=following><%=follows_num%></span>追蹤中</div>
  
                 </div>
                 <div class="profile-bio">
-                    <p><span class="profile-real-name">lalalal</span>teststsestrseseseseeseewqewqeqw</p>
+                    <p><span class="profile-real-name">${author_profile}</span></p>
                 </div>
             </div>
             <!-- End of profile section -->
@@ -422,26 +447,30 @@ width:1000px;
      <div class="modal-dialog" role="document"> 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">粉絲</h5>
+                <h3 class="modal-title">粉絲</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
             </div>
             <div class="modal-body">
 				<c:forEach var="fans_list" items="${fans_list}"> 
 <!-- 				對每個粉絲清單中的人跟我的追蹤清單的人做比對進行檢查 -->
 				<li class=fans>
-					<div class=fans_list style="width:47px;height:38px;"><img src="/CEA103G1/images/profile.png" width="30" height="30"></div>
-					<div class=fans_list style="width:241px;height:36px;"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${fans_list.flw_mbr_no}&action=getProfile" >${fans_list.flw_mbr_no}</a></div>
+					<div class=fans_list style="width:47px;height:38px;"><img src="<%=request.getContextPath()%>/member/GetPhoto?mbr_no=${fans_list.flw_mbr_no}" width="50px" height="50px" style="border-radius: 50%;"></div>
+					<div class=fans_list style="width:241px;height:36px;"><a style="font-size:16px;margin-left:15px;" href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${fans_list.flw_mbr_no}&action=getProfile&mbr_no_mine=${mbr_no_self}">
+					<c:forEach var="memberVO_all" items="${memberDAO.all}">
+					<c:if test="${fans_list.flw_mbr_no==memberVO_all.mbr_no}">${memberVO_all.acc}</c:if>
+					</c:forEach>
+					</a></div>
 					
 <!-- 					如果我追蹤的人裡面有這個人 -->
 					<c:if test="${followVO_mine.contains(fans_list.flw_mbr_no)}">
-					<div class="fans_list cancel_follow_in_list" style="width:48px;height:38px; ">追蹤中</div>
-					<div class="fans_list add_follow_in_list" style="width:48px;height:38px;display:none;">追蹤</div>
+					<div class="fans_list cancel_follow_in_list transform_text" style="width:48px;height:38px; ">追蹤中</div>
+					<div class="fans_list add_follow_in_list transform_text" style="width:48px;height:38px;display:none;">追蹤</div>
 					</c:if>
 
 <!-- 					如果我追蹤的人裡面沒有這個人 -->					
 					<c:if test="${followVO_mine.contains(fans_list.flw_mbr_no)==false}">
-					<div class="fans_list cancel_follow_in_list" style="width:48px;height:38px;display:none">追蹤中</div>
-					<div class="fans_list add_follow_in_list" style="width:48px;height:38px;">追蹤</div>
+					<div class="fans_list cancel_follow_in_list transform_text" style="width:48px;height:38px;display:none">追蹤中</div>
+					<div class="fans_list add_follow_in_list transform_text" style="width:48px;height:38px;">追蹤</div>
 					</c:if>
 					</li>
 					
@@ -459,25 +488,29 @@ width:1000px;
      <div class="modal-dialog" role="document"> 
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">追蹤名單</h5>
+                <h3 class="modal-title">追蹤名單</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
             </div>
             <div class="modal-body">
 				<c:forEach var="follows_list" items="${follows_list}">
 				<li class=follows>
-					<div class=follows_list style="width:47px;height:38px;"><img src="/CEA103G1/images/profile.png" width="30" height="30"></div>
-					<div class=follows_list style="width:241px;height:36px;"><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${follows_list.flwed_mbr_no}&action=getProfile">${follows_list.flwed_mbr_no}</a></div>
+					<div class="follows_list" style="width:47px;height:38px;"><img src="<%=request.getContextPath()%>/member/GetPhoto?mbr_no=${follows_list.flwed_mbr_no}" width="50px" height="50px" style="border-radius: 50%;"></div>
+					<div class="follows_list" style="width:241px;height:36px;"><a style="font-size:16px;margin-left:15px;" href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${follows_list.flwed_mbr_no}&action=getProfile&mbr_no_mine=${mbr_no_self}">
+					<c:forEach var="memberVO_all" items="${memberDAO.all}">
+					<c:if test="${follows_list.flwed_mbr_no==memberVO_all.mbr_no}">${memberVO_all.acc}</c:if>
+					</c:forEach>
+					</a></div>
 
 <!-- 					如果我追蹤的人裡面有這個人 -->
 					<c:if test="${followVO_mine.contains(follows_list.flwed_mbr_no)}">
-					<div class="follows_list cancel_follow_in_list" style="width:48px;height:38px; ">追蹤中</div>
-					<div class="follows_list add_follow_in_list" style="width:48px;height:38px;display:none;">追蹤</div>
+					<div class="follows_list cancel_follow_in_list transform_text" style="width:48px;height:38px; ">追蹤中</div>
+					<div class="follows_list add_follow_in_list transform_text" style="width:48px;height:38px;display:none;">追蹤</div>
 					</c:if>
 					
 <!-- 					如果我追蹤的人裡面沒有這個人 -->					
 					<c:if test="${followVO_mine.contains(follows_list.flwed_mbr_no)==false}">
-					<div class="follows_list cancel_follow_in_list" style="width:48px;height:38px;display:none">追蹤中</div>
-					<div class="follows_list add_follow_in_list" style="width:48px;height:38px;">追蹤</div>
+					<div class="follows_list cancel_follow_in_list transform_text" style="width:48px;height:38px;display:none">追蹤中</div>
+					<div class="follows_list add_follow_in_list transform_text" style="width:48px;height:38px;">追蹤</div>
 					</c:if>
 					</li>
 				</c:forEach> 
@@ -504,7 +537,29 @@ width:1000px;
 			</div>
 		</div>
 
-
+		
+		
+				<div class="modal fade" id="profile-edit-Modal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+				<form METHOD="post" ACTION="/CEA103G1/follow/follow.do" id="myform" name="form1" autocomplete>
+					<div class="modal-body">
+						  <div class="form-group">
+    						<div style="font-size:30px">編輯簡介</div>
+    						<textarea name="new_profile" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  							</div>
+					</div>
+						<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">返回</button>
+						<input type="hidden" name="mbr_no" value="<%=mbr_no_self%>">		
+						<input type="hidden" name="action" value="modify_profile">	
+						<input type="submit" value="送出修改" class="btn btn-primary">
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
 
 <script>
 
@@ -624,7 +679,10 @@ width:1000px;
 		
     });
     
-
+	
+    $(".profile-edit-btn-self").click(function(){
+    	$("#profile-edit-Modal").modal('show');
+    })
 </script>
 </body>
 </html>

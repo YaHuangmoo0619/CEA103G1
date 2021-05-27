@@ -7,6 +7,7 @@
 <%@ page import="com.board_class.model.*"%>
 <%@ page import="com.member.model.*" %>
 <%@ page import="redis.clients.jedis.Jedis"%>
+<%@ page import="com.article_collection.model.*"%>
 <%
 	Jedis jedis = new Jedis("localhost", 6379);
 	jedis.auth("123456");
@@ -16,6 +17,8 @@
 	String tag = request.getAttribute("tag").toString();
 	List<ArticleVO> list = (List<ArticleVO>)request.getAttribute("articleVO");
 	System.out.println("size:"+list.size());
+	
+	
 	Map<Integer,String> simple_art_cont = new HashMap<>();
 	for(ArticleVO count : list){
 		if(jedis.exists("post:"+count.getArt_no()+":art_simple_cont")){
@@ -69,7 +72,18 @@
 			
 		}
 		
+		
+		Article_CollectionService article_collectionSvc = new Article_CollectionService();
+		//取得我收藏的文章的
+		List<Article_CollectionVO> my_collection_list	= article_collectionSvc.findbymbr_no(memberVO.getMbr_no());
+		
+
+		
+		pageContext.setAttribute("my_collection_list", my_collection_list);
 	}
+	
+	
+	
 	if(memberVO==null){
 		ajax_mbr_no=0;
 	}
@@ -91,7 +105,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>列出單一標籤所有文章</title>
+<title>列出某標籤的所有文章</title>
 <%@ include file="/article_css/article_css.txt"%>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <link rel="icon" href="campionLogoIcon.png" type="image/png">
@@ -105,8 +119,8 @@ html, body {
 	margin: 0;
 	padding: 0;
 	/*background-color: #4e5452;*/
-	background-color: #4e5452;
-	color: #80c344;
+	background-color: 	#007979;
+	color: black;
 }
 
 section {
@@ -131,14 +145,20 @@ padding:0px 0px 0px 10px;
 }
 .article_sort{
 	display:inline-block;
+	font-family: Microsoft JhengHei;
+	font-size:20px;
+	padding: 0px 10px 0px 0px;
 }
 .article_sort_parent{
-	padding:10px 0px 0px 60px;
+	padding:10px 0px 40px 60px;
 }
 
-.tag_title{
+.bd_title{
 	padding:0px 0px 0px 55px;
 	color: black;
+	font-size:40px;
+	display:table-cell; 
+    vertical-align:bottom;
 }
 /* -----------------------------以下為側欄css------------------------------ */
 #sidebar {
@@ -151,6 +171,13 @@ padding:0px 0px 0px 10px;
   transition:all 300ms linear;
 }
 
+.link_to_board{
+color:FFFDD0;
+font-family: Microsoft JhengHei;
+}
+.sidebar_around:hover{
+ background-color:	#019858;
+}
 
 #sidebar div.list div.item {
   padding:15px 10px;
@@ -161,6 +188,11 @@ padding:0px 0px 0px 10px;
 
 .board_name{
 width:120px;
+}
+
+.board_icon{
+padding:0px 0px 0px 10px;
+margin: 0px 0px 10px 0px;
 }
 
 /* -----------------------------以下為主欄css------------------------------ */
@@ -182,7 +214,7 @@ width:120px;
 }
 
 .pic img{
-width: 90px !important;
+width: 110px !important;
 height: 90px !important;
 }
 
@@ -200,9 +232,45 @@ overflow-y: auto;
 
 }
 
+.title_box{
+padding: 0px 0px 10px 0px;
+}
 
-.modal{
-	color: black
+.btn-group-article_sort{
+float:right;
+margin:0px 50px 0px 0px;
+}
+.sort_text{
+float:right;
+font-size:14px;
+color:black;
+margin:10px 0px 0px 0px;
+}
+
+.drop-family{
+display:inline-block;
+}
+
+a.dropdown-item{
+padding:0px;
+}
+
+.dropdown-menu{
+min-width:0;
+width:78px;
+}
+
+#dropdownbtn{
+min-width:75px;
+min-hight:38px;
+}
+
+.bd_nameAndicon div{
+display:inline-block;
+}
+
+.tag_title{
+margin: 0px 0px 15px 60px;
 }
 </style>
 
@@ -210,17 +278,18 @@ overflow-y: auto;
 <body onload="connection()">
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	
+	
 <!-- 	如果有登入的話且沒被ban的話 -->
 	<c:if test="${not empty memberVO && banned==0}"> 
-	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
+	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp" data-toggle="tooltip" data-placement="top" title="發表文章"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
 	</c:if>
 <!-- 	如果有登入的話但被ban的話 -->
 	<c:if test="${not empty memberVO && banned>0}">
-	<div class="write banned"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
+	<div class="write banned" data-toggle="tooltip" data-placement="top" title="發表文章"><img src="/CEA103G1/images/write.svg" width="24px" height="24px" ></div>
 	</c:if>
 <!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
 	<c:if test="${empty memberVO }"> 
-	<div class="no_login write to_login"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
+	<div class="no_login write to_login" data-toggle="tooltip" data-placement="top" title="發表文章"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
 	</c:if>
 
 
@@ -229,7 +298,9 @@ overflow-y: auto;
 <div id="sidebar">
   <div class="list">
 			<c:forEach var="board_classVO" items="${bd_list}">
-				<div class="item board board_name" ><a href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${board_classVO.bd_cl_no}"  style="color:white;">${board_classVO.bd_name}</a></div>
+				<div class="sidebar_around">
+				<div class="board_icon board"><img src="/CEA103G1/images/board_class_icon/${board_classVO.bd_cl_no}.svg" width="24px" height="24px"></div>
+				<div class="item board board_name" ><a class=link_to_board href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${board_classVO.bd_cl_no}" >${board_classVO.bd_name}</a></div>
 				<div class=this_bd_bl_no style="display:none">${board_classVO.bd_cl_no}</div>
 				
 				
@@ -248,7 +319,7 @@ overflow-y: auto;
 				
 				
 				<!-- 如果有 那就放實心星星  並設一個參數按下可取消訂閱 -->
-				<div class="board cancel_subscribe"><img src="/CEA103G1/images/star.svg" width="24px" height="24px"></div>
+				<div class="board cancel_subscribe"><img src="/CEA103G1/images/star_new.svg" width="24px" height="24px"></div>
 				<c:set var="subscribe_status" value="1"></c:set>
 				</c:if>
 				</c:forEach>
@@ -256,17 +327,16 @@ overflow-y: auto;
 				
 				<!--    有登入但我我沒有訂閱這個看板 那就放空心星星，可訂閱 -->
 				<c:if test="${subscribe_status==0}">
-				<div class="board subscribe"><img src="/CEA103G1/images/star-outline.svg" width="24px" height="24px"></div>
+				<div class="board subscribe"><img src="/CEA103G1/images/star-outline_new.svg" width="24px" height="24px"></div>
 				</c:if>
 				
 				</c:if> 
 
 				<!--    沒登入放空心星星，按下跳出登入確認的燈箱   -->
 					<c:if test="${empty memberVO }"> 
-				<div class="board to_login"><img src="/CEA103G1/images/star-outline.svg" width="24px" height="24px"></div>
+				<div class="board to_login"><img src="/CEA103G1/images/star-outline_new.svg" width="24px" height="24px"></div>
 				</c:if>
-				
-				<br>
+				</div>
 			</c:forEach>
   </div>
 </div>
@@ -277,17 +347,34 @@ overflow-y: auto;
 
 
         <div class="container">
+        <h2 class="tag_title"><img src="/CEA103G1/images/tag_icon.svg" width="40px" height="40px">&nbsp;<%=tag%></h2>
+ 	<c:forEach var="bd_clVO" items="${bd_clDAO.all}">
+			<c:if test="${bd_cl_no==bd_clVO.bd_cl_no}">
+					   <div class=bd_nameAndicon>
+	                   <div class=bd_title>${bd_clVO.bd_name}</div>
+	                   <div class="board_icon board"><img src="/CEA103G1/images/board_class_icon/${bd_clVO.bd_cl_no}.svg" width="40px" height="40px"></div>
+					   </div>                    
+                    </c:if>
+		</c:forEach>
+		
+		
 
-
-	                   <h2 class=tag_title>標籤: ${tag}</h2>
-
- 
-<!--         		<div class=article_sort_parent> -->
-<%--         			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${bd_cl_no}">最新</a> --%>
-<%--         			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticleByLikes.jsp?bd_cl_no=${bd_cl_no}">熱門</a>					 --%>
-<!--         		</div> -->
      
+
      
+
+        
+<!--         雅凰加的，為了嘗試啟動通知的推播 -->
+<%-- <%--         --${articleVO != null? articleVO.mbr_no:'123' }-- --%> 
+<%-- 			<c:if test="${articleVO != null}"> --%>
+<!-- 			<!-- insert回傳的VO沒有文章編號 --> 
+<%-- 					<div onclick="sendNotify()" id="sendNotify" style="display:none;">${articleVO.mbr_no}/article</div> --%>
+<%-- 			</c:if> --%>
+<%-- 			<c:if test="${article_ReplyVO != null}"> --%>
+<!-- 			<!-- insert回傳的VO沒有留言編號 --> 
+<%-- 					<div onclick="sendNotify()" id="sendNotify" style="display:none;">${article_ReplyVO.art_no}/reply</div> --%>
+<%-- 			</c:if> --%>
+<!-- 		<!-- 雅凰加的，為了嘗試啟動通知的推播 --> 
 
             <div class="each_article">
                     <c:forEach var="articleVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
@@ -304,16 +391,13 @@ overflow-y: auto;
 		</c:forEach></div>					
 <%--                                             <div class="date"><fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm" /></div> --%>
                                             <div class="author"><c:forEach var="memberVO_loop" items="${memberDAO.all}">
-			<c:if test="${articleVO.mbr_no==memberVO_loop.mbr_no}">
-	                    ${memberVO_loop.acc}
-                    </c:if>
+			<c:if test="${articleVO.mbr_no==memberVO_loop.mbr_no}">&nbsp;&nbsp;${memberVO_loop.acc}</c:if>
 		</c:forEach></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <h2 class="title_box">
-                                <a class="title" href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></h2>
+                           <div class="title title_box">${articleVO.art_title}</div>
                             <div class="post">
                                 <div class="post_0">
                                 <p>${simple_art_cont[articleVO.art_no]}</p>
@@ -323,7 +407,7 @@ overflow-y: auto;
                                 <div class="emoji">
                                     <div class="emoji_inner">
                                         <div class="emoji_pic">
-                                            <img src="https://megapx-assets.dcard.tw/images/52057289-337a-4f2f-88c0-cb8a77ee422a/orig.png" title="愛心" style="z-index:3" class=" icon_size icon_pic"></div>
+                                            <img src="/CEA103G1/images/heart_already.svg" width="25px" height="25px"></div>
                                         <div class=" amount">${articleVO.likes}</div>
                                     </div>
                                 </div>
@@ -332,9 +416,16 @@ overflow-y: auto;
                                 </div>
                                 <div class="archieve">
                                     <div class="archieve_0">
-                                        <svg viewBox="0 0 24 24" focusable="false" role="img" aria-hidden="true" class="icon_size archieve_pic">
-                                            <path d="M17.65 21.39L12 17.5l-5.65 3.88A1.5 1.5 0 014 20.15V5a2.5 2.5 0 012.5-2.5h11A2.5 2.5 0 0120 5v15.15a1.5 1.5 0 01-2.35 1.24z"></path>
-                                        </svg>
+                              				<c:set var="collection_status" value="0"></c:set>
+                              				<c:set var="my_collection_list_replace" value="${my_collection_list}"></c:set>
+                 							<c:forEach var="my_collection_list_replace" items="${my_collection_list_replace}">
+                 							<c:if test="${my_collection_list_replace.art_no==articleVO.art_no}">
+                 							<c:set var="collection_status" value="1"></c:set>
+                 							<img src="/CEA103G1/images/bookmark_already.svg" width="20px" height="20px">
+                 							</c:if>
+											</c:forEach>
+											<c:if test="${collection_status==0}"><img src="/CEA103G1/images/bookmark_notyet.svg" width="20px" height="20px"></c:if>
+											
                                         <span>收藏</span></div>
                                 </div>
                             </div>
@@ -351,8 +442,7 @@ overflow-y: auto;
 
 	<c:if test="${openModal!=null}">
 
-		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
-			aria-labelledby="basicModal" aria-hidden="true">
+		<div class="modal" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content" >
 					<div class="modal-body">
@@ -370,7 +460,7 @@ overflow-y: auto;
 
 
 		
-		<div class="modal fade" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -401,14 +491,22 @@ overflow-y: auto;
 jedis.close();
 %>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	  <!-- Infinite Scroll v3.0.3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.3/infinite-scroll.pkgd.min.js"></script>
-		<script src="jquery.hover.js"></script>
+	
 		
 
 	<script>
+
+    $(document).ready(function(){
+       $('.dropdown-toggle').dropdown()
+   });
+
+	
+	
 		let countMenu = 0;
 		function showMenu() {
 			countMenu++;
@@ -446,7 +544,7 @@ jedis.close();
 		console.log(subscribe_bd_cl_no);
 		$.ajax({ // 負責傳到board_classServlet 新增某人對某看板的訂閱  需要的參數: mbr_no bd_cl_no 
 			type : "POST",
-			url : "/board_class/board_class.do",
+			url : "http://localhost:8081/CEA103G1/board_class/board_class.do",
 			data : {action: "subscribe",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,bd_cl_no:subscribe_bd_cl_no},
 			success : function(data) {
 				alert("新增"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對看板"+subscribe_bd_cl_no+"的訂閱成功");
@@ -461,7 +559,7 @@ jedis.close();
 		console.log(subscribe_bd_cl_no);
 		$.ajax({ // 負責傳到board_classServlet 取消某人對某看板的訂閱  需要的參數: mbr_no bd_cl_no 
 			type : "POST",
-			url : "/board_class/board_class.do",
+			url : "http://localhost:8081/CEA103G1/board_class/board_class.do",
 			data : {action: "cancel_subscribe",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,bd_cl_no:subscribe_bd_cl_no},
 			success : function(data) {
 				alert("取消"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對看板"+subscribe_bd_cl_no+"的訂閱成功");
@@ -475,20 +573,23 @@ jedis.close();
 			show : true
 		});
 		
-	
-
-//   	var infScroll = new InfiniteScroll( ".container", {
-//   		path: function() {
-//   			// 頁面路徑
-<%--   			if ( this.loadCount < <%=max_page%> ) { --%>
-//   				// 只讀取到最後一頁的資料
-//   				var nextIndex = this.loadCount + 2; // 2
-//   				return "/front-end/article/listOneBoard_ClassArticle.jsp?whichPage="+nextIndex;
-//   			}
-//   		},
-//   		append: ".each_article", // 匯入物件類別
-//   		status: ".scroller-status" // 捲軸狀態類別
-//   	})
+		
+	$('#basicModal').on('hidden.bs.modal', function () { 
+		window.history.go(-1);
+	})
+		
+  	var infScroll = new InfiniteScroll( ".container", {
+  		path: function() {
+  			// 頁面路徑
+  			if ( this.loadCount < <%=max_page%> ) {
+  				// 只讀取到最後一頁的資料
+  				var nextIndex = this.loadCount + 2; // 2
+  				return "http://localhost:8081/CEA103G1/front-end/article/listOneTagArticles.jsp?tag=<%=tag%>&whichPage="+nextIndex;
+  			}
+  		},
+  		append: ".each_article", // 匯入物件類別
+  		status: ".scroller-status" // 捲軸狀態類別
+  	})
 
   $(".to_login").click(function(){
 	  $('#login_confirm').modal('show');
@@ -496,10 +597,12 @@ jedis.close();
   
   $('.close_modal').click(function(){
 	  $('#login_confirm').modal('hide');
+	  
   })
+
   
   
-   $(".banned").click(function(){
+ $(".banned").click(function(){
 	 swal({
          title: "由於觸犯板規，您已被禁發文章！",
          text: "處分時間尚餘:"+"${banned_chinese}"+"，3秒後自動關閉視窗",
@@ -517,6 +620,54 @@ jedis.close();
 
   
   
+  </script>
+   <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
+  <script>
+		function writeToScreen(input){
+			let noRead = JSON.parse(input);
+			
+			var notifyMail = document.getElementById('countNoReadMail');
+			notifyMail.innerText = noRead.countNoReadMail;
+			var notifyNotify = document.getElementById('countNoReadNotify');
+			notifyNotify.innerText = noRead.countNoReadNotify;
+			
+			if(noRead.mail_no !== undefined){
+				let tableOri = document.getElementById('mailTable');
+				let trOri = document.createElement('tr');
+				trOri.innerHTML = "<td style='display:none;'>"+ noRead.mail_no+"</td><td>"+ noRead.send_no+"</td><td>"+noRead.rcpt_no+"</td><td>"+noRead.mail_cont+"</td><td>"+noRead.mail_time+"</td>";
+//				console.log(tableOri);
+//				console.log(trOri);
+				trOri.style.fontWeight=555;
+				tableOri.prepend(trOri);
+			}
+		}
+		function connection(){
+			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
+			websocket = new WebSocket(wsUri);
+			websocket.onopen = function(event){
+				let e = document.createEvent("MouseEvent");
+				e.initEvent("click",true,true);
+				if(document.getElementById('sendNotify') !== null){
+					document.getElementById('sendNotify').dispatchEvent(e);
+				}
+			};
+			websocket.onmessage = function(event){
+				let noRead = event.data;
+				writeToScreen(noRead);
+			};
+		}
+		function sendNotify(){
+			let sendNotify = document.getElementById('sendNotify');
+			websocket.send(sendNotify.innerText);
+		}
+		
+		
+		
+		$(function () {
+			  $('[data-toggle="tooltip"]').tooltip()
+			})
 </script>
+  <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
 </body>
+
 </html>

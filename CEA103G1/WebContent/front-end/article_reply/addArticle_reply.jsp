@@ -36,11 +36,24 @@
     <meta name="apple-mobile-web-app-title" content="CodePen">
     <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
     <link rel="mask-icon" type="" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+<style>
+.container{
+padding:20px 0px 0px 0px;
+}
+
+.respondandcancel{
+display:inline-block;
+float:right;
+margin:0px 20px 0px 0px;
+width:56px;
+height:40px;
+}
+</style>
 </head>
 <body bgcolor='white'>
-
-<h3>要回應的文章:${articleVO.art_title}</h3>
-<h3>新增留言:</h3>
+<div class=container>
+<h3>回應文章&nbsp;:&nbsp;${articleVO.art_title}</h3>
+<h3>回應內容</h3>
 
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
@@ -70,8 +83,12 @@
 <input type="hidden" name="art_no" value="<%=art_no%>">
 <input type="hidden" name="mbr_no" value="<%=mbr_no%>">
 <input type="hidden" name="action" value="insert">
-<input type="submit" value="新增留言"></FORM>
 
+<button type="submit" class="btn btn-default respondandcancel">回應</button>
+<button type="button" class="btn btn-default respondandcancel cancel">取消</button>
+
+</FORM>
+</div>
 
 
 <script>
@@ -89,6 +106,10 @@ $('#rep_cont').summernote(
 					[ 'para', [ 'paragraph' ] ],
 					[ 'insert', [ 'picture' ] ], ]
 		});
+		
+$(".cancel").click(function(){
+	window.history.go(-1);
+})		
 </script>
 
 

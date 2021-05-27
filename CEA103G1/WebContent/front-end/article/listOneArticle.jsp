@@ -243,6 +243,11 @@
 	padding:0px 0px 15px 0px;
 	}
 	
+	.aritcle_tag div{
+	display:inline-block;
+	padding:0px 15px 0px 0px;
+	}
+	
 /* 	.to_login_listOneArticle{ */
 /*   	position: fixed; */
 /*   	bottom: 150px; */
@@ -355,11 +360,11 @@
 <br>
 
 
-<div class=aritcle_tag>§Â≥πº–≈“</div>
+<div class=aritcle_tag>
 <c:forEach var="tag_list" items="${tag_list}">
 <div><a href="<%=request.getContextPath()%>/article/article.do?tag=${tag_list}&action=getArticlesByTagFor_Display">${tag_list}</a></div>
 </c:forEach>
-
+</div>
 
 <div id = "addrep"></div>
 <div id="demo"></div>
@@ -476,11 +481,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	
-<script>
- var stateObj = { foo: "bar" };
- history.pushState(stateObj, "page 2", "${requestURL}");
 
-</script>
 
 	<script>   
 	
