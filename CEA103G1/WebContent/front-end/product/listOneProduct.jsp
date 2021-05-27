@@ -3,6 +3,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="com.product.model.*"%>
 <%@ page import="com.member.model.*" %>
+<jsp:useBean id="product_pictureSvc" scope="page" class="com.product_picture.model.Product_pictureService"/>
+<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
 <%
   ProductVO productVO = (ProductVO) request.getAttribute("productVO");
 %>
@@ -105,8 +107,6 @@
 </head>
 <body bgcolor='white'>
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
-
-<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
 			
 <section>
     <div class="container">
@@ -114,8 +114,10 @@
             <div class="card-wrapper">
                 <div class="row align-items-center">
                     <div class="col-12 col-md-3">
-                        <div class="">
-                            <img src="">
+                        <div>
+				            <c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
+								<img class="inDiv" src="${product_pictureVO.prod_pic}" style="max-width:100%; height:auto;">
+							</c:forEach>
                         </div>
                     </div>
                     <div class="col-12 col-md">

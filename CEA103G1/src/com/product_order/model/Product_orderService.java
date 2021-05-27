@@ -3,6 +3,8 @@ package com.product_order.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.product_order_details.model.Product_order_detailsVO;
+
 public class Product_orderService {
 
 	private Product_orderDAO_interface dao;
@@ -13,7 +15,7 @@ public class Product_orderService {
 
 	public Product_orderVO addProduct_order(Integer mbr_no, Timestamp prod_ord_time, Integer prod_ord_stat,
 			Integer prod_ord_sum, Integer used_pt, Integer ship_meth, Integer pay_meth, String ship_cty,
-			String ship_dist, String ship_add, Integer receipt, String rmk) {
+			String ship_dist, String ship_add, Integer receipt, String rmk, List<Product_order_detailsVO> list) {
 
 		Product_orderVO product_orderVO = new Product_orderVO();
 
@@ -29,7 +31,7 @@ public class Product_orderService {
 		product_orderVO.setShip_add(ship_add);
 		product_orderVO.setReceipt(receipt);
 		product_orderVO.setRmk(rmk);
-		dao.insert(product_orderVO);
+		product_orderVO = dao.insert(product_orderVO, list);
 
 		return product_orderVO;
 	}

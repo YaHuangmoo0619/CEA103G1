@@ -11,10 +11,12 @@ import javax.servlet.http.*;
 import com.member.model.MemberVO;
 import com.place_order.model.Place_OrderService;
 import com.place_order.model.Place_OrderVO;
+import com.place_order_details.model.Place_Order_DetailsVO;
 import com.product.model.ProductDAO;
 import com.product.model.ProductService;
 import com.product.model.ProductVO;
 import com.product_order.model.*;
+import com.product_order_details.model.*;
 
 @WebServlet("/product_order/product_order.do")
 public class Product_orderServlet extends HttpServlet {
@@ -213,6 +215,7 @@ public class Product_orderServlet extends HttpServlet {
 				product_orderVO.setShip_dist(ship_dist);
 				product_orderVO.setReceipt(receipt);
 				product_orderVO.setRmk(rmk);	
+				List<Product_order_detailsVO> list = new ArrayList();
 				
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("product_orderVO", product_orderVO);
@@ -223,7 +226,7 @@ public class Product_orderServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				Product_orderService product_orderSvc = new Product_orderService();
-				product_orderVO = product_orderSvc.addProduct_order(mbr_no, prod_ord_time, prod_ord_stat, prod_ord_sum, used_pt, ship_meth, pay_meth, ship_cty, ship_dist, ship_add, receipt, rmk);
+				product_orderVO = product_orderSvc.addProduct_order(mbr_no, prod_ord_time, prod_ord_stat, prod_ord_sum, used_pt, ship_meth, pay_meth, ship_cty, ship_dist, ship_add, receipt, rmk, list);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/front-end/product_order/listAllProduct_order.jsp";

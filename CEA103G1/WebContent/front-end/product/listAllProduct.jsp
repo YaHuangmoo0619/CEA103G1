@@ -4,7 +4,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.product.model.*"%>
 <%@ page import="com.product_picture.model.*"%>
-<jsp:useBean id="product_pictureSvc" class="com.product_picture.model.Product_pictureService"/>
+<jsp:useBean id="product_pictureSvc" scope="page" class="com.product_picture.model.Product_pictureService"/>
 <jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
 
 
@@ -89,7 +89,9 @@
                 <div class="row align-items-center">
                     <div class="col-12 col-md-4">
                         <div>
-                            <img src="${product_pictureVO.prod_pic}">
+							<c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
+								<img class="inDiv" src="${product_pictureVO.prod_pic}" style="max-width:100%; height:auto;">
+							</c:forEach>
                         </div>
                     </div>
                     <div class="col-12 col-md">
