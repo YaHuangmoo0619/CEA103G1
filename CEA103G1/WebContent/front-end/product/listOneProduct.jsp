@@ -151,18 +151,21 @@
                                 <div class="col-md-auto">
                               		<p>商品價格 </p>
                                     <p class="price mbr-fonts-style display-4">${productVO.prod_pc}</p>
-                                   <div>
-							  <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/addProduct_order.jsp" style="margin-bottom: 0px;">
-							     <input type="submit" value="直接下訂">
-							     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-							  </FORM>
-							</div>
+                                <div>
+								    <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
+									     <input type="submit" value="直接下訂" class="btn btn-white-outline display-4">
+									     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
+									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+									     <input type="hidden" name="action"	value="buyOne">
+									</FORM>
+								</div>
 							<div>
 							  <button class="_btn _column product-subtract">&minus;</button>
 				              <div class="_column product-qty" id="product-qty">0</div>
 				              <button class="_btn _column product-plus">&plus;</button>
 							</div>
 							
+							<div>目前庫存：</div>
 							<div id="max_num">${productVO.prod_stg}</div>
 							<!-- 	如果有登入的話 -->	
 							<c:if test="${not empty memberVO }"> 
@@ -209,6 +212,9 @@
 
 
 <script>
+	$("#purchase").click(function(){
+		"javascript:location.href='${pageContext.request.contextPath}/front-end/product_order/listOneProduct_List.jsp'"
+	})
 
 	$(".to_login").click(function(){
 	  		$('#login_confirm').modal('show');
@@ -249,8 +255,8 @@
 		}
 
 		$(this).next().text(num);
-		})	
-		
+		})		
+	
 		
 		
 </script>

@@ -117,15 +117,11 @@
 									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 									     <input type="hidden" name="action"	value="getOne_For_Display">
 								     </FORM>
-                    				<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
-									     <input type="submit" value="直接下訂">
-									     <input type="hidden" name="mbr_no"  value="${memberVO.mbr_no}">
+								     <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product/product.do" style="margin-bottom: 0px;">
+									     <input type="submit" value="直接下訂" class="btn btn-white-outline display-4">
 									     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
-									     <input type="hidden" name="ship_cty"  value="${memberVO.city}">
-									     <input type="hidden" name="ship_dist"  value="${memberVO.dist}">
-									     <input type="hidden" name="ship_add"  value="${memberVO.add}">
 									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-									     <input type="hidden" name="action" value="insert">
+									     <input type="hidden" name="action"	value="buyOne">
 									 </FORM>        
                                 </div>
                                 <div></div>
