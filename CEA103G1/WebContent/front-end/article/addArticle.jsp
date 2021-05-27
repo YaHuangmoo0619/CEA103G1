@@ -79,6 +79,9 @@
 	height: 32;
 	display: inline-block;
 	border-color: coral;
+	margin:0px 10px 0px 0px;
+	text-align:center;
+	line-height:28px;
 }
 
 .tag_num {
@@ -126,7 +129,7 @@ padding: 0px 0px 20px 0px;
 	</c:if>
 <div class="container">
 	<h3 class=main_div>發表文章</h3>
-	<FORM METHOD="post" ACTION="/CEA103G1/article/article.do" name="form1" autocomplete>
+	<FORM METHOD="post" ACTION="/CEA103G1/article/article.do" id="myform" name="form1" autocomplete>
 		
 			<jsp:useBean id="bd_clSvc" scope="page"
 				class="com.board_class.model.Board_ClassService" />
@@ -196,10 +199,11 @@ padding: 0px 0px 20px 0px;
 							
 						</div>
 					</div>
+					<div id="anchor"></div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-dismiss="modal">返回</button>
-						<input type="submit" value="送出新增" class="btn btn-primary">
+						<input type="button" value="送出新增" class="btn btn-primary" id="ready_to_submit">
 					</div>
 				</div>
 			</div>
@@ -216,20 +220,23 @@ padding: 0px 0px 20px 0px;
 // 		$("span").remove();
 // 		}
 	
-// 		$('#art_cont').summernote(
-// 				{
-// 					placeholder : '請輸入文字',
-// 					tabsize : 2,
-// 					height : 300,
-// 					maxHeight: 300, //固定，不寫的話就可隨意拉開
-// 					toolbar : [
-// 					// [groupName, [list of button]]
-// 					[ 'style', [ 'bold', 'italic', 'underline' ] ],
-// 							[ 'fontsize', [ 'fontsize' ] ],
-// 							[ 'color', [ 'color' ] ],
-// 							[ 'para', [ 'paragraph' ] ],
-// 							[ 'insert', [ 'picture' ] ], ]
-// 				});
+		$('#art_cont').summernote(
+				{
+					placeholder : '請輸入文字',
+					tabsize : 2,
+					height : 300,
+					maxHeight: 300, //固定，不寫的話就可隨意拉開
+					toolbar : [
+					// [groupName, [list of button]]
+					[ 'style', [ 'bold', 'italic', 'underline' ] ],
+							[ 'fontsize', [ 'fontsize' ] ],
+							[ 'color', [ 'color' ] ],
+							[ 'para', [ 'paragraph' ] ],
+							[ 'insert', [ 'picture' ] ], ]
+				});
+		
+		
+		
 		$(document).ready(function () {
 		    $('#art_cont').summernote({
 		        onPaste: function (e) {
@@ -239,10 +246,14 @@ padding: 0px 0px 20px 0px;
 		        }
 		    });
 		});
-
+//summernote end
+		
+		
 		$("body").on("click",".tag_selected_parent",function() { //當標籤被點的時候，要加到預新增的標籤列表中並隱藏被點擊的標籤
 // 			if($(this).children("div:first") >0){ //如果.tag_selected_parent底下有div的話
-	            var tag_text1 = $(this).children("div:first").html(); 
+// 	            var tag_text1 = $(this).children("div:first").html();
+ 				var tag_text1 = $(this).children("div:first").text();
+ 				
 				var new_tag = $('<div style="border: solid; border-color:black" class=tag_prepared_to_add display:flex>'
 						+ tag_text1 + '</div>'); //要放到預新增的標籤列表中的內容
 				$("#tags_add_list").prepend(new_tag); //放入預新增的標籤列表
@@ -287,15 +298,17 @@ padding: 0px 0px 20px 0px;
 				dataType: "json",
 				success : function(data) {
 					$("#tag_can_be_selected").html(""); //將標籤選單清空
-// 					console.log($.isEmptyObject(data)); //測試用
+					console.log($.isEmptyObject(data)); //測試用
 					if($.isEmptyObject(data)){ //如果資料庫還沒有這個標籤
 						$("#tag_can_be_selected").append(
-								`<div class=tag_selected_parent>`+`
-								<button type="button">新增`+x+`標籤</button>`	
-								 +`</div>`
+		`<div class=tag_selected_parent>`+`<div style="display:hidden">`+x+`</div><button type="button">新增`+x+`標籤</button>`+`</div>`
 								);
 					}
-					
+// tag_selected_parent下的button :新增x標籤
+// 應該還要有一個只放標籤文字的div
+//
+
+
 // 					var tagString = "";
 // 					for(var i = 0 ; i<data.length; i++){
 //                         $("#tag_can_be_selected").append(data[i]+"</br>");
@@ -341,6 +354,24 @@ padding: 0px 0px 20px 0px;
         function upload(){
         	$("button[name='Picture]'").click();
         }
+        
+        
+        //表單送出前 在modal-footer下方用jQuery對each class=prepared_to_add
+        //開始新增隱藏的input元素
+        //用jQuery對each class=tag_prepared_to_add
+        //元素內容為即將要為這篇文章標註上的標籤
+        //<input value
+        var count = 1; //建一個count計數用
+        $("#ready_to_submit").click(function(){
+        	$(".tag_prepared_to_add").each(function(){
+        		var tag_cont = $(this).text();
+        		$("#anchor").before(`<input type="hidden" name="tag_go" value="`+tag_cont+`">`);
+//         		$(".modal-footer").before(`<input type="hidden" name="tag`+count+`" value="`+tag_cont+`">`);
+        		count++;
+        	})
+        	//做完後 可以真的submit出form表單
+        	$("#myform").submit();
+        })
 </script>
 
 </body>

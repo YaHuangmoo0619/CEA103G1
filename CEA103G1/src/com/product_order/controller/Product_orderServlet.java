@@ -8,6 +8,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import com.member.model.MemberService;
 import com.member.model.MemberVO;
 import com.place_order.model.Place_OrderService;
 import com.place_order.model.Place_OrderVO;
@@ -17,6 +18,8 @@ import com.product.model.ProductService;
 import com.product.model.ProductVO;
 import com.product_order.model.*;
 import com.product_order_details.model.*;
+
+import redis.clients.jedis.Jedis;
 
 @WebServlet("/product_order/product_order.do")
 public class Product_orderServlet extends HttpServlet {
@@ -368,5 +371,103 @@ public class Product_orderServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		
+		
+        if ("insert_products".equals(action)) { 
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
+				System.out.println("mbr_no:"+mbr_no);
+				Timestamp prod_ord_time =  new Timestamp(System.currentTimeMillis());
+				Integer prod_ord_stat = 1;
+				Integer prod_ord_sum = new Integer(req.getParameter("prod_ord_sum").trim());
+				System.out.println("prod_ord_sum:"+prod_ord_sum);
+				
+				Integer used_pt = new Integer(req.getParameter("ptRadios").trim());
+				//我的使用點數只分為兩種 要跟不要  要的話就取出這個會員現有的所有點數  不要的話就uesd_pt=0
+				if(used_pt!=0) { //如果我有使用點數 要把這個資訊更新回memberVO
+					MemberVO memberVO1 = new MemberVO();
+					MemberService memberSvc = new MemberService();
+					memberVO1 = memberSvc.getOneMember(mbr_no);
+					int point_i_have = memberVO.getPt(); //取得我有的點數
+				}
+				System.out.println("used_pt:"+used_pt);
+				
+				Integer ship_meth = 2;
+				Integer pay_meth = 0;
+				String ship_cty = req.getParameter("county");
+				System.out.println("ship_cty:"+ship_cty);
+				String ship_dist = req.getParameter("district");
+				System.out.println("ship_dist:"+ship_dist);
+				String ship_add = req.getParameter("ship_add");
+				System.out.println("ship_add:"+ship_add);
+				Integer receipt = 0;
+				String rmk = req.getParameter("rmk");
+				System.out.println("rmk:"+rmk);
+				
+				List<Product_order_detailsVO> list = new ArrayList<>();//新建list準備放我的商品們
+				Product_order_detailsVO product_order_detailVO = new Product_order_detailsVO();
+				//開始從redis取出臨時訂單中的商品 並變成一個一個的VO
+				
+				Jedis jedis = new Jedis("localhost", 6379);
+				jedis.auth("123456");
+				jedis.select(4);
+	
+				
+				Map<String,String> my_item_list = new HashMap<>();
+				//取得臨時訂單的Map  key為prod_no  value為num
+				for(String element : jedis.smembers("order:"+memberVO.getMbr_no()+":items")){
+					String[]  strs=element.split(":");
+					my_item_list.put(strs[0].toString(), strs[1].toString());
+				}
+				
+				//至此已取得所有建立訂單需要的資訊
+				
+				jedis.close();
+				
+				Product_orderVO product_orderVO = new Product_orderVO();
+				product_orderVO.setMbr_no(mbr_no);
+				product_orderVO.setProd_ord_time(prod_ord_time);
+				product_orderVO.setProd_ord_stat(prod_ord_stat);
+				product_orderVO.setProd_ord_sum(prod_ord_sum);
+				product_orderVO.setUsed_pt(used_pt);
+				product_orderVO.setShip_meth(ship_meth);
+				product_orderVO.setPay_meth(pay_meth);
+				product_orderVO.setShip_cty(ship_cty);
+				product_orderVO.setShip_dist(ship_dist);
+				product_orderVO.setReceipt(receipt);
+				product_orderVO.setRmk(rmk);	
+				
+				
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("product_orderVO", product_orderVO);
+					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/product_order/addProduct_order.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				
+				/***************************2.開始新增資料***************************************/
+				Product_orderService product_orderSvc = new Product_orderService();
+				product_orderVO = product_orderSvc.addProduct_order(mbr_no, prod_ord_time, prod_ord_stat, prod_ord_sum, used_pt, ship_meth, pay_meth, ship_cty, ship_dist, ship_add, receipt, rmk, list);
+				
+				/***************************3.新增完成,準備轉交(Send the Success view)***********/
+				String url = "/front-end/product_order/listAllProduct_order.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllProduct_order.jsp
+				successView.forward(req, res);				
+				
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/product_order/addProduct_order.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
 	}
 }

@@ -231,6 +231,8 @@ display:inline-block;
 display:inline-block;
 }
 
+
+
 .point-text,.point-have{
 display:inline-block;
 }
@@ -244,6 +246,11 @@ padding:20px 0px 20px 0px;
 }
 
 .point-set{
+padding:0px 0px 20px 0px;
+}
+
+.receipt-set div{
+display:inline-block;
 padding:0px 0px 20px 0px;
 }
 </style>
@@ -296,7 +303,7 @@ padding:0px 0px 20px 0px;
   <div class="totals">
     <div class="totals-item totals-item-total">
       <label>總額</label>
-      <div class="totals-value" id="cart-total">0</div>
+      <div class="totals-value" id="prod_ord_sum"></div>
     </div>
   </div>
             
@@ -372,15 +379,36 @@ padding:0px 0px 20px 0px;
 	   		 </c:if>
 	   		 </div>
                 </div>
+                
+                <div class=receipt-set>
+                
+                <div class="form-check">
+  				<input class="form-check-input" type="radio" name="receiptRadios" value="0">
+  					<label class="form-check-label" for="exampleRadios1" style="color:black">
+    					紙本發票
+  					</label>
+	   		    </div>
+	   		    <div class="form-check">
+  				<input class="form-check-input" type="radio" name="receiptRadios" value="1">
+  					<label class="form-check-label" for="exampleRadios1" style="color:black">
+    					電子發票
+  					</label>
+	   		    </div>
+	   		    <div class="form-check">
+  				<input class="form-check-input" type="radio" name="receiptRadios" value="2">
+  					<label class="form-check-label" for="exampleRadios1" style="color:black">
+    					發票捐贈
+  					</label>
+	   		    </div>
+                </div>
+              	
               	<div>訂單備註</div>
               	<div><input type="text" placeholder="如果您有特別需求請註明" name="rmk"></div>
-				
+				<div id="for_position"></div>
 				<input type="hidden" name="pay_meth" value="0">
 				<input type="hidden" name="receipt" value="0">
-                <input type="hidden" name="mbr_no" value="insert">
-                <input type="hidden" name="PROD_ORD_SUM" value="insert">
-                <input type="hidden" name="USED_PT" value="insert">        
-<!-- 				<input type="submit" class="checkout" value="去買單"> -->
+                <input type="hidden" name="mbr_no" value="${memberVO.mbr_no}">
+                <input type="hidden" name="used_pt" value="0">        
 				<input type="button" class="checkout" value="去買單">
 				
 
@@ -399,12 +427,12 @@ padding:0px 0px 20px 0px;
                                 <input placeholder="Full name" type="text" name="name" required>
                                 <input placeholder="MM/YY" type="tel" name="expiry" required>
                                 <input placeholder="CVC" type="number" name="cvc" required>
-                                <input type="hidden" value="confirm" name="action">
+                                <input type="hidden" value="insert_products" name="action">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="confirm" value="結帳" class="btn btn-secondary" data-dismiss="modal">結帳</button>
+                    <button type="submit"  class="btn btn-secondary">結帳</button>
                 </div>
             </div>
         </div>
@@ -434,6 +462,17 @@ padding:0px 0px 20px 0px;
     });</script>  
     
     <script>
+   		 var total = 0;
+		$(".line-price").each(function(){
+			total = total + parseInt($(this).text());
+			console.log(total);
+		}) 
+		
+		$("#prod_ord_sum").text(total);
+		$("#for_position").after(`<input type="hidden" value="`+total+`" name="prod_ord_sum">`);
+
+		
+		
     	$(".checkout").click(function(){
     		$('#test2').modal('show');
     	})

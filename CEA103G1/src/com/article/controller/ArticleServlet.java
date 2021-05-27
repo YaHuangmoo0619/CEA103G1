@@ -31,9 +31,8 @@ public class ArticleServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		req.setCharacterEncoding("UTF-8");
-
-		String action = req.getParameter("action");
 		
+		String action = req.getParameter("action");
 		//for session
 //		HttpSession session =  req.getSession(); //建立session
 //		session.getAttribute("memberVO"); //拿到該會員的會員資料
@@ -375,9 +374,9 @@ public class ArticleServlet extends HttpServlet {
 			articleVO = articleSvc.minus_like(art_no);
 
 		}
+			
 
 		if ("insert".equals(action)) { // 來自前端addArticle.jsp的請求
-
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -387,7 +386,8 @@ public class ArticleServlet extends HttpServlet {
 
 				/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 
-//				String[] values = req.getParameterValues("tags");// 取得所有勾選的標籤
+				String[] tags = req.getParameterValues("tag_go");
+
 
 				Integer bd_cl_no = null;
 				try {
@@ -492,26 +492,30 @@ public class ArticleServlet extends HttpServlet {
 				Integer no = articleVO2.getArt_no() + 1; // 取得最後一筆文章+1 即目前所要新增文章的文章號碼
 				System.out.println("no:" + no); // 印出測試
 				
-//				Jedis jedis = new Jedis("localhost", 6379);
-//				jedis.auth("123456");
-//				jedis.select(6);
 				
-//				for (String str : values) {// Redis新增開始
-//					System.out.println(str); // 印出測試
-//
-//					jedis.sadd("post:" + no + ":tags", str);
-//				}
-//				jedis.close();// Redis新增結束
-				
-				Jedis jedis = new Jedis("localhost", 6379); 
-				jedis.auth("123456");
-				jedis.select(6);
-				jedis.set("post:"+no+":art_simple_cont", save_to_redis);
-				jedis.close();
-				System.out.println("最後結果:"+save_to_redis);//最後結果，準備加入redis資料庫
 				
 							
 				articleVO = articleSvc.addArticle(bd_cl_no, mbr_no, art_rel_time, art_title, art_cont, likes, art_stat, replies, art_first_img);
+				
+				//新增完文章  開始加標籤 / 開頭內容
+				Jedis jedis = new Jedis("localhost", 6379);
+				jedis.auth("123456");
+				jedis.select(6);
+				//查詢每個標籤  如果這個標籤存在  那就直接加
+				
+				//幫文章加上標籤
+				for(String count:tags) {
+					System.out.println(count);
+					jedis.sadd("post:" + no + ":tags", count); //幫文章標上標籤    posts : 17 : tags   壓力、心情
+					jedis.sadd("tag:"+count+":posts", no.toString());  //tag:心情:posts   17
+				}
+				
+				jedis.close();// Redis新增結束
+				
+
+				jedis.set("post:"+no+":art_simple_cont", save_to_redis);
+				jedis.close();
+				System.out.println("最後結果:"+save_to_redis);//最後結果，準備加入redis資料庫
 				
 				
 				//新增完文章如果發文看板符合，就開始增加經驗值
