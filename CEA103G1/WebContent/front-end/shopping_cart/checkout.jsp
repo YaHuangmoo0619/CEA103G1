@@ -28,7 +28,7 @@
 			//並存入detail list
 				detail_list.add(productSvc.getOneProduct(Integer.valueOf(entry.getKey())));	
 		}
-			
+			pageContext.setAttribute("memberVO", memberVO);
 			pageContext.setAttribute("my_item_list", my_item_list);
 			pageContext.setAttribute("detail_list", detail_list);
 %>
@@ -212,7 +212,7 @@ label {
 .checkout {
   float: right;
   border: 0;
-  margin-top: 20px;
+  margin: 0px 0px 20px 0px;
   padding: 6px 25px;
   background-color: #6b6;
   color: #fff;
@@ -227,6 +227,25 @@ label {
 .address_select{
 display:inline-block;
 }
+.form-check-input{
+display:inline-block;
+}
+
+.point-text,.point-have{
+display:inline-block;
+}
+
+
+.buyer_name{
+padding:0px 0px 20px 0px;
+}
+.city-selector-set{
+padding:20px 0px 20px 0px;
+}
+
+.point-set{
+padding:0px 0px 20px 0px;
+}
 </style>
 
 </head>
@@ -235,6 +254,8 @@ display:inline-block;
 <div class=container>
 <%-- 	  <h1>${memberVO.name}的購物車</h1> --%>
 
+<h2>訂購商品資訊</h2>
+<br>
 <div class="shopping-cart">
 
   <div class="column-labels">
@@ -281,22 +302,32 @@ display:inline-block;
             
 
 </div>
-			<form>
-
+			<form>	
+					<h2>訂購者資訊</h2>
+					<br>
+					<div>訂購人</div>
+					<div class=buyer_name>${memberVO.name}</div>
+					
+					<div>付款方式(目前僅提供信用卡)</div>
+                  <div class="form-check pay_select">
+  						<input class="form-check-input" type="radio" name="ptRadios" value="0" checked disabled>
+  						<label class="form-check-label" for="exampleRadios1">信用卡</label>
+                  </div>
+					
                         <div class="city-selector-set">
                     <div>寄送地址</div>
                     <div class=address_select>
                         <!-- 縣市選單 -->
-                        <select class="county" data-value="台北市" name="ship_cty"></select>
+                        <select class="county" name="ship_cty"></select>
                     </div>
                     <div class=address_select>
                         <!-- 區域選單 -->
-                        <select class="district" data-value="大安區" name="ship_dist"></select>
+                        <select class="district" name="ship_dist"></select>
                     </div>
-                    <div class=address_select>
-                        <!-- 郵遞區號欄位 (建議加入 readonly 屬性，防止修改) -->
-                        <input class="zipcode" type="text" size="3" readonly placeholder="郵遞區號">
-                    </div>
+<!--                     <div class=address_select> -->
+<!--                         郵遞區號欄位 (建議加入 readonly 屬性，防止修改) -->
+<!--                         <input class="zipcode" type="text" size="3" readonly placeholder="郵遞區號"> -->
+<!--                     </div> -->
                     <div class=address_select>
                     	<input type="text" placeholder="住址" name="ship_add">
                     </div>
@@ -304,16 +335,56 @@ display:inline-block;
                 
                 <div class=point-set>
                 <div class=point-text>是否使用點數</div>
-                <div class=point-have>您的點數目前尚餘:點</div>
-<!--                 預計使用radio 只讓買家選擇使用or不使用 但若沒點數了 就disable掉使用點數 -->
-                <div class=point-use></div>
+                <div class=point-have>您的點數目前尚餘:&nbsp;&nbsp;
+                <c:if test="${memberVO.pt==0}"><span style="color:red">${memberVO.pt}</span>點</c:if>
+                <c:if test="${memberVO.pt!=0}"><span>${memberVO.pt}</span>點</c:if>
                 </div>
-                
+              <div class="form-check">
+              	<c:if test="${memberVO.pt==0}">
+  				<input class="form-check-input" type="radio" name="ptRadios" value="0" disabled>
+  					<label class="form-check-label" for="exampleRadios1" style="color:black">
+    					使用
+  					</label>
+  					
+  					
+              	</c:if>
+              	<c:if test="${memberVO.pt!=0}">
+  				<input class="form-check-input" type="radio" name="ptRadios" value="0">
+  					<label class="form-check-label" for="exampleRadios1" style="color:black">
+    					使用
+  					</label>
+  				</c:if>	
+	   		 </div>
+	   		 
+	   		 <div class="form-check">
+	   		 <c:if test="${memberVO.pt==0}">
+  				<input class="form-check-input" type="radio" name="ptRadios" value="1" checked>
+  					<label class="form-check-label" for="exampleRadios1" style="color:black">
+    					不使用
+  					</label>
+	   		 
+	   		 </c:if>
+	   		 <c:if test="${memberVO.pt!=0}">
+	   		   	<input class="form-check-input" type="radio" name="ptRadios" value="1">
+  					<label class="form-check-label" for="exampleRadios1" style="color:black">
+    					不使用
+  					</label>
+	   		 </c:if>
+	   		 </div>
+                </div>
+              	<div>訂單備註</div>
+              	<div><input type="text" placeholder="如果您有特別需求請註明" name="rmk"></div>
+				
+				<input type="hidden" name="pay_meth" value="0">
+				<input type="hidden" name="receipt" value="0">
                 <input type="hidden" name="mbr_no" value="insert">
                 <input type="hidden" name="PROD_ORD_SUM" value="insert">
                 <input type="hidden" name="USED_PT" value="insert">
                 
 				<input type="submit" class="checkout" value="去買單">
+				
+				
+				
 				</form>
 </div>
 

@@ -275,7 +275,7 @@ label {
     </div>
   </div>
       
-      <button class="checkout">去買單</button>
+      <button class="checkout">下一步</button>
 
 </div>
 </div>
