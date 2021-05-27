@@ -177,7 +177,7 @@ tr:hover {
 								<label	for="mail_cont"></label>
 								<input type="text" name="mail_cont" id="mail_cont" placeholder="ㄌ獺ンず甧琩高">
 								<input type="hidden" name="action"	value="compositeSearchTop">
-								<input type="submit" value="癳琩高" class="confirm" id="confirmTop">&nbsp;<span>秈顶琩高</span>
+								<input type="submit" value="癳琩高" class="confirm" id="confirmTop">
 							</form>
 					</li>
 					</ul>
