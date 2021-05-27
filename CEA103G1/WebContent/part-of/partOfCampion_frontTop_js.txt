@@ -1,9 +1,9 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script>
-	let countMenu = 0;
+	let countMenu2 = 0;
 	$("#menu").click(function() {
-		countMenu++;
-		if (countMenu % 2 == 1) {
+		countMenu2++;
+		if (countMenu2 % 2 == 1) {
 			let secArray = document.getElementsByClassName("sec");
 			for (let i = 0; i < secArray.length; i++) {
 				secArray[i].style.display = "flex";
@@ -40,6 +40,11 @@
 			var notifyMail = document.getElementById('countNoReadMail');
 			notifyMail.innerText = noRead.countNoReadMail;
 			var notifyNotify = document.getElementById('countNoReadNotify');
+			notifyNotify.innerText = noRead.countNoReadNotify;
+			
+			var notifyMail = document.getElementById('countNoReadMail2');
+			notifyMail.innerText = noRead.countNoReadMail;
+			var notifyNotify = document.getElementById('countNoReadNotify2');
 			notifyNotify.innerText = noRead.countNoReadNotify;
 			
 			if(noRead.mail_no !== undefined){

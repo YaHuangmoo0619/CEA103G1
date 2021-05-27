@@ -67,7 +67,6 @@
 				banned_chinese = banned+"分鐘";
 			}
 		}
-		System.out.println("banned"+banned);
 		ajax_mbr_no = memberVO.getMbr_no();
 		jedis.select(6);
 		for(String element : jedis.smembers("board:"+ajax_mbr_no+":subscribe")){ //取得我訂閱的看板list
@@ -76,7 +75,6 @@
 			}
 			
 		}
-		
 		
 		
 		Article_CollectionService article_collectionSvc = new Article_CollectionService();
@@ -90,7 +88,6 @@
 	if(memberVO==null){
 		ajax_mbr_no=0;
 	}
-	
 	
 	
 
@@ -112,13 +109,13 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>listOneBoard_ClassArticleByLikes</title>
+<title>列出某看板所有文章</title>
 <%@ include file="/article_css/article_css.txt"%>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <link rel="icon" href="campionLogoIcon.png" type="image/png">
 <link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 	    <link rel="stylesheet" href="sample.css" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.3/sweetalert2.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.3/sweetalert2.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.10.3/sweetalert2.js" type="text/javascript"></script>    
 
 <style>
@@ -126,8 +123,8 @@ html, body {
 	margin: 0;
 	padding: 0;
 	/*background-color: #4e5452;*/
-	background-color: 		#8FBC8F;
-	color: #80c344;
+	background-color: 	#007979;
+	color: black;
 }
 
 section {
@@ -157,12 +154,15 @@ padding:0px 0px 0px 10px;
 	padding: 0px 10px 0px 0px;
 }
 .article_sort_parent{
-	padding:10px 0px 0px 60px;
+	padding:10px 0px 40px 60px;
 }
 
 .bd_title{
 	padding:0px 0px 0px 55px;
 	color: black;
+	font-size:40px;
+	display:table-cell; 
+    vertical-align:bottom;
 }
 /* -----------------------------以下為側欄css------------------------------ */
 #sidebar {
@@ -194,6 +194,11 @@ font-family: Microsoft JhengHei;
 width:120px;
 }
 
+.board_icon{
+padding:0px 0px 0px 10px;
+margin: 0px 0px 10px 0px;
+}
+
 /* -----------------------------以下為主欄css------------------------------ */
   div.main_content{
   	  top:60px;
@@ -213,7 +218,7 @@ width:120px;
 }
 
 .pic img{
-width: 90px !important;
+width: 110px !important;
 height: 90px !important;
 }
 
@@ -231,9 +236,45 @@ overflow-y: auto;
 
 }
 
+.title_box{
+padding: 0px 0px 10px 0px;
+}
 
-.modal{
-	color: black
+.btn-group-article_sort{
+float:right;
+margin:0px 50px 0px 0px;
+}
+.sort_text{
+float:right;
+font-size:14px;
+color:black;
+margin:10px 0px 0px 0px;
+}
+
+.drop-family{
+display:inline-block;
+}
+
+a.dropdown-item{
+padding:0px;
+}
+
+.dropdown-menu{
+min-width:0;
+width:78px;
+}
+
+#dropdownbtn{
+min-width:75px;
+min-hight:38px;
+}
+
+.bd_nameAndicon div{
+display:inline-block;
+}
+
+.modal div{
+color:black;
 }
 </style>
 
@@ -241,17 +282,18 @@ overflow-y: auto;
 <body onload="connection()">
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 	
+	
 <!-- 	如果有登入的話且沒被ban的話 -->
 	<c:if test="${not empty memberVO && banned==0}"> 
-	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
+	<a class=write title="發文" href="<%=request.getContextPath()%>/front-end/article/addArticle.jsp" data-toggle="tooltip" data-placement="top" title="發表文章"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></a>
 	</c:if>
 <!-- 	如果有登入的話但被ban的話 -->
 	<c:if test="${not empty memberVO && banned>0}">
-	<div class="write banned"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
+	<div class="write banned" data-toggle="tooltip" data-placement="top" title="發表文章"><img src="/CEA103G1/images/write.svg" width="24px" height="24px" ></div>
 	</c:if>
 <!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
 	<c:if test="${empty memberVO }"> 
-	<div class="no_login write to_login"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
+	<div class="no_login write to_login" data-toggle="tooltip" data-placement="top" title="發表文章"><img src="/CEA103G1/images/write.svg" width="24px" height="24px"></div>
 	</c:if>
 
 
@@ -260,7 +302,9 @@ overflow-y: auto;
 <div id="sidebar">
   <div class="list">
 			<c:forEach var="board_classVO" items="${bd_list}">
-				<div class="item board board_name" ><a href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${board_classVO.bd_cl_no}"  style="color:white;">${board_classVO.bd_name}</a></div>
+				<div class="sidebar_around">
+				<div class="board_icon board"><img src="/CEA103G1/images/board_class_icon/${board_classVO.bd_cl_no}.svg" width="24px" height="24px"></div>
+				<div class="item board board_name" ><a class=link_to_board href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${board_classVO.bd_cl_no}" >${board_classVO.bd_name}</a></div>
 				<div class=this_bd_bl_no style="display:none">${board_classVO.bd_cl_no}</div>
 				
 				
@@ -296,8 +340,7 @@ overflow-y: auto;
 					<c:if test="${empty memberVO }"> 
 				<div class="board to_login"><img src="/CEA103G1/images/star-outline_new.svg" width="24px" height="24px"></div>
 				</c:if>
-				
-				<br>
+				</div>
 			</c:forEach>
   </div>
 </div>
@@ -308,20 +351,32 @@ overflow-y: auto;
 
 
         <div class="container">
- 				
-	<c:forEach var="bd_clVO" items="${bd_clDAO.all}">
+ 	<c:forEach var="bd_clVO" items="${bd_clDAO.all}">
 			<c:if test="${bd_cl_no==bd_clVO.bd_cl_no}">
-	                   <h2 class=bd_title>${bd_clVO.bd_name}</h2>
+					   <div class=bd_nameAndicon>
+	                   <div class=bd_title>${bd_clVO.bd_name}</div>
+	                   <div class="board_icon board"><img src="/CEA103G1/images/board_class_icon/${bd_clVO.bd_cl_no}.svg" width="40px" height="40px"></div>
+					   </div>                    
                     </c:if>
 		</c:forEach>
+		
+		
         		<div class=article_sort_parent>
-<%--         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp';">最新</div> --%>
-        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${bd_cl_no}">最新</a>
-<%--         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp';">熱門</div> --%>
-        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticleByLikes.jsp?bd_cl_no=${bd_cl_no}">熱門</a>					
+					
+				
+  <div class="btn-group article_sort btn-group-article_sort">
+  <button type="button" id="dropdownbtn" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  最新
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item drop-family" href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticleByLikes.jsp?bd_cl_no=<%=bd_cl_no%>"><img class=drop-family src="/CEA103G1/images/hot.svg" width="24px" height="24px" >&nbsp;&nbsp;熱門</a>
+  </div>
+</div>
+
+	<div class="article_sort sort_text">文章排序依</div>
         		</div>
      
-     
+
      
 
         
@@ -352,16 +407,13 @@ overflow-y: auto;
 		</c:forEach></div>					
 <%--                                             <div class="date"><fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm" /></div> --%>
                                             <div class="author"><c:forEach var="memberVO_loop" items="${memberDAO.all}">
-			<c:if test="${articleVO.mbr_no==memberVO_loop.mbr_no}">
-	                    ${memberVO_loop.acc}
-                    </c:if>
+			<c:if test="${articleVO.mbr_no==memberVO_loop.mbr_no}">&nbsp;&nbsp;${memberVO_loop.acc}</c:if>
 		</c:forEach></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <h2 class="title_box">
-                                <a class="title" href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></h2>
+                           <div class="title title_box">${articleVO.art_title}</div>
                             <div class="post">
                                 <div class="post_0">
                                 <p>${simple_art_cont[articleVO.art_no]}</p>
@@ -371,7 +423,7 @@ overflow-y: auto;
                                 <div class="emoji">
                                     <div class="emoji_inner">
                                         <div class="emoji_pic">
-                                            <img src="https://megapx-assets.dcard.tw/images/52057289-337a-4f2f-88c0-cb8a77ee422a/orig.png" title="愛心" style="z-index:3" class=" icon_size icon_pic"></div>
+                                            <img src="/CEA103G1/images/heart_already.svg" width="25px" height="25px"></div>
                                         <div class=" amount">${articleVO.likes}</div>
                                     </div>
                                 </div>
@@ -383,12 +435,13 @@ overflow-y: auto;
                               				<c:set var="collection_status" value="0"></c:set>
                               				<c:set var="my_collection_list_replace" value="${my_collection_list}"></c:set>
                  							<c:forEach var="my_collection_list_replace" items="${my_collection_list_replace}">
-                 							<c:set var="collection_status" value="1"></c:set>
                  							<c:if test="${my_collection_list_replace.art_no==articleVO.art_no}">
-                 							<img src="/CEA103G1/images/bookmarks.svg" width="15px" height="15px">
+                 							<c:set var="collection_status" value="1"></c:set>
+                 							<img src="/CEA103G1/images/bookmark_already.svg" width="20px" height="20px">
                  							</c:if>
 											</c:forEach>
-											<c:if test="${collection_status==0}"><img src="/CEA103G1/images/bookmarks-outline.svg" width="15px" height="15px"></c:if>
+											<c:if test="${collection_status==0}"><img src="/CEA103G1/images/bookmark_notyet.svg" width="20px" height="20px"></c:if>
+											
                                         <span>收藏</span></div>
                                 </div>
                             </div>
@@ -405,8 +458,7 @@ overflow-y: auto;
 
 	<c:if test="${openModal!=null}">
 
-		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
-			aria-labelledby="basicModal" aria-hidden="true">
+		<div class="modal" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content" >
 					<div class="modal-body">
@@ -424,7 +476,7 @@ overflow-y: auto;
 
 
 		
-		<div class="modal fade" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal" id="login_confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -455,14 +507,22 @@ overflow-y: auto;
 jedis.close();
 %>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	  <!-- Infinite Scroll v3.0.3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/3.0.3/infinite-scroll.pkgd.min.js"></script>
-		<script src="jquery.hover.js"></script>
+	
 		
 
 	<script>
+
+    $(document).ready(function(){
+       $('.dropdown-toggle').dropdown()
+   });
+
+	
+	
 		let countMenu = 0;
 		function showMenu() {
 			countMenu++;
@@ -500,7 +560,7 @@ jedis.close();
 		console.log(subscribe_bd_cl_no);
 		$.ajax({ // 負責傳到board_classServlet 新增某人對某看板的訂閱  需要的參數: mbr_no bd_cl_no 
 			type : "POST",
-			url : "/CEA103G1/board_class/board_class.do",
+			url : "http://localhost:8081/CEA103G1/board_class/board_class.do",
 			data : {action: "subscribe",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,bd_cl_no:subscribe_bd_cl_no},
 			success : function(data) {
 				alert("新增"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對看板"+subscribe_bd_cl_no+"的訂閱成功");
@@ -515,7 +575,7 @@ jedis.close();
 		console.log(subscribe_bd_cl_no);
 		$.ajax({ // 負責傳到board_classServlet 取消某人對某看板的訂閱  需要的參數: mbr_no bd_cl_no 
 			type : "POST",
-			url : "/CEA103G1/board_class/board_class.do",
+			url : "http://localhost:8081/CEA103G1/board_class/board_class.do",
 			data : {action: "cancel_subscribe",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,bd_cl_no:subscribe_bd_cl_no},
 			success : function(data) {
 				alert("取消"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對看板"+subscribe_bd_cl_no+"的訂閱成功");
@@ -529,20 +589,22 @@ jedis.close();
 			show : true
 		});
 		
-	
+// 		$('#basicModal').on('hide.bs.modal', function () {
+// 			location.reload();
+// 		}
 
-//   	var infScroll = new InfiniteScroll( ".container", {
-//   		path: function() {
-//   			// 頁面路徑
-<%--   			if ( this.loadCount < <%=max_page%> ) { --%>
-//   				// 只讀取到最後一頁的資料
-//   				var nextIndex = this.loadCount + 2; // 2
-<%--   				return "/CEA103G1/front-end/article/listOneBoard_ClassArticleByLikes.jsp?bd_cl_no=<%=bd_cl_no%>whichPage="+nextIndex; --%>
-//   			}
-//   		},
-//   		append: ".each_article", // 匯入物件類別
-//   		status: ".scroller-status" // 捲軸狀態類別
-//   	})
+  	var infScroll = new InfiniteScroll( ".container", {
+  		path: function() {
+  			// 頁面路徑
+  			if ( this.loadCount < <%=max_page%> ) {
+  				// 只讀取到最後一頁的資料
+  				var nextIndex = this.loadCount + 2; // 2
+  				return "http://localhost:8081/CEA103G1/front-end/article/listOneBoard_ClassArticleByLikes.jsp?bd_cl_no=<%=bd_cl_no%>&whichPage="+nextIndex;
+  			}
+  		},
+  		append: ".each_article", // 匯入物件類別
+  		status: ".scroller-status" // 捲軸狀態類別
+  	})
 
   $(".to_login").click(function(){
 	  $('#login_confirm').modal('show');
@@ -550,11 +612,12 @@ jedis.close();
   
   $('.close_modal').click(function(){
 	  $('#login_confirm').modal('hide');
+	  
   })
+
   
   
-  
-   $(".banned").click(function(){
+ $(".banned").click(function(){
 	 swal({
          title: "由於觸犯板規，您已被禁發文章！",
          text: "處分時間尚餘:"+"${banned_chinese}"+"，3秒後自動關閉視窗",
@@ -569,6 +632,7 @@ jedis.close();
          }
      )
  });
+
   
   
   </script>
@@ -612,6 +676,11 @@ jedis.close();
 			websocket.send(sendNotify.innerText);
 		}
 		
+		
+		
+		$(function () {
+			  $('[data-toggle="tooltip"]').tooltip()
+			})
 </script>
   <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
 </body>

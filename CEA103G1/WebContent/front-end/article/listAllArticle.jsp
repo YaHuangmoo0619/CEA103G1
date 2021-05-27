@@ -126,7 +126,7 @@ html, body {
 	padding: 0;
 	/*background-color: #4e5452;*/
 	background-color: 	#007979;
-	color: #80c344;
+	color: black;
 }
 
 section {
@@ -512,7 +512,7 @@ min-hight:38px;
 
 </div>
 
-
+<!-- for test -->
 <%
 jedis.close();
 %>
@@ -691,7 +691,9 @@ jedis.close();
 		$(function () {
 			  $('[data-toggle="tooltip"]').tooltip()
 			})
+
 </script>
   <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
+  <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 </body>
 </html>

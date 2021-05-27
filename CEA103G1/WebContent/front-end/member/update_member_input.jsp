@@ -14,7 +14,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link   rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-<title>所有會員站內信列表</title>
+<title>修改會員資料</title>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <%-- <%@ include file="/part-of/partOfCampion_backLeft_css.txt"%> --%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
@@ -78,7 +78,7 @@ div.photo{
 	justify-content: center;
 }
 div.photo:hover{
-	cursor: pointer;
+/* 	cursor: pointer; */
 }
 img.personBig{
 /* 	width:100%; */
@@ -144,18 +144,17 @@ label{
 		<ul> 
 			<li><a href="<%=request.getContextPath() %>/front-end/place_order/listAllPlace_order.html">營位訂單管理</a></li>
 			<li><a href="<%=request.getContextPath() %>/front-end/campsite_collection/listAllCollection.html">營區收藏管理</a></li>
-			<li><a href="<%=request.getContextPath() %>/back-end/product_category/select_page.jsp">商城訂單管理</a></li>
-			<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇資訊管理</a></li>
-			<li><a href="">修改會員資料</a></li>
+			<li><a href="<%=request.getContextPath() %>/back-end/product_order/listAllProduct_order.jsp">商城訂單管理</a></li>
+			<li><a href="<%=request.getContextPath() %>/front-end/article/listFollowBoardArticle.jsp">已收藏看板中的文章列表</a></li>
 		</ul>
 	</div>
 	<div class="right">
 		<div class="photo">
-			<img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="personBig" onclick="changePic()">
+			<img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="personBig" /*onclick="changePic()"*/>
 		</div>
-		<div id="changePic">
-			<img src="<%=request.getContextPath() %>/images/camera-outline.svg" class="camera" title="更新大頭照" onclick="changePic()">
-		</div>
+<!-- 		<div id="changePic"> -->
+<%-- 			<img src="<%=request.getContextPath() %>/images/camera-outline.svg" class="camera" title="更新大頭照" onclick="changePic()"> --%>
+<!-- 		</div> -->
 		<div class="info">
 			<%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
@@ -180,7 +179,7 @@ label{
 				<div class="infoRow">
 					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVO.acc}" style="width:6em;">
 					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="password" id="pwd" name="pwd" value="${memberVO.pwd}" style="width:5em;">
-					<label for="pwd2">再次輸入密碼：</label><input type="password" id="pwd2" style="width:5em;">
+					<label for="pwd2">再次輸入密碼：</label><input type="password" id="pwd2" name="pwd2" value="${memberVO.pwd}" style="width:5em;">
 				</div>
 				<div class="infoRow">
 					<label for="bday">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：</label><input type="text" id="bday" name="bday" value="${memberVO.bday}">
@@ -231,7 +230,7 @@ label{
 		            </div>
 		            <div class="modal-footer">
 		            	<form method="post" action="<%=request.getContextPath()%>/member/GetPhoto" enctype="multipart/form-data" style="text-align:right;">
-							<input type="file" id="file-upload-button" name="sticker" style="display:none;">
+<!-- 							<input type="file" id="file-upload-button" name="sticker" style="display:none;"> -->
 							<input type="hidden" name="mbr_no" value="${memberVO.mbr_no}">
 							<input type="hidden" name="action" value="updatePic">
 							<input type="submit" class="btn btn-secondary" value="確定上傳">
@@ -245,6 +244,7 @@ label{
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 <script>
+//使特定input在focus時不要有外框
 	$("#mbr_no").focus(function(){
 		$("#mbr_no").css("outline","none");
 	});
@@ -384,9 +384,10 @@ $('#acc').keyup(function(e){
 		success: function(data){
 // 			alert('${memberVO.acc}');
 			
-			if($('#acc').val().trim() !== '${memberVO.acc}'.trim() && data.acc === "duplicate"){
-				console.log($('#acc').val());
-				console.log($('#acc').val().trim() !== '${memberVO.acc}'.trim());
+			if('${memberVO.acc}'.trim() !== '' && $('#acc').val().trim() !== '${memberVO.acc}'.trim() && data.acc === "duplicate"){
+				console.log(typeof $('#acc').val());
+				console.log(typeof '${memberVO.acc}'.trim());
+				console.log($('#acc').val().trim() != '${memberVO.acc}'.trim());
 				$('#acc').css("outline-color","red");
 			}else if(data.acc === "notFound" && $('#acc').val().trim() !== ''){
 				$('#acc').css("outline-color","#80c344");
@@ -412,8 +413,20 @@ $('#pwd2').keyup(function(e){
 	}
 });
 
-
 </script>
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
+<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
+<script>
+<!-- 參考網站: https://xdsoft.net/jqplugins/datetimepicker/ -->
+$.datetimepicker.setLocale('zh');
+$(function(){
+	 $('#bday').datetimepicker({
+	  format:'Y-m-d',
+	  maxDate:'-1970/01/01',
+	  timepicker:false
+	 });
 
+});
+</script>
 </body>
 </html>

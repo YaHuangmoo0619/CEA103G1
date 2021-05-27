@@ -224,7 +224,9 @@ label {
   background-color: #494;
 }
 
-
+.address_select{
+display:inline-block;
+}
 </style>
 
 </head>
@@ -276,19 +278,85 @@ label {
       <div class="totals-value" id="cart-total">0</div>
     </div>
   </div>
-      
-      
-      <form>
-      
-      </form>
-      <button class="checkout">去買單</button>
+            
 
 </div>
+			<form>
+
+                        <div class="city-selector-set">
+                    <div>寄送地址</div>
+                    <div class=address_select>
+                        <!-- 縣市選單 -->
+                        <select class="county" data-value="台北市" name="ship_cty"></select>
+                    </div>
+                    <div class=address_select>
+                        <!-- 區域選單 -->
+                        <select class="district" data-value="大安區" name="ship_dist"></select>
+                    </div>
+                    <div class=address_select>
+                        <!-- 郵遞區號欄位 (建議加入 readonly 屬性，防止修改) -->
+                        <input class="zipcode" type="text" size="3" readonly placeholder="郵遞區號">
+                    </div>
+                    <div class=address_select>
+                    	<input type="text" placeholder="住址" name="ship_add">
+                    </div>
+                </div>
+                
+                <div class=point-set>
+                <div class=point-text>是否使用點數</div>
+                <div class=point-have>您的點數目前尚餘:點</div>
+<!--                 預計使用radio 只讓買家選擇使用or不使用 但若沒點數了 就disable掉使用點數 -->
+                <div class=point-use></div>
+                </div>
+                
+                <input type="hidden" name="mbr_no" value="insert">
+                <input type="hidden" name="PROD_ORD_SUM" value="insert">
+                <input type="hidden" name="USED_PT" value="insert">
+                
+				<input type="submit" class="checkout" value="去買單">
+				</form>
 </div>
+
+
+
+                
+        
+
+
+                
 	<script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+	    <script src="./tw-city-selector-master/docs/js/tw-city-selector.js"></script>
+    <script>
+        new TwCitySelector();
+
+        var a = new TwCitySelector({
+            el: '.test-object-normal'
+        });
+
+
+        var a = new TwCitySelector({
+            el: '.test-object-has-zipcode',
+            hasZipcode: true
+        });
+
+
+        var a = new TwCitySelector({
+            el: '.test-object-standard-words',
+            standardWords: true
+        });
+
+
+
+        new TwCitySelector({
+            el: '.city-selector-set',
+            elCounty: '.county',
+            elDistrict: '.district',
+            elZipcode: '.zipcode'
+        });
+    </script>
 
 
 

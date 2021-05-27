@@ -150,12 +150,35 @@ img{
 						<select size="1" name="rcpt_no" id="rcpt_no">
 						<option value="99">--請選擇--</option>
 						<c:forEach var="memberVO" items="${memberSvc.all}">
-							<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.send_no || memberVO.mbr_no == param.mbr_no? 'selected':''}>${memberVO.mbr_no}${memberVO.name}</option>
+							<c:if test="${memberVO.mbr_no == param.mbr_no}">
+								<option value="${memberVO.mbr_no}" ${memberVO.mbr_no == param.send_no || memberVO.mbr_no == param.mbr_no? 'selected':''}>${memberVO.name}</option>
+							</c:if>
 						</c:forEach>
 						<c:forEach var="campsite_ownerVO" items="${campsite_ownerSvc.all}">
-							<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.send_no? 'selected':''}>${campsite_ownerVO.cso_no}${campsite_ownerVO.name}</option>
+							<c:if test="${campsite_ownerVO.cso_no == param.cso_no}">
+								<option value="${campsite_ownerVO.cso_no}" ${campsite_ownerVO.cso_no == param.send_no? 'selected':''}>${campsite_ownerVO.name}</option>
+							</c:if>
 						</c:forEach>
-						<option value="90001">客服人員</option>
+						<c:forEach var="member_mailVO" items="${member_mailSvc.getStat(0)}">
+							<c:if test="${member_mailVO.rcpt_no == memberVO.mbr_no}">
+								<option value="${member_mailVO.send_no}">
+<%-- 								${member_mailVO.send_no} --%>
+										${memberSvc.getOneMember(member_mailVO.send_no).name}
+										${employeeSvc.getOneEmployee(member_mailVO.send_no).emp_no > 90001? '客服專員':''}
+										${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}
+								</option>
+							</c:if>
+						</c:forEach>
+						<c:forEach var="member_mailVO" items="${member_mailSvc.getStat(0)}">
+							<c:if test="${member_mailVO.rcpt_no == memberVO.mbr_no}">
+								<option value="${member_mailVO.send_no}">
+<%-- 								${member_mailVO.send_no} --%>
+										${memberSvc.getOneMember(member_mailVO.send_no).name}
+										${employeeSvc.getOneEmployee(member_mailVO.send_no).emp_no > 90001? '客服專員':''}
+										${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}
+								</option>
+							</c:if>
+						</c:forEach>
 						</select>
 					</td>
 				</tr>
