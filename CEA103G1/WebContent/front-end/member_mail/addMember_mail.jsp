@@ -127,10 +127,8 @@ img{
 			<%
 				Member_mailService member_mailSvc = new Member_mailService();
 				List<Member_mailVO> list = member_mailSvc.getAll();
-				System.out.println(list);
 				Set<String> set = new HashSet<String>();
 				for(Member_mailVO mailVO : list){
-					System.out.println(mailVO.getRcpt_no()+"="+memberVO.getMbr_no()+(mailVO.getRcpt_no().equals(memberVO.getMbr_no())));
 					if(mailVO.getRcpt_no().equals(memberVO.getMbr_no())){
 						MemberVO member = memberSvc.getOneMember(mailVO.getSend_no());
 						EmployeeVO employee = employeeSvc.getOneEmployee(mailVO.getSend_no());
@@ -155,9 +153,9 @@ img{
 							set.add(campsite_owner.getCso_no().toString());
 						}
 					}
-			}
+				}
 			
-			request.setAttribute("set",set);
+				request.setAttribute("set",set);
 			%>
 <%-- 			--${param.mbr_no}-- --%>
 
@@ -191,7 +189,7 @@ img{
 						</c:forEach>
 						<c:forEach var="rcptNo" items="${set}">
 							<c:if test="${memberVO.mbr_no != rcptNo}">
-							<option value="${rcptNo}">						
+								<option value="${rcptNo}"  ${rcptNo >= 90001 || param.send_no == rcptNo? 'selected':''}>
 										${memberSvc.getOneMember(Integer.valueOf(rcptNo)).name}
 										${employeeSvc.getOneEmployee(Integer.valueOf(rcptNo)).emp_no >= 90001? '客服專員':''}
 										${campsite_ownerSvc.getOneCampsite_owner(Integer.valueOf(rcptNo)).name}

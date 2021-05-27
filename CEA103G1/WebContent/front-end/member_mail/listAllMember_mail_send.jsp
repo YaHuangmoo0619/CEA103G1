@@ -4,8 +4,48 @@
 <%@ page import="java.util.*" %>
 <%@ page import="com.member_mail.model.*" %>
 <%@ page import="com.member.model.*" %>
+<%@ page import="com.employee.model.*" %>
+<%@ page import="com.campsite_owner.model.*" %>
 
 <% MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
+
+<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService" />
+<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService" />
+<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService" />
+<jsp:useBean id="memberSvc"	class="com.member.model.MemberService" />
+<%
+	Member_mailService member_mailSvc2 = new Member_mailService();
+	List<Member_mailVO> list = member_mailSvc2.getAll();
+	Set<String> set = new HashSet<String>();
+	for(Member_mailVO mailVO : list){
+		if(mailVO.getRcpt_no().equals(memberVO.getMbr_no())){
+			MemberVO member = memberSvc.getOneMember(mailVO.getSend_no());
+			EmployeeVO employee = employeeSvc.getOneEmployee(mailVO.getSend_no());
+			Campsite_ownerVO campsite_owner =  campsite_ownerSvc.getOneCampsite_owner(mailVO.getSend_no());
+			if(member != null){
+				set.add(member.getMbr_no().toString());
+			}else if(employee != null && employee.getEmp_no() > 90001){
+				set.add("90001");
+			}else if(campsite_owner != null){
+				set.add(campsite_owner.getCso_no().toString());
+			}
+		}
+		if(mailVO.getSend_no().equals(memberVO.getMbr_no())){
+			MemberVO member = memberSvc.getOneMember(mailVO.getRcpt_no());
+			EmployeeVO employee = employeeSvc.getOneEmployee(mailVO.getRcpt_no());
+			Campsite_ownerVO campsite_owner =  campsite_ownerSvc.getOneCampsite_owner(mailVO.getRcpt_no());
+			if(member != null){
+				set.add(member.getMbr_no().toString());
+			}else if(employee != null && employee.getEmp_no() == 90001){
+				set.add("90001");
+			}else if(campsite_owner != null){
+				set.add(campsite_owner.getCso_no().toString());
+				}
+			}
+		}
+			
+	request.setAttribute("set",set);
+%>
 
 <!DOCTYPE html>
 <html>
@@ -172,10 +212,7 @@ tr:hover {
 					<ul>
 						<li>
 							<form method="post"	action="<%=request.getContextPath()%>/member_mail/member_mail.do">
-								<jsp:useBean id="member_mailSvc" class="com.member_mail.model.Member_mailService" />
-								<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService" />
-								<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService" />
-								<jsp:useBean id="memberSvc"	class="com.member.model.MemberService" />
+								
 	
 								<label for="mail_no" style="display:none;">信件編號:</label>
 								<select size="1" name="mail_no" id="mail_no" style="display:none;">
@@ -188,30 +225,28 @@ tr:hover {
 								<label for="send_no">寄件人:</label>
 								<select size="1" name="send_no" id="send_no">
 									<option value="no">--請選擇--</option>
-									<c:forEach var="member_mailVO" items="${member_mailSvc.getStat(0)}">
-									<c:if test="${member_mailVO.rcpt_no == memberVO.mbr_no}">
-										<option value="${member_mailVO.send_no}">
-<%-- 										${member_mailVO.send_no} --%>
-											${memberSvc.getOneMember(member_mailVO.send_no).name}
-											${employeeSvc.getOneEmployee(member_mailVO.send_no).emp_no > 90001? '客服專員':''}
-											${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}
-										</option>
-									</c:if>
+									<c:forEach var="rcptNo" items="${set}">
+										<c:if test="${memberVO.mbr_no != rcptNo}">
+											<option value="${rcptNo}">
+													${memberSvc.getOneMember(Integer.valueOf(rcptNo)).name}
+													${employeeSvc.getOneEmployee(Integer.valueOf(rcptNo)).emp_no >= 90001? '客服專員':''}
+													${campsite_ownerSvc.getOneCampsite_owner(Integer.valueOf(rcptNo)).name}
+											</option>
+										</c:if>
 									</c:forEach>
 								</select>
 								<br>
 								<label for="rcpt_no">收件人:</label> 
 								<select size="1" name="rcpt_no" id="rcpt_no">
 									<option value="no">--請選擇--</option>
-									<c:forEach var="member_mailVO" items="${member_mailSvc.getStat(1)}">
-									<c:if test="${member_mailVO.send_no == memberVO.mbr_no}">
-										<option value="${member_mailVO.rcpt_no}">
-<%-- 										${member_mailVO.rcpt_no} --%>
-											${memberSvc.getOneMember(member_mailVO.rcpt_no).name}
-											${employeeSvc.getOneEmployee(member_mailVO.rcpt_no).emp_no == 90001?'客服專員':''}
-											${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.rcpt_no).name}
-										</option>
-									</c:if>
+									<c:forEach var="rcptNo" items="${set}">
+										<c:if test="${memberVO.mbr_no != rcptNo}">
+											<option value="${rcptNo}">
+													${memberSvc.getOneMember(Integer.valueOf(rcptNo)).name}
+													${employeeSvc.getOneEmployee(Integer.valueOf(rcptNo)).emp_no >= 90001? '客服專員':''}
+													${campsite_ownerSvc.getOneCampsite_owner(Integer.valueOf(rcptNo)).name}
+											</option>
+										</c:if>
 									</c:forEach>
 								</select>
 								<br>
