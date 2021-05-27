@@ -5,6 +5,7 @@ import java.sql.*;
 
 import javax.naming.*;
 import javax.sql.DataSource;
+import com.product_order_details.*;
 
 public class Product_order_detailsDAO implements Product_order_detailsDAO_interface {
 
@@ -73,6 +74,45 @@ public class Product_order_detailsDAO implements Product_order_detailsDAO_interf
 
 	}
 
+	public void insertOrder(Product_order_detailsVO product_order_detailsVO, Connection con) {
+		PreparedStatement pstmt = null;
+
+		try {
+
+			pstmt = con.prepareStatement(INSERT_STMT);
+
+			pstmt.setInt(1, product_order_detailsVO.getProd_ord_no());
+			pstmt.setInt(2, product_order_detailsVO.getProd_no());
+
+			Statement stmt = con.createStatement();
+			//stmt.executeUpdate("set auto_increment_offset=7001;"); //自增主鍵-初始值
+			stmt.executeUpdate("set auto_increment_increment=1;"); // 自增主鍵-遞增
+			pstmt.executeUpdate();
+
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back(ord_detail)");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. " + excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
+	
 	@Override
 	public void update(Product_order_detailsVO product_order_detailsVO) {
 

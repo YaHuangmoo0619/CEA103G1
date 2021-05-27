@@ -7,6 +7,7 @@ import javax.naming.*;
 import javax.sql.DataSource;
 
 import com.member.model.MemberVO;
+import com.member.model.MemberVO;
 
 public class Product_orderDAO implements Product_orderDAO_interface {
 

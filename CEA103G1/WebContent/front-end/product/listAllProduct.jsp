@@ -4,6 +4,10 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.product.model.*"%>
 <%@ page import="com.product_picture.model.*"%>
+<jsp:useBean id="product_pictureSvc" class="com.product_picture.model.Product_pictureService"/>
+<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
+
+
 <%
 	ProductService productSvc = new ProductService();
 	ProductVO productVO = (ProductVO) request.getAttribute("productVO");
@@ -16,9 +20,12 @@
 <html>
 
 <head>
-	
-<title>所有商品 </title>
 
+<link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<title>所有商品 </title>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
@@ -74,8 +81,6 @@
 	</ul>
 </c:if>
 
-<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
-
 <section class="features8 cid-syeFkbGLP0">
     <c:forEach var="productVO" items="${list}" >
     <div class="container">
@@ -83,8 +88,8 @@
             <div class="card-wrapper">
                 <div class="row align-items-center">
                     <div class="col-12 col-md-4">
-                        <div class="">
-                            <img src="">
+                        <div>
+                            <img src="${product_pictureVO.prod_pic}">
                         </div>
                     </div>
                     <div class="col-12 col-md">
@@ -110,19 +115,19 @@
 									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 									     <input type="hidden" name="action"	value="getOne_For_Display">
 								     </FORM>
-								     <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
+                    				<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
 									     <input type="submit" value="直接下訂">
 									     <input type="hidden" name="mbr_no"  value="${memberVO.mbr_no}">
 									     <input type="hidden" name="prod_no"  value="${productVO.prod_no}">
 									     <input type="hidden" name="ship_cty"  value="${memberVO.city}">
-									     <input type="hidden" name="ship_dist"  value="${productVO.dist}">
-									     <input type="hidden" name="ship_add"  value="${productVO.add}">
+									     <input type="hidden" name="ship_dist"  value="${memberVO.dist}">
+									     <input type="hidden" name="ship_add"  value="${memberVO.add}">
 									     <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 									     <input type="hidden" name="action" value="insert">
-									 </FORM>                                   
+									 </FORM>        
                                 </div>
                                 <div></div>
-                            </div>
+                            </div> 
                         </div>
                     </div>
                 </div>
