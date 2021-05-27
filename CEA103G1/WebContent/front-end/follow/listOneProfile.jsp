@@ -44,6 +44,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<%@ include file="/article_css/article_css.txt"%>
 <style>
 
 .profile-stat-count{
@@ -94,6 +95,169 @@ padding: 8px 16px;
 clear: both;
 }
 
+</style>
+
+<style>
+
+
+section {
+	text-align: center;
+}
+
+.author{
+	color:black;
+}
+
+
+.board{
+	display:inline-block;
+}
+
+.board_name{
+padding:0px 10px 0px 10px;
+}
+}
+.subscribe{
+padding:0px 0px 0px 10px;
+}
+.article_sort{
+	display:inline-block;
+	font-family: Microsoft JhengHei;
+	font-size:20px;
+	padding: 0px 10px 0px 0px;
+}
+.article_sort_parent{
+	padding:10px 0px 20px 60px;
+	
+}
+/* -----------------------------以下為側欄css------------------------------ */
+#sidebar {
+  position:absolute;
+  top:115px;
+  left:0px;
+  width:208px;
+  height:100%;
+/*   background:#151719; */
+  transition:all 300ms linear;
+}
+
+.link_to_board{
+color:FFFDD0;
+font-family: Microsoft JhengHei;
+}
+.sidebar_around:hover{
+ background-color:	#019858;
+}
+
+#sidebar div.list div.item {
+  padding:15px 10px;
+  text-transform:uppercase;
+  font-size:14px;
+  font-family:微軟正黑體;
+}
+
+.board_name{
+width:120px;
+}
+
+.board_icon{
+padding:0px 0px 0px 10px;
+}
+
+/* -----------------------------以下為主欄css------------------------------ */
+  div.main_content{
+  	  top:60px;
+  	  position:absolute;
+	  left:200px;
+	  right:150px;
+	  padding:20px 20px 20px 20px;
+
+	  
+}
+
+/* --------------------------------------------------------------------- */
+.write{
+  position: fixed;
+  bottom: 100px;
+  right: 75px;
+}
+
+.pic img{
+width: 110px !important;
+height: 90px !important;
+}
+
+.pic{
+margin: 0px !important;
+border: 0px !important;
+}
+
+
+#basicModal{
+
+height: 500px;
+ overflow-y: initial !important; 
+ overflow-y: auto; 
+
+}
+
+/* #basicModal.modal-dialog{ */
+
+/* overflow-y: initial !important */
+
+/* } */
+
+/* #basicModal.modal-body{ */
+
+/* height: 500px; */
+
+/* overflow-y: auto; */
+
+/* } */
+/* .modal{ */
+/* 	color: black */
+/* } */
+
+.title_box{
+padding: 0px 0px 10px 0px;
+}
+
+.btn-group-article_sort{
+float:right;
+margin:0px 50px 0px 0px;
+}
+.sort_text{
+float:right;
+font-size:14px;
+color:black;
+margin:10px 0px 0px 0px;
+}
+
+.drop-family{
+display:inline-block;
+}
+
+a.dropdown-item{
+padding:0px;
+}
+
+.dropdown-menu{
+min-width:0;
+width:78px;
+}
+
+#dropdownbtn{
+min-width:75px;
+min-hight:38px;
+}
+/* div.fixedTop{ */
+/* background-color:; */
+/* } */
+
+.each_article{
+padding:50px 0px 0px 0px;
+width:1000px;
+}
 </style>
 <title>Profile</title>
 
@@ -159,24 +323,86 @@ clear: both;
                 </div>
             </div>
             <!-- End of profile section -->
+            
+            
+            
+            
+                        <div class="each_article">
+                    <c:forEach var="articleVO" items="${articleVO}">
+                    <div class=article  style="cursor:pointer;" onclick="location.href='<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2';">
+                        <article class="content" role="article" data-post-list-viewed-cell-no="2">
+                            <div class="top_in">
+                                <div class="top_in1">
+                                    <div class="genre_uni">
+                                        <div class="genre_0">
+                                            <div class="genre"><c:forEach var="bd_clVO" items="${bd_clDAO.all}">
+			<c:if test="${articleVO.bd_cl_no==bd_clVO.bd_cl_no}">
+	                    ${bd_clVO.bd_name}
+                    </c:if>
+		</c:forEach></div>					
+<%--                                             <div class="date"><fmt:formatDate value="${articleVO.art_rel_time}" pattern="MM月dd日  HH:mm" /></div> --%>
+                                            <div class="author"><c:forEach var="memberVO_loop" items="${memberDAO.all}">
+			<c:if test="${articleVO.mbr_no==memberVO_loop.mbr_no}">&nbsp;&nbsp;${memberVO_loop.acc}</c:if>
+		</c:forEach></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           <div class="title title_box">${articleVO.art_title}</div>
+                            <div class="post">
+                                <div class="post_0">
+                                <p>${simple_art_cont[articleVO.art_no]}</p>
+                                </div>
+                            </div>
+                            <div class="bottom_in">
+                                <div class="emoji">
+                                    <div class="emoji_inner">
+                                        <div class="emoji_pic">
+                                            <img src="/CEA103G1/images/heart_already.svg" width="25px" height="25px"></div>
+                                        <div class=" amount">${articleVO.likes}</div>
+                                    </div>
+                                </div>
+                                <div class="response_box">
+                                    <span class="response">回應</span><span>${articleVO.replies}</span>
+                                </div>
+                                <div class="archieve">
+                                    <div class="archieve_0">
+                              				<c:set var="collection_status" value="0"></c:set>
+                              				<c:set var="my_collection_list_replace" value="${my_collection_list}"></c:set>
+                 							<c:forEach var="my_collection_list_replace" items="${my_collection_list_replace}">
+                 							<c:if test="${my_collection_list_replace.art_no==articleVO.art_no}">
+                 							<c:set var="collection_status" value="1"></c:set>
+                 							<img src="/CEA103G1/images/bookmark_already.svg" width="20px" height="20px">
+                 							</c:if>
+											</c:forEach>
+											<c:if test="${collection_status==0}"><img src="/CEA103G1/images/bookmark_notyet.svg" width="20px" height="20px"></c:if>
+											
+                                        <span>收藏</span></div>
+                                </div>
+                            </div>
+								<c:if test="${not empty articleVO.art_first_img}">
+								<div class=pic>${articleVO.art_first_img}</div>
+								</c:if>             
+                        </article>
+                        </div>
+                        </c:forEach>
+                    </div>
+            
+            
         </div>
         <!-- End of container -->
     </header>
 
-<div>發過的文章清單</div>
-<br>
-<br>
 
-<div class="posted_arts">
-<c:forEach var="articleVO" items="${articleVO}">
-<%-- <div class=released_articles><a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From2">${articleVO.art_title}</a></div> --%>
-<div class=released_articles id="${articleVO.art_no}" data-toggle="modal" data-target="#basicModal">${articleVO.art_title}<div class=released_articles_no style="display:none">${articleVO.art_no}</div></div>	
-</c:forEach>
-</div>
 
 <br>
 <br>
 <br>
+
+
+
+
+
 
 
 <!-- 粉絲名單 -->

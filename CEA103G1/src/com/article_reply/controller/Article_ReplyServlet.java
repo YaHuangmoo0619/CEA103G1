@@ -114,7 +114,7 @@ public class Article_ReplyServlet extends HttpServlet{
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("article_replyVO", article_replyVO); // 資料庫取出的article_replyVO物件,存入req
-				String url = "/back-end/article_reply/listOneArticle_Reply.jsp";
+				String url = "/front-end/article_reply/listOneArticle_Reply.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneArticle_reply.jsp
 				successView.forward(req, res);
 		}
