@@ -133,7 +133,7 @@ select:active {
 }
 select option {
   background-color: #FFFFFF;
-  color: #fff;
+  color: #000000;
 }
 .input-group {
   margin-bottom: 1em;

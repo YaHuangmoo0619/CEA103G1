@@ -99,12 +99,12 @@
         </div>
         
         <div class="input-group input-group-icon">
-        <table>		
+        <table style= "margin-left:58px;">		
         	<tr>
-				<td>¿¤¥«:</td>
-				<td><select id="city" name="city" style="width:100px; color:#000000; "></select></td>
+				<td>¿¤¥«    :  </td>
+				<td><select id="city" name="city" style="width:120px; color:#000000;  "></select></td>
 				<td>°Ï°ì:</td>
-				<td><select id="dist" name="dist"></select></td>
+				<td><select id="dist" name="dist" style="width:120px; color:#000000;  "></select></td>
 			</tr>
         </table>
         <div class="input-group input-group-icon">
