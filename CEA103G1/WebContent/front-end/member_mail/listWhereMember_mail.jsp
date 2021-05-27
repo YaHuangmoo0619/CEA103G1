@@ -40,7 +40,6 @@ a.content{
 a.content:hover {
 	color: #4B7F52;
 }
-
 table{
 	width: 700px;
 	margin: 30px auto;
@@ -73,12 +72,10 @@ input.change:hover{
 	color: #80c344;
 	cursor: pointer;
 }
-
 tr {
 /* 	border-top: 1px solid #eee; */
 	border-bottom: 2px solid #eee;
 }
-
 tr:hover {
 	box-shadow: 0 1px 5px 0 #4e5452 inset;
 	cursor: pointer;
@@ -122,8 +119,8 @@ tr:hover {
 <%-- 					<c:if test="${(memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 1) || (memberVO.mbr_no == member_mailVO.send_no && member_mailVO.mail_stat == 0)}"> --%>
 					<tr>
 						<td style="display:none;">${member_mailVO.mail_no}</td>
-						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
-						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
+						<td>${employeeSvc.getOneEmployee(member_mailVO.send_no).emp_no > 90001?'客服專員':''}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
+						<td>${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
 						<c:set var="mail_cont" value="${member_mailVO.mail_cont}" />
 							<c:if test="${mail_cont.length() > 10}">
 								<td>${fn:substring(mail_cont, 0, 10)}...</td>
@@ -149,8 +146,8 @@ tr:hover {
 <%-- 					<c:if test="${(memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 1) || (memberVO.mbr_no == member_mailVO.send_no && member_mailVO.mail_stat == 0)}"> --%>
 					<tr>
 						<td style="display:none;">${member_mailVO.mail_no}</td>
-						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
-						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
+						<td>${memberSvc.getOneMember(member_mailVO.send_no).name}</td>
+						<td>${employeeSvc.getOneEmployee(member_mailVO.rcpt_no).emp_no == 90001? '客服專員':''}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.rcpt_no).name}</td>
 						<c:set var="mail_cont" value="${member_mailVO.mail_cont}" />
 							<c:if test="${mail_cont.length() > 10}">
 								<td>${fn:substring(mail_cont, 0, 10)}...</td>
@@ -184,7 +181,6 @@ tr:hover {
 		let mail_no = e.currentTarget.children[0].innerText;
 		window.location.href="<%=request.getContextPath()%>/member_mail/member_mail.do?mail_no="+ mail_no + "&action=read";
 	});
-
 	for (let i = 0; i < $(".mail_read_stat").length; i++) {
 		if ($(".mail_read_stat")[i].innerText === '1') {
 			$($(".mail_read_stat")[i]).parent()[0].style.backgroundColor = '#eee';

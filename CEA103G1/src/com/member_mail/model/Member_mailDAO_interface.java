@@ -23,5 +23,8 @@ public interface Member_mailDAO_interface {
     public void delete(Integer mail_no);
     public Member_mailVO findByPrimaryKey(Integer mail_no);
     public List<Member_mailVO> getAll();
+    public List<Member_mailVO> getSend(Integer send_no);
+    public List<Member_mailVO> getRcpt(Integer rcpt_no);
+    public List<Member_mailVO> getStat(Integer mail_stat);
     public Set<Member_mailVO> getWhereCondition(Map<String,String[]> map);
 }

@@ -86,4 +86,15 @@ public class Member_mailService {
 		
 		return member_mailVO;
 	}
+	
+	public List<Member_mailVO> getSend(Integer send_no){
+		return dao.getSend(send_no);
+	}
+    public List<Member_mailVO> getRcpt(Integer rcpt_no){
+    	return dao.getSend(rcpt_no);
+    }
+    public List<Member_mailVO> getStat(Integer mail_stat){
+//    	System.out.println("service");
+    	return dao.getStat(mail_stat);
+    }
 }
