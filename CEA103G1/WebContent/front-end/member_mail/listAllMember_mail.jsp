@@ -105,7 +105,7 @@ label, select, input {
 }
 
 table{
-	width: 100%;
+	width: 700px;
 	margin: 30px auto;
 /* 	border: 1px solid #4e5452; */
 }
@@ -187,27 +187,42 @@ tr:hover {
 								<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService" />
 								<jsp:useBean id="memberSvc"	class="com.member.model.MemberService" />
 	
-								<label for="mail_no">信件編號:</label>
-								<select size="1" name="mail_no" id="mail_no">
+								<label for="mail_no" style="display:none;">信件編號:</label>
+								<select size="1" name="mail_no" id="mail_no" style="display:none;">
 									<option value="no">--請選擇--</option>
 									<c:forEach var="member_mailVO" items="${member_mailSvc.all}">
 										<option value="${member_mailVO.mail_no}">${member_mailVO.mail_no}</option>
+										
 									</c:forEach>
 								</select>
 								<br>
 								<label for="send_no">寄件人:</label>
 								<select size="1" name="send_no" id="send_no">
 									<option value="no">--請選擇--</option>
-									<c:forEach var="employeeVO" items="${employeeSvc.all}">
-										<option value="${employeeVO.emp_no}">${employeeVO.emp_no}${employeeVO.name}</option>
+									<c:forEach var="member_mailVO" items="${member_mailSvc.getStat(0)}">
+									<c:if test="${member_mailVO.rcpt_no == memberVO.mbr_no}">
+										<option value="${member_mailVO.send_no}">
+<%-- 										${member_mailVO.send_no} --%>
+											${memberSvc.getOneMember(member_mailVO.send_no).name}
+											${employeeSvc.getOneEmployee(member_mailVO.send_no).emp_no > 90001? '客服專員':''}
+											${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}
+										</option>
+									</c:if>
 									</c:forEach>
 								</select>
 								<br>
 								<label for="rcpt_no">收件人:</label> 
 								<select size="1" name="rcpt_no" id="rcpt_no">
 									<option value="no">--請選擇--</option>
-									<c:forEach var="memberVO" items="${memberSvc.all}">
-										<option value="${memberVO.mbr_no}">${memberVO.mbr_no}${memberVO.name}</option>
+									<c:forEach var="member_mailVO" items="${member_mailSvc.getStat(1)}">
+									<c:if test="${member_mailVO.send_no == memberVO.mbr_no}">
+										<option value="${member_mailVO.rcpt_no}">
+<%-- 										${member_mailVO.rcpt_no} --%>
+											${memberSvc.getOneMember(member_mailVO.rcpt_no).name}
+											${employeeSvc.getOneEmployee(member_mailVO.rcpt_no).emp_no == 90001?'客服專員':''}
+											${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.rcpt_no).name}
+										</option>
+									</c:if>
 									</c:forEach>
 								</select>
 								<br>
@@ -274,8 +289,8 @@ tr:hover {
 <%-- 						<c:if test="${member_mailVO.mail_no!=param.mail_no}"> --%>
 						<td style="display:none;">${member_mailVO.mail_no}</td>
 <%-- 						</c:if> --%>
-						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
-						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
+						<td>${employeeSvc.getOneEmployee(member_mailVO.send_no).emp_no > 90001?'客服專員':''}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
+						<td>${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
 						<c:set var="mail_cont" value="${member_mailVO.mail_cont}" />
 							<c:if test="${mail_cont.length() > 10}">
 								<td>${fn:substring(mail_cont, 0, 10)}...</td>
