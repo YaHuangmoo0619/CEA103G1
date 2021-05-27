@@ -20,7 +20,7 @@
             height: 100%;
         }
         body {
-            background: url("<%=request.getContextPath()%>/front-images/Login_image.jpg") no-repeat center center / cover;
+            background: url("<%=request.getContextPath()%>/front-images/register-blur.jpg") no-repeat center center / cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,7 +28,7 @@
         .login {
             width: 350px;
             height: 450px;
-            background-color: rgba(0, 0, 0, .5);
+            background-color: rgba(215, 223, 215, .8);
             border-radius: 10px;
             border: 3px solid #fff;
             box-shadow: 0 0 60px #000;
@@ -40,12 +40,12 @@
         .form {
             width: 250px;
             font-family: '微軟正黑體', sans-serif;
-            color: #fff;
+            color: #666666;
         }
         .form h2 {
             margin-bottom: 20px;
             padding-bottom: 20px;
-            border-bottom: 1px solid #fff;
+            border-bottom: 1px solid #000000;
             display: flex;
             justify-content: center;
         }
@@ -112,10 +112,13 @@
                 <input type="hidden" name="action" value="login_Member">
             </div>
            
-            <div>
-            	<input type="checkbox" name="remember" id="remember">
-            	<label for="remember">記住帳號</label>
+        	<div>
+                <a href="<%=request.getContextPath()%>/front-end/member/signup.jsp">建立帳號</a>  
             </div>
+            <div>
+                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/forget.jsp">忘記密碼</a>  
+            </div>
+            <div>
              <%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
 				<ul>
@@ -125,9 +128,6 @@
 				</ul>
 			</c:if>
             <br>
-            <div>
-    			<a href='<%=request.getContextPath()%>/front-end/member/forgetPassword.jsp'>&emsp;忘記密碼</a>
-    		</div>
         </form>
     </div>
 </body>
