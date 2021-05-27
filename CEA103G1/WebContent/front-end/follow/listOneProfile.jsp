@@ -10,7 +10,9 @@
 <%int fans_num = (Integer)request.getAttribute("fans_num"); %>
 <%int follows_num = (Integer)request.getAttribute("follows_num"); %>
 <%int article_num = (Integer)request.getAttribute("article_num"); %>
-<%String mbr_no = String.valueOf(request.getAttribute("mbr_no"));%>
+<%String mbr_no = String.valueOf(request.getAttribute("mbr_no"));
+  int mbr_no_author = Integer.valueOf(mbr_no);
+%>
 <%MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
 <%int mbr_no_self=memberVO.getMbr_no(); %>
 
@@ -25,12 +27,13 @@
   List<Integer> followVO_mine = (List<Integer>)request.getAttribute("followVO_mine"); //我追蹤的人
   ArrayList<Integer> follow_mine = new ArrayList<Integer>(); //專門用來放我追蹤的人的號碼
   
+  pageContext.setAttribute("mbr_no_author", mbr_no_author);
   pageContext.setAttribute("fans_list", fans_list); 
   pageContext.setAttribute("follows_list", follows_list); 
   pageContext.setAttribute("followVO_mine", followVO_mine);
   pageContext.setAttribute("memberVO", memberVO);
 %>
-
+<jsp:useBean id="memberDAO" scope="page" class="com.member.model.MemberDAO" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,8 +108,9 @@ clear: both;
                     <img class=author_sticker width="150px" height="150px" src="<%=request.getContextPath()%>/member/GetPhoto?mbr_no=<%=mbr_no%>">
                 </div>
                 <div class="profile-user-settings">
-                    <h1 class="profile-user-name"><%=mbr_no%></h1>
-                    
+                <c:forEach var="memberVO_all" items="${memberDAO.all}">
+                    <c:if test="${memberVO_all.mbr_no==mbr_no_author}"><h3 class="profile-user-name">${memberVO_all.acc}</h3></c:if>
+                  </c:forEach>  
                     
                     
                     

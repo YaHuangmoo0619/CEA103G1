@@ -7,7 +7,6 @@
 <%@ page import="com.article_likes.model.*" %>
 <%@ page import="com.article_collection.model.*" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
 <%
   ArticleVO articleVO = (ArticleVO) request.getAttribute("articleVO"); //ArticleServlet.java(Concroller), 存入req的articleVO物件
 %>
@@ -68,97 +67,106 @@
 <style>
 
    .like{ 
-   background-image:url('/CEA103G1/images/heart_notyet.svg');
-   width:40px; 
-   height:40px; 
-   background-size: 40px 40px; 
+   background-image:url('/CEA103G1/images/heart_like_final.svg');
+   width:35px; 
+   height:35px; 
+   background-size: 35px 35px; 
    background-repeat: no-repeat;
    float:right;
    margin: 0px 15px 0px 0px;  
    } 
    
-   .like:hover{
-   background-image:url('/CEA103G1/images/heart_already.svg'); 
-   }
+/*    .like:hover{ */
+/*    background-image:url('/CEA103G1/images/heart_test.svg');  */
+/*    } */
    
    
   	.like_no_login{ 
-   background-image:url('/CEA103G1/images/heart_notyet.svg');
-   width:40px; 
-   height:40px; 
-   background-size: 40px 40px; 
+   background-image:url('/CEA103G1/images/heart_like_final.svg');
+   width:35px; 
+   height:35px; 
+   background-size: 35px 35px; 
    background-repeat: no-repeat;
    float:right;
    margin: 0px 15px 0px 0px;  
    } 
    
-   .like_no_login:hover{
-   background-image:url('/CEA103G1/images/heart_already.svg'); 
-   }
+/*    .like_no_login:hover{ */
+/*    background-image:url('/CEA103G1/images/heart_test.svg');  */
+/*    } */
    
    
    .unlike{ 
-   background-image:url('/CEA103G1/images/heart_already.svg'); 
-   width:40px; 
-   height:40px; 
-   border:0px; 
-   background-size: 40px 40px; 
-   background-repeat: no-repeat;
-   float:right;
-   margin: 0px 15px 0px 0px;  
-   }
-
-   
-   
-   
-   .collection{ 
-   background-image:url('/CEA103G1/images/bookmark_notyet.svg');
-   width:35px; 
-   height:35px;
-   border:0px; 
-   background-size: 35px 35px; 
-   background-repeat: no-repeat;
-   float:right;
-   margin-right: 55px; 
-   } 
-   
-   .collection:hover{
-   background-image:url('/CEA103G1/images/bookmark_already.svg'); 
-   }
-
-   .collection_no_login{ 
-   background-image:url('/CEA103G1/images/bookmark_notyet.svg');
-   width:35px; 
-   height:35px;
-   border:0px; 
-   background-size: 35px 35px; 
-   background-repeat: no-repeat;
-   float:right;
-   margin-right: 55px; 
-   } 
-   
-   .collection_no_login:hover{
-   background-image:url('/CEA103G1/images/bookmark_already.svg'); 
-   }   
-   
-   .uncollection{ 
-   background-image:url('/CEA103G1/images/bookmark_already.svg'); 
+   background-image:url('/CEA103G1/images/heart_test.svg'); 
    width:35px; 
    height:35px; 
    border:0px; 
    background-size: 35px 35px; 
    background-repeat: no-repeat;
    float:right;
+   margin: 0px 15px 0px 0px;
+   }
+	
+/* 	   .unlike:hover{ */
+/*    background-image:url('/CEA103G1/images/heart_like_final.svg');  */
+/*    } */
+   
+   .reply-icon{ 
+   background-image:url('/CEA103G1/images/comment.svg');
+   width:35px; 
+   height:35px;
+   border:0px; 
+   background-size: 35px 35px; 
+   background-repeat: no-repeat;
+   float:right;
+   margin-right: 15px; 
+   }
+   
+   .collection{ 
+   background-image:url('/CEA103G1/images/bookmark_notyet.svg');
+   width:40px; 
+   height:40px;
+   border:0px; 
+   background-size: 40px 40px; 
+   background-repeat: no-repeat;
+   float:right;
+   margin-right: 55px; 
+   } 
+   
+/*    .collection:hover{ */
+/*    background-image:url('/CEA103G1/images/bookmark_already.svg');  */
+/*    } */
+
+   .collection_no_login{ 
+   background-image:url('/CEA103G1/images/bookmark_notyet.svg');
+   width:40px; 
+   height:40px;
+   border:0px; 
+   background-size: 40px 40px; 
+   background-repeat: no-repeat;
+   float:right;
+   margin-right: 55px; 
+   } 
+   
+/*    .collection_no_login:hover{ */
+/*    background-image:url('/CEA103G1/images/bookmark_already.svg');  */
+/*    }    */
+   
+   .uncollection{ 
+   background-image:url('/CEA103G1/images/bookmark_already.svg'); 
+   width:40px; 
+   height:40px; 
+   border:0px; 
+   background-size: 40px 40px; 
+   background-repeat: no-repeat;
+   float:right;
    margin-right: 55px;
    }
-   .uncollection:hover{
-   background-image:url('/CEA103G1/images/bookmark_notyet.svg'); 
-   } 
+/*    .uncollection:hover{ */
+/*    background-image:url('/CEA103G1/images/bookmark_notyet.svg');  */
+/*    }  */
 	
-	.container{
-	padding: 0px 50px 0px 50px;
-	/* background:#ff7d40; */
-	}
+
 
 	
 	.headshotAndAuthor{
@@ -226,12 +234,6 @@
 	border-radius: 50%;
 	}
 	
-	.dropdown-toggle{
-	float:right;
-	margin:0px 50px 0px 0px;
-	width:40px;
-	height:40px;
-	}
 	
 	.title{
 	padding:0px 0px 10px 0px;
@@ -251,7 +253,7 @@
 </head>
 <body bgcolor='white'>
 
-<div class="container custom-container-width">
+<div class="container custom-container-width" style="padding: 0px 50px 0px 50px;">
 
 		<div class="main_div headshotAndAuthor">
 		<div class="headshot">
@@ -272,7 +274,7 @@
 
 <!-- 有登入的人才看的到 -->
 <c:if test="${not empty memberVO}">	
-	<img class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="/CEA103G1/images/threedots.svg" width="30px" height="30px">
+	<img class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="/CEA103G1/images/threedots.svg" width="40px" height="40px" style="margin:0px 50px 0px 0px;float:right;">
   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
   					<!-- 		如果有登入且該篇文章作者就是自己 那可以執行刪除及修改文章 -->
    	<c:if test="${not empty memberVO &&(articleVO.mbr_no==memberVO.mbr_no)}"> 
@@ -284,6 +286,8 @@
     </c:if>
   </div>
 </c:if>
+
+
 
 
 		<div class=title><h2><%=articleVO.getArt_title()%></h2></div>
@@ -314,30 +318,37 @@
 
 	<!--    判斷這篇文章是否收藏過，如果還沒，那先出現的就是加入收藏   取消收藏則設為隱藏 -->
 	<c:if test="${collection_status eq true }">
-	<div class="collection" style="display:none;"></div>
-	<div class="uncollection"></div>
+	<div class="collection" data-toggle="tooltip" data-placement="top" title="收藏" style="display:none;"></div>
+	<div class="uncollection" data-toggle="tooltip" data-placement="top" title="取消收藏"></div>
 	</c:if>
 	<c:if test="${collection_status eq false }">
-	<div class="collection"></div>
-	<div class="uncollection" style="display:none;"></div>
+	<div class="collection" data-toggle="tooltip" data-placement="top" title="收藏"></div>
+	<div class="uncollection" data-toggle="tooltip" data-placement="top" title="取消收藏" style="display:none;"></div>
 	</c:if>
 		<!--    判斷這篇文章是否按過讚，如果還沒，那先出現的就是按讚   收回讚則設為隱藏 -->
 	<c:if test="${like_status eq true }">
-	<div class="like" style="display:none;"></div>
-	<div class="unlike" ></div>	
+	<div class="like" data-toggle="tooltip" data-placement="top" title="按讚" style="display:none;"></div>
+	<div class="unlike" data-toggle="tooltip" data-placement="top" title="收回讚"></div>	
 	</c:if>
 	<c:if test="${like_status eq false }">
-	<div class="like" ></div>
-	<div class="unlike"style="display:none;"></div>	
+	<div class="like" data-toggle="tooltip" data-placement="top" title="按讚"></div>
+	<div class="unlike"data-toggle="tooltip" data-placement="top" title="收回讚" style="display:none;"></div>	
 	</c:if>
+	<div class="reply-icon" onclick="location.href='/CEA103G1/front-end/article_reply/addArticle_reply.jsp?art_no=<%=articleVO.getArt_no()%>&mbr_no=<%=memberVO.getMbr_no()%>'" data-toggle="tooltip" data-placement="top" title="回應文章"></div>
 	</c:if>
 <!-- 	如果沒有登入的話  只會顯示按讚、收藏的按紐，點擊要打開名為登入的燈箱-->	
-	<c:if test="${empty memberVO}"> 
-	<div class="collection_no_login to_login_listOneArticle"></div>
-	<div class="like_no_login to_login_listOneArticle"></div>
+	<c:if test="${empty memberVO}">
+	<div class="collection_no_login to_login_listOneArticle" data-toggle="tooltip" data-placement="top" title="收藏"></div>
+	<div class="like_no_login to_login_listOneArticle" data-toggle="tooltip" data-placement="top" title="按讚"></div>
+	<div class="reply-icon to_login_listOneArticle" data-toggle="tooltip" data-placement="top" title="回應文章"></div> 
 	</c:if>
 <!-- 	</div> -->
 	</div>
+
+
+
+
+
 
 
 
@@ -352,14 +363,7 @@
 
 <div id = "addrep"></div>
 <div id="demo"></div>
-		<!-- 	如果有登入的話  可以對文章留言-->
-	<c:if test="${not empty memberVO}"> 
-	<button id=rep_login onclick="location.href='/CEA103G1/front-end/article_reply/addArticle_reply.jsp?art_no=<%=articleVO.getArt_no()%>&mbr_no=<%=memberVO.getMbr_no()%>'">我要回應</button>
-	</c:if>
-<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
-	<c:if test="${empty memberVO}"> 
-	<button type="button" class=to_login_listOneArticle>新增文章留言</button>
-	</c:if>
+
 
 
 
@@ -513,7 +517,7 @@
 				url : "/CEA103G1/article_likes/article_likes.do",
 				data : {action: "plus_like",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,art_no:<%=articleVO.getArt_no()%>}, //參數傳遞 : action傳遞「加一」 mbr_no art_no 傳遞要加一的資訊
 				success : function(data) {
-					alert("新增"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此篇文章的按讚成功");
+<%-- 					alert("新增"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此篇文章的按讚成功"); --%>
 				}
 			});
 				
@@ -522,7 +526,7 @@
 					url : "/CEA103G1/article/article.do",
 					data : {action: "plus_like",art_no:<%=articleVO.getArt_no()%>}, //參數傳遞 : action傳遞「加一」 mbr_no art_no 傳遞要加一的資訊
 					success : function(data) {
-						alert("某文章的讚數+1成功");
+// 						alert("某文章的讚數+1成功");
 						//雅凰嘗試加上系統通知
 						websocket.send(<%=articleVO.getMbr_no()%>+'/like');
 						//雅凰嘗試加上系統通知
@@ -542,7 +546,7 @@
 			url : "/CEA103G1/article_likes/article_likes.do",
 			data : {action: "minus_like",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,art_no:<%=articleVO.getArt_no()%>}, 
 			success : function(data) {
-				alert("收回"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此文章的按讚成功");
+<%-- 				alert("收回"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此文章的按讚成功"); --%>
 			}
 		});
 			
@@ -551,7 +555,7 @@
 				url : "/CEA103G1/article/article.do",
 				data : {action: "minus_like",art_no:<%=articleVO.getArt_no()%>}, 
 				success : function(data) {
-					alert("某文章的讚數-1成功");
+// 					alert("某文章的讚數-1成功");
 				}
 			});
  	})
@@ -568,7 +572,7 @@
  	 				url : "/CEA103G1/article_collection/article_collection.do",
  	 				data : {action: "plus_collection",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,art_no:<%=articleVO.getArt_no()%>}, //參數傳遞 : action傳遞「加一」 mbr_no art_no 傳遞要加一的資訊
  	 				success : function(data) {
- 	 					alert("新增"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此文章的收藏成功");
+<%--  	 					alert("新增"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此文章的收藏成功"); --%>
  	 				}
  	 			}); 
  	})
@@ -582,7 +586,7 @@
  	 				url : "/CEA103G1/article_collection/article_collection.do",
  	 				data : {action: "minus_collection",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,art_no:<%=articleVO.getArt_no()%>}, 
  	 				success : function(data) {
- 	 					alert("取消"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此文章的收藏成功");
+<%--  	 					alert("取消"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對此文章的收藏成功"); --%>
  	 				}
  	 			});
  	})

@@ -126,7 +126,7 @@ html, body {
 	padding: 0;
 	/*background-color: #4e5452;*/
 	background-color: 	#007979;
-	color: #80c344;
+	color: black;
 }
 
 section {
