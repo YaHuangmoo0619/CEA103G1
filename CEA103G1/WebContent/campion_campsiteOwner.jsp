@@ -165,7 +165,7 @@ div.backToTop{
 						href="<%=request.getContextPath()%>/front-end/campsite/addCamp.jsp">新增營區申請</a></li>
 					<li><a href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">站內信</a></li>
 					<li><a href="">修改營主資料</a></li>
-					<li><a href="<%=request.getContextPath()%>/campion_front.jsp">登出</a></li>
+					<li><a class="button" href="<%=request.getContextPath()%>/campsite_owner/campsite_owner.do?action=logout"><button type="button" class="btn btn-outline-secondary">登出</button></a></li>
 				</ul>
 			</div>
 			<div class="right col-sm-9">

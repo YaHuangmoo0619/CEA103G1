@@ -339,6 +339,7 @@ td{
 </style>
 </head>
 <body onload="connection()">
+	<script src="/../CEA103G1/creditcard/card.js"></script>
 	<div class="fixedTop">
 		<div>
 			<a href="/CEA103G1/campion_front.jsp"> <img src="/CEA103G1/front-images/campionLogoLong.png" class="logo">
@@ -563,6 +564,35 @@ td{
 			</div>
 		</div>
 	</div>
+	<div class="modal" tabindex="-1" role="dialog" id="test2">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" style="text-align: center;">信用卡資訊</h3>
+				</div>
+				<div class="modal-body">
+					<div id="credit" class="demo-container">
+						<div class="card-wrapper"></div>
+						<br>
+						<div class="form-container active">
+							<form id="card" method="post"
+								action="/CEA103G1/place_order/Place_order.do">
+								<input placeholder="Card number" type="tel" name="number" required>
+								<input placeholder="Full name" type="text" name="name" required>
+								<input placeholder="MM/YY" type="tel" name="expiry" required>
+								<input placeholder="CVC" type="number" name="cvc" required>
+								<input type="hidden" value="confirm" name="action">
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="confirm" value="結帳"
+						class="btn btn-secondary" data-dismiss="modal">結帳</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script src="/CEA103G1/datetimepicker/jquery.js"></script>
 	<script type="text/javascript" language="javascript" src="/CEA103G1/datetimepicker/jquery.datetimepicker.full.js" charset="UTF-8"></script>
 	<script
@@ -578,6 +608,7 @@ td{
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
 		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
 		crossorigin="anonymous"></script>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 		 var slideIndex = 1;
 		 showDivs(slideIndex);
@@ -594,6 +625,10 @@ td{
 	<script>
 	var webSocket;
 	var locat = window.location.href;
+	new Card({
+		form : document.querySelector('#card'),
+		container : '.card-wrapper'
+	});
 	$.ajax({
 		type : "GET",
 		dataType : "json",
@@ -1110,16 +1145,17 @@ td{
 		});
 		$("#send").click(function(){
 			if($("input[name='pay_meth']:checked").val()==="0"){
-				$.ajax({
-					type : "POST",
-					url : "/CEA103G1/place_order/Place_order.do?action=creditcard",
-					data : $('#order').serialize(),
-					success : function(data) {
-						let ord = JSON.stringify(data);
-						sessionStorage.setItem("ord", ord);
-						window.location.href="/CEA103G1/front-end/place_order/creditCard.html";
-					}
-				});
+				showModal2();
+// 				$.ajax({
+// 					type : "POST",
+// 					url : "/CEA103G1/place_order/Place_order.do?action=creditcard",
+// 					data : $('#order').serialize(),
+// 					success : function(data) {
+// 						let ord = JSON.stringify(data);
+// 						sessionStorage.setItem("ord", ord);
+// 						window.location.href="/CEA103G1/front-end/place_order/creditCard.html";
+// 					}
+// 				});
 			} else{
 				$.ajax({
 					type : "POST",
@@ -1143,8 +1179,34 @@ td{
 			$('#atm').append(atm);
 			$('#test1').modal('show');
 		}
+		function showModal2(data) {
+			$('#test2').modal('show');
+		}
 		$("#done").click(function() {
 			location.reload()
+		});
+		$('#confirm').click(function(){
+			$.ajax({
+				type : "POST",
+				url : "/CEA103G1/place_order/Place_order.do?action=creditcard",
+				data : $('#card').serialize(),
+				success : function(data) {
+					$.ajax({
+						type : "POST",
+						url : "/CEA103G1/place_order/Place_order.do?action=confirm",
+						data : $('#order').serialize(),
+						success : function(data) {
+							Swal.fire(
+									  data[0],
+									  data[1],
+									  'success'
+									).then(function() {
+										location.reload();
+									})
+						}
+					});
+				}
+			});
 		});
 		function initWebSocket() {
 			if(query.includes('startdate')){
