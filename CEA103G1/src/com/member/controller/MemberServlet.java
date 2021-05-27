@@ -34,6 +34,17 @@ public class MemberServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		System.out.println(action);
+		System.out.println(req.getParameter("name"));
+		System.out.println(req.getParameter("acc"));
+		System.out.println(req.getParameter("pwd"));
+		System.out.println(req.getParameter("mail"));
+		System.out.println(req.getParameter("mobile"));
+		System.out.println(req.getParameter("sex"));
+		System.out.println(req.getParameter("bday"));
+		System.out.println(req.getParameter("id"));
+		System.out.println(req.getParameter("city"));
+		System.out.println(req.getParameter("dist"));
+		System.out.println(req.getParameter("add"));
 		
 //		//¶®°Ä¥[ªº
 //		res.setContentType("text/html; charset=Big5");

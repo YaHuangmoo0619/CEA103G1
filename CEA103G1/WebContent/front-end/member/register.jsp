@@ -96,8 +96,7 @@ th, td {
 	</c:if>
 
 	<form method="post"
-		action="<%=request.getContextPath()%>/member/member.do" name="form1"
-		enctype="multipart/form-data">
+		action="<%=request.getContextPath()%>/member/member.do" name="form1" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<td>±b¸¹</td>

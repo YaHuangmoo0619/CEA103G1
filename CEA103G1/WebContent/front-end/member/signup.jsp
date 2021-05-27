@@ -21,13 +21,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="BIG5">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/member/signup.css">
-    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
-    <title>Campion營家 | 註冊會員</title>
-    
-   
+<link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/member/signup.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
+<title>Campion營家 | 註冊會員</title>
+
+      
 <style>
   .xdsoft_datetimepicker .xdsoft_datepicker {
            width:  300px;   /* width:  300px; */
@@ -37,65 +38,70 @@
   }
 </style>
 </head>
+
 <body>
 <div class="container">
-	<a href="<%=request.getContextPath()%>/front-end/front-index.jsp">回首頁</a>
+	<a href="<%=request.getContextPath()%>/campion_front.jsp">回首頁</a>
 	<section id="Steps" class="steps-section">
-    <h2 class="steps-header">註冊成為Campion營家會員</h2>
-
-  </section>
-<form method="post"
-		action="<%=request.getContextPath()%>/member/member.do" name="form1"
-		enctype="multipart/form-data">
-      <div class="title">
-      </div>
-      <div class="row info-form">
-        <h3>基本資料</h3>
+    	<h2 class="steps-header">註冊成為Campion營家會員</h2>
+    </section>
+	<form method="post" action="<%=request.getContextPath()%>/member/member.do" name="form1" enctype="multipart/form-data">
+    	<div class="title"></div>
+      	<div class="row info-form">
+        	<h3>基本資料</h3>
+        	
         <div class="input-group input-group-icon">
-        		<div class="input-name">姓名：</div>
-          <input type="text" name="name" minlength="1" maxlength="12" />
-          <div class="input-icon"><i class="fal fa-id-card-alt"></i></div>
+        	<div class="input-name">姓名：</div>
+          	<input type="text" name="name" minlength="1" maxlength="12" />
+          	<div class="input-icon"><i class="fal fa-id-card-alt"></i></div>
           	<p id="errorMsgName" style="font-size:2px; color:red; margin-left:105px;"></p>
         </div>
+        
         <div class="input-group input-group-icon">
-        		<div class="input-name">帳號：</div>
-          <input type="text" name="acc" minlength="1" />
-          <div class="input-icon"><i class="fal fa-user-circle"></i></div>
+        	<div class="input-name">帳號：</div>
+          	<input type="text" name="acc" minlength="1" />
+          	<div class="input-icon"><i class="fal fa-user-circle"></i></div>
           	<p id="errorMsgUserId" style="font-size:2px; color:red; margin-left:105px;"></p>
         </div>
+        
         <div class="input-group input-group-icon">
-        		<div class="input-name">密碼：</div>
-          <input type="password" name="pwd" minlength="1" maxlength="12" />
-          <div class="input-icon"><i class="fal fa-user-lock"></i></div>
+        	<div class="input-name">密碼：</div>
+          	<input type="password" name="pwd" minlength="1" maxlength="12" />
+          	<div class="input-icon"><i class="fal fa-user-lock"></i></div>
           	<p id="errorMsgUserPwd" style="font-size:2px; color:red; margin-left:105px;"></p>
         </div>
+        
         <div class="input-group input-group-icon">
-        		<div class="input-name">密碼確認：</div>
-          <input id="check-repeat-pwd" type="password" name="re_enter_pwd"/>
-          <div class="input-icon"><i class="fal fa-lock-alt"></i></div>
+        	<div class="input-name">密碼確認：</div>
+          	<input id="check-repeat-pwd" type="password" name="re_enter_pwd"/>
+          	<div class="input-icon"><i class="fal fa-lock-alt"></i></div>
           	<p id="errorMsgUserRePwd" style="font-size:2px; color:red; margin-left:105px;"></p>
         </div>
+        
         <div class="input-group input-group-icon">
-        		<div class="input-name">電子信箱：</div>
-          <input id="check-repeat-email" type="email" name="mail" />
-          <div class="input-icon"><i class="fal fa-envelope"></i></div>
+        	<div class="input-name">電子信箱：</div>
+          	<input id="check-repeat-email" type="email" name="mail" />
+          	<div class="input-icon"><i class="fal fa-envelope"></i></div>
           	<p id="errorMsgEmail" style="font-size:2px; color:red; margin-left:105px;"></p>
         </div>
+        
         <div class="input-group input-group-icon">
-        		<div class="input-name">手機號碼：</div>
-          <input type="text" name="mobile" />
-          <div class="input-icon"><i class="far fa-phone-alt"></i></div>
+        	<div class="input-name">手機號碼：</div>
+          	<input type="text" name="mobile" />
+          	<div class="input-icon"><i class="far fa-phone-alt"></i></div>
         </div>
+        
         <div class="input-group input-group-icon">
-        		<div class="input-name">出生年月日：</div>
-          <input id="bday" type="text" name="bday"/>
-          <div class="input-icon"><i class="far fa-birthday-cake"></i></div>
+        	<div class="input-name">出生年月日：</div>
+          	<input id="bday" type="text" name="bday"/>
+          	<div class="input-icon"><i class="far fa-birthday-cake"></i></div>
         </div>
+        
         <div class="input-group input-group-icon">
-        		<div class="input-name">身分證字號：</div>
-          <input type="text" name="id" />
-          <div class="input-icon"><i class="fal fa-id-card"></i></div>
-          <p id="errorMsgID" style="font-size:2px; color:red; margin-left:105px;"></p>
+        	<div class="input-name">身分證字號：</div>
+          	<input type="text" name="id" />
+          	<div class="input-icon"><i class="fal fa-id-card"></i></div>
+          	<p id="errorMsgID" style="font-size:2px; color:red; margin-left:105px;"></p>
         </div>
         
         <div class="input-group input-group-icon">
@@ -107,11 +113,17 @@
 				<td><select id="dist" name="dist" style="width:120px; color:#000000;  "></select></td>
 			</tr>
         </table>
+<!--         <div class="input-group input-group-icon"> -->
+<!--         	<div class="input-name">地址：</div> -->
+<!--           	<input type="text" id="add" > -->
+<!--           	<input type="hidden" name="add" /> -->
+<!--           	<div class="input-icon"><i class="fas fa-home"></i></div> -->
+<!--         </div> -->
+        
         <div class="input-group input-group-icon">
-        		<div class="input-name">地址：</div>
-          <input type="text" id="add" >
-          <input type="hidden" name="add" />
-          <div class="input-icon"><i class="fas fa-home"></i></div>
+        	<div class="input-name">地址：</div>
+          	<input type="text" name="add" />
+          	<div class="input-icon"><i class="far fa-home"></i></div>
         </div>
         </div>
 
@@ -120,22 +132,23 @@
         <div class="col-half">
           <h3>性別</h3>
           <div class="input-group">
-            <input type="radio" name="gender" value="1" id="gender-male"/>
+            <input type="radio" name="sex" value="1" id="gender-male"/>
             <label for="gender-male">男</label>
-            <input type="radio" name="gender" value="2" id="gender-female"/>
+            <input type="radio" name="sex" value="2" id="gender-female"/>
             <label for="gender-female">女</label>
           </div>
         </div>
       </div>
 
-      <div class="row info-form" id="info-form-button"> <input type="hidden" name="action" value="register_Member">
+      <div class="row info-form" id="info-form-button">
+      	<input type="hidden" name="action" value="register_Member">
       	<button  class="next-step">註冊</button>
       </div>
-
+	</div>
     </form>
     
     
-    	<script>
+    <script>
 		$.datetimepicker.setLocale('zh');
 		$(function() {
 			$('#announce_date').datetimepicker({
