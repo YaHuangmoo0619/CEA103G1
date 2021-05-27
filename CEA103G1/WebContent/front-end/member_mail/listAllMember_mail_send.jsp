@@ -41,7 +41,6 @@ a.content{
 a.content:hover {
 	color: #4B7F52;
 }
-
 input.confirm {
 	background-color: #80c344;
 	color: #4e5452;
@@ -50,19 +49,16 @@ input.confirm {
 	border: none;
 	font-weight: 999;
 }
-
 input.confirm:hover {
 	background-color: #4B7F52;
 	color: #80c344;
 	cursor: pointer;
 }
-
 #confirmTop:hover {
 	background-color: #4B7F52;
 	color: #80c344;
 	cursor: pointer;
 }
-
 div.forSearchs{
 	margin: 0 auto;
 	width: 70%;
@@ -78,7 +74,6 @@ div.forSearchsMore{
 	box-shadow: 0 1px 5px 0 #4e5452;
 	display: none
 }
-
 #mail_cont{
 	border-radius:5px;
 	background-color:#eee;
@@ -86,7 +81,6 @@ div.forSearchsMore{
 	padding:5px 15px;
 	width:50%;
 }
-
 span{
 	 font-size:0.8em;
 	 font-weight:444;
@@ -99,11 +93,9 @@ span:hover{
 	background-color: #4e5452;
 	color: #eee;
 }
-
 label, select, input {
 	font-size: 0.8em;
 }
-
 table{
 	width: 700px;
 	margin: 30px auto;
@@ -139,12 +131,10 @@ input.change:hover{
 #focus{
 	margin-right: -5px;
 }
-
 tr {
 /* 	border-top: 1px solid #eee; */
 	border-bottom: 2px solid #eee;
 }
-
 tr:hover {
 	box-shadow: 0 1px 5px 0 #4e5452 inset;
 	cursor: pointer;
@@ -316,7 +306,6 @@ tr:hover {
 		let mail_no = e.currentTarget.children[0].innerText;
 		window.location.href="<%=request.getContextPath()%>/member_mail/member_mail.do?mail_no="+ mail_no + "&action=read";
 	});
-
 	for (let i = 0; i < $(".mail_read_stat").length; i++) {
 		if ($(".mail_read_stat")[i].innerText === '1') {
 			$($(".mail_read_stat")[i]).parent()[0].style.backgroundColor = '#eee';

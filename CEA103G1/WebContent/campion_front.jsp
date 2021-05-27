@@ -11,7 +11,8 @@
 %>
 
 <% MemberVO memberVO = (MemberVO)session.getAttribute("memberVO"); %>
-
+<jsp:useBean id="campPicSvc" scope="page"
+	class="com.campsite_picture.model.Camp_PictureService" />
 <!DOCTYPE html>
 <html lang="zh-tw">
 
@@ -552,7 +553,7 @@ section.footer {
 				<c:forEach var="campsiteVO" items="${campsiteSvc.all}" begin="0" end="2">
 				<div class="col-sm-4">
 					<a href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">
-					<img src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60">
+					<img style="width:350px;height:250px;" src="${campPicSvc.getCamp_Picture(campsiteVO.camp_no).get(0)}">
 					</a>
 					<a class="text" href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">${campsiteVO.camp_name}</a>
 				</div>
@@ -562,7 +563,7 @@ section.footer {
 				<c:forEach var="campsiteVO" items="${campsiteSvc.all}" begin="3" end="5">
 				<div class="col-sm-4">
 					<a href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">
-					<img src="https://images.unsplash.com/photo-1557292916-eaa52c7e5939?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2FtcHNpdGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60">
+					<img style="width:350px;height:250px;" src="${campPicSvc.getCamp_Picture(campsiteVO.camp_no).get(0)}">
 					</a>
 					<a class="text" href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">${campsiteVO.camp_name}</a>
 				</div>

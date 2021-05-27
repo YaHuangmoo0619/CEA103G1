@@ -88,6 +88,8 @@ div.top {
 }
 
 img.logo {
+	width:300px;
+	height:150px;
 	max-height: 50px;
 }
 
@@ -145,7 +147,7 @@ div.backToTop{
 	<div class="colorPic">
 		<div class="top">
 			<a href="<%=request.getContextPath()%>/campion_campsiteOwner.jsp">
-			<img src="<%=request.getContextPath()%>/images/campionLogoLong.png"	class="logo"></a>
+			<img src="<%=request.getContextPath()%>/images/campionLogoLong.svg"	class="logo"></a>
 			<c:if test="${campsite_ownerVO != null}">
 				<div>${campsite_ownerVO.name}
 				<a href="" style="display:inline;"><img src="<%=request.getContextPath() %>/campsite_owner/GetPhoto?cso_no=${campsite_ownerVO.cso_no}" class="person"></a>
@@ -165,7 +167,7 @@ div.backToTop{
 						href="<%=request.getContextPath()%>/front-end/campsite/addCamp.jsp">新增營區申請</a></li>
 					<li><a href="<%=request.getContextPath()%>/front-end/campsite_owner_mail/listAllCampsite_owner_mail.jsp">站內信</a></li>
 					<li><a href="">修改營主資料</a></li>
-					<li><a href="<%=request.getContextPath()%>/campion_front.jsp">登出</a></li>
+					<li><a class="button" href="<%=request.getContextPath()%>/campsite_owner/campsite_owner.do?action=logout"><button type="button" class="btn btn-outline-secondary">登出</button></a></li>
 				</ul>
 			</div>
 			<div class="right col-sm-9">

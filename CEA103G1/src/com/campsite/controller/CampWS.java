@@ -57,7 +57,6 @@ public class CampWS {
 			if (temp != null) {
 				plc.addAll(temp);
 			}
-			System.out.println("ถู");
 		}
 //		Set<String> plc = history.get(campInfo);
 		if (plc != null) {

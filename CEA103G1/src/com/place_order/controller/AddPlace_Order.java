@@ -42,8 +42,19 @@ public class AddPlace_Order extends HttpServlet {
 		String action = req.getParameter("action");
 		Place_OrderService place_orderSvc = new Place_OrderService();
 		Place_OrderVO place_orderVO = new Place_OrderVO();
-		if (!action.equals("confirm")) {
 
+		if ("creditcard".equals(action)) {
+			String number = req.getParameter("number");
+			String name = req.getParameter("name");
+			String expiry = req.getParameter("expiry");
+			int cvc = new Integer(req.getParameter("cvc"));
+			System.out.println("卡號:" + number);
+			System.out.println("姓名:" + name);
+			System.out.println("到期日:" + expiry);
+			System.out.println("安全碼:" + cvc);
+			String jsonObject = gson.toJson("付款成功");
+			out.println(jsonObject);
+		} else {
 			Integer mbr_no = new Integer(req.getParameter("member"));
 			System.out.println("會員編號:" + mbr_no);
 			Integer camp_no = new Integer(req.getParameter("camp"));
@@ -104,25 +115,7 @@ public class AddPlace_Order extends HttpServlet {
 				list.add(detailsVO);
 			}
 
-			if ("creditcard".equals(action)) {
-				place_orderVO.setMbr_no(mbr_no);
-				place_orderVO.setCamp_no(camp_no);
-				place_orderVO.setCkin_date(ckin_date);
-				place_orderVO.setCkout_date(ckout_date);
-				place_orderVO.setPlc_amt(plc_amt);
-				place_orderVO.setPlc_ord_sum(plc_ord_sum);
-				place_orderVO.setEx_ppl(ex_ppl);
-				place_orderVO.setPay_meth(pay_meth);
-				place_orderVO.setPay_stat(pay_stat);
-				place_orderVO.setUsed_pt(used_pt);
-				place_orderVO.setReceipt(receipt);
-				place_orderVO.setRmk(rmk);
-				session.setAttribute("new_place_order", place_orderVO);
-				session.setAttribute("new_place_order_details", list);
-
-				String jsonObject = gson.toJson(place_orderVO);
-				out.println(jsonObject);
-			} else {
+			if ("transfer".equals(action)) {
 				List<Object> payWithTransfer = new ArrayList();
 				MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 				String id = memberVO.getId();
@@ -131,7 +124,7 @@ public class AddPlace_Order extends HttpServlet {
 				place_orderVO = place_orderSvc.addPlace_Order(mbr_no, camp_no, ckin_date, ckout_date, plc_amt,
 						plc_ord_sum, ex_ppl, pay_meth, pay_stat, used_pt, receipt, rmk, list);
 				String campInfo = "camp_no=" + camp_no + "&startdate=" + ckin_date + "&enddate=" + ckout_date;
-				Set<String> plc = new HashSet();
+				Set<String> plc = new HashSet<String>();
 				for (Place_Order_DetailsVO place_order_details : list) {
 					plc.add(place_order_details.getPlc_no().toString());
 				}
@@ -150,39 +143,13 @@ public class AddPlace_Order extends HttpServlet {
 				payWithTransfer.add(atm);
 				String jsonObject = gson.toJson(payWithTransfer);
 				out.println(jsonObject);
-			}
-		} else {
-			try {
-				place_orderVO = (Place_OrderVO) session.getAttribute("new_place_order");
-				List list = (List) session.getAttribute("new_place_order_details");
-				int mbr_no = place_orderVO.getMbr_no();
-				int camp_no = place_orderVO.getCamp_no();
-				Date ckin_date = place_orderVO.getCkin_date();
-				Date ckout_date = place_orderVO.getCkout_date();
-				int plc_amt = place_orderVO.getPlc_amt();
-				int plc_ord_sum = place_orderVO.getPlc_ord_sum();
-				int ex_ppl = place_orderVO.getEx_ppl();
-				int pay_meth = place_orderVO.getPay_meth();
-				int pay_stat = place_orderVO.getPay_stat();
-				int used_pt = place_orderVO.getUsed_pt();
-				int receipt = place_orderVO.getReceipt();
-				String rmk = place_orderVO.getRmk();
-
-				String number = req.getParameter("number");
-				String name = req.getParameter("name");
-				String expiry = req.getParameter("expiry");
-				int cvc = new Integer(req.getParameter("cvc"));
-				System.out.println("卡號:" + number);
-				System.out.println("姓名:" + name);
-				System.out.println("到期日:" + expiry);
-				System.out.println("安全碼:" + cvc);
-
+			} else {
 				place_orderVO = place_orderSvc.addPlace_Order(mbr_no, camp_no, ckin_date, ckout_date, plc_amt,
 						plc_ord_sum, ex_ppl, pay_meth, pay_stat, used_pt, receipt, rmk, list);
 				String campInfo = "camp_no=" + camp_no + "&startdate=" + ckin_date + "&enddate=" + ckout_date;
 				Set<String> plc = new HashSet();
 				for (Object obj : list) {
-					plc.add(((Place_Order_DetailsVO)obj).getPlc_no().toString());
+					plc.add(((Place_Order_DetailsVO) obj).getPlc_no().toString());
 				}
 				String allplc = plc.toString().substring(1, plc.toString().length() - 1);
 				if (!allplc.contains(", ")) {
@@ -194,13 +161,11 @@ public class AddPlace_Order extends HttpServlet {
 					campWS.receiveMsg(campInfo, allplc, null);
 				} catch (Exception e) {
 				}
-				session.removeAttribute("new_place_order_details");
-				list = new ArrayList();
-				list.add("已成功付款");
-				list.add("訂單已成立");
-				String jsonObject = gson.toJson(list);
+				List<String> done = new ArrayList<String>();
+				done.add("已成功付款");
+				done.add("訂單已成立");
+				String jsonObject = gson.toJson(done);
 				out.println(jsonObject);
-			} catch (Exception e) {
 			}
 		}
 	}

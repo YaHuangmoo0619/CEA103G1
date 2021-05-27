@@ -40,7 +40,6 @@ a.content{
 a.content:hover {
 	color: #4B7F52;
 }
-
 table{
 	width: 700px;
 	margin: 30px auto;
@@ -73,12 +72,10 @@ input.change:hover{
 	color: #80c344;
 	cursor: pointer;
 }
-
 tr {
 /* 	border-top: 1px solid #eee; */
 	border-bottom: 2px solid #eee;
 }
-
 tr:hover {
 	box-shadow: 0 1px 5px 0 #4e5452 inset;
 	cursor: pointer;
@@ -184,7 +181,6 @@ tr:hover {
 		let mail_no = e.currentTarget.children[0].innerText;
 		window.location.href="<%=request.getContextPath()%>/member_mail/member_mail.do?mail_no="+ mail_no + "&action=read";
 	});
-
 	for (let i = 0; i < $(".mail_read_stat").length; i++) {
 		if ($(".mail_read_stat")[i].innerText === '1') {
 			$($(".mail_read_stat")[i]).parent()[0].style.backgroundColor = '#eee';

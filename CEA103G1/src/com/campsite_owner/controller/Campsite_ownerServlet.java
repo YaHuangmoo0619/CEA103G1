@@ -348,6 +348,13 @@ System.out.println(pwd + " " + cso_no);
 				failureView.forward(req, res);
 			}
 		}
+		if ("logout".equals(action)) {
+			HttpSession session = req.getSession();
+			session.removeAttribute("campsite_ownerVO");
+			System.out.println("remove");
+			res.sendRedirect(req.getContextPath()+"/campion_front.jsp");
+		}
+		
 		if ("forget".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
