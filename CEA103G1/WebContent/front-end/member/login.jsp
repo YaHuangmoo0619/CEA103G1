@@ -20,7 +20,7 @@
             height: 100%;
         }
         body {
-            background: url("<%=request.getContextPath()%>/front-images/register-blur.jpg") no-repeat center center / cover;
+            background: url("<%=request.getContextPath()%>/front-images/register-blur2.jpg") no-repeat center center / cover;
             display: flex;
             justify-content: center;
             align-items: center;
