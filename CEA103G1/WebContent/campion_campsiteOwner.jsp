@@ -88,6 +88,8 @@ div.top {
 }
 
 img.logo {
+	width:300px;
+	height:150px;
 	max-height: 50px;
 }
 
@@ -145,7 +147,7 @@ div.backToTop{
 	<div class="colorPic">
 		<div class="top">
 			<a href="<%=request.getContextPath()%>/campion_campsiteOwner.jsp">
-			<img src="<%=request.getContextPath()%>/images/campionLogoLong.png"	class="logo"></a>
+			<img src="<%=request.getContextPath()%>/images/campionLogoLong.svg"	class="logo"></a>
 			<c:if test="${campsite_ownerVO != null}">
 				<div>${campsite_ownerVO.name}
 				<a href="" style="display:inline;"><img src="<%=request.getContextPath() %>/campsite_owner/GetPhoto?cso_no=${campsite_ownerVO.cso_no}" class="person"></a>

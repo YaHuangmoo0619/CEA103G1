@@ -18,19 +18,36 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 <title>register</title>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
+<link   rel="stylesheet" type="text/css" href="/CEA103G1/datetimepicker/jquery.datetimepicker.css" />
 <style>
 body{
-	 background: url("<%=request.getContextPath()%>/front-images/LoginCSO.jpg") no-repeat center center / cover;
-	 color:#fff;
+	 background-color: #4e5452;
 }
 div.left{
 	margin-top: 20px;
 }
-div.right{
+#addcso{
+width:60%;
 	background-color: #fff;
 	margin-top: 40px;
-	padding: 50px 50px;
+	margin-left: 20%;
+	padding: 30px 30px;
 	border-radius: 5px;
+}
+input.confirm{
+	width: 100px;
+	height: 50px;
+	background-color: #33CCFF;
+	color: #0088A8;
+	padding: 5px 10px;
+	border-radius: 5px;
+	border: none;
+	font-weight: 999;
+}
+input.confirm:hover{
+	background-color: #0088A8;
+	color: 	#33CCFF;
+	cursor: pointer;
 }
 a.content{
 	color: #80c344;
@@ -147,6 +164,7 @@ tr {
 </head>
 <body bgcolor='white'>
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
+	<div id="addcso">
 <table id="table-1">
 	<tr><td>
 		 <h3>註冊營主</h3></td><td>
@@ -233,15 +251,29 @@ tr {
 </table>
 <br>
 <input type="hidden" name="action" value="insert">
-<div style="display:inline-block;"><input type="submit" value="送出"></div>
-<div style="display:inline-block;"><input type="reset" value="重置"></div>
-</FORM>
+<div style="margin-left:38%;"><div style="display:inline-block;"><input type="submit" class="confirm" value="送出"></div>
+<div style="display:inline-block;"><input type="reset" class="confirm" value="重置"></div></div>
+</FORM></div>
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/CEA103G1/datetimepicker/jquery.js"></script>
+<script type="text/javascript" language="javascript" src="/CEA103G1/datetimepicker/jquery.datetimepicker.full.js" charset="UTF-8"></script>
 <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
 <script src="<%=request.getContextPath()%>/twzipcode/old/jquery.twzipcode-1.4.1.min.js"></script>
 <script>
 $('#twzipcode').twzipcode();
+$.datetimepicker.setLocale('zh'); // kr ko ja en
+$('#bday').datetimepicker({
+   theme: '',          //theme: 'dark',
+   timepicker: false,   //timepicker: false,
+   step: 1,            //step: 60 (這是timepicker的預設間隔60分鐘)
+   format: 'Y-m-d',
+//    value: default1,
+//        disabledDates:    ['2017/06/08','2017/06/09','2017/06/10'], // 去除特定不含
+   startDate:	        '1990-01-01',
+//    minDate:           '-1969-12-31', // 去除今日(不含)之前
+   maxDate:           '+1970-01-01'  // 去除今日(不含)之後
+});
 $('#sticker').on('change', function(e) {
 	const file = this.files[0];
 	const fr = new FileReader();
