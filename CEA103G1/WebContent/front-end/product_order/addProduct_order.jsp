@@ -13,7 +13,10 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>商品訂單新增 - addProduct_order.jsp</title>
+<link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<title>商品訂單新增 </title>
 
 <style>
   table#table-1 {

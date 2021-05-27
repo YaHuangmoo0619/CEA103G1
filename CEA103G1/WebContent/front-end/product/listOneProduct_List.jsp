@@ -16,6 +16,9 @@
 
 <html>
 <head>
+<link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <title>°Ó«~¤U­q</title>
 
 <%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
