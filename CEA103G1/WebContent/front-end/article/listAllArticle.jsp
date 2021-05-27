@@ -512,7 +512,7 @@ min-hight:38px;
 
 </div>
 
-
+<!-- for test -->
 <%
 jedis.close();
 %>
@@ -691,6 +691,7 @@ jedis.close();
 		$(function () {
 			  $('[data-toggle="tooltip"]').tooltip()
 			})
+
 </script>
   <!-- 雅凰嘗試加上首頁之頁首的WebSocket -->
   <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
