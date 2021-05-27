@@ -302,7 +302,7 @@ padding:0px 0px 20px 0px;
             
 
 </div>
-			<form>	
+			<form id="card" METHOD="post" ACTION="/CEA103G1/product_order/product_order.do" name="form1" autocomplete>	
 					<h2>訂購者資訊</h2>
 					<br>
 					<div>訂購人</div>
@@ -379,12 +379,38 @@ padding:0px 0px 20px 0px;
 				<input type="hidden" name="receipt" value="0">
                 <input type="hidden" name="mbr_no" value="insert">
                 <input type="hidden" name="PROD_ORD_SUM" value="insert">
-                <input type="hidden" name="USED_PT" value="insert">
-                
-				<input type="submit" class="checkout" value="去買單">
+                <input type="hidden" name="USED_PT" value="insert">        
+<!-- 				<input type="submit" class="checkout" value="去買單"> -->
+				<input type="button" class="checkout" value="去買單">
 				
-				
-				
+
+    <div class="modal" tabindex="-1" role="dialog" id="test2">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" style="text-align: center;">信用卡資訊</h3>
+                </div>
+                <div class="modal-body">
+                    <div id="credit" class="demo-container">
+                        <div class="card-wrapper"></div>
+                        <br>
+                        <div class="form-container active">
+                                <input placeholder="Card number" type="tel" name="number" required>
+                                <input placeholder="Full name" type="text" name="name" required>
+                                <input placeholder="MM/YY" type="tel" name="expiry" required>
+                                <input placeholder="CVC" type="number" name="cvc" required>
+                                <input type="hidden" value="confirm" name="action">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="confirm" value="結帳" class="btn btn-secondary" data-dismiss="modal">結帳</button>
+                </div>
+            </div>
+        </div>
+    </div>                    
+                    
+                    
 				</form>
 </div>
 
@@ -394,13 +420,24 @@ padding:0px 0px 20px 0px;
         
 
 
-                
+       
 	<script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	    <script src="./tw-city-selector-master/docs/js/tw-city-selector.js"></script>
+	    
+	        <script src="/../CEA103G1/creditcard/card.js"></script>  
+    <script>        new Card({
+        form: document.querySelector('#card'),
+        container: '.card-wrapper'
+    });</script>  
+    
     <script>
+    	$(".checkout").click(function(){
+    		$('#test2').modal('show');
+    	})
+    
         new TwCitySelector();
 
         var a = new TwCitySelector({

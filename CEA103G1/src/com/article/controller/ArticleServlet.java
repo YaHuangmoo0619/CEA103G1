@@ -39,7 +39,9 @@ public class ArticleServlet extends HttpServlet {
 //		session.getAttribute("memberVO"); //拿到該會員的會員資料
 
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
-
+			
+			System.out.println("我來了");
+			System.out.println("印印看"+req.getParameter("USED_PT"));
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.

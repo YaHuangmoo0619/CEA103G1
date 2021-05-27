@@ -611,6 +611,8 @@
     $(".close_reply_modal").click(function(){
 	  $('#reply_modal').modal('hide');
   })
+  
+  
   </script>
 	
 </body>
