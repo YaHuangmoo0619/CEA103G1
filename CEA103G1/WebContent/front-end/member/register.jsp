@@ -96,8 +96,7 @@ th, td {
 	</c:if>
 
 	<form method="post"
-		action="<%=request.getContextPath()%>/member/member.do" name="form1"
-		enctype="multipart/form-data">
+		action="<%=request.getContextPath()%>/member/member.do" name="form1" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<td>±b¸¹</td>
@@ -170,7 +169,7 @@ th, td {
 			<tr>
 				<td>¦a§}</td>
 				<td><input type="TEXT" name="add" id="add" size="45"
-					value="<%=(memberVO == null) ? "" : memberVO.getAdd()%>" /></td>
+					 /></td>
 			</tr>
 		</table>
 		<br> <input type="hidden" name="action" value="register_Member">
