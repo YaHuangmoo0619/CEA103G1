@@ -128,8 +128,8 @@
         </div>
       </div>
 
-      <div class="row info-form" id="info-form-button" >
-      	<button type="button" class="next-step">µù¥U</button>
+      <div class="row info-form" id="info-form-button"> <input type="hidden" name="action" value="register_Member">
+      	<button  class="next-step">µù¥U</button>
       </div>
 
     </form>

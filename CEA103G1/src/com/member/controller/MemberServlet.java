@@ -33,6 +33,7 @@ public class MemberServlet extends HttpServlet {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		System.out.println(action);
 		
 //		//雅凰加的
 //		res.setContentType("text/html; charset=Big5");
@@ -696,7 +697,7 @@ public class MemberServlet extends HttpServlet {
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的member_rankVO物件,也存入req
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/member/register.jsp");
+							.getRequestDispatcher("/front-end/member/signup.jsp");
 					failureView.forward(req, res);
 					return; //程式中斷
 				}
