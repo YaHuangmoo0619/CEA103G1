@@ -12,18 +12,15 @@
 
 <html>
 <head>
-<title>商品訂單 - listOneProduct_order.jsp</title>
+<link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<title>商品訂單 </title>
 
 <%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 
-<link rel="icon" href="/CEA103G1/images/campionLogoIcon.png"
-	type="image/png">
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <style>
 .confirm {
 	margin: 2px;

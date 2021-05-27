@@ -7,6 +7,9 @@ import javax.naming.*;
 import javax.sql.DataSource;
 
 import com.member.model.MemberVO;
+import com.product_order_details.model.Product_order_detailsDAO;
+import com.product_order_details.model.Product_order_detailsVO;
+import com.member.model.MemberVO;
 
 public class Product_orderDAO implements Product_orderDAO_interface {
 
@@ -38,7 +41,7 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 	//雅凰加的
 		
 	@Override
-	public void insert(Product_orderVO product_orderVO) {
+	public Product_orderVO insert(Product_orderVO product_orderVO, List<Product_order_detailsVO> list) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -47,8 +50,9 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 
 			con = ds.getConnection();
 			con.setAutoCommit(false);
-			pstmt = con.prepareStatement(INSERT_STMT);
-
+			String cols[] = { "PROD_ORD_NO" };
+			pstmt = con.prepareStatement(INSERT_STMT, cols);
+			
 			pstmt.setInt(1, product_orderVO.getMbr_no());
 			pstmt.setTimestamp(2, product_orderVO.getProd_ord_time());
 			pstmt.setInt(3, product_orderVO.getProd_ord_stat());
@@ -61,17 +65,44 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 			pstmt.setString(10, product_orderVO.getShip_add());
 			pstmt.setInt(11, product_orderVO.getReceipt());
 			pstmt.setString(12, product_orderVO.getRmk());
-
+			
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("set auto_increment_offset=1;"); // 自增主鍵-初始值
+			stmt.executeUpdate("set auto_increment_increment=1;"); // 自增主鍵-遞增
 			pstmt.executeUpdate();
 			
+			String next_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+			if (rs.next()) {
+				next_no = rs.getString(1);
+			} else {
+				System.out.println("未取得自增主鍵值");
+			}
+			rs.close();
+			product_orderVO.setProd_ord_no(new Integer(next_no));
+			Product_order_detailsDAO dao = new Product_order_detailsDAO();
+			for (Product_order_detailsVO detail : list) {
+				detail.setProd_ord_no(new Integer(next_no));
+				dao.insertByOrder(detail, con);
+			}
+			
 			con.commit();
-//			con.setAutoCommit(autoCommit);
+			con.setAutoCommit(true);
 
 
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-dept");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. " + excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -88,8 +119,9 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 				}
 			}
 		}
-
+		return product_orderVO;
 	}
+	
 
 	@Override
 	public void update(Product_orderVO product_orderVO) {

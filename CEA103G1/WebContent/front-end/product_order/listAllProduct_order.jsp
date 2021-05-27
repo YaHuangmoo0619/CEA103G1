@@ -15,20 +15,16 @@
 
 <html>
 <head>
+<link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <title>所有商品訂單 </title>
-
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_frontFooter_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 
-<link rel="icon" href="/CEA103G1/images/campionLogoIcon.png"
-	type="image/png">
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <style>
 .confirm {
 	margin: 2px;
