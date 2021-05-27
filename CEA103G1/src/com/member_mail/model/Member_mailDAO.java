@@ -46,6 +46,12 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 		"INSERT INTO campion.member_mail (send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
 		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail order by mail_time desc";
+	private static final String GET_ALL_SEND_STMT = 
+			"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail where send_no = ? order by mail_time desc";
+	private static final String GET_ALL_RCPT_STMT = 
+			"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail where send_no = ? order by mail_time desc";
+	private static final String GET_ALL_STAT_STMT = 
+			"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail where mail_stat = ? order by mail_time desc";
 	private static final String GET_ONE_STMT = 
 		"SELECT mail_no,send_no,rcpt_no,mail_read_stat,mail_stat,mail_cont,mail_time FROM campion.member_mail where mail_no = ?";
 	private static final String DELETE = 
@@ -946,5 +952,188 @@ public class Member_mailDAO implements Member_mailDAO_interface {
 				}
 			}
 		}
+	}
+
+
+	@Override
+	public List<Member_mailVO> getSend(Integer send_no) {
+		List<Member_mailVO> list = new ArrayList<Member_mailVO>();
+		Member_mailVO member_mailVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_SEND_STMT);
+			pstmt.setInt(1, send_no);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				member_mailVO = new Member_mailVO();
+				member_mailVO.setMail_no(rs.getInt("mail_no"));
+				member_mailVO.setSend_no(rs.getInt("send_no"));
+				member_mailVO.setRcpt_no(rs.getInt("rcpt_no"));
+				member_mailVO.setMail_read_stat(rs.getInt("mail_read_stat"));
+				member_mailVO.setMail_stat(rs.getInt("mail_stat"));
+				member_mailVO.setMail_cont(rs.getString("mail_cont"));
+				member_mailVO.setMail_time(rs.getString("mail_time"));
+				list.add(member_mailVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+
+	@Override
+	public List<Member_mailVO> getRcpt(Integer rcpt_no) {
+		List<Member_mailVO> list = new ArrayList<Member_mailVO>();
+		Member_mailVO member_mailVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_RCPT_STMT);
+			pstmt.setInt(1, rcpt_no);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				member_mailVO = new Member_mailVO();
+				member_mailVO.setMail_no(rs.getInt("mail_no"));
+				member_mailVO.setSend_no(rs.getInt("send_no"));
+				member_mailVO.setRcpt_no(rs.getInt("rcpt_no"));
+				member_mailVO.setMail_read_stat(rs.getInt("mail_read_stat"));
+				member_mailVO.setMail_stat(rs.getInt("mail_stat"));
+				member_mailVO.setMail_cont(rs.getString("mail_cont"));
+				member_mailVO.setMail_time(rs.getString("mail_time"));
+				list.add(member_mailVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+
+	@Override
+	public List<Member_mailVO> getStat(Integer mail_stat) {
+		
+		List<Member_mailVO> list = new ArrayList<Member_mailVO>();
+		Member_mailVO member_mailVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_STAT_STMT);
+			pstmt.setInt(1, mail_stat);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				member_mailVO = new Member_mailVO();
+				member_mailVO.setMail_no(rs.getInt("mail_no"));
+				member_mailVO.setSend_no(rs.getInt("send_no"));
+				member_mailVO.setRcpt_no(rs.getInt("rcpt_no"));
+				member_mailVO.setMail_read_stat(rs.getInt("mail_read_stat"));
+				member_mailVO.setMail_stat(rs.getInt("mail_stat"));
+				member_mailVO.setMail_cont(rs.getString("mail_cont"));
+				member_mailVO.setMail_time(rs.getString("mail_time"));
+				list.add(member_mailVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
 	}
 }

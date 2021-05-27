@@ -146,7 +146,7 @@ input.confirm:hover {
 			<li><a href="<%=request.getContextPath() %>/front-end/place_order/listAllPlace_order.html">營位訂單管理</a></li>
 			<li><a href="<%=request.getContextPath() %>/front-end/campsite_collection/listAllCollection.html">營區收藏管理</a></li>
 			<li><a href="<%=request.getContextPath() %>/front-end/product_order/listAllProduct_order.jsp">商城訂單管理</a></li>
-			<li><a href="<%=request.getContextPath() %>/back-end/article/select_page.jsp">論壇資訊管理</a></li>
+			<li><a href="<%=request.getContextPath() %>/front-end/article/listFollowBoardArticle.jsp">已收藏看板中的文章列表</a></li>
 			<li><a href="<%=request.getContextPath() %>/front-end/member/update_member_input.jsp">修改會員資料</a></li>
 		</ul>
 	</div>
@@ -165,7 +165,7 @@ input.confirm:hover {
 				</div>
 				<div class="infoRow">
 					<label for="acc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：</label><input type="text" id="acc" name="acc" value="${memberVOUpdate != null ? memberVOUpdate.acc:memberVO.acc}" readonly>
-					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="text" id="pwd" name="pwd" value="${memberVOUpdate != null ? memberVOUpdate.pwd:memberVO.pwd}" readonly>
+					<label for="pwd">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：</label><input type="password" id="pwd" name="pwd" value="${memberVOUpdate != null ? memberVOUpdate.pwd:memberVO.pwd}" readonly>
 				</div>
 				<div class="infoRow">
 					<label for="name">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</label><input type="text" id="name" name="name" value="${memberVOUpdate != null ? memberVOUpdate.name:memberVO.name}" readonly>
@@ -234,6 +234,7 @@ input.confirm:hover {
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 
 <script>
+//使特定input在focus時不要有外框
 	$("input").focus(function(){
 		$("input").css("outline","none");
 	});

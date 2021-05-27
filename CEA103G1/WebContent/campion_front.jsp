@@ -121,6 +121,7 @@ img.menu:hover {
 
 img.person {
 	width: 40px;
+	height:40px;
 	margin: 10px;
 	right: 1px;
 }
@@ -132,7 +133,7 @@ img.person:hover {
 img.backToTop {
 	width: 40px;
 	position: fixed;
-	left: 90%;
+	left: 85%;
 	bottom: 5%;
 	background-color: #80c344;
 	border-radius: 50%;
@@ -289,6 +290,15 @@ section.footer {
 	section.footer {
 		padding-top: 30px;
 	}
+	div.countNoRead{
+		display: none;
+	}
+	img.countNoRead{
+		display: none;
+	}
+	#logoutBt{
+		display: none;
+	}
 }
 
 @media ( min-width : 576px) and (max-width: 767px) {
@@ -424,7 +434,7 @@ section.footer {
 				<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 			</div>
 			<a href="<%=request.getContextPath() %>/front-end/shopping_cart/listOneShoppingCart.jsp"><img src="<%=request.getContextPath() %>/front-images/cart-outline.svg" class="cart"></a>
-			<a href="<%=request.getContextPath() %>/front-end/announcement/listAllAnnouncement.jsp"><img src="<%=request.getContextPath() %>/front-images/megaphone-outline.svg" class="announcement"></a>
+			<a href="<%=request.getContextPath() %>/front-end/announcement/listAllAnnouncement.jsp"><img src="<%=request.getContextPath() %>/front-images/megaphone-outline.svg" class="announcement countNoRead"></a>
 			<c:if test="${memberVO == null}">
 			<div class="btn-group" role="group" aria-label="Basic example">
 				<a class="button" href="<%=request.getContextPath() %>/campion_campsiteOwner.jsp"><button type="button" class="btn btn-outline-secondary">營主</button></a>
@@ -437,19 +447,19 @@ section.footer {
 			<img src="<%=request.getContextPath() %>/front-images/menu-outline.svg" id="menu" class="menu">
 			<c:if test="${memberVO != null}">
 			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp">
-				<div style="position:relative;display:inline;">
-					<img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement">
-					<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadMail"></div>
+				<div style="position:relative;display:inline;" class="countNoRead">
+					<img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement countNoRead">
+					<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadMail" class="countNoRead"></div>
 				</div>
 			</a>
 			<a href="<%=request.getContextPath() %>/front-end/personal_system_notify/listAllPersonal_system_notify.jsp">
-				<div style="position:relative;display:inline;">
-					<img src="<%=request.getContextPath() %>/front-images/notifications-outline.svg" class="announcement">
-					<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadNotify"></div>
+				<div style="position:relative;display:inline;" class="countNoRead">
+					<img src="<%=request.getContextPath() %>/front-images/notifications-outline.svg" class="announcement countNoRead">
+					<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;"  id="countNoReadNotify"  class="countNoRead"></div>
 				</div>
 			</a>
-			<a class="button" href="<%=request.getContextPath()%>/member/member.do?action=logout"><button type="button" class="btn btn-outline-secondary">登出</button></a>
-				${memberVO.name}
+			<a class="button" href="<%=request.getContextPath()%>/member/member.do?action=logout"><button type="button" class="btn btn-outline-secondary" id="logoutBt">登出</button></a>
+			${memberVO.name}	
 			<a href="<%=request.getContextPath() %>/front-end/member/viewMember.jsp"><div class="person" style="display:inline;"> <img src="<%=request.getContextPath() %>/member/GetPhoto?mbr_no=${memberVO.mbr_no}" class="person" style="border-radius:50%;"></div></a>
 			</c:if>
 		</div>
@@ -464,7 +474,7 @@ section.footer {
 	</div>
 	<div class="menuForButton">
 		<div class="btn-group sec" role="group" aria-label="Basic example">
-			<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.jsp"><button type="button" class="btn btn-secondary">露營</button></a>
+			<a class="button" href="<%=request.getContextPath() %>/front-end/campsite/listAllCamp.html"><button type="button" class="btn btn-secondary">露營</button></a>
 			<a class="button" href="<%=request.getContextPath() %>/front-end/article/listAllArticle.jsp"><button type="button" class="btn btn-secondary">論壇</button></a>
 			<a class="button" href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><button type="button" class="btn btn-secondary">商城</button></a>
 		</div>
@@ -477,6 +487,24 @@ section.footer {
 <!-- 			<a class="button" href=""><button type="button" class="btn btn-outline-secondary">聯絡我們</button></a> -->
 		</div>
 		</c:if>
+		<c:if test="${memberVO != null}">
+		<div class="btn-group sec" role="group" aria-label="Basic example">
+			<a href="<%=request.getContextPath() %>/front-end/announcement/listAllAnnouncement.jsp"><img src="<%=request.getContextPath() %>/front-images/megaphone-outline.svg" class="announcement"></a>
+			<a href="<%=request.getContextPath() %>/front-end/member_mail/listAllMember_mail.jsp">
+				<div style="position:relative;display:inline;">
+					<img src="<%=request.getContextPath() %>/front-images/mail-outline.svg" class="announcement">
+					<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;text-align:center;"  id="countNoReadMail2"></div>
+				</div>
+			</a>
+			<a href="<%=request.getContextPath() %>/front-end/personal_system_notify/listAllPersonal_system_notify.jsp">
+				<div style="position:relative;display:inline;">
+					<img src="<%=request.getContextPath() %>/front-images/notifications-outline.svg" class="announcement">
+					<div style="background-color: #80c344; color: #fff; width:20px; height:20px;border-radius: 50%; position:absolute; font-size:0.5em;display:inline; right:20%; bottom:50%;text-align:center;"  id="countNoReadNotify2"></div>
+				</div>
+			</a>
+			<a class="button" href="<%=request.getContextPath()%>/member/member.do?action=logout"><button type="button" class="btn btn-outline-secondary">登出</button></a>
+	</div>
+	</c:if>
 	</div>
 	<div class="backToTop">
 		<a href="#"><img src="<%=request.getContextPath() %>/front-images/arrow-up-circle-outline.svg"
@@ -583,7 +611,7 @@ section.footer {
 	<jsp:useBean id="articleSvc" class="com.article.model.ArticleService"/>
 	<section class="articles">
 		<div class="container">
-			<c:forEach var="articleVO" items="${articleSvc.all_Front}" begin="0" end="2">
+			<c:forEach var="articleVO" items="${articleSvc.all_Front}" begin="1" end="3">
 			<div class="row">
 				<div class="col-sm">
 					<a href="<%=request.getContextPath() %>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From4">
@@ -658,11 +686,18 @@ section.footer {
 
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+	<script	src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+	<script>
+		$("#basicModal").modal({
+			show : true
+		});
+	</script>
+	<script>
+		
+		$('#basicModal_homepage').modal('show')
+	</script>
+	
 	<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
 	<script type="text/javascript" language="javascript" src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js" charset="UTF-8"></script>
 	<script>
@@ -755,7 +790,7 @@ section.footer {
 
 		let backToTop = document.getElementsByClassName("backToTop");
 		$(window).scroll(function(e) {
-			console.log(e);
+// 			console.log(e);
 			if ($(window).scrollTop() <= 1) {
 				backToTop[1].style.display = "none";
 			} else {
@@ -763,16 +798,12 @@ section.footer {
 			}
 		});
 	</script>
-		<script>
-		$("#basicModal").modal({
-			show : true
-		});
-	</script>
+
 <script>
-	let countMenu = 0;
+	let countMenu2 = 0;
 	$("#menu").click(function() {
-		countMenu++;
-		if (countMenu % 2 == 1) {
+		countMenu2++;
+		if (countMenu2 % 2 == 1) {
 			let secArray = document.getElementsByClassName("sec");
 			for (let i = 0; i < secArray.length; i++) {
 				secArray[i].style.display = "flex";
@@ -811,6 +842,11 @@ section.footer {
 			var notifyNotify = document.getElementById('countNoReadNotify');
 			notifyNotify.innerText = noRead.countNoReadNotify;
 			
+			var notifyMail = document.getElementById('countNoReadMail2');
+			notifyMail.innerText = noRead.countNoReadMail;
+			var notifyNotify = document.getElementById('countNoReadNotify2');
+			notifyNotify.innerText = noRead.countNoReadNotify;
+			
 		}
 		function connection(){
 			let wsUri = 'ws://'+'<%=request.getServerName()%>'+':'+'<%=request.getServerPort()%>'+'<%=request.getContextPath()%>'+'/Member_mailNotify/${memberVO.mbr_no}';
@@ -823,10 +859,7 @@ section.footer {
 		
 </script>
 	
-		<script>
-		
-		$('#basicModal_homepage').modal('show')
-	</script>
+
 	
 </body>
 

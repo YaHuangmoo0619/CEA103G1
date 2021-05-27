@@ -122,8 +122,8 @@ tr:hover {
 <%-- 					<c:if test="${(memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 1) || (memberVO.mbr_no == member_mailVO.send_no && member_mailVO.mail_stat == 0)}"> --%>
 					<tr>
 						<td style="display:none;">${member_mailVO.mail_no}</td>
-						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
-						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
+						<td>${employeeSvc.getOneEmployee(member_mailVO.send_no).emp_no > 90001?'客服專員':''}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
+						<td>${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
 						<c:set var="mail_cont" value="${member_mailVO.mail_cont}" />
 							<c:if test="${mail_cont.length() > 10}">
 								<td>${fn:substring(mail_cont, 0, 10)}...</td>
@@ -149,8 +149,8 @@ tr:hover {
 <%-- 					<c:if test="${(memberVO.mbr_no == member_mailVO.rcpt_no && member_mailVO.mail_stat == 1) || (memberVO.mbr_no == member_mailVO.send_no && member_mailVO.mail_stat == 0)}"> --%>
 					<tr>
 						<td style="display:none;">${member_mailVO.mail_no}</td>
-						<td>${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</td>
-						<td>${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</td>
+						<td>${memberSvc.getOneMember(member_mailVO.send_no).name}</td>
+						<td>${employeeSvc.getOneEmployee(member_mailVO.rcpt_no).emp_no == 90001? '客服專員':''}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.rcpt_no).name}</td>
 						<c:set var="mail_cont" value="${member_mailVO.mail_cont}" />
 							<c:if test="${mail_cont.length() > 10}">
 								<td>${fn:substring(mail_cont, 0, 10)}...</td>

@@ -29,7 +29,7 @@ public class MemberChangeInfo extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		System.out.println(req.getParameter("name"));
+//		System.out.println(req.getParameter("name"));
 		if ("update_info".equals(action)) { // 來自update_member_rank_inadd.jsp的請求
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -38,19 +38,20 @@ public class MemberChangeInfo extends HttpServlet {
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				Integer mbr_no = new Integer(req.getParameter("mbr_no"));
-				System.out.println("mbr_no="+req.getParameter("mbr_no"));
+//				System.out.println("mbr_no="+req.getParameter("mbr_no"));
 				
 				Integer rank_no = new Integer(req.getParameter("rank_no"));
-				System.out.println("rank_no="+req.getParameter("rank_no"));
+//				System.out.println("rank_no="+req.getParameter("rank_no"));
 				
 				String acc = req.getParameter("acc");
 				String accReg = "^[(a-zA-Z0-9_)]{2,20}$";
 				if (acc == null || acc.trim().length() == 0) {
 					errorMsgs.add("會員帳號: 請勿空白");
+					acc = acc.trim();
 				} else if(!acc.trim().matches(accReg)) { //以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("會員帳號: 只能是英文字母、數字和_ , 且長度必需在2到20之間");
 	            }
-				System.out.println("acc="+req.getParameter("acc"));
+//				System.out.println("acc="+req.getParameter("acc"));
 				
 				String pwd = new String(req.getParameter("pwd").trim());
 				String pwdReg = "^[(a-zA-Z0-9_)]{2,20}$";
@@ -59,7 +60,12 @@ public class MemberChangeInfo extends HttpServlet {
 				} else if(!pwd.trim().matches(pwdReg)) { //以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("密碼: 只能是英文字母、數字和_ , 且長度必需在2到20之間");
 	            }
-				System.out.println("pwd="+req.getParameter("pwd"));
+//				System.out.println("pwd="+req.getParameter("pwd"));
+				
+				String pwd2 = new String(req.getParameter("pwd2").trim());
+				if (pwd2 == null || pwd2.trim().length() == 0) {
+					errorMsgs.add("密碼: 請輸入第二次密碼");
+				}
 				
 				String name = req.getParameter("name");
 				String nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,60}$";
@@ -68,27 +74,30 @@ public class MemberChangeInfo extends HttpServlet {
 				} else if(!name.trim().matches(nameReg)) { //以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("會員姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到60之間");
 	            }
-				System.out.println("name="+req.getParameter("name"));
-					
-				SimpleDateFormat dsf = new SimpleDateFormat("yyyy-MM-dd");
+//				System.out.println("name="+req.getParameter("name"));
+				
+				java.sql.Date bday;
 				String bdayStr = req.getParameter("bday");
 				if (bdayStr == null || bdayStr.trim().length() == 0) {
+					bday = new java.sql.Date(System.currentTimeMillis());
 					errorMsgs.add("請填寫生日");
+				}else {
+					SimpleDateFormat dsf = new SimpleDateFormat("yyyy-MM-dd");
+					java.util.Date dateU = null;
+					try {
+						dateU = dsf.parse(bdayStr);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					bday = new java.sql.Date(dateU.getTime());
 				}
-				java.util.Date dateU = null;
-				try {
-					dateU = dsf.parse(req.getParameter("bday"));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				java.sql.Date bday = new java.sql.Date(dateU.getTime());
-				System.out.println("bdayStr="+req.getParameter("bdayStr"));
+//				System.out.println("bdayStr="+req.getParameter("bdayStr"));
 				
 				Integer sex = new Integer(req.getParameter("sex"));
-				System.out.println("sex="+req.getParameter("sex"));
+//				System.out.println("sex="+req.getParameter("sex"));
 				
 				String id = req.getParameter("id");
-				System.out.println(id.trim().length());
+//				System.out.println(id.trim().length());
 				if (id == null || id.trim().length() == 0) {
 					errorMsgs.add("身分證字號: 請勿空白");
 				}else if(id.trim().length() < 10){
@@ -99,16 +108,17 @@ public class MemberChangeInfo extends HttpServlet {
 	            		errorMsgs.add("身分證字號: 身份證字號錯誤");
 	            	}
 	            }
-				System.out.println("id="+req.getParameter("id"));
+//				System.out.println("id="+req.getParameter("id"));
 				
 				String mobile = req.getParameter("mobile");
 				String mobileReg = "^[(0-9)]{10}$";
 				if (mobile == null || mobile.trim().length() == 0) {
+					mobile = mobile.trim();
 					errorMsgs.add("手機號碼: 請勿空白");
 				} else if(!mobile.trim().matches(mobileReg)) { //以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("手機號碼: 只能是數字 , 且長度必需是10");
 	            }
-				System.out.println("mobile="+req.getParameter("mobile"));
+//				System.out.println("mobile="+req.getParameter("mobile"));
 				
 				String mail = req.getParameter("mail");
 				if(mail == null ||mail.trim().isEmpty()) {
@@ -122,25 +132,25 @@ public class MemberChangeInfo extends HttpServlet {
 				}else if(mail.trim().lastIndexOf("@") == mail.trim().length()-1) {
 					errorMsgs.add("EMAIL: 請輸入@後面的部分, " + mail +"不是完整值");
 				}
-				System.out.println("mail="+req.getParameter("mail"));
+//				System.out.println("mail="+req.getParameter("mail"));
 				
 				String city = new String(req.getParameter("city"));
 				if (city == null || city == "no") {
 					errorMsgs.add("請選擇縣市");
 				} 
-				System.out.println("city="+req.getParameter("city"));
+//				System.out.println("city="+req.getParameter("city"));
 				
 				String dist = new String(req.getParameter("dist"));
 				if (dist == null || dist.length() == 0) {
 					errorMsgs.add("請選擇鄉鎮市區");
 				}
-				System.out.println("dist="+req.getParameter("dist"));
+//				System.out.println("dist="+req.getParameter("dist"));
 				
 				String add = req.getParameter("add").trim();
 				if (add == null || add.trim().length() == 0) {
 					errorMsgs.add("地址請勿空白");
 				}
-				System.out.println("add="+req.getParameter("add"));
+//				System.out.println("add="+req.getParameter("add"));
 				
 				SimpleDateFormat dsf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				java.util.Date dateU1 = null;
@@ -150,32 +160,32 @@ public class MemberChangeInfo extends HttpServlet {
 					e.printStackTrace();
 				}
 				java.sql.Timestamp join_time = new java.sql.Timestamp(dateU1.getTime());
-				System.out.println("join_time="+req.getParameter("join_time"));
+//				System.out.println("join_time="+req.getParameter("join_time"));
 					
 				String card = req.getParameter("card");
 				String cardReg = "^[(0-9)]{16,16}$";
 				if(!card.trim().matches(cardReg)) { //以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("信用卡卡號為16個數字");
 	            }
-				System.out.println("card="+req.getParameter("card"));
+//				System.out.println("card="+req.getParameter("card"));
 				
 				Integer pt = new Integer(req.getParameter("pt"));
-				System.out.println("pt="+req.getParameter("pt"));
+//				System.out.println("pt="+req.getParameter("pt"));
 				
-				System.out.println("acc_stat="+req.getParameter("acc_stat"));
+//				System.out.println("acc_stat="+req.getParameter("acc_stat"));
 				Integer acc_stat = 0;
 				try {
 					acc_stat = new Integer(req.getParameter("acc_stat"));
 				}catch(NumberFormatException ne) {
-					System.out.println("faile");
+//					System.out.println("faile");
 				}
 				
 				
 				Integer exp = new Integer(req.getParameter("exp"));
-				System.out.println("exp="+req.getParameter("exp"));
+//				System.out.println("exp="+req.getParameter("exp"));
 				
 				String rmk = req.getParameter("rmk");
-				System.out.println("rmk="+req.getParameter("rmk"));
+//				System.out.println("rmk="+req.getParameter("rmk"));
 				
 
 				MemberVO memberVO = new MemberVO();
@@ -198,20 +208,20 @@ public class MemberChangeInfo extends HttpServlet {
 				memberVO.setPt(acc_stat);
 				memberVO.setExp(exp);
 				memberVO.setRmk(rmk);
-				System.out.println("check1");
-				System.out.println(mbr_no+","+ rank_no+","+ acc+","+ pwd+","+ id+","+ name+","+ bday+","+ sex+","+ mobile+","+ mail+","+ city+","+ dist+","+ add+","+ join_time+","+ card+","+ pt+","+ acc_stat+","+ exp+","+ rmk);
+//				System.out.println("check1");
+//				System.out.println(mbr_no+","+ rank_no+","+ acc+","+ pwd+","+ id+","+ name+","+ bday+","+ sex+","+ mobile+","+ mail+","+ city+","+ dist+","+ add+","+ join_time+","+ card+","+ pt+","+ acc_stat+","+ exp+","+ rmk);
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					System.out.println("check2");
+//					System.out.println("check2");
 					req.setAttribute("memberVO", memberVO); 
-					System.out.println("check3");
+//					System.out.println("check3");
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/front-end/member/update_member_input.jsp");
 					failureView.forward(req, res);
-					System.out.println("check4");
+//					System.out.println("check4");
 					return; //程式中斷
 				}
-				System.out.println("check");
+//				System.out.println("check");
 				/***************************2.開始修改資料*****************************************/
 				MemberService memberSvc = new MemberService();
 				memberVO = memberSvc.update_info(mbr_no, rank_no, acc, pwd, id, name, bday, sex, mobile, mail, city, dist, add, join_time, card, pt, acc_stat, exp, rmk);

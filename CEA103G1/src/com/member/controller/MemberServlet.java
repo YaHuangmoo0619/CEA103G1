@@ -598,6 +598,7 @@ public class MemberServlet extends HttpServlet {
 		if ("logout".equals(action)) {
 			HttpSession session = req.getSession();
 			session.removeAttribute("memberVO");
+			session.removeAttribute("location");
 			System.out.println("remove");
 			res.sendRedirect(req.getContextPath()+"/campion_front.jsp");
 		}
