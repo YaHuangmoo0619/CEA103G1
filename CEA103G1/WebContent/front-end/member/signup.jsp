@@ -26,6 +26,17 @@
 <section id="Steps" class="steps-section">
 	<h2 class="steps-header">註冊成為Campion營家會員</h2>
 </section>
+
+
+	<%-- 錯誤表列 --%>
+	<c:if test="${not empty errorMsgs}">
+		<font style="color: red">請修正以下錯誤:</font>
+		<ul>
+			<c:forEach var="message" items="${errorMsgs}">
+				<li style="color: red">${message}</li>
+			</c:forEach>
+		</ul>
+	</c:if>
 <form method="post" action="<%=request.getContextPath()%>/member/member.do" name="form1" enctype="multipart/form-data">
 	<div class="title"></div>
       	<div class="row info-form">

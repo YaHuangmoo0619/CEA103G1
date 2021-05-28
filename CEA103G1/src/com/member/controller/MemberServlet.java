@@ -492,6 +492,8 @@ public class MemberServlet extends HttpServlet {
 		}
 		
 		if ("login_Member".equals(action)) { // 來自login.jsp的請求
+			
+			System.out.println(req.getParameter(action));
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -732,7 +734,7 @@ public class MemberServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/member/register.jsp");
+						.getRequestDispatcher("/front-end/member/signup.jsp");
 				failureView.forward(req, res);
 			}
 		}

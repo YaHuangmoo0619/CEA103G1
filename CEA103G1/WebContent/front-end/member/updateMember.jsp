@@ -170,7 +170,7 @@ label{
 				</div>
 				<div class="infoRow">
 					<label for="acc">±b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;¸¹¡G</label><input type="text" id="acc" name="acc" value="${memberVO.acc}">
-					<label for="pwd">±K&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;½X¡G</label><input type="text" id="pwd" name="pwd" value="${memberVO.pwd}">
+					<label for="pwd">±K&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;½X¡G</label><input type="password" id="pwd" name="pwd" value="${memberVO.pwd}">
 				</div>
 				<div class="infoRow">
 					<label for="bday">¥Í&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;¤é¡G</label><input type="text" id="bday" name="bday" value="${memberVO.bday}">
