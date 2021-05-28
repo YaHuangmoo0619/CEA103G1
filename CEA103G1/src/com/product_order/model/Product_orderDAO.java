@@ -24,7 +24,7 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 	}
 
 	private static final String INSERT_STMT = 
-		"insert into Product_Order (MBR_NO, PROD_ORD_TIME, PROD_ORD_STAT, PROD_ORD_SUM, USED_PT, SHIP_METH, PAY_METH, SHIP_CTY, SHIP_DIST, SHIP_ADD, RECEIPT, RMK) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		"insert into Product_Order (MBR_NO, PROD_ORD_TIME, PROD_ORD_STAT, PROD_ORD_SUM, USED_PT, SHIP_METH, PAY_METH, SHIP_CTY, SHIP_DIST, SHIP_ADD, RECEIPT, RMK) values (?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE = 
 		"update Product_Order set MBR_NO=?, PROD_ORD_TIME=?, PROD_ORD_STAT=?, PROD_ORD_SUM=?, USED_PT=?, SHIP_METH=?, PAY_METH=?, SHIP_CTY=?, SHIP_DIST=?, SHIP_ADD=?, RECEIPT=?, RMK=? where PROD_ORD_NO = ?";
 	private static final String DELETE = 
@@ -54,17 +54,17 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 			pstmt = con.prepareStatement(INSERT_STMT, cols);
 			
 			pstmt.setInt(1, product_orderVO.getMbr_no());
-			pstmt.setTimestamp(2, product_orderVO.getProd_ord_time());
-			pstmt.setInt(3, product_orderVO.getProd_ord_stat());
-			pstmt.setInt(4, product_orderVO.getProd_ord_sum());
-			pstmt.setInt(5, product_orderVO.getUsed_pt());
-			pstmt.setInt(6, product_orderVO.getShip_meth());
-			pstmt.setInt(7, product_orderVO.getPay_meth());
-			pstmt.setString(8, product_orderVO.getShip_cty());
-			pstmt.setString(9, product_orderVO.getShip_dist());
-			pstmt.setString(10, product_orderVO.getShip_add());
-			pstmt.setInt(11, product_orderVO.getReceipt());
-			pstmt.setString(12, product_orderVO.getRmk());
+//			pstmt.setTimestamp(2, product_orderVO.getProd_ord_time());
+			pstmt.setInt(2, product_orderVO.getProd_ord_stat());
+			pstmt.setInt(3, product_orderVO.getProd_ord_sum());
+			pstmt.setInt(4, product_orderVO.getUsed_pt());
+			pstmt.setInt(5, product_orderVO.getShip_meth());
+			pstmt.setInt(6, product_orderVO.getPay_meth());
+			pstmt.setString(7, product_orderVO.getShip_cty());
+			pstmt.setString(8, product_orderVO.getShip_dist());
+			pstmt.setString(9, product_orderVO.getShip_add());
+			pstmt.setInt(10, product_orderVO.getReceipt());
+			pstmt.setString(11, product_orderVO.getRmk());
 			
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("set auto_increment_offset=1;"); // 自增主鍵-初始值

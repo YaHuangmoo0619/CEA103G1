@@ -148,7 +148,7 @@ img{
 
 				<c:if test="${announcementVO == null || announcementVO.emp_no == 0}">
 					<option value="0">--½Ð¿ï¾Ü--
-					<c:forEach var="employeeVO" items="${employeeSvc.all}">	
+					<c:forEach var="employeeVO" items="${employeeSvc.getFunctionEmp_no(6)}">	
 					<c:if test="${employeeVO.emp_no != 90001}">
 					<option value="${employeeVO.emp_no}">${employeeVO.name}
 					</c:if>

@@ -127,7 +127,7 @@ img{
 					<td>
 						<select size="1" name="emp_no" id="emp_no">
 						<option value="99">--½Ð¿ï¾Ü--</option>
-						<c:forEach var="employeeVO" items="${employeeSvc.all}">
+						<c:forEach var="employeeVO" items="${employeeSvc.getFunctionEmp_no(7)}">
 							<c:if test="${employeeVO.emp_no != 90001}">
 							<option value="${employeeVO.emp_no}" ${employeeVO.emp_no == param.emp_no? 'selected':''}>${employeeVO.emp_no}${employeeVO.name}</option>
 							</c:if>

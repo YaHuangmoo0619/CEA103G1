@@ -147,15 +147,15 @@ label.stat{
 		<div class="inTr">
 			<form id="prod_ord_stat" method="post" action="<%=request.getContextPath()%>/product_order/product_order.do" style="text-align:center;">
 				<label for="prod_ord_stat0" class="stat">未付款</label>
-				<input type="radio" id="prod_ord_stat0" name="prod_ord_stat" value="0" ${product_orderVO.prod_ord_stat==0?'checked':''}>
+				<input type="radio" id="prod_ord_stat0" name="prod_ord_stat" value="0" ${product_orderVO.prod_ord_stat==0?'checked':''} ${product_orderVO.prod_ord_stat > 0?'disabled':''}>
 				<label for="prod_ord_stat1" class="stat">已付款</label>
-				<input type="radio" id="prod_ord_stat1" name="prod_ord_stat" value="1" ${product_orderVO.prod_ord_stat==1?'checked':''}>
+				<input type="radio" id="prod_ord_stat1" name="prod_ord_stat" value="1" ${product_orderVO.prod_ord_stat==1?'checked':''} ${product_orderVO.prod_ord_stat > 1?'disabled':''}>
 				<label for="prod_ord_stat2" class="stat">出貨中</label>
-				<input type="radio" id="prod_ord_stat2" name="prod_ord_stat" value="2" ${product_orderVO.prod_ord_stat==2?'checked':''}>
+				<input type="radio" id="prod_ord_stat2" name="prod_ord_stat" value="2" ${product_orderVO.prod_ord_stat==2?'checked':''} ${product_orderVO.prod_ord_stat > 2?'disabled':''}>
 				<label for="prod_ord_stat3" class="stat">已收貨</label>
-				<input type="radio" id="prod_ord_stat3" name="prod_ord_stat" value="3" ${product_orderVO.prod_ord_stat==3?'checked':''}>
+				<input type="radio" id="prod_ord_stat3" name="prod_ord_stat" value="3" ${product_orderVO.prod_ord_stat==3?'checked':''} ${product_orderVO.prod_ord_stat > 3?'disabled':''}>
 				<label for="prod_ord_stat4" class="stat">未取貨</label>
-				<input type="radio" id="prod_ord_stat4" name="prod_ord_stat" value="4" ${product_orderVO.prod_ord_stat==4?'checked':''}>
+				<input type="radio" id="prod_ord_stat4" name="prod_ord_stat" value="4" ${product_orderVO.prod_ord_stat==4?'checked':''} ${product_orderVO.prod_ord_stat > 4?'disabled':''}>
 				<label for="prod_ord_stat5" class="stat">取消訂單</label>
 				<input type="radio" id="prod_ord_stat5" name="prod_ord_stat" value="5" ${product_orderVO.prod_ord_stat==5?'checked':''}>
 				<input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
