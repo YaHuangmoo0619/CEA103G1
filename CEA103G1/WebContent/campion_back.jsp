@@ -145,7 +145,7 @@ p {
 			<div style="margin-right:5px;"><a href="<%=request.getContextPath()%>/back-end/employee/listOneEmployee_person.jsp?emp_no=${employeeVO.emp_no}"><div class="login">${employeeVO.name}工作中</div></a></div>
 		</c:if>
 		<c:if test="${employeeVO == null}">
-			<div style="margin-right:5px;"><a href="<%=request.getContextPath()%>/front-end/login.html"><div class="login">登入</div></a></div>
+			<div style="margin-right:5px;"><a href="<%=request.getContextPath()%>/campion_back_login.jsp"><div class="login">登入</div></a></div>
 		</c:if>
 	</div>
 	<div class="container">
