@@ -13,14 +13,14 @@ public class Product_orderService {
 		dao = new Product_orderDAO();
 	}
 
-	public Product_orderVO addProduct_order(Integer mbr_no, Timestamp prod_ord_time, Integer prod_ord_stat,
+	public Product_orderVO addProduct_order(Integer mbr_no, Integer prod_ord_stat,
 			Integer prod_ord_sum, Integer used_pt, Integer ship_meth, Integer pay_meth, String ship_cty,
 			String ship_dist, String ship_add, Integer receipt, String rmk, List<Product_order_detailsVO> list) {
 
 		Product_orderVO product_orderVO = new Product_orderVO();
 
 		product_orderVO.setMbr_no(mbr_no);
-		product_orderVO.setProd_ord_time(prod_ord_time);
+//		product_orderVO.setProd_ord_time(prod_ord_time);
 		product_orderVO.setProd_ord_stat(prod_ord_stat);
 		product_orderVO.setProd_ord_sum(prod_ord_sum);
 		product_orderVO.setUsed_pt(used_pt);

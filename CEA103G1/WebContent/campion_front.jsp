@@ -579,23 +579,29 @@ section.footer {
 	</section>
 	
 	<jsp:useBean id="productSvc" class="com.product.model.ProductService"/>
+	<jsp:useBean id="product_pictureSvc" scope="page" class="com.product_picture.model.Product_pictureService"/>
+	
 	<section class="products">
 		<div class="container">
 			<div class="row">
-				<c:forEach var="productVO" items="${productSvc.all}" begin="0" end="3">
+				<c:forEach var="productVO" items="${productSvc.all}" begin="4" end="7">
 				<div class="col-sm-3">
 					<a href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">
-					<img src="https://images.unsplash.com/photo-1444012104069-996724bf4a0a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=632&q=80">
+						<c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
+							<img src="${product_pictureVO.prod_pic}">
+						</c:forEach>
 					</a>
 					<a class="text" href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">${productVO.prod_name}</a>
 				</div>
 				</c:forEach>
 			</div>
 			<div class="row">
-				<c:forEach var="productVO" items="${productSvc.all}" begin="4" end="7">
+				<c:forEach var="productVO" items="${productSvc.all}" begin="8" end="11">
 				<div class="col-sm-3">
 					<a href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">
-					<img src="https://images.unsplash.com/photo-1444012104069-996724bf4a0a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=632&q=80">
+						<c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
+							<img src="${product_pictureVO.prod_pic}">
+						</c:forEach>
 					</a>
 					<a class="text" href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">${productVO.prod_name}</a>
 				</div>

@@ -194,7 +194,7 @@ public class Product_orderServlet extends HttpServlet {
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				Integer mbr_no = new Integer(req.getParameter("mbr_no").trim());
-				Timestamp prod_ord_time = java.sql.Timestamp.valueOf(req.getParameter("prod_ord_time").trim());
+//				Timestamp prod_ord_time = java.sql.Timestamp.valueOf(req.getParameter("prod_ord_time").trim());
 				Integer prod_ord_stat = new Integer(req.getParameter("prod_ord_stat").trim());
 				Integer prod_ord_sum = new Integer(req.getParameter("prod_ord_sum").trim());
 				Integer used_pt = new Integer(req.getParameter("used_pt").trim());
@@ -208,7 +208,7 @@ public class Product_orderServlet extends HttpServlet {
 
 				Product_orderVO product_orderVO = new Product_orderVO();
 				product_orderVO.setMbr_no(mbr_no);
-				product_orderVO.setProd_ord_time(prod_ord_time);
+//				product_orderVO.setProd_ord_time(prod_ord_time);
 				product_orderVO.setProd_ord_stat(prod_ord_stat);
 				product_orderVO.setProd_ord_sum(prod_ord_sum);
 				product_orderVO.setUsed_pt(used_pt);
@@ -218,7 +218,16 @@ public class Product_orderServlet extends HttpServlet {
 				product_orderVO.setShip_dist(ship_dist);
 				product_orderVO.setReceipt(receipt);
 				product_orderVO.setRmk(rmk);	
-				List<Product_order_detailsVO> list = new ArrayList();
+				
+				List<Product_order_detailsVO> list = new ArrayList<Product_order_detailsVO>();
+				Integer prod_no = new Integer(req.getParameter("prod_no"));
+				Integer prod_amt = new Integer(req.getParameter("prod_amt"));
+				Integer prod_unit_pc = new Integer(req.getParameter("prod_unit_pc"));
+				Product_order_detailsVO product_order_detailsVO = new Product_order_detailsVO();
+				product_order_detailsVO.setProd_no(prod_no);
+				product_order_detailsVO.setProd_amt(prod_amt);
+				product_order_detailsVO.setProd_unit_pc(prod_unit_pc);
+				list.add(product_order_detailsVO);
 				
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("product_orderVO", product_orderVO);
@@ -229,8 +238,8 @@ public class Product_orderServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				Product_orderService product_orderSvc = new Product_orderService();
-				product_orderVO = product_orderSvc.addProduct_order(mbr_no, prod_ord_time, prod_ord_stat, prod_ord_sum, used_pt, ship_meth, pay_meth, ship_cty, ship_dist, ship_add, receipt, rmk, list);
-				
+				product_orderVO = product_orderSvc.addProduct_order(mbr_no, prod_ord_stat, prod_ord_sum, used_pt, ship_meth, pay_meth, ship_cty, ship_dist, ship_add, receipt, rmk, list);
+
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/front-end/product_order/listAllProduct_order.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllProduct_order.jsp
