@@ -32,8 +32,16 @@
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 
 <style>
+	html, body {
+		margin: 0;
+		padding: 0;
+	/* 	background: #fff; */
+		background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("/CEA103G1/front-images/ShopFront.jpg") ;
+		background-size: 100%;
+		background-attachment: fixed;
+		color: #4B7F52;
+	}
   table#table-1 {
-	background-color: #CCCCFF;
     border: 2px solid black;
     text-align: center;
   }
@@ -46,12 +54,9 @@
     color: blue;
     display: inline;
   }
-</style>
-
-<style>
+  
   table {
 	width: 800px;
-	background-color: white;
 	margin-top: 5px;
 	margin-bottom: 5px;
   }
@@ -62,13 +67,16 @@
     padding: 5px;
     text-align: center;
   }
+  .container{
+  	opacity:0.7;
+  }
 </style>
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 
 </head>
-<body onload="connection()" bgcolor='white'>
+<body onload="connection()">
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
 
@@ -88,7 +96,7 @@
             <div class="card-wrapper">
                 <div class="row align-items-center">
                     <div class="col-12 col-md-4">
-                        <div>
+                        <div class="showPic">
 							<c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
 								<img class="inDiv" src="${product_pictureVO.prod_pic}" style="max-width:100%; height:auto;">
 							</c:forEach>
@@ -98,15 +106,14 @@
                         <div class="card-box">
                             <div class="row">
                                 <div class="col-md">
-                                    <p>${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}</p>
+                                    <p>【${product_categorySvc.getOneProduct_category(productVO.prod_cat_no).prod_cat_name}】</p>
                                     <h6 class="card-title mbr-fonts-style display-5">
                                         <strong>商品名稱:</strong>
                                     </h6>
                                     <p class="mbr-text mbr-fonts-style display-7">
                                         ${productVO.prod_name}
                                     </p>
-                                    <p>品牌資訊:${productVO.prod_bnd}</p>
-                                    <p>${productVO.prod_info}</p>                                    
+                                    <p>品牌資訊:${productVO.prod_bnd}</p>                                   
                                 </div>
                                 <div class="col-md-auto">
                               		<p>商品價格 </p>

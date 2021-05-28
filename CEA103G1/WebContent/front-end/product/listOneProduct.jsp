@@ -38,6 +38,15 @@
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 
 <style>
+	html, body {
+		margin: 0;
+		padding: 0;
+	/* 	background: #fff; */
+		background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("/CEA103G1/front-images/ShopFront.jpg") ;
+		background-size: 100%;
+		background-attachment: fixed;
+		color: #4B7F52;
+	}
   table#table-1 {
 	background-color: #CCCCFF;
     border: 2px solid black;
@@ -52,9 +61,6 @@
     color: blue;
     display: inline;
   }
-</style>
-
-<style>
   table {
 	width: 600px;
 	background-color: white;
@@ -67,6 +73,9 @@
   th, td {
     padding: 5px;
     text-align: center;
+  }
+  .container{
+  	opacity:0.7;
   }
 </style>
 
@@ -114,7 +123,7 @@
             <div class="card-wrapper">
                 <div class="row align-items-center">
                     <div class="col-12 col-md-3">
-                        <div>
+                        <div class="showPic">
 				            <c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
 								<img class="inDiv" src="${product_pictureVO.prod_pic}" style="max-width:100%; height:auto;">
 							</c:forEach>

@@ -213,6 +213,7 @@ public class Product_orderServlet extends HttpServlet {
 				product_orderVO.setPay_meth(pay_meth);
 				product_orderVO.setShip_cty(ship_cty);
 				product_orderVO.setShip_dist(ship_dist);
+				product_orderVO.setShip_dist(ship_add);
 				product_orderVO.setReceipt(receipt);
 				product_orderVO.setRmk(rmk);	
 				
