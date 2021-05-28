@@ -15,11 +15,14 @@
 <head>
 <title>看板管理</title>
 <link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-
+<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
 body {
   font-family: "Open Sans", sans-serif;
   line-height: 1.25;
+  background-color: #4e5452;
 }
 
 table {
@@ -106,6 +109,7 @@ table th {
 .board_manage{
 margin: 20px 20px 20px 20px;
 font-size:30px;
+display:inline-block;
 }
 .add_board{
 margin: 20px 20px 20px 20px;
@@ -115,8 +119,16 @@ margin: 20px 20px 20px 20px;
 
 </head>
 <body>
-
-<div class="board_manage">看板管理</div>
+<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+	<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
+	<div class="container">
+		<div class="row">
+			<div class="left col-3">
+				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
+			<div class="right col-9">
+			
+<div class="board_manage" style="color:white" >看板管理</div>
+<a class="board_manage" href="<%=request.getContextPath()%>/back-end/article_report/listAllArticle_Report.jsp">文章檢舉管理</a>
 
 
 
@@ -141,11 +153,12 @@ margin: 20px 20px 20px 20px;
 			<td>
 				 <div style="display:none">${board_classVO.bd_cl_no}</div>
 				 <div style="display:none">${board_classVO.bd_name}</div>
-			     <input type="button" class=modify_board id=modify_board_id value="修改">	     
+			     <button type="button" class="modify_board btn btn-primary" id=modify_board_id>修改</button>
+			      
 			</td>
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/board_class/board_class.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="刪除">
+			     <button type="submit" class="btn btn-primary">刪除</button>
 			     <input type="hidden" name="bd_cl_no"  value="${board_classVO.bd_cl_no}">
 			     <input type="hidden" name="action" value="delete"></FORM>
 			</td>
@@ -153,7 +166,9 @@ margin: 20px 20px 20px 20px;
 	</c:forEach>
 </table>
 
-
+</div>
+</div>
+</div>
 		<div class="modal fade" id="add_board_modal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">

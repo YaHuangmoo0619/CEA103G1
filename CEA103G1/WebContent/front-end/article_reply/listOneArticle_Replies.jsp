@@ -247,6 +247,7 @@ margin: 0px 10px 0px 0px;
 			data : {action: action,art_rep_no:art_rep_no}, //參數傳遞 
 			success : function(data) {
 				alert("刪除留言成功");
+				window.location.reload();
 			}
 		}); 
 	})

@@ -365,7 +365,7 @@ min-hight:38px;
 <%--         			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp">熱門</a> --%>
 					<!-- 	如果有登入的話 -->
 					<c:if test="${not empty memberVO }">
-					<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/addArticle.jsp';">追蹤</div> 
+					<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listFollowBoardArticle.jsp';">追蹤</div> 
 					</c:if>
 					<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
 					<c:if test="${empty memberVO }"> 
@@ -599,8 +599,10 @@ jedis.close();
 			show : true
 		});
 		
-	$('#basicModal').on('hidden.bs.modal', function () { 
+	$('#basicModal').on('hidden.bs.modal', function () {
+		
 		window.history.go(-1);
+		
 	})
 
   	var infScroll = new InfiniteScroll( ".container", {
