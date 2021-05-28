@@ -231,6 +231,12 @@ label{
 		 </div>
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<script src="<%=request.getContextPath()%>/front-end/member/city_dist.js"></script>
+<script type="text/javascript">
+	window.onload = function () {
+		AddressSeleclList.Initialize('city', 'dist');	
+	};
+</script>
 <script>
 	$("#mbr_no").focus(function(){
 		$("#mbr_no").css("outline","none");
