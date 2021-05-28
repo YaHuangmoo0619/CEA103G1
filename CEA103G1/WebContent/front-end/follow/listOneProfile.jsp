@@ -51,7 +51,7 @@
 <meta charset="BIG5">
 
 <link rel="stylesheet" type="text/css" href="/CEA103G1/profile.css">
-<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
+<%-- <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%> --%>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
@@ -288,7 +288,7 @@ margin:0px 0px 0px 20px;
 
 </head>
 <body>
-	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
+<%-- 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%> --%>
     <header>
         <div class="container">
             <div class="profile">
@@ -554,7 +554,7 @@ margin:0px 0px 0px 20px;
 							data-dismiss="modal">返回</button>
 						<input type="hidden" name="mbr_no" value="<%=mbr_no_self%>">		
 						<input type="hidden" name="action" value="modify_profile">	
-						<input type="submit" value="送出修改" class="btn btn-primary">
+						<input type="button" value="送出修改" class="btn btn-primary to_modify_ajax">
 					</div>
 					</form>
 				</div>
@@ -628,7 +628,7 @@ margin:0px 0px 0px 20px;
 		 	 $(this).prevAll().show();
 		 	 $(this).nextAll().show();
 		 	 
-// 		 	待解決: 還要ajax刷新這個人的粉絲名單名單，不然會造成明明追蹤/取消追蹤，但點進去還沒有更新
+
 
  	}
 	
@@ -648,6 +648,21 @@ margin:0px 0px 0px 20px;
 	 	 $(this).hide();
 	 	 $(this).prevAll().show();
 	 	 $(this).nextAll().show();
+	});
+	
+	
+	$(".to_modify_ajax").click(function(){
+	 	 var update_profile = $("#exampleFormControlTextarea1").val();
+	 	 console.log(update_profile);
+			$.ajax({
+				type : "POST",
+				url : "http://localhost:8081/CEA103G1/follow/follow.do",
+				data : {action: "modify_profile",mbr_no:<%=mbr_no_self%>,new_profile:update_profile}, //參數傳遞 
+				success : function(data) {
+					alert("更新簡介成功");
+				}
+			});
+			window.location.reload();
 	});
 	
 	

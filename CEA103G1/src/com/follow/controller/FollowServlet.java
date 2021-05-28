@@ -367,16 +367,13 @@ public class FollowServlet extends HttpServlet {
 		
 		if ("modify_profile".equals(action)) { 
 				
-				Enumeration<String> e = req.getHeaders("Referer");
-				String a;
-				if(e.hasMoreElements()){
-					a=(String)e.nextElement();
-					}else {
-						a="heelo";
-					}
+
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String mbr_no = req.getParameter("mbr_no");
+				System.out.println("mbr_no:"+mbr_no);
 				String new_profile = req.getParameter("new_profile");
+				
+				System.out.println("new_profile:"+new_profile);
 				
 				/***************************2.開始新增資料*****************************************/
 				Jedis jedis = new Jedis("localhost", 6379);
@@ -385,11 +382,7 @@ public class FollowServlet extends HttpServlet {
 				jedis.set("user:"+mbr_no+":profile", new_profile);
 				jedis.close();// Redis新增結束				
 				
-				/***************************3.查詢完成,準備轉交(Send the Success view)*************/			
 
-				String url = "/front-end/follow/listOneProfile.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(a); // 成功轉交 listOneProfile.jsp.jsp
-				successView.forward(req, res);
 		}
 		
 		
