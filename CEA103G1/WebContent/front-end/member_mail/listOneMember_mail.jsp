@@ -111,7 +111,7 @@ img.info{
 			<jsp:useBean id="member_mail_pictureSvc" class="com.member_mail_picture.model.Member_mail_pictureService"/>
 			<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 			<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
-			
+			<jsp:useBean id="campsite_ownerSvc" class="com.campsite_owner.model.Campsite_ownerService"/>
 				<p>寄件人：&nbsp;${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</p>
 					
 				<p>收件人：&nbsp;${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</p>
