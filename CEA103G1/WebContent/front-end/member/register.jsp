@@ -194,7 +194,6 @@ th, td {
 <script type="text/javascript">
  window.onload = function () {
 		 AddressSeleclList.Initialize('city', 'dist');
-		
    };
 </script>
 

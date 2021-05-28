@@ -20,7 +20,7 @@
             height: 100%;
         }
         body {
-            background: url("<%=request.getContextPath()%>/front-images/register-blur2.jpg") no-repeat center center / cover;
+            background: url("<%=request.getContextPath()%>/front-images/register-blur3.png") no-repeat center center / cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,7 +28,7 @@
         .login {
             width: 350px;
             height: 450px;
-            background-color: rgba(215, 223, 215, .8);
+            background-color: rgba(215, 223, 215, .9);
             border-radius: 10px;
             border: 3px solid #fff;
             box-shadow: 0 0 60px #000;
@@ -111,12 +111,13 @@
                 <button class="btn">登入</button>  
                 <input type="hidden" name="action" value="login_Member">
             </div>
-           
+            <br>
         	<div>
-                <a href="<%=request.getContextPath()%>/front-end/member/signup.jsp">建立帳號</a>  
+                <a href="<%=request.getContextPath()%>/front-end/member/signup.jsp">還不是會員? 立即註冊</a>  
             </div>
+            <br>
             <div>
-                <a href="<%=request.getContextPath()%>/front-end/campsite_owner/forget.jsp">忘記密碼</a>  
+                <a href="<%=request.getContextPath()%>/front-end/member/forgetPassword.jsp">忘記密碼</a>  
             </div>
             <div>
              <%-- 錯誤表列 --%>
