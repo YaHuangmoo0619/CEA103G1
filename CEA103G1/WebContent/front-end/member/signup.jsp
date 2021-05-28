@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.member.model.*"%>
 <%@ page import="java.util.*"%>
@@ -9,15 +9,7 @@
 	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 %>
 
-<% 
-  java.sql.Date bday = null;
-  try {
-	    bday = memberVO.getBday();
-   } catch (Exception e) {
-	    bday = new java.sql.Date(System.currentTimeMillis());
-   }
-%>
-<!-- <script src="https://cdn.jsdelivr.net/npm/tw-city-selector@2.1.1/dist/tw-city-selector.min.js"></script> -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,46 +19,35 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/front-end/member/signup.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
 <title>Campion營家 | 註冊會員</title>
-
-      
-<style>
-  .xdsoft_datetimepicker .xdsoft_datepicker {
-           width:  300px;   /* width:  300px; */
-  }
-  .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
-           height: 151px;   /* height:  151px; */
-  }
-</style>
 </head>
-
 <body>
 <div class="container">
-	<a href="<%=request.getContextPath()%>/campion_front.jsp">回首頁</a>
-	<section id="Steps" class="steps-section">
-    	<h2 class="steps-header">註冊成為Campion營家會員</h2>
-    </section>
-	<form method="post" action="<%=request.getContextPath()%>/member/member.do" name="form1" enctype="multipart/form-data">
-    	<div class="title"></div>
+<a href="<%=request.getContextPath()%>/campion_front.jsp">回首頁</a>
+<section id="Steps" class="steps-section">
+	<h2 class="steps-header">註冊成為Campion營家會員</h2>
+</section>
+<form method="post" action="<%=request.getContextPath()%>/member/member.do" name="form1" enctype="multipart/form-data">
+	<div class="title"></div>
       	<div class="row info-form">
         	<h3>基本資料</h3>
         	
         <div class="input-group input-group-icon">
         	<div class="input-name">姓名：</div>
-          	<input type="text" name="name" minlength="1" maxlength="12" />
+          	<input type="text" name="name"/>
           	<div class="input-icon"><i class="fal fa-id-card-alt"></i></div>
           	<p id="errorMsgName" style="font-size:2px; color:red; margin-left:105px;"></p>
         </div>
         
         <div class="input-group input-group-icon">
         	<div class="input-name">帳號：</div>
-          	<input type="text" name="acc" minlength="1" />
+          	<input type="text" name="acc"/>
           	<div class="input-icon"><i class="fal fa-user-circle"></i></div>
           	<p id="errorMsgUserId" style="font-size:2px; color:red; margin-left:105px;"></p>
         </div>
         
         <div class="input-group input-group-icon">
         	<div class="input-name">密碼：</div>
-          	<input type="password" name="pwd" minlength="1" maxlength="12" />
+          	<input type="password" name="pwd"/>
           	<div class="input-icon"><i class="fal fa-user-lock"></i></div>
           	<p id="errorMsgUserPwd" style="font-size:2px; color:red; margin-left:105px;"></p>
         </div>
@@ -104,28 +85,15 @@
           	<p id="errorMsgID" style="font-size:2px; color:red; margin-left:105px;"></p>
         </div>
         
-        <div class="input-group input-group-icon">
-        <table style= "margin-left:58px;">		
+        
+        <table style= "margin-left:50.4px;">		
         	<tr>
-				<td>縣市    :  </td>
-				<td><select id="city" name="city" style="width:120px; color:#000000;  "></select></td>
-				<td>區域:</td>
-				<td><select id="dist" name="dist" style="width:120px; color:#000000;  "></select></td>
+				<td>地址：</td>
+				<td><select id="city" name="city" style="width:120px; color:#000000;"></select></td>
+				<td><select id="dist" name="dist" style="width:120px; color:#000000;"></select></td>
+				<td><input type="text" name="add" style="width:280px; color:#000000;"/></td>
 			</tr>
         </table>
-<!--         <div class="input-group input-group-icon"> -->
-<!--         	<div class="input-name">地址：</div> -->
-<!--           	<input type="text" id="add" > -->
-<!--           	<input type="hidden" name="add" /> -->
-<!--           	<div class="input-icon"><i class="fas fa-home"></i></div> -->
-<!--         </div> -->
-        
-        <div class="input-group input-group-icon">
-        	<div class="input-name">地址：</div>
-          	<input type="text" name="add" />
-          	<div class="input-icon"><i class="far fa-home"></i></div>
-        </div>
-        </div>
 
 
       <div class="row info-form">
@@ -145,7 +113,8 @@
       	<button  class="next-step">註冊</button>
       </div>
 	</div>
-    </form>
+	</div>
+</form>
     
     
     <script>
@@ -164,21 +133,38 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="<%=request.getContextPath()%>/front-end/member/city_dist.js"></script>
 <script type="text/javascript">
- window.onload = function () {
-		 AddressSeleclList.Initialize('city', 'dist');
-		
-   };
+	window.onload = function () {
+		AddressSeleclList.Initialize('city', 'dist');	
+	};
 </script>
+<!-- =========================================以下為 datetimepicker 之相關設定========================================== -->
+<% 
+  java.sql.Date bday = null;
+  try {
+	    bday = memberVO.getBday();
+   } catch (Exception e) {
+	    bday = new java.sql.Date(System.currentTimeMillis());
+   }
+%>
     
-    
-  </div>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.css" />
+  
   	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
   	<script src="https://unpkg.com/imask"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/front-end/signup.js"></script>
 	<script src="<%=request.getContextPath()%>/datetimepicker/jquery.js"></script>
 	<script src="<%=request.getContextPath()%>/datetimepicker/jquery.datetimepicker.full.js"></script>
-    <script src="<%=request.getContextPath()%>/build/js/countrySelect.min.js"></script>
- <script>
+<%--     <script src="<%=request.getContextPath()%>/build/js/countrySelect.min.js"></script> --%>
+    
+    <style>
+  .xdsoft_datetimepicker .xdsoft_datepicker {
+           width:  300px;   /* width:  300px; */
+  }
+  .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+           height: 151px;   /* height:  151px; */
+  }
+</style>
+ 	<script>
         $.datetimepicker.setLocale('zh');
         $('#bday').datetimepicker({
  	       theme: '',              //theme: 'dark',
@@ -191,7 +177,9 @@
            //minDate:               '-1970-01-01', // 去除今日(不含)之前
            //maxDate:               '+1970-01-01'  // 去除今日(不含)之後
         });
-        
+    </script>
+    
+    <script>    
         $("#country").countrySelect({
         		defaultCountry:"tw"
         });
@@ -218,9 +206,9 @@
         	
         	//check password repeat
         	$("#check-repeat-pwd").blur(function(){
-        		let user_pwd = $("input[name=user_pwd]").val();
+        		let pwd = $("input[name=pwd]").val();
             	let re_enter_pwd = $("input[name=re_enter_pwd]").val();
-            	if(re_enter_pwd != user_pwd){
+            	if(re_enter_pwd != pwd){
             		$("#errorMsgUserRePwd").text("＊密碼不符")
         			$("input[name=re_enter_pwd]").focus()
         			$("input[name=re_enter_pwd]").addClass("errormsg")
@@ -240,42 +228,42 @@
         	
         	function checkEmail(data){
         		let emailArr = data.trim().split(",");
-        		let email = $("input[name=email]").val();
+        		let email = $("input[name=mail]").val();
 	   			for(i in emailArr){
 	   				if(emailArr[i] === email){
 		   				$("#errorMsgEmail").text("＊此電子信箱已被註冊")
-		   				$("input[name=email]").focus()
-	        			$("input[name=email]").addClass("errormsg")
+		   				$("input[name=mail]").focus()
+	        			$("input[name=mail]").addClass("errormsg")
 	   				}
 	   			}  		
         	}
         	function validForm(){
         		let name = $("input[name=name]").val();
-        		let user_id = $("input[name=user_id]").val();
-        		let user_pwd = $("input[name=user_pwd]").val();
-        		let personal_id= $("input[name=personal_id]").val();
+        		let id = $("input[name=id]").val();
+        		let pwd = $("input[name=pwd]").val();
+        		let id= $("input[name=id]").val();
         		if(name.trim() === ""){
         			$("#errorMsgName").text("＊此欄位不得為空")
         			$("input[name=name]").focus()
         			$("input[name=name]").addClass("errormsg")
 	        		return false;
         		}
-        		if(user_id.trim() === ""){
+        		if(id.trim() === ""){
         			$("#errorMsgUserId").text("＊此欄位不得為空")
-        			$("input[name=user_id]").focus()
-        			$("input[name=user_id]").addClass("errormsg")
+        			$("input[name=id]").focus()
+        			$("input[name=id]").addClass("errormsg")
 	        		return false;
         		}
-        		if(user_pwd.trim() === ""){
+        		if(pwd.trim() === ""){
         			$("#errorMsgUserPwd").text("＊此欄位不得為空")
-        			$("input[name=user_pwd]").focus()
-        			$("input[name=user_pwd]").addClass("errormsg")
+        			$("input[name=pwd]").focus()
+        			$("input[name=pwd]").addClass("errormsg")
 	        		return false;
         		}
         		if(isValidID(personal_id.trim()) === false){
         			$("#errorMsgID").text("＊身分證資料有誤")
-        			$("input[name=personal_id]").focus()
-        			$("input[name=personal_id]").addClass("errormsg")
+        			$("input[name=id]").focus()
+        			$("input[name=id]").addClass("errormsg")
         			return false;
         		}
         	}
@@ -316,14 +304,14 @@
 			$("input[name=name]").removeClass("errormsg")
   		})
   		
-  		$("input[name=user_id]").keydown(function (){
+  		$("input[name=id]").keydown(function (){
       		$("#errorMsgUserId").text("")
-			$("input[name=user_id]").removeClass("errormsg")
+			$("input[name=id]").removeClass("errormsg")
   		})
   		
-  		$("input[name=user_pwd]").keydown(function (){
+  		$("input[name=pwd]").keydown(function (){
       		$("#errorMsgUserPwd").text("")
-			$("input[name=user_pwd]").removeClass("errormsg")
+			$("input[name=pwd]").removeClass("errormsg")
   		})
   		
   		$("input[name=re_enter_pwd]").keydown(function (){
@@ -331,16 +319,15 @@
 			$("input[name=re_enter_pwd]").removeClass("errormsg")
   		})
   		
-  		$("input[name=email]").keydown(function (){
+  		$("input[name=mail]").keydown(function (){
       		$("#errorMsgEmail").text("")
-			$("input[name=email]").removeClass("errormsg")
+			$("input[name=mail]").removeClass("errormsg")
   		})
   		
-  		$("input[name=personal_id]").keydown(function (){
+  		$("input[name=id]").keydown(function (){
       		$("#errorMsgID").text("")
-			$("input[name=personal_id]").removeClass("errormsg")
-  		})
-        	    	
-  </script>
+			$("input[name=id]").removeClass("errormsg")
+  		})  	    	
+	</script>
 </body>
 </html>
