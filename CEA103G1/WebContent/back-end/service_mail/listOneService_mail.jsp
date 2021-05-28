@@ -124,7 +124,7 @@ img.info{
 				</c:forEach>
 				</p>
 				<hr>
-				<p style="font-size:0.5em">發信時間：&nbsp;${service_mailVO.mail_time}</p>
+				<p style="font-size:0.5em;margin-left:60%;">發信時間：&nbsp;${service_mailVO.mail_time}</p>
 						
 			</div>
 			<form method="post" action="<%=request.getContextPath()%>/back-end/service_mail/addService_mail.jsp">		

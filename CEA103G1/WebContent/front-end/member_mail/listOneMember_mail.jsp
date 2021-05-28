@@ -112,9 +112,9 @@ img.info{
 			<jsp:useBean id="employeeSvc" class="com.employee.model.EmployeeService"/>
 			<jsp:useBean id="memberSvc" class="com.member.model.MemberService"/>
 			
-				<p>寄件人：&nbsp;${member_mailVO.send_no}${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</p>
+				<p>寄件人：&nbsp;${employeeSvc.getOneEmployee(member_mailVO.send_no).name}${memberSvc.getOneMember(member_mailVO.send_no).name}${campsite_ownerSvc.getOneCampsite_owner(member_mailVO.send_no).name}</p>
 					
-				<p>收件人：&nbsp;${member_mailVO.rcpt_no}${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</p>
+				<p>收件人：&nbsp;${memberSvc.getOneMember(member_mailVO.rcpt_no).name}</p>
 					
 				<p>內容：</p>
 				<p>${member_mailVO.mail_cont.trim()}</p>
@@ -126,7 +126,7 @@ img.info{
 				</c:forEach>
 				</p>
 				<hr>
-				<p style="font-size:0.5em">發信時間：&nbsp;${member_mailVO.mail_time}</p>
+				<p style="font-size:0.5em;margin-left:70%;">發信時間：&nbsp;${member_mailVO.mail_time}</p>
 						
 			</div>
 			<form method="post" action="<%=request.getContextPath()%>/front-end/member_mail/addMember_mail.jsp">		

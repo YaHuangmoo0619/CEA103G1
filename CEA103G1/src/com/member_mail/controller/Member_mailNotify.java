@@ -178,8 +178,8 @@ public class Member_mailNotify {
 						MemberService memberSvc = new MemberService();
 						if(member_mailVO != null) {
 							member_mailForWS.setMail_no(member_mailVO.getMail_no());
-							member_mailForWS.setSend_no(member_mailVO.getSend_no() + memberSvc.getOneMember(member_mailVO.getSend_no()).getName());
-							member_mailForWS.setRcpt_no(member_mailVO.getRcpt_no() + memberSvc.getOneMember(member_mailVO.getRcpt_no()).getName());
+							member_mailForWS.setSend_no(memberSvc.getOneMember(member_mailVO.getSend_no()).getName());
+							member_mailForWS.setRcpt_no(memberSvc.getOneMember(member_mailVO.getRcpt_no()).getName());
 							member_mailForWS.setMail_read_stat(member_mailVO.getMail_read_stat());
 							member_mailForWS.setMail_stat(member_mailVO.getMail_stat());
 							member_mailForWS.setMail_cont(member_mailVO.getMail_cont());
