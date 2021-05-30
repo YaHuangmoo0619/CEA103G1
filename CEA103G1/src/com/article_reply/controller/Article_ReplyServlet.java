@@ -350,8 +350,8 @@ public class Article_ReplyServlet extends HttpServlet{
 					//狦セrep_contΤ疭﹚才
 					if(rep_cont.contains("#B"+i+" ")) {
 						//碞秈︽琩高砆tag硂加痙ē痷龟痙ē絪腹非称秈︽蠢传
-
-						rep_cont=rep_cont.replace("#B"+i+" ","<div class=oneReply>#B"+i+" </div>" );
+						rep_cont=rep_cont.replace("#B"+i+" ","<a class=oneReply href=\"#\">#B"+i+" </a>" );
+//						rep_cont=rep_cont.replace("#B"+i+" ","<div class=oneReply>#B"+i+" </div>" );
 //						rep_cont=rep_cont.replace("#B"+i+" ","<a href=\"https://www.google.com/\">#B"+i+" </a>" );	
 					}
 					

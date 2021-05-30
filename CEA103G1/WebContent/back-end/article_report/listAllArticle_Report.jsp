@@ -152,7 +152,7 @@ table th {
 				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
 			<div class="right col-9">
 <div class="board_manage" style="color:white" >被檢舉文章管理</div>
-<a class="board_manage" href="<%=request.getContextPath()%>/back-end/board_class/listAllBoard_class.jsp">文章檢舉管理</a>
+<a class="board_manage" href="<%=request.getContextPath()%>/back-end/board_class/listAllBoard_class.jsp">看板管理</a>
 	  <table>
   <thead>
     <tr>

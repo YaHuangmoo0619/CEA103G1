@@ -439,8 +439,8 @@ public class ArticleServlet extends HttpServlet {
 					save_to_redis=save_to_redis.substring(0, 30);	
 				}
 				
-
-
+				System.out.println("save_to_redis:"+save_to_redis);
+				
 		
 				Integer likes = 0;
 				Integer art_stat = 0;
@@ -510,13 +510,13 @@ public class ArticleServlet extends HttpServlet {
 					jedis.sadd("tag:"+count+":posts", no.toString());  //tag:心情:posts   17
 				}
 				
-				jedis.close();// Redis新增結束
+				
 				
 
 				jedis.set("post:"+no+":art_simple_cont", save_to_redis);
 				jedis.close();
 				System.out.println("最後結果:"+save_to_redis);//最後結果，準備加入redis資料庫
-				
+				jedis.close();// Redis新增結束
 				
 				//新增完文章如果發文看板符合，就開始增加經驗值
 				if(bd_cl_no==1 || bd_cl_no==3 || bd_cl_no ==9) { //露營知識分享、露營日記、部落客分享

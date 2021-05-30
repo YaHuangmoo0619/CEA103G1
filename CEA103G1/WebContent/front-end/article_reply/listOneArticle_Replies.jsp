@@ -213,9 +213,9 @@ margin: 0px 10px 0px 0px;
 		var floor_html = $(this).html(); //ъ璶taghtml ㄒ #B1
 		console.log("floor_html:"+floor_html);
 		var Array_Split = floor_html.split("B"); //ノBち澄  莉眔璶琌碭加  ㄒ1
-		alert("瞷砆翴琌碭加:"+Array_Split[1]); //test
+// 		alert("瞷砆翴琌碭加:"+Array_Split[1]); //test
 		var real_rep_no_wait_split = $('#reply'+Array_Split[1]).children(".art_rep_no").html(); //莉眔1加痙ē絪腹单单秈︽ajax琩高
-		alert("real_rep_no_wait_split:"+real_rep_no_wait_split);
+// 		alert("real_rep_no_wait_split:"+real_rep_no_wait_split);
 // 		var real_rep_no_split = real_rep_no_wait_split.split(":");
 // 		alert("ウ痙ē絪腹:"+real_rep_no_split[1]); //ъ稱璶痙ē絪腹 test
 		$.ajax({ //璽砫肚article_replyServlet 

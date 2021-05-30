@@ -18,6 +18,8 @@ import com.article.model.ArticleService;
 import com.article.model.ArticleVO;
 import com.follow.model.FollowService;
 import com.follow.model.FollowVO;
+import com.member.model.MemberService;
+import com.member.model.MemberVO;
 
 import redis.clients.jedis.Jedis;
 
@@ -338,7 +340,7 @@ public class FollowServlet extends HttpServlet {
 				System.out.println("flwed_mbr_no:"+flwed_mbr_no);
 				String str2 = new String(req.getParameter("flw_mbr_no"));
 				Integer flw_mbr_no = new Integer(str2);
-				System.out.println("flw_mbr_no:"+flw_mbr_no);
+				System.out.println("flw_mbr_no1:"+flw_mbr_no);
 				FollowVO followVO = new FollowVO();
 				followVO.setFlwed_mbr_no(flwed_mbr_no);
 				followVO.setFlw_mbr_no(flw_mbr_no);
@@ -347,6 +349,39 @@ public class FollowServlet extends HttpServlet {
 				followVO = followSvc.addFollow(flwed_mbr_no, flw_mbr_no);
 
 		}
+		
+		
+		if ("add_follow1".equals(action)) { // 新增一筆訂閱關係
+			
+			String str = new String(req.getParameter("flwed_mbr_no")); //目前取得是帳號: lavida
+			MemberService memberSvc = new MemberService();
+			List<MemberVO> memberVO_all = memberSvc.getAll(); //全部的會員
+			int flwed_mbr_no=0 ; //被追蹤的人的號碼
+			
+			for(MemberVO vo_count : memberVO_all) {
+			if(vo_count.getAcc()==str) {
+				flwed_mbr_no=vo_count.getMbr_no();
+				}	
+			}
+			
+			MemberVO memberVO = new MemberVO();
+			memberVO = memberSvc.getOneMember(flwed_mbr_no);
+			
+			
+			System.out.println("flwed_mbr_no:"+flwed_mbr_no);
+			
+			
+			String str2 = new String(req.getParameter("flw_mbr_no"));
+			Integer flw_mbr_no = new Integer(str2);
+			System.out.println("flw_mbr_no:"+flw_mbr_no);
+			FollowVO followVO = new FollowVO();
+			followVO.setFlwed_mbr_no(flwed_mbr_no);
+			followVO.setFlw_mbr_no(flw_mbr_no);
+			/***************************2.開始新增資料*****************************************/
+			FollowService followSvc = new FollowService();
+			followVO = followSvc.addFollow(flwed_mbr_no, flw_mbr_no);
+
+	}
 		
 		
 		if ("cancel_follow".equals(action)) { // 新增一筆訂閱關係

@@ -4,10 +4,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
   	Article_ReplyVO article_replyVO = (Article_ReplyVO) request.getAttribute("article_replyVO"); //Article_ReplyServlet.java(Concroller), 存入req的articleVO物件
-	pageContext.setAttribute("article_replyVO", article_replyVO);
+	int mbr_no = article_replyVO.getMbr_no();
+	pageContext.setAttribute("mbr_no", mbr_no);
+  	pageContext.setAttribute("article_replyVO", article_replyVO);
 %>
 
-
+<jsp:useBean id="memberDAO" scope="page" class="com.member.model.MemberDAO" />
 
 <html>
 <head>
@@ -58,8 +60,11 @@
 
     <tr>
 		<td>留言者</td>
-		<td><%=article_replyVO.getMbr_no()%></td>
-		
+		<c:forEach var="memberall" items="${memberDAO.all}">
+		<c:if test="${memberall.mbr_no==mbr_no}">
+		<td><a href="<%=request.getContextPath()%>/follow/follow.do?mbr_no=${memberall.mbr_no}&action=getProfile&mbr_no_mine=${mbr_no}">&nbsp;&nbsp;${memberall.acc}</a></td>
+		</c:if>
+		</c:forEach>
    </tr>
    <tr>
 		<td>留言內容</td>
