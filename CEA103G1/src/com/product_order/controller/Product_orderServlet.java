@@ -378,5 +378,40 @@ public class Product_orderServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		
+		if("check".equals(action)) {
+			try {
+				Product_orderService product_orderSvc = new Product_orderService();
+				Product_orderVO product_orderVO = product_orderSvc.getOneProduct_order(Integer.valueOf(req.getParameter("prod_ord_no")));
+				
+				//Bootstrap_modal
+				boolean openModal=true;
+				req.setAttribute("openModal",openModal );
+				
+				req.setAttribute("product_orderVO", product_orderVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/product_order/listAllProduct_order.jsp");
+				successView.forward(req, res);
+			}catch(Exception e) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/product_order/listAllProduct_order.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if("cancel".equals(action)) {
+			try {
+				Integer prod_ord_no = Integer.valueOf(req.getParameter("prod_ord_no"));
+				Product_orderService product_orderSvc = new Product_orderService();
+				product_orderSvc.cancel(prod_ord_no);
+				Product_orderVO product_orderVO = product_orderSvc.getOneProduct_order(prod_ord_no);
+				req.setAttribute("product_orderVO", product_orderVO);
+				RequestDispatcher successView = req.getRequestDispatcher("/front-end/product_order/listAllProduct_order.jsp");
+				successView.forward(req, res);
+			} catch (Exception e) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/product_order/listAllProduct_order.jsp");
+				failureView.forward(req, res);
+			}
+			
+		}
 	}
 }

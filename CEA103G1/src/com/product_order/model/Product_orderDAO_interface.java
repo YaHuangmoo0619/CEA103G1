@@ -15,6 +15,7 @@ public interface Product_orderDAO_interface {
      //雅凰加的
      public void update_order_stat(Integer prod_ord_stat, Integer prod_ord_no);
      //雅凰加的
+     public void cancel(Integer prod_ord_no);
 
      public List<Product_orderVO> getByMbr(Integer mbr_no);
 

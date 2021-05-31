@@ -32,15 +32,15 @@
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 
 <style>
-	html, body {
-		margin: 0;
-		padding: 0;
-	/* 	background: #fff; */
-		background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("/CEA103G1/front-images/ShopFront.jpg") ;
-		background-size: 100%;
-		background-attachment: fixed;
-		color: #4B7F52;
-	}
+html, body {
+	margin: 0;
+	padding: 0;
+/* 	background: #fff; */
+	background-image: linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)), url("/CEA103G1/front-images/ShopFront.jpg") ;
+	background-size: 100%;
+	background-attachment: fixed;
+	color: #4B7F52;
+}
   table#table-1 {
     border: 2px solid black;
     text-align: center;
@@ -141,38 +141,6 @@
     </div>
     </c:forEach>
 </section>
-<%--
-<c:if test="${openModal!=null}">
-		<div class="modal" tabindex="-1" role="dialog" id="Modal">
-		     <div class="modal-dialog modal-lg" role="document"> 
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <h5 class="modal-title">${productVO.prod_no}.&nbsp;${productVO.prod_name}&nbsp;${productVO.prod_stat==1?'¡ô¤W¬[¡ô':'¡õ¤U¬[¡õ'}</h5>
-		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button> 
-		            </div>
-		            <div class="modal-body">
- 		            ${productVOOne.prod_no} 
-						<jsp:include page="listOneProduct.jsp" />
-		            </div>
-		            <div class="modal-footer">
-		            	<form method="post" action="<%=request.getContextPath()%>/product/product.do" style="text-align:right;">
-							<input type="hidden" name="prod_no" value="${productVO.prod_no}">
-							<input type="hidden" name="action" value="getOne_For_Update">
-							<input type="submit" class="btn btn-secondary" value="­×§ï">
-						</form>
-		            </div>
-		       </div>
-		   </div>
-		</div>
-
-<script>
-	$('#Modal').modal({
-	  	show :true
-	}); 
-</script>
-</c:if>--%>
-
-<%-- <%@ include file="page2.file" %> --%> 
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>

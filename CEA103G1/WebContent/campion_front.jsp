@@ -586,30 +586,30 @@ section.footer {
 			<div class="row">
 				<c:forEach var="productVO" items="${productSvc.all}" begin="4" end="7">
 				<div class="col-sm-3">
-					<a href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">
+					<a href="<%=request.getContextPath() %>/product/product.do?action=getOne_For_Display&prod_no=${productVO.prod_no}">
 						<c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
 							<img src="${product_pictureVO.prod_pic}">
 						</c:forEach>
 					</a>
-					<a class="text" href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">${productVO.prod_name}</a>
+					<a class="text" href="<%=request.getContextPath() %>/product/product.do?action=getOne_For_Display&prod_no=${productVO.prod_no}">${productVO.prod_name}</a>
 				</div>
 				</c:forEach>
 			</div>
 			<div class="row">
 				<c:forEach var="productVO" items="${productSvc.all}" begin="8" end="11">
 				<div class="col-sm-3">
-					<a href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">
+					<a href="<%=request.getContextPath() %>/product/product.do?action=getOne_For_Display&prod_no=${productVO.prod_no}">
 						<c:forEach var="product_pictureVO" items="${product_pictureSvc.findByProd_no(productVO.prod_no)}">
 							<img src="${product_pictureVO.prod_pic}">
 						</c:forEach>
 					</a>
-					<a class="text" href="<%=request.getContextPath() %>/front-end/product/listOneProduct.jsp">${productVO.prod_name}</a>
+					<a class="text" href="<%=request.getContextPath() %>/product/product.do?action=getOne_For_Display&prod_no=${productVO.prod_no}">${productVO.prod_name}</a>
 				</div>
 				</c:forEach>
 			</div>
 			<div class="row">
 				<div class="col-sm">
-					<a href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp"><div class="more">> 更多商品</div></a>
+					<a href="<%=request.getContextPath() %>/front-end/product/listAllProduct.jsp?"><div class="more">> 更多商品</div></a>
 				</div>
 			</div>
 		</div>
