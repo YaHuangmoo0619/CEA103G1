@@ -350,7 +350,7 @@ public class EmployeeServlet extends HttpServlet {
 		
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("employeeVO", employeeVO); // 資料庫update成功後,正確的的employeeVO物件,存入req
+				req.setAttribute("employeeVOUpdate", employeeVO); // 資料庫update成功後,正確的的employeeVO物件,存入req
 				String url = "/back-end/employee/listAllEmployee.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmployee.jsp
 				successView.forward(req, res);
@@ -526,14 +526,14 @@ public class EmployeeServlet extends HttpServlet {
 					errorMsgs.put("accError",new String[] {"請輸入英文字母或數字，共8個字元"});
 				}
 				
-				String pwd = req.getParameter("pwd");
+				String pwdOrigin = req.getParameter("pwd");
 				String pwdReg = "^[(a-zA-Z)(0-9)]{8,8}";
-				if(pwd == null ||pwd.trim().isEmpty()) {
+				if(pwdOrigin == null ||pwdOrigin.trim().isEmpty()) {
 					errorMsgs.put("pwdError",new String[] {"請輸入密碼"});
-				}else if(!pwd.trim().matches(pwdReg)) {
+				}else if(!pwdOrigin.trim().matches(pwdReg)) {
 					errorMsgs.put("pwdError",new String[] {"請輸入英文字母或數字，共8個字元"});
 				}
-				
+				String pwd = changePwdforDatabase(pwdOrigin);
 				EmployeeService employeeSvc = new EmployeeService();
 				EmployeeVO employeeVO = employeeSvc.findForLogin(acc, pwd);
 				if(employeeVO == null) {

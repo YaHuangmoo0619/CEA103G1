@@ -544,6 +544,14 @@ public class MemberServlet extends HttpServlet {
 				} catch (Exception e) {
 					errorMsgs.add("密碼格式不正確");
 				}
+				
+				MemberService memberSvc2 = new MemberService();
+				MemberVO memberVO2 = memberSvc2.loginMember(acc, pwd);
+				
+				if(memberVO2 != null && memberVO2.getAcc_stat() == 3) {
+					errorMsgs.add("您已被停權");
+				}
+				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req

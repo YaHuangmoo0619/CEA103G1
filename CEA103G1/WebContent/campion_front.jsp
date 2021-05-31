@@ -18,7 +18,7 @@
 
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <link rel="icon" href="<%=request.getContextPath() %>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <link   rel="stylesheet" type="text/css" href="/CEA103G1/datetimepicker/jquery.datetimepicker.css" />
@@ -553,7 +553,8 @@ section.footer {
 				<c:forEach var="campsiteVO" items="${campsiteSvc.all}" begin="0" end="2">
 				<div class="col-sm-4">
 					<a href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">
-					<img style="width:350px;height:250px;" src="${campPicSvc.getCamp_Picture(campsiteVO.camp_no).get(0)}">
+					<img src="${campPicSvc.getCamp_Picture(campsiteVO.camp_no).get(0)}">
+<%-- 					<img style="width:350px;height:250px;" src="<%=request.getContextPath() %>/front-images/topphoto.jpg"> --%>
 					</a>
 					<a class="text" href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">${campsiteVO.camp_name}</a>
 				</div>
@@ -563,7 +564,8 @@ section.footer {
 				<c:forEach var="campsiteVO" items="${campsiteSvc.all}" begin="3" end="5">
 				<div class="col-sm-4">
 					<a href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">
-					<img style="width:350px;height:250px;" src="${campPicSvc.getCamp_Picture(campsiteVO.camp_no).get(0)}">
+					<img src="${campPicSvc.getCamp_Picture(campsiteVO.camp_no).get(0)}">
+<%-- 					<img style="width:350px;height:250px;" src="<%=request.getContextPath() %>/front-images/topphoto.jpg"> --%>
 					</a>
 					<a class="text" href="<%=request.getContextPath() %>/front-end/campsite/listOneCamp.html?camp_no=${campsiteVO.camp_no}&action=getone">${campsiteVO.camp_name}</a>
 				</div>

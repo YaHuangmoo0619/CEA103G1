@@ -216,7 +216,7 @@ tr:hover {
 					<td>${employeeVO.emp_no}</td>
 				</c:if>
 
-			<td style="width:100px;font-size:0.9em;">${employeeVO.name}</td>
+			<td style="width:100px;font-size:0.9em;padding:10px;">${employeeVO.name}</td>
 			<td>${employeeVO.acc}</td>
 			<td>${employeeVO.pwd}</td>
 			<td>${employeeVO.email}</td>

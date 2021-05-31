@@ -189,7 +189,7 @@ img{
 						</c:forEach>
 						<c:forEach var="rcptNo" items="${set}">
 							<c:if test="${memberVO.mbr_no != rcptNo}">
-								<option value="${rcptNo}"  ${rcptNo >= 90001 || param.send_no == rcptNo? 'selected':''}>
+								<option value="${rcptNo}">
 										${memberSvc.getOneMember(Integer.valueOf(rcptNo)).name}
 										${employeeSvc.getOneEmployee(Integer.valueOf(rcptNo)).emp_no >= 90001? '客服專員':''}
 										${campsite_ownerSvc.getOneCampsite_owner(Integer.valueOf(rcptNo)).name}
