@@ -243,6 +243,12 @@ label{
 
 <%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
+<script src="<%=request.getContextPath()%>/front-end/member/city_dist.js"></script>
+<script type="text/javascript">
+	window.onload = function () {
+		AddressSeleclList.Initialize('city', 'dist');	
+	};
+</script>
 <script>
 //使特定input在focus時不要有外框
 	$("#mbr_no").focus(function(){
