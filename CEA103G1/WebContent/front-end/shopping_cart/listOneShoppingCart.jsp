@@ -219,7 +219,7 @@ label {
 <body>
 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 <div class=container>
-	  <h1>${memberVO.name}的購物車</h1>
+<%-- 	  <h1>${memberVO.name}的購物車</h1> --%>
 
 <div class="shopping-cart">
 
@@ -239,7 +239,8 @@ label {
   		<input type="checkbox" class="check"/> 
   	</div>
     <div class="product-image">
-      <img src="https://s.cdpn.io/3/dingo-dog-bones.jpg">
+<!--       <img src="https://s.cdpn.io/3/dingo-dog-bones.jpg"> -->
+      <img src="/CEA103G1/images/product_picture/${detail_list.prod_no}.jpg" width="70px" height="70px">
     </div>
     
     <div class="product-details">

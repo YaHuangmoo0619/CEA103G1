@@ -57,7 +57,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 <%@ include file="/article_css/article_css.txt"%>
 <style>
-
+.container{
+width:1000px;
+}
 .profile-stat-count{
     display: inline-block;
     font-size: 1.6rem;
@@ -290,7 +292,7 @@ margin:0px 0px 0px 20px;
 <body>
 <%-- 	<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%> --%>
     <header>
-        <div class="container">
+        <div class="container border">
             <div class="profile">
                 <div class="profile-image">
 <!--                     <img src="/CEA103G1/images/profile.png" width="150px" height="150px"> -->
@@ -464,13 +466,16 @@ margin:0px 0px 0px 20px;
 <!-- 					如果我追蹤的人裡面有這個人 -->
 					<c:if test="${followVO_mine.contains(fans_list.flw_mbr_no)}">
 					<div class="fans_list cancel_follow_in_list transform_text" style="width:48px;height:38px; ">追蹤中</div>
+					<div class=just_for_hint style="display:none">${fans_list.flw_mbr_no}</div>
 					<div class="fans_list add_follow_in_list transform_text" style="width:48px;height:38px;display:none;">追蹤</div>
+					
 					</c:if>
 
 <!-- 					如果我追蹤的人裡面沒有這個人 -->					
 					<c:if test="${followVO_mine.contains(fans_list.flw_mbr_no)==false}">
 					<div class="fans_list cancel_follow_in_list transform_text" style="width:48px;height:38px;display:none">追蹤中</div>
 					<div class="fans_list add_follow_in_list transform_text" style="width:48px;height:38px;">追蹤</div>
+					<div class=just_for_hint style="display:none">${fans_list.flw_mbr_no}</div>
 					</c:if>
 					</li>
 					
@@ -504,6 +509,7 @@ margin:0px 0px 0px 20px;
 <!-- 					如果我追蹤的人裡面有這個人 -->
 					<c:if test="${followVO_mine.contains(follows_list.flwed_mbr_no)}">
 					<div class="follows_list cancel_follow_in_list transform_text" style="width:48px;height:38px; ">追蹤中</div>
+					<div class=just_for_hint style="display:none">${follows_list.flwed_mbr_no}</div>
 					<div class="follows_list add_follow_in_list transform_text" style="width:48px;height:38px;display:none;">追蹤</div>
 					</c:if>
 					
@@ -511,6 +517,7 @@ margin:0px 0px 0px 20px;
 					<c:if test="${followVO_mine.contains(follows_list.flwed_mbr_no)==false}">
 					<div class="follows_list cancel_follow_in_list transform_text" style="width:48px;height:38px;display:none">追蹤中</div>
 					<div class="follows_list add_follow_in_list transform_text" style="width:48px;height:38px;">追蹤</div>
+					<div class=just_for_hint style="display:none">${follows_list.flwed_mbr_no}</div>
 					</c:if>
 					</li>
 				</c:forEach> 
@@ -589,7 +596,8 @@ margin:0px 0px 0px 20px;
 	
 	
 	$(".add_follow_in_list").click(function(){
-	 	 var want_follow_no = $(this).prev().prev().text(); //前一個元素的內容，即想追蹤的人的號碼 
+	 	 var want_follow_no = $(this).next().text(); //前一個元素的內容，即想追蹤的人的號碼 
+	 	 console.log("want_follow_no"+want_follow_no);
 			$.ajax({ //負責傳到followServlet 新增某人對某人的追蹤  需要的參數: 追蹤者mbr_no 被追蹤者的 mbr_no 
 				type : "POST",
 				url : "http://localhost:8081/CEA103G1/follow/follow.do",
@@ -601,6 +609,8 @@ margin:0px 0px 0px 20px;
 	 	 $(this).hide();
 	 	 $(this).prevAll().show();
 	 	 $(this).nextAll().show();
+	 	 $(this).prev(".just_for_hint").hide();
+	 	 $(this).next(".just_for_hint").hide();
 	});
 
 	
@@ -636,7 +646,7 @@ margin:0px 0px 0px 20px;
 	
 	
 	$(".cancel_follow_in_list").click(function(){
-	 	 var want_cancel_follow_no = $(this).prev().text(); //前一個元素的內容，即想取消追蹤的人的號碼 
+	 	 var want_cancel_follow_no = $(this).next().text(); //前一個元素的內容，即想取消追蹤的人的號碼 
 			$.ajax({ //負責傳到followServlet 取消某人對某人的追蹤  需要的參數: 追蹤者mbr_no 被追蹤者的 mbr_no
 				type : "POST",
 				url : "http://localhost:8081/CEA103G1/follow/follow.do",
@@ -648,6 +658,8 @@ margin:0px 0px 0px 20px;
 	 	 $(this).hide();
 	 	 $(this).prevAll().show();
 	 	 $(this).nextAll().show();
+	 	 $(this).prev(".just_for_hint").hide();
+	 	 $(this).next(".just_for_hint").hide();
 	});
 	
 	

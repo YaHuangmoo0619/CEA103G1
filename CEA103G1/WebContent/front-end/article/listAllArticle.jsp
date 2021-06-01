@@ -47,6 +47,7 @@
 	MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
 	Set<Integer> my_subscribe_board = new HashSet<>();
 	int ajax_mbr_no = 0;
+	String ajax_mbr_acc="";
 	long banned=0;
 	String banned_chinese="";
 	if(memberVO!=null){
@@ -68,6 +69,7 @@
 		}
 		
 		ajax_mbr_no = memberVO.getMbr_no();
+		ajax_mbr_acc = memberVO.getAcc();
 		jedis.select(6);
 		for(String element : jedis.smembers("board:"+ajax_mbr_no+":subscribe")){ //取得我訂閱的看板list
 			if(element!=null && !element.equals("")){
@@ -95,6 +97,7 @@
 
 	pageContext.setAttribute("banned", banned);
 	pageContext.setAttribute("banned_chinese", banned_chinese);
+	pageContext.setAttribute("ajax_mbr_acc", ajax_mbr_acc);
 	pageContext.setAttribute("ajax_mbr_no", ajax_mbr_no);
 	pageContext.setAttribute("my_subscribe_board", my_subscribe_board);
 %>
@@ -311,6 +314,7 @@ min-hight:38px;
 				<div class="sidebar_around">
 				<div class="board_icon board"><img src="/CEA103G1/images/board_class_icon/${board_classVO.bd_cl_no}.svg" width="24px" height="24px"></div>
 				<div class="item board board_name" ><a class=link_to_board href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${board_classVO.bd_cl_no}" >${board_classVO.bd_name}</a></div>
+				<div class="this_bd_name" style="display:none">${board_classVO.bd_name}</div>
 				<div class=this_bd_bl_no style="display:none">${board_classVO.bd_cl_no}</div>
 				
 				
@@ -365,7 +369,7 @@ min-hight:38px;
 <%--         			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp">熱門</a> --%>
 					<!-- 	如果有登入的話 -->
 					<c:if test="${not empty memberVO }">
-					<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/addArticle.jsp';">追蹤</div> 
+					<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listFollowBoardArticle.jsp';">追蹤</div> 
 					</c:if>
 					<!-- 	如果沒有登入的話  要打開名為登入的燈箱-->	
 					<c:if test="${empty memberVO }"> 
@@ -567,13 +571,15 @@ jedis.close();
 
 	$(".subscribe").click(function(){
 		var subscribe_bd_cl_no = $(this).prev(".this_bd_bl_no").text();
+		var subscribe_bd_name =  $(this).prev().prev().text();
+		console.log("subscribe_bd_name:"+subscribe_bd_name);
 		console.log(subscribe_bd_cl_no);
 		$.ajax({ // 負責傳到board_classServlet 新增某人對某看板的訂閱  需要的參數: mbr_no bd_cl_no 
 			type : "POST",
 			url : "http://localhost:8081/CEA103G1/board_class/board_class.do",
 			data : {action: "subscribe",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,bd_cl_no:subscribe_bd_cl_no},
 			success : function(data) {
-				alert("新增"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對看板"+subscribe_bd_cl_no+"的訂閱成功");
+				alert("新增"+"<%=pageContext.getAttribute("ajax_mbr_acc")%> 對看板: "+ subscribe_bd_name + "的訂閱成功");
 			}
 		});
 		window.location.reload();
@@ -582,13 +588,14 @@ jedis.close();
  	
  		$(".cancel_subscribe").click(function(){
 		var subscribe_bd_cl_no = $(this).prev(".this_bd_bl_no").text();
+		var subscribe_bd_name = $(this).prev().prev().text();
 		console.log(subscribe_bd_cl_no);
 		$.ajax({ // 負責傳到board_classServlet 取消某人對某看板的訂閱  需要的參數: mbr_no bd_cl_no 
 			type : "POST",
 			url : "http://localhost:8081/CEA103G1/board_class/board_class.do",
 			data : {action: "cancel_subscribe",mbr_no:<%=pageContext.getAttribute("ajax_mbr_no")%>,bd_cl_no:subscribe_bd_cl_no},
 			success : function(data) {
-				alert("取消"+<%=pageContext.getAttribute("ajax_mbr_no")%>+"對看板"+subscribe_bd_cl_no+"的訂閱成功");
+				alert("取消"+"<%=pageContext.getAttribute("ajax_mbr_acc")%> 對看板: "+subscribe_bd_name+"的訂閱成功");
 			}
 		});
 		window.location.reload();
@@ -599,8 +606,10 @@ jedis.close();
 			show : true
 		});
 		
-	$('#basicModal').on('hidden.bs.modal', function () { 
+	$('#basicModal').on('hidden.bs.modal', function () {
+		
 		window.history.go(-1);
+		
 	})
 
   	var infScroll = new InfiniteScroll( ".container", {

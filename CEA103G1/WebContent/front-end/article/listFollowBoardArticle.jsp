@@ -7,6 +7,7 @@
 <%@ page import="com.board_class.model.*"%>
 <%@ page import="com.member.model.*" %>
 <%@ page import="redis.clients.jedis.Jedis"%>
+<%@ page import="com.article_collection.model.*"%>
 <%
 	Jedis jedis = new Jedis("localhost", 6379);
 	jedis.auth("123456");
@@ -42,6 +43,13 @@
 			
 		}
 		
+		Article_CollectionService article_collectionSvc = new Article_CollectionService();
+		//取得我收藏的文章的
+		List<Article_CollectionVO> my_collection_list	= article_collectionSvc.findbymbr_no(memberVO.getMbr_no());
+		
+
+		
+		pageContext.setAttribute("my_collection_list", my_collection_list);
 	}
 	if(memberVO==null){
 		ajax_mbr_no=0;
@@ -122,8 +130,8 @@ html, body {
 	margin: 0;
 	padding: 0;
 	/*background-color: #4e5452;*/
-	background-color: 		#8FBC8F;
-	color: #80c344;
+	background-color: 	#007979;
+	color: black;
 }
 
 section {
@@ -190,6 +198,9 @@ font-family: Microsoft JhengHei;
 width:120px;
 }
 
+.board_icon{
+padding:0px 0px 0px 10px;
+}
 /* -----------------------------以下為主欄css------------------------------ */
   div.main_content{
   	  top:60px;
@@ -228,8 +239,23 @@ overflow-y: auto;
 }
 
 
-.modal{
-	color: black
+/* .modal{ */
+/* 	color: black */
+/* } */
+
+.title_box{
+padding: 0px 0px 10px 0px;
+}
+
+.btn-group-article_sort{
+float:right;
+margin:0px 50px 0px 0px;
+}
+.sort_text{
+float:right;
+font-size:14px;
+color:black;
+margin:10px 0px 0px 0px;
 }
 </style>
 
@@ -256,7 +282,9 @@ overflow-y: auto;
 <div id="sidebar">
   <div class="list">
 			<c:forEach var="board_classVO" items="${bd_list}">
-				<div class="item board board_name" ><a href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${board_classVO.bd_cl_no}"  style="color:white;">${board_classVO.bd_name}</a></div>
+				<div class="sidebar_around">
+				<div class="board_icon board"><img src="/CEA103G1/images/board_class_icon/${board_classVO.bd_cl_no}.svg" width="24px" height="24px"></div>
+				<div class="item board board_name" ><a class=link_to_board href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${board_classVO.bd_cl_no}" >${board_classVO.bd_name}</a></div>
 				<div class=this_bd_bl_no style="display:none">${board_classVO.bd_cl_no}</div>
 				
 				
@@ -292,8 +320,7 @@ overflow-y: auto;
 					<c:if test="${empty memberVO }"> 
 				<div class="board to_login"><img src="/CEA103G1/images/star-outline_new.svg" width="24px" height="24px"></div>
 				</c:if>
-				
-				<br>
+				</div>
 			</c:forEach>
   </div>
 </div>
@@ -311,12 +338,12 @@ overflow-y: auto;
                     </c:if>
 		</c:forEach>
  
-        		<div class=article_sort_parent>
+<!--         		<div class=article_sort_parent> -->
 <%--         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticle.jsp';">最新</div> --%>
-        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${bd_cl_no}">最新</a>
+<%--         			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticle.jsp?bd_cl_no=${bd_cl_no}">最新</a> --%>
 <%--         			<div class=article_sort onclick="location.href='<%=request.getContextPath()%>/front-end/article/listAllArticleByLikes.jsp';">熱門</div> --%>
-        			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticleByLikes.jsp?bd_cl_no=${bd_cl_no}">熱門</a>					
-        		</div>
+<%--         			<a class=article_sort href="<%=request.getContextPath()%>/front-end/article/listOneBoard_ClassArticleByLikes.jsp?bd_cl_no=${bd_cl_no}">熱門</a>					 --%>
+<!--         		</div> -->
      
      
 

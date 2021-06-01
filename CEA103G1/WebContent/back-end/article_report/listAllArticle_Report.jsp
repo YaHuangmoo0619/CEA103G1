@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=BIG5"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="BIG5"%>
 <%@ page import="com.article_report.model.*" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -33,11 +33,32 @@ request.setAttribute("judge_record", judge_record);
 <meta charset="BIG5">
 <title>被檢舉文章總表</title>
 <link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-
+<%@ include file="/part-of/partOfCampion_backTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_backLeft_css.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
 <style>
+
+.board_manage{
+margin: 20px 20px 20px 20px;
+font-size:30px;
+display:inline-block;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   line-height: 1.25;
+  
+  background-color: #4e5452;
+}
+
+.article_title{
+	color: #007bff;
+    text-decoration: none;
+}
+
+.article_title:hover{
+background-color: transparent;
+color:red;
 }
 
 table {
@@ -123,7 +144,15 @@ table th {
 </style>
 </head>
 <body>
-<h2>被檢舉文章總表</h2>
+<%@ include file="/part-of/partOfCampion_backTop_body.txt"%>
+	<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
+	<div class="container">
+		<div class="row">
+			<div class="left col-3">
+				<%@ include file="/part-of/partOfCampion_backLeft_body.txt"%></div>
+			<div class="right col-9">
+<div class="board_manage" style="color:white" >被檢舉文章管理</div>
+<a class="board_manage" href="<%=request.getContextPath()%>/back-end/board_class/listAllBoard_class.jsp">看板管理</a>
 	  <table>
   <thead>
     <tr>
@@ -143,7 +172,7 @@ table th {
       <td data-label="ART_NO">
       <c:forEach var="articleVO" items="${articleDAO.all_Back}">
 			<c:if test="${articleVO.art_no==article_reportVO.art_no}">
-	                    <a href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From5">${articleVO.art_title}</a>
+	                    <a class=article_title href="<%=request.getContextPath()%>/article/article.do?art_no=${articleVO.art_no}&action=getOne_From5">${articleVO.art_title}</a>
             </c:if>
 		</c:forEach>
 	  </td>
@@ -151,16 +180,18 @@ table th {
       <td data-label="RPT_CONT">${article_reportVO.rpt_cont}</td>
       <td data-label="RPT_TIME"><fmt:formatDate value="${article_reportVO.rpt_time}" pattern="MM月dd日  HH:mm"/></td>
       <c:if test="${article_reportVO.proc_stat==0}"><td data-label="PROC_STAT">未審核</td></c:if>
-      <c:if test="${article_reportVO.proc_stat==0}"><td data-label="JUDGE"><div class=art_rpt_no style="display:none">${article_reportVO.art_rpt_no}</div><div style="display:none">${article_reportVO.art_no}</div><button class=go_judge_modal>審核</button></td></c:if>
+      <c:if test="${article_reportVO.proc_stat==0}"><td data-label="JUDGE"><div class=art_rpt_no style="display:none">${article_reportVO.art_rpt_no}</div><div style="display:none">${article_reportVO.art_no}</div><button class="go_judge_modal btn btn-primary">審核</button></td></c:if>
       <c:if test="${article_reportVO.proc_stat==1}"><td data-label="PROC_STAT">已審核，目前處分:<br>${judge_record[article_reportVO.art_rpt_no]}</td></c:if>
-	  <c:if test="${article_reportVO.proc_stat==1}"><td data-label="JUDGE_CHANGE"><div class=art_rpt_no style="display:none">${article_reportVO.art_rpt_no}</div><div style="display:none">${article_reportVO.art_no}</div><button class=go_judge_change_modal>變更處分</button></td></c:if>
+	  <c:if test="${article_reportVO.proc_stat==1}"><td data-label="JUDGE_CHANGE"><div class=art_rpt_no style="display:none">${article_reportVO.art_rpt_no}</div><div style="display:none">${article_reportVO.art_no}</div><button class="go_judge_change_modal btn btn-primary">變更處分</button></td></c:if>
       
     </tr>
     
     </c:forEach>
   </tbody>
 </table>
-
+</div>
+</div>
+</div>
 	<c:if test="${openModal!=null}">
 
 		<div class="modal fade" id="listAllArticle_Report_modal" tabindex="-1" role="dialog"

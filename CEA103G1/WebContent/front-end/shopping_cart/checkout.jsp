@@ -276,7 +276,7 @@ padding:0px 0px 20px 0px;
 	<c:forEach var="detail_list" items="${detail_list}">
   <div class="product">
     <div class="product-image">
-      <img src="https://s.cdpn.io/3/dingo-dog-bones.jpg">
+      <img src="/CEA103G1/images/product_picture/${detail_list.prod_no}.jpg" width="70px" height="70px">
     </div>
     
     <div class="product-details">
@@ -317,7 +317,7 @@ padding:0px 0px 20px 0px;
 					
 					<div>付款方式(目前僅提供信用卡)</div>
                   <div class="form-check pay_select">
-  						<input class="form-check-input" type="radio" name="ptRadios" value="0" checked disabled>
+  						<input class="form-check-input" type="radio" name="p_mRadios" value="0" checked disabled>
   						<label class="form-check-label" for="exampleRadios1">信用卡</label>
                   </div>
 					
@@ -380,27 +380,27 @@ padding:0px 0px 20px 0px;
 	   		 </div>
                 </div>
                 
-                <div class=receipt-set>
+<!--                 <div class=receipt-set> -->
                 
-                <div class="form-check">
-  				<input class="form-check-input" type="radio" name="receiptRadios" value="0">
-  					<label class="form-check-label" for="exampleRadios1" style="color:black">
-    					紙本發票
-  					</label>
-	   		    </div>
-	   		    <div class="form-check">
-  				<input class="form-check-input" type="radio" name="receiptRadios" value="1">
-  					<label class="form-check-label" for="exampleRadios1" style="color:black">
-    					電子發票
-  					</label>
-	   		    </div>
-	   		    <div class="form-check">
-  				<input class="form-check-input" type="radio" name="receiptRadios" value="2">
-  					<label class="form-check-label" for="exampleRadios1" style="color:black">
-    					發票捐贈
-  					</label>
-	   		    </div>
-                </div>
+<!--                 <div class="form-check"> -->
+<!--   				<input class="form-check-input" type="radio" name="receiptRadios" value="0"> -->
+<!--   					<label class="form-check-label" for="exampleRadios1" style="color:black"> -->
+<!--     					紙本發票 -->
+<!--   					</label> -->
+<!-- 	   		    </div> -->
+<!-- 	   		    <div class="form-check"> -->
+<!--   				<input class="form-check-input" type="radio" name="receiptRadios" value="1"> -->
+<!--   					<label class="form-check-label" for="exampleRadios1" style="color:black"> -->
+<!--     					電子發票 -->
+<!--   					</label> -->
+<!-- 	   		    </div> -->
+<!-- 	   		    <div class="form-check"> -->
+<!--   				<input class="form-check-input" type="radio" name="receiptRadios" value="2"> -->
+<!--   					<label class="form-check-label" for="exampleRadios1" style="color:black"> -->
+<!--     					發票捐贈 -->
+<!--   					</label> -->
+<!-- 	   		    </div> -->
+<!--                 </div> -->
               	
               	<div>訂單備註</div>
               	<div><input type="text" placeholder="如果您有特別需求請註明" name="rmk"></div>
