@@ -1,452 +1,330 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.util.*"%>
+<%@ page import="com.product_order_details.model.*"%>
 <%@ page import="com.product_order.model.*"%>
+<%@ page import="com.product.model.*"%>
 <%@ page import="com.member.model.*" %>
 
+<jsp:useBean id="product_pictureSvc" class="com.product_picture.model.Product_pictureService"/>
+<jsp:useBean id="product_categorySvc" scope="page" class="com.product_category.model.Product_categoryService" />
+<jsp:useBean id="product_order_detailsSvc" class="com.product_order_details.model.Product_order_detailsService"/>
+<jsp:useBean id="product_orderSvc" class="com.product_order.model.Product_orderService"/>
+<jsp:useBean id="productSvc" class="com.product.model.ProductService"/>
+
 <%
- 	Product_orderVO product_orderVO = (Product_orderVO) request.getAttribute("product_orderVO");
 	MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+	if(memberVO == null){
+		response.sendRedirect(request.getContextPath()+"/campion_front_login.jsp");
+		return;
+	}
+	Product_orderVO product_orderVO = (Product_orderVO) request.getAttribute("product_orderVO");
 %>
 
 <html>
 <head>
+<meta charset="UTF-8">
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<title>商品訂單 </title>
-
-<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<title>${memberVO.name}之編號${product_orderVO.prod_ord_no}商品訂單</title>
+<%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_frontFooter_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
+<%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 
 <style>
-.confirm {
-	margin: 2px;
+html, body {
+	margin: 0;
+	padding: 0;
+/* 	background: #fff; */
+	background-image: linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)), url("/CEA103G1/front-images/ShopFront.jpg") ;
+	background-size: 100%;
+	background-attachment: fixed;
+	color: #4B7F52;
+}
+.content {
+    color: #80c344;
+}
+div.forSearch{
+	margin: 0 auto;
+	width: 70%;
+	hieght: 50px;
+	position: relative;
+}
+div.forSearchMore{
+	top: 110%;
+	left: 15%;
+	width: 70%;
+	position: absolute;
+	background-color: #fff;
+	box-shadow: 0 1px 5px 0 #4e5452;
+	display: none
+}
+
+#mail_cont{
+	border-radius:5px;
+	background-color:#eee;
+	border:none;
+	padding:5px 15px;
+	width:50%;
+}
+
+span{
+	 font-size:0.8em;
+	 font-weight:444;
+	 padding: 7px;
+	 background-color: #eee;
+	 border-radius:5px;
+}
+span:hover{
+	cursor: pointer;
+	background-color: #4e5452;
+	color: #eee;
+}
+
+label, select, input {
+	font-size: 0.8em;
+}
+
+label{
+	display:none;
+	padding: 2px 5px;
+	border-radius: 5px;
+	color: #fff;
+}
+
+table {
+	width: 700px;
+	margin: 30px auto;
+	/* 	border: 1px solid #4e5452; */
+}
+
+th, td {
+	text-align: left;
+	/* 	border: 1px solid #4e5452; */
+	padding: 10px 10px;
+}
+
+td.function {
+	text-align: justify;
+}
+
+label.spotlight {
+	background-color: #80c344;
+	display:block;
+}
+
+label.warn {
+	background-color: red;
+	display:block;
+}
+
+input.change {
 	background-color: #80c344;
 	color: #4e5452;
 	padding: 5px 10px;
 	border-radius: 5px;
 	border: none;
 	font-weight: 999;
-	background-color: #80c344;
 }
 
-.confirm:hover {
+input.change:hover {
 	background-color: #4B7F52;
 	color: #80c344;
 	cursor: pointer;
 }
-#cancel {
-	margin: 2px;
-	background-color: #FF0000;
-	color: #880000;
-	padding: 5px 10px;
-	border-radius: 5px;
-	border: none;
-	font-weight: 999;
-	background-color: #FF3333;
+
+#focus {
+	margin-right: -5px;
 }
 
-#cancel:hover {
-	background-color: #AA0000;
-	color: #FF0000;
-	cursor: pointer;
+tr {
+/* 	border-top: 1px solid #eee; */
+	border-bottom: 2px solid #eee;
 }
-table{
-  width:100%;
-  table-layout: fixed;
+
+tr:hover {
+
+	box-shadow: 0 1px 5px 0 #4e5452 inset;
+ 	cursor: pointer;
 }
-.tbl-header{
-  background-color: rgba(255,255,255,0.3);
- }
-.tbl-content{
-  height:300px;
-  overflow-x:auto;
-  margin-top: 0px;
-  border: 1px solid rgba(255,255,255,0.3);
+
+img.inDiv{
+	width:50px;
+	margin:1px;
 }
-th{
-  padding: 20px 15px;
-  text-align: left;
-  font-weight: 500;
-  font-size: 14px;
-/*   color: #fff; */
-  text-transform: uppercase;
+div.innerDiv{
+ 	display:inline;
 }
-td{
-  padding: 15px;
-  text-align: left;
-  vertical-align:middle;
+hr{
+	margin: 3px;
+	width: 30%;
+	border-color:#80c344;
+}
+div.L{
+	display:inline-block;
+	width:6em;
+	font-weight: 555;
+}
+div.R{
+	display:inline-block;
+	width:6em;
+}
+div.inTr{
+	display:inline-block;
+}
+label.spotlight{
+	background-color: #80c344;
+	padding: 2px 5px;
+	border-radius: 5px;
+	color: #fff;
+}
+div.out{
+	width:90%;
+	margin: 0 auto;
+}
+label.stat{
+	margin-left:3em;
+	font-size:0.9em;
+}
+div.prod {
+	border-bottom: 2px solid #eee;
+}
+div.prod:hover {
+	box-shadow: 0 1px 5px 0 #4e5452 inset;
+ 	cursor: pointer;
+}}
+._btn {
+  display: inline-block;
+  background-color: #bdc3c7;
+  border: none;
+  padding: .5em .75em;
+  text-align: center;
   font-weight: 300;
-  font-size: 13px;
-/*   color: #fff; */
-/*   border-bottom: solid 1px rgba(255,255,255,0.1); */
-  border-bottom: solid 1px #80c344;
-}
-section{
-  margin: 50px;
-}
-.camp:hover {
-	background-color: #F0FFF0;
 }
 
-.camp {
-	margin: 0px;
-}
+._btn:hover,
+.cart-totals:hover ._btn {
+  background-color: #3498db;
+  color: #ecf0f1;
 
-div.left {
-	margin-top: 20px;
-}
-
-div.right {
-/* 	background-color: #fff; */
-	margin-top: 20px;
-	/* 	padding: 50px 50px; */
-	border-radius: 5px;
-}
-
-html, body {
-	margin: 0;
-	padding: 0;
-	/*background-color: #4e5452;*/
-/* 	background-color: #fff; */
-	color: #4B7F52;
-}
-
-section {
-	text-align: center;
-}
-
-img.logo {
-	width: 100px;
-	margin: 10px;
-	margin-left: 100px;
-}
-
-a {
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: none;
-}
-
-form.form-inline {
-	display: inline;
-	border: none;
-}
-
-img.searchIcon {
-	display: none;
-}
-
-img.cart {
-	width: 30px;
-	margin: 10px;
-}
-
-img.cart:hover {
-	cursor: pointer;
-}
-
-img.menu {
-	width: 40px;
-	margin: 10px;
-	display: none;
-}
-
-img.menu:hover {
-	cursor: pointer;
-}
-
-img.person {
-	width: 40px;
-	margin: 10px;
-}
-
-img.person:hover {
-	cursor: pointer;
-}
-
-@media screen and (max-width: 575px) {
-	container {
-		width: 100%;
-	}
-	form.form-inline {
-		display: none;
-	}
-	form.secSearch {
-		display: none;
-	}
-	img.searchIcon {
-		display: inline;
-		width: 30px;
-		margin: 0px;
-	}
-	img.searchIcon:hover {
-		cursor: pointer;
-	}
-	div.btn-group {
-		display: none;
-	}
-	img.menu {
-		width: 30px;
-		margin: 10px;
-		display: inline-block;
-	}
-	div.sec {
-		display: none;
-		background-color: #eee;
-	}
-	div.where {
-		display: block;
-		padding: 5px 100px;
-		text-align: left;
-	}
-	div.slogan h1 {
-		color: #fff;
-		font-size: 2em;
-		font-weight: 999;
-		margin: 50px auto;
-	}
-	div.photo {
-		width: 200px;
-		height: 100px;
-		margin: 20px auto;
-		background-color: #eee;
-		overflow: hidden;
-	}
-	div.row {
-		margin-top: 0px;
-	}
-	div.article {
-		width: 90%;
-		margin: 20px auto;
-		text-align: left;
-		background-color: #eee;
-		border-radius: 5px;
-		padding: 10px 50px 20px 50px;
-	}
-	div.more {
-		display: inline;
-	}
-	section.footer {
-		background-color: #4B7F52;
-		color: #80c344;
-		height: 100px;
-		padding-top: 30px;
-	}
-}
-
-@media ( min-width : 576px) and (max-width: 767px) {
-	container {
-		width: 540px;
-		margin: 0px auto;
-	}
-	form.form-inline {
-		display: none;
-	}
-	form.secSearch {
-		display: none;
-	}
-	img.searchIcon {
-		display: inline;
-		width: 30px;
-		margin: 0px;
-	}
-	img.searchIcon:hover {
-		cursor: pointer;
-	}
-	div.btn-group {
-		display: none;
-	}
-	img.menu {
-		width: 30px;
-		margin: 10px;
-		display: inline-block;
-	}
-	div.sec {
-		display: none;
-		background-color: #eee;
-	}
-	div.where {
-		display: block;
-		padding: 5px 130px;
-		text-align: left;
-	}
-}
-
-@media ( min-width : 768px) and (max-width: 991px) {
-	container {
-		width: 720px;
-		margin: 0px auto;
-	}
-	form.form-inline {
-		display: none;
-	}
-	form.secSearch {
-		display: none;
-	}
-	img.searchIcon {
-		display: inline;
-		width: 30px;
-		margin: 0px;
-	}
-	img.searchIcon:hover {
-		cursor: pointer;
-	}
-	div.btn-group {
-		display: none;
-	}
-	img.menu {
-		width: 30px;
-		margin: 10px;
-		display: inline-block;
-	}
-	div.sec {
-		display: none;
-		background-color: #fff;
-	}
-	div.where {
-		display: block;
-		padding: 5px 220px;
-		text-align: left;
-	}
-	div.photo {
-		width: 300px;
-		height: 150px;
-		margin: 20px auto;
-		background-color: #eee;
-		overflow: hidden;
-	}
-}
-
-@media ( min-width : 992px) and (max-width: 1199px) {
-	container {
-		width: 960px;
-		margin: 0px auto;
-	}
-	div.menuForButton {
-		display: none;
-	}
-	div.forSearch {
-		display: none;
-	}
-	div.photo {
-		width: 400px;
-		height: 200px;
-		margin: 20px auto;
-		background-color: #fff;
-		overflow: hidden;
-	}
-}
-
-@media ( min-width : 1200px) {
-	container {
-		width: 1140px;
-		margin: 0px auto;
-	}
-	div.menuForButton {
-		display: none;
-	}
-	div.forSearch {
-		display: none;
-	}
-	div.photo {
-		width: 400px;
-		height: 200px;
-		margin: 20px auto;
-		background-color: #fff;
-		overflow: hidden;
-	}
-}
 </style>
-
 </head>
-<body bgcolor='white'>
-<section>
-	編號：${product_orderVO.prod_ord_no}號訂單
-</section>
-<table>
-	<tr>
-		<th>下訂時間</th>
-		<th>訂單狀態</th>
-		<th>訂單總金額</th>
-		<th>使用點數</th>
-		<th>運送方式</th>
-		<th>付款方式</th>
-		<th>運送地址_縣市</th>
-		<th>運送地址_區域</th>
-		<th>運送地址</th>
-		<th>發票形式</th>
-		<th>訂單備註</th>
-	</tr>
-	<tr>
-		<td>${product_orderVO.prod_ord_time}</td>
-		<td>
-		<c:if test="${product_orderVO.prod_ord_stat==0}">
-			<c:out value="未付款" />
-		</c:if>
-		<c:if test="${product_orderVO.prod_ord_stat==1}">
-			<c:out value="已付款" />
-		</c:if>
-		<c:if test="${product_orderVO.prod_ord_stat==2}">
-			<c:out value="出貨中" />
-		</c:if>
-		<c:if test="${product_orderVO.prod_ord_stat==3}">
-			<c:out value="已收貨" />
-		</c:if>
-		<c:if test="${product_orderVO.prod_ord_stat==4}">
-			<c:out value="未取貨" />
-		</c:if>
-		</td>
-		<td>${product_orderVO.prod_ord_sum}</td>
-		<td>${product_orderVO.used_pt}</td>
-		<td>
-		<c:if test="${product_orderVO.ship_meth==1}">
-			<c:out value="宅配" />
-		</c:if>
-		<c:if test="${product_orderVO.ship_meth==2}">
-			<c:out value="超商取貨" />
-		</c:if>
-		</td>
-		<td>
-		<c:if test="${product_orderVO.pay_meth==0}">
-			<c:out value="信用卡" />
-			</c:if>
-		<c:if test="${product_orderVO.pay_meth==1}">
-			<c:out value="匯款" />
-		</c:if>
-		<c:if test="${product_orderVO.pay_meth==2}">
-			<c:out value="超商取貨付款" />
-		</c:if>
-		</td>
-		<td>${product_orderVO.ship_cty}</td>
-		<td>${product_orderVO.ship_dist}</td>
-		<td>${product_orderVO.ship_add}</td>
-		<td>
-		<c:if test="${product_orderVO.receipt==0}">
-			<c:out value="紙本發票" />
-		</c:if>
-		<c:if test="${product_orderVO.receipt==1}">
-			<c:out value="電子發票" />
-		</c:if>
-		<c:if test="${product_orderVO.receipt==2}">
-			<c:out value="發票捐贈" />
-		</c:if>
-		</td>
-		<td>${product_orderVO.rmk}</td>
-		<td>
-		<td>
-		<c:if test="${product_orderVO.prod_ord_stat<=1}">
-		<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
-		    <input type="submit" value="退貨" class="btn btn-white-outline display-4">
-	   </FORM>
-	   </c:if>
-		</td>
-</table>
-
+<body onload="connection()" bgcolor='white'>
+<%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_body.txt"%>
+	<div class="out">
+		<div style="display:flex;">
+			<div style="width:10%;" class="inTr">
+				${product_orderVO.prod_ord_no}號訂單
+			</div>
+			<div style="width:30%;" class="inTr">
+			<div class="inTr">
+			<div class="L">訂單總金額:</div>
+			<div class="R">${product_orderVO.prod_ord_sum}元</div>
+			</div>
+			<div class="inTr">
+				<div class="L">使用點數:</div>
+				<div class="R">${product_orderVO.used_pt}</div>
+			</div>
+				<div class="inTr">
+					<div class="L">運送方式:</div>
+					<div class="R">
+						<c:if test="${product_orderVO.ship_meth==1}">
+							<c:out value="宅配" />
+						</c:if>
+						<c:if test="${product_orderVO.ship_meth==2}">
+							<c:out value="超商取貨" />
+						</c:if>
+					</div>
+				</div>
+				<div class="inTr">
+					<div class="L">運送地址:</div>
+					<div>
+						<div class="innerDiv">${product_orderVO.ship_cty}${product_orderVO.ship_dist}${product_orderVO.ship_add}</div>
+					</div>
+				</div>
+				<div class="inTr">
+					<div class="L">付款方式:</div>
+					<div class="R">
+						<c:if test="${product_orderVO.pay_meth==0}">
+							<c:out value="信用卡" />
+						</c:if>
+						<c:if test="${product_orderVO.pay_meth==1}">
+							<c:out value="匯款" />
+						</c:if>
+						<c:if test="${product_orderVO.pay_meth==2}">
+							<c:out value="超商取貨付款" />
+						</c:if>
+					</div>
+				</div>
+				<div class="inTr">
+					<div class="L">發票形式:</div>
+					<div class="R">
+						<c:if test="${product_orderVO.receipt==0}">
+							<c:out value="紙本發票" />
+						</c:if>
+						<c:if test="${product_orderVO.receipt==1}">
+							<c:out value="電子發票" />
+						</c:if>
+						<c:if test="${product_orderVO.receipt==2}">
+							<c:out value="發票捐贈" />
+						</c:if>
+					</div>
+				</div>	
+			</div>
+			
+			<div style="width:55%;" class="inTr">
+					<div class="inTr">
+					<div class="L">訂單備註:</div>
+					<div style="display:inline-block;width:8em;">${product_orderVO.rmk}</div>
+				</div>
+			</div>
+			<div class="inTr">
+				<div class="L">下訂時間:</div>
+<%-- 				<c:set var="prod_ord_time" value="${product_orderVO.prod_ord_time}" /> --%>
+<%-- 				<div>${fn:substring(prod_ord_time, 0, 19)}</div> --%>
+				<div><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${product_orderVO.prod_ord_time}"/></div>
+				<div class="inTr">
+					<label for="prod_ord_stat0" ${product_orderVO.prod_ord_stat==0?'class="spotlight"':'hide'}>未付款</label>
+					<label for="prod_ord_stat1" ${product_orderVO.prod_ord_stat==1?'class="spotlight"':'hide'}>已付款</label>
+					<label for="prod_ord_stat2" ${product_orderVO.prod_ord_stat==2?'class="spotlight"':'hide'}>出貨中</label>
+					<label for="prod_ord_stat3" ${product_orderVO.prod_ord_stat==3?'class="spotlight"':'hide'}>已收貨</label>
+					<label for="prod_ord_stat4" ${product_orderVO.prod_ord_stat==4?'class="warn"':'hide'}>未取貨</label>
+					<label for="prod_ord_stat5" ${product_orderVO.prod_ord_stat==5?'class="warn"':'hide'}>訂單取消</label>
+				<c:if test="${product_orderVO.prod_ord_stat<=1}">
+				<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/product_order/product_order.do" style="margin-bottom: 0px;">
+				    <input type="submit" value="取消訂單" class="btn btn-white-outline display-4" style="color: red;">
+				    <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
+				    <input type="hidden" name="action" value="cancel">
+			   	</FORM>
+			   </c:if>
+				</div>
+			</div>	
+		</div>
+		<div class="inTr">
+		<c:forEach var="product_order_detailsVO" items="${product_order_detailsSvc.getByProd_ord_no(product_orderVO.getProd_ord_no())}">
+		<hr style="margin: 20 auto;">
+		<div id="prod" onclick="location='${pageContext.request.contextPath}/product/product.do?action=getOne_For_Display&prod_no=${product_order_detailsVO.getProd_no()}'">
+			<div class="innerDiv">
+			<img style="width:150px; height:100px;" src="${product_pictureSvc.getOneProduct_picture(product_order_detailsVO.getProd_no()).getProd_pic()}">
+			</div>
+			<div class="innerDiv L">商品名稱:</div>
+			<div class="innerDiv" style="margin-right:1em;">${productSvc.getOneProduct(product_order_detailsVO.getProd_no()).getProd_name()}</div>
+			<div class="innerDiv L">商品數量:</div>
+			<div class="innerDiv" style="margin-right:1em;">${product_order_detailsVO.getProd_amt()}件</div>
+			<div class="innerDiv L">商品單價:</div>
+			<div class="innerDiv" style="margin-right:1em;">${product_order_detailsVO.getProd_unit_pc()}元</div>
+		</div>
+		</c:forEach>
+		<hr style="margin: 20 auto;">
+		</div>
+	</div>
 </body>
+
 </html>

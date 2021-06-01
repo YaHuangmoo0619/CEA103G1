@@ -39,6 +39,8 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 		private static final String UPDATE_ORDER_STAT = 
 				"update PRODUCT_ORDER set PROD_ORD_STAT = ? where PROD_ORD_NO = ?";
 	//雅凰加的
+	private static final String CANCEL= 
+		"update PRODUCT_ORDER set PROD_ORD_STAT = 5 where PROD_ORD_NO = ?";
 		
 	@Override
 	public Product_orderVO insert(Product_orderVO product_orderVO, List<Product_order_detailsVO> list) {
@@ -440,5 +442,40 @@ public class Product_orderDAO implements Product_orderDAO_interface {
 		}
 	}
 	//雅凰加的
+	
+	public void cancel(Integer prod_ord_no) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(CANCEL);
+
+			pstmt.setInt(1, prod_ord_no);
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
 	
 }

@@ -26,27 +26,26 @@
 
 <html>
 <head>
+
 <link rel="icon" href="<%=request.getContextPath()%>/images/campionLogoIcon.png" type="image/png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<title>商品 </title>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<title>商品內容 </title>
 <%@ include file="/part-of/partOfCampion_frontTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_COwnerTop_css.txt"%>
-<%@ include file="/part-of/partOfCampion_COwnerLeft_css.txt"%>
 <%@ include file="/part-of/partOfCampion_arrowToTop_css.txt"%>
-
+<%@ include file="/part-of/partOfCampion_frontTop_js.txt"%>
+<%@ include file="/part-of/partOfCampion_arrowToTop_js.txt"%>
 <style>
-	html, body {
-		margin: 0;
-		padding: 0;
-	/* 	background: #fff; */
-		background-image: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("/CEA103G1/front-images/ShopFront.jpg") ;
-		background-size: 100%;
-		background-attachment: fixed;
-		color: #4B7F52;
-	}
+html, body {
+	margin: 0;
+	padding: 0;
+/* 	background: #fff; */
+	background-image: linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)), url("/CEA103G1/front-images/ShopFront.jpg") ;
+	background-size: 100%;
+	background-attachment: fixed;
+	color: #4B7F52;
+}
   table#table-1 {
 	background-color: #CCCCFF;
     border: 2px solid black;
@@ -77,9 +76,6 @@
   .container{
   	opacity:0.7;
   }
-</style>
-
-<style>
 .product-subtract,
 .product-plus,
 .product-qty {
@@ -114,7 +110,7 @@
 </style>
 
 </head>
-<body bgcolor='white'>
+<body onload="connection()">
 <%@ include file="/part-of/partOfCampion_frontTop_body.txt"%>
 			
 <section>

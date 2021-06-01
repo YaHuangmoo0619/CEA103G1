@@ -81,4 +81,7 @@ public class Product_orderService {
 		dao.update_order_stat(prod_ord_stat, prod_ord_no);
 	}
 	//¶®°Ä¥[ªº
+	public void cancel(Integer prod_ord_no) {
+		dao.cancel(prod_ord_no);
+	}
 }
