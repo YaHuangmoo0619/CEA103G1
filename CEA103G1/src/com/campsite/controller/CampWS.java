@@ -46,6 +46,7 @@ public class CampWS {
 		}
 
 		Set<String> all = new HashSet<String>();
+		all.add(campInfo);
 		all.addAll(DateInside(camps, campInfo));
 		all.addAll(DateOutside(camps, campInfo));
 		System.out.println(all);
@@ -78,6 +79,7 @@ public class CampWS {
 		Set<String> forDisPlc = forDisconnect.get(campInfo).get(session);
 		System.out.println("disconnect:" + forDisPlc);
 		Set<String> all = new HashSet<String>();
+		all.add(campInfo);
 		all.addAll(DateInside(camps, campInfo));
 		all.addAll(DateOutside(camps, campInfo));
 		if (forDisPlc != null) {
@@ -137,6 +139,7 @@ public class CampWS {
 		System.out.println(plc_no);
 		System.out.println(campInfo + " " + session);
 		Set<String> all = new HashSet<String>();
+		all.add(campInfo);
 		all.addAll(DateInside(camps, campInfo));
 		all.addAll(DateOutside(camps, campInfo));
 		System.out.println(all);
