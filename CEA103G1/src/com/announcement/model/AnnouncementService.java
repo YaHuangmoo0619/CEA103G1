@@ -8,7 +8,7 @@ public class AnnouncementService {
 	private AnnouncementDAO_interface dao;
 	
 	public AnnouncementService() {
-		dao = new AnnouncementDAO();
+		dao = new AnnouncementHBDAO();
 	}
 	
 	public AnnouncementVO addAnnouncement(Integer emp_no, String an_cont, java.sql.Date an_skd_date, byte[] an_pic) {
