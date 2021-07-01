@@ -3,12 +3,34 @@ package com.announcement.model;
 import java.io.Serializable;
 import java.sql.Date;
 
-public class AnnouncementVO implements Serializable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="announcement")
+public class AnnouncementVO implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="an_no")
 	private Integer an_no;
+		
+	@Column(name="emp_no")
 	private Integer emp_no;
+		
+	@Column(name="an_cont")
 	private String an_cont;
+		
+	@Column(name="an_skd_date")
 	private Date an_skd_date;
+		
+	@Column(name="an_pic")
 	private byte[] an_pic;
 
 	public AnnouncementVO() {
