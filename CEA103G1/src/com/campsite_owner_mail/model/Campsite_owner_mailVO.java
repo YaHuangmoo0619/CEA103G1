@@ -1,17 +1,54 @@
 package com.campsite_owner_mail.model;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.campsite_owner_mail_picture.model.Campsite_owner_mail_pictureHBVO;
+
+@Entity
+@Table(name="campsite_owner_mailVO")
 public class Campsite_owner_mailVO implements Serializable {
 
-
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="mail_no")
 	private Integer mail_no;
+	
+	@Column(name="send_no")
 	private Integer send_no;
+	
+	@Column(name="rcpt_no")
 	private Integer rcpt_no;
+	
+	@Column(name="mail_read_stat")
 	private Integer mail_read_stat;
+	
+	@Column(name="mail_stat")
 	private Integer mail_stat;
+	
+	@Column(name="mail_cont")
 	private String mail_cont;
+	
+	@Column(name="mail_time")
 	private String mail_time;
+	
+	@OneToMany(fetch=FetchType.LAZY,
+			mappedBy="campsite_owner_mailVO",
+			cascade=CascadeType.ALL)
+	private Set<Campsite_owner_mail_pictureHBVO> campsite_owner_mail_pictureHBVO;
 	
 	public Campsite_owner_mailVO() {
 	}
@@ -81,5 +118,23 @@ public class Campsite_owner_mailVO implements Serializable {
 	public void setMail_time(String mail_time) {
 		this.mail_time = mail_time;
 	}
+
+	public Set<Campsite_owner_mail_pictureHBVO> getCampsite_owner_mail_pictureHBVO() {
+		return campsite_owner_mail_pictureHBVO;
+	}
+
+	public void setCampsite_owner_mail_pictureHBVO(Set<Campsite_owner_mail_pictureHBVO> campsite_owner_mail_pictureHBVO) {
+		this.campsite_owner_mail_pictureHBVO = campsite_owner_mail_pictureHBVO;
+	}
 	
+	public void add(Campsite_owner_mail_pictureHBVO campsite_owner_mail_pictureHBVO2) {
+		
+		if(campsite_owner_mail_pictureHBVO == null) {
+			campsite_owner_mail_pictureHBVO = new LinkedHashSet<>();
+		}
+		
+		campsite_owner_mail_pictureHBVO.add(campsite_owner_mail_pictureHBVO2);
+		
+		campsite_owner_mail_pictureHBVO2.setCampsite_owner_mailVO(this);
+	}
 }
