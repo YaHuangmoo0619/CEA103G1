@@ -4,15 +4,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.member_mail_picture.model.Member_mail_pictureVO;
-import com.service_mail.model.Service_mailVO;
+import com.member_mail_picture.model.Member_mail_pictureHBVO;
 
 public class Member_mailService {
 	
-	private Member_mailDAO_interface dao;
+	private Member_mailHBDAO_interface dao;
 	
 	public Member_mailService() {
-		dao = new Member_mailDAO();
+		dao = new Member_mailHBDAO();
 	}
 	
 	public Member_mailVO addMember_mail(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time) {
@@ -69,10 +68,10 @@ public class Member_mailService {
 	}
 
 	public Set<Member_mailVO> getWhereCondition(Map<String,String[]> map){
-		return dao.getWhereCondition(map);
+		return new Member_mailDAO().getWhereCondition(map);
 	}
 	
-	public Member_mailVO insertWithPic(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time, Set<Member_mail_pictureVO> set) {
+	public Member_mailVO insertWithPic(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time, Set<Member_mail_pictureHBVO> set) {
 		System.out.println("member_mailService");
 		Member_mailVO member_mailVO = new Member_mailVO();
 		
