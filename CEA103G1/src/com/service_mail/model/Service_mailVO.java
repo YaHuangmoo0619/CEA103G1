@@ -1,17 +1,54 @@
 package com.service_mail.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.service_mail_picture.model.Service_mail_pictureHBVO;
+
+@Entity
+@Table(name="service_mail")
 public class Service_mailVO implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="mail_no")
 	private Integer mail_no;
+	
+	@Column(name="emp_no")
 	private Integer emp_no;
+	
+	@Column(name="mbr_no")
 	private Integer mbr_no;
+	
+	@Column(name="mail_cont")
 	private String mail_cont;
+	
+	@Column(name="mail_stat")
 	private Integer mail_stat;
+	
+	@Column(name="mail_read_stat")
 	private Integer mail_read_stat;
+	
+	@Column(name="mail_time")
 	private String mail_time;
+	
+	@OneToMany(fetch=FetchType.LAZY,
+			cascade=CascadeType.ALL,
+			mappedBy="service_mailVO")
+	private Set<Service_mail_pictureHBVO> service_mail_pictureHBVO;
 	
 	public Service_mailVO() {
 	}
@@ -84,6 +121,15 @@ public class Service_mailVO implements Serializable {
 		this.mail_time = mail_time;
 	}
 	
-	
+	public void add(Service_mail_pictureHBVO service_mail_pictureHBVO2) {
+		
+		if(service_mail_pictureHBVO == null) {
+			service_mail_pictureHBVO = new LinkedHashSet<>();
+		}
+		
+		service_mail_pictureHBVO.add(service_mail_pictureHBVO2);
+		
+		service_mail_pictureHBVO2.setService_mailVO(this);
+	}
 	
 }
