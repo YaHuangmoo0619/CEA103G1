@@ -6,8 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,12 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import com.member_mail.model.Member_mailService;
-import com.member_mail_picture.model.Member_mail_pictureVO;
 import com.service_mail.model.Service_mailService;
 import com.service_mail.model.Service_mailVO;
-import com.service_mail_picture.model.Service_mail_pictureDAO;
-import com.service_mail_picture.model.Service_mail_pictureVO;
+import com.service_mail_picture.model.Service_mail_pictureHBVO;
 
 @WebServlet("/service_mail/service_mail.do")
 @MultipartConfig(fileSizeThreshold=1024*1024, maxFileSize=5*1024*1024, maxRequestSize=5*5*1024*1024)
@@ -61,13 +56,13 @@ public class Service_mailServlet extends HttpServlet {
 					}
 				}
 				if("compositeSearchTop".equals(action) && map.get("mail_cont")[0].isEmpty()) {
-					errorMsgs.put("notFound", new String[] {"½Ğ¿ï¾Ü©Î¿é¤J¬d¸ßÃöÁä¦r"});
+					errorMsgs.put("notFound", new String[] {"è«‹é¸æ“‡æˆ–è¼¸å…¥æŸ¥è©¢é—œéµå­—"});
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
 					failureView.forward(req, res);
 					return;
 				}
 				if(checkCount == 8) {
-					errorMsgs.put("notFound", new String[] {"½Ğ¿ï¾Ü©Î¿é¤J¬d¸ßÃöÁä¦r"});
+					errorMsgs.put("notFound", new String[] {"è«‹é¸æ“‡æˆ–è¼¸å…¥æŸ¥è©¢é—œéµå­—"});
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/service_mail/listAllService_mail.jsp");
 					failureView.forward(req, res);
 					return;
@@ -93,21 +88,21 @@ public class Service_mailServlet extends HttpServlet {
 				
 				String emp_noTest = req.getParameter("emp_no");
 				if(emp_noTest.equals("99")) {
-					errorMsgs.put("emp_no", new String[] {"½Ğ¿ï¾Ü­û¤u½s¸¹"});
+					errorMsgs.put("emp_no", new String[] {"è«‹é¸æ“‡å“¡å·¥ç·¨è™Ÿ"});
 				}
 				Integer emp_no = Integer.valueOf(emp_noTest);
 //				Integer send_no = Integer.valueOf(emp_noTest);
 				
 				String mbr_noTest = req.getParameter("mbr_no");
 				if(mbr_noTest.equals("99")) {
-					errorMsgs.put("mbr_no", new String[] {"½Ğ¿ï¾Ü·|­û½s¸¹"});
+					errorMsgs.put("mbr_no", new String[] {"è«‹é¸æ“‡æœƒå“¡ç·¨è™Ÿ"});
 				}
 				Integer mbr_no = Integer.valueOf(mbr_noTest);
 //				Integer rcpt_no = Integer.valueOf(mbr_noTest);
 				
 				String mail_cont = req.getParameter("mail_cont");
 				if(mail_cont.trim().isEmpty()) {
-					errorMsgs.put("mail_cont", new String[] {"½Ğ¿é¤J«H¥ó¤º®e"});
+					errorMsgs.put("mail_cont", new String[] {"è«‹è¼¸å…¥ä¿¡ä»¶å…§å®¹"});
 				}
 
 				
@@ -118,7 +113,7 @@ public class Service_mailServlet extends HttpServlet {
 				}
 				
 				
-				Set<Service_mail_pictureVO> set = new LinkedHashSet<Service_mail_pictureVO>();
+				Set<Service_mail_pictureHBVO> set = new LinkedHashSet<Service_mail_pictureHBVO>();
 //				Set<Member_mail_pictureVO> setMember = new LinkedHashSet<Member_mail_pictureVO>();
 				String realPath = getServletContext().getRealPath(saveDirectory);
 				File fsaveDirectory = new File(realPath);
@@ -139,9 +134,9 @@ public class Service_mailServlet extends HttpServlet {
 							part.write(f.toString());
 							
 							String mail_pic = req.getContextPath()+"/images/service_mail_picture/service_mail_picture"+count+fileType;
-							Service_mail_pictureVO service_mail_pictureVO = new Service_mail_pictureVO();
-							service_mail_pictureVO.setMail_pic(mail_pic);
-							set.add(service_mail_pictureVO);
+							Service_mail_pictureHBVO service_mail_pictureHBVO = new Service_mail_pictureHBVO();
+							service_mail_pictureHBVO.setMail_pic(mail_pic);
+							set.add(service_mail_pictureHBVO);
 //							Member_mail_pictureVO member_mail_pictureVO = new Member_mail_pictureVO();
 //							member_mail_pictureVO.setMail_pic(mail_pic);
 //							setMember.add(member_mail_pictureVO);
@@ -167,7 +162,7 @@ public class Service_mailServlet extends HttpServlet {
 //					member_mailSvc.insertWithPic(send_no,rcpt_no,mail_read_stat,mail_statMember,mail_cont,mail_time, setMember);
 				}
 //				System.out.println(req.getParameter("mail_no"));
-				//±N«İ³B²z§ï¬°¦^ÂĞªº¤H­û
+				//å°‡å¾…è™•ç†æ”¹ç‚ºå›è¦†çš„äººå“¡
 				Integer mail_no = Integer.valueOf(req.getParameter("mail_no"));
 				Service_mailVO service_mailVO = service_mailSvc.getOneService_mail(mail_no);
 				service_mailVO.setEmp_no(emp_no);
@@ -217,19 +212,19 @@ public class Service_mailServlet extends HttpServlet {
 				
 				String emp_noTest = req.getParameter("emp_no");
 				if(emp_noTest.equals("99")) {
-					errorMsgs.put("emp_no", new String[] {"½Ğ¿ï¾Ü­û¤u½s¸¹"});
+					errorMsgs.put("emp_no", new String[] {"è«‹é¸æ“‡å“¡å·¥ç·¨è™Ÿ"});
 				}
 				Integer emp_no = Integer.valueOf(emp_noTest);
 				
 				String mbr_noTest = req.getParameter("mbr_no");
 				if(mbr_noTest.equals("99")) {
-					errorMsgs.put("mbr_no", new String[] {"½Ğ¿ï¾Ü·|­û½s¸¹"});
+					errorMsgs.put("mbr_no", new String[] {"è«‹é¸æ“‡æœƒå“¡ç·¨è™Ÿ"});
 				}
 				Integer mbr_no = Integer.valueOf(mbr_noTest);
 				
 				String mail_cont = req.getParameter("mail_cont");
 				if(mail_cont.trim().isEmpty()) {
-					errorMsgs.put("mail_cont", new String[] {"½Ğ¿é¤J«H¥ó¤º®e"});
+					errorMsgs.put("mail_cont", new String[] {"è«‹è¼¸å…¥ä¿¡ä»¶å…§å®¹"});
 				}
 
 				if(!errorMsgs.isEmpty()) {
