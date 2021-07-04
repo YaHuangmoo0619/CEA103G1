@@ -107,7 +107,9 @@ public class EmployeeHBDAO implements EmployeeDAO_interface {
 
 			session.getTransaction().commit();
 			
-			employeeVO.setPwd(showPwdformDatabase(employeeVO.getPwd()));
+			if(employeeVO != null) {
+				employeeVO.setPwd(showPwdformDatabase(employeeVO.getPwd()));
+			}
 			
 		} catch (Exception e) {
 
@@ -240,7 +242,7 @@ public class EmployeeHBDAO implements EmployeeDAO_interface {
 		return employeeVO;
 	}
 	
-	// 可顯示正確的密碼
+	// show the correct password
 	public String showPwdformDatabase(String newPwd) {
 		char[] forShow = newPwd.toCharArray();
 		char[] gobackCode = new char[newPwd.length()];
