@@ -7,7 +7,7 @@ public class FunctionService {
 	private FunctionDAO_interface dao;
 	
 	public FunctionService() {
-		dao = new FunctionDAO();
+		dao = new FunctionHBDAO();
 	}
 	
 	public FunctionVO addFunction(String fx_name) {
