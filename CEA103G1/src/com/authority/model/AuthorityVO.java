@@ -1,7 +1,22 @@
 package com.authority.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="authority")
 public class AuthorityVO implements java.io.Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@Column(name="emp_no")
 	private Integer emp_no;
+	
+	@Id
+	@Column(name="fx_no")
 	private Integer fx_no;
 	
 	public AuthorityVO() {
