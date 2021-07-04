@@ -1,15 +1,57 @@
 package com.employee.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+import com.function.model.FunctionVO;
+
+@Entity
+@Table(name="employee")
 public class EmployeeVO implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="emp_no")
 	private Integer emp_no;
+	
+	@Column(name="acc")
 	private String acc;
+	
+	@Column(name="pwd")
 	private String pwd;
+	
+	@Column(name="name")
 	private String name;
+	
+	@Column(name="email")
 	private String email;
+	
+	@Column(name="emp_stat")
 	private Integer emp_stat;
+	
+	@ManyToMany(fetch=FetchType.LAZY,
+			cascade= {CascadeType.DETACH, CascadeType.MERGE, 
+					CascadeType.PERSIST, CascadeType.REFRESH,})
+	@JoinTable(
+			name="authority",
+			joinColumns=@JoinColumn(name="emp_no"),
+			inverseJoinColumns=@JoinColumn(name="fx_no"))
+	private List<FunctionVO> functionVO;
 
 	public EmployeeVO() {
 		
@@ -77,6 +119,22 @@ public class EmployeeVO implements Serializable {
 	public void setEmp_stat(Integer emp_stat) {
 		this.emp_stat = emp_stat;
 	}
+
+	public List<FunctionVO> getFunctionVO() {
+		return functionVO;
+	}
+
+	public void setFunctionVO(List<FunctionVO> functionVO) {
+		this.functionVO = functionVO;
+	}
 	
-	
+	public void add(FunctionVO functionVO2) {
+		
+		if(functionVO == null) {
+			functionVO = new ArrayList<>();
+		}
+		
+		functionVO.add(functionVO2);
+		
+	}
 }
