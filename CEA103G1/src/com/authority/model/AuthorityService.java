@@ -7,7 +7,7 @@ public class AuthorityService {
 	private AuthorityDAO_interface dao;
 	
 	public AuthorityService() {
-		dao = new AuthorityDAO();
+		dao = new AuthorityHBDAO();
 	}
 	
 	public AuthorityVO addAuthority(Integer emp_no, Integer fx_no) {
