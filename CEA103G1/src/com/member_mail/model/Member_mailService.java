@@ -68,7 +68,7 @@ public class Member_mailService {
 	}
 
 	public Set<Member_mailVO> getWhereCondition(Map<String,String[]> map){
-		return new Member_mailDAO().getWhereCondition(map);
+		return dao.getWhereCondition(map);
 	}
 	
 	public Member_mailVO insertWithPic(Integer send_no, Integer rcpt_no, Integer mail_read_stat, Integer mail_stat, String mail_cont, String mail_time, Set<Member_mail_pictureHBVO> set) {
