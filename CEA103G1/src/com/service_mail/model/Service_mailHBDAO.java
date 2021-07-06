@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -161,160 +167,75 @@ public class Service_mailHBDAO implements Service_mailHBDAO_interface {
 		return list;
 	}
 
-	public Set<Service_mailVO> getWhereCondition(Map<String,String[]> map){
-/*		Set<Service_mailVO> set = new LinkedHashSet<Service_mailVO>();
-		StringBuffer partOfsqlWhere = new StringBuffer();
-		Service_mailVO service_mailVO = null;
-		Set<String> keys = map.keySet();
+	public Predicate get_aPredicate_For_AnyDB(CriteriaBuilder builder, Root<Service_mailVO> root, String columnName, String value) {
 		
-		Connection con = null;
-		Statement stmt = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ResultSet rs_p = null;
+		Predicate predicate = null;
+		
+		if("send_no".equals(columnName) || "rcpt_no".equals(columnName) || "mail_read_stat".equals(columnName) || "mail_stat".equals(columnName))
+			predicate = builder.equal(root.get(columnName), new Integer(value));
+		else if("mail_cont".equals(columnName))
+			predicate = builder.like(root.get(columnName), "%" + value + "%");
+		else if("mail_time".equals(columnName))
+			predicate = builder.equal(root.get(columnName), java.sql.Date.valueOf(value));
+	
+		return predicate;
+	}
+	
+	public Set<Service_mailVO> getWhereCondition(Map<String,String[]> map){
+		
+		Set<Service_mailVO> set = new LinkedHashSet<Service_mailVO>();
+		
+		Session session = factory.getCurrentSession();
+		
+		List<Service_mailVO> list = null;
+		
 		try {
-			//建立連線
-			con = ds.getConnection();
-			stmt = con.createStatement();
-			//取得所有欄位名稱
-			rs = stmt.executeQuery("select * from campion.service_mail");
-			ResultSetMetaData rm = rs.getMetaData();
 			
-			//建立sql指令
-			List<String> checkfirst = new ArrayList<String>();
-			Map<Integer,String> forPstmt = new LinkedHashMap<Integer,String>();//之後連到資料庫查找用
-			//獲得所有欄位名稱
-			for(int i = 1 ; i <= rm.getColumnCount(); i++) {
-				nextColumn:
-				//屬於特定sql型別做特定動作
-				for(String key : keys) {
-					if(partOfsqlWhere.length() == 0) {
-						if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
-							checkfirst.add(key);
-							forPstmt.put(i, key);
-							break nextColumn;
-						}else if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" = ?");
-							checkfirst.add(key);
-							forPstmt.put(i, key);
-							break nextColumn;
-						}else if(rm.getColumnTypeName(i) == "VARCHAR" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" like ?");
-							checkfirst.add(key);
-							forPstmt.put(i, key);
-							break nextColumn;
-						}else if(rm.getColumnTypeName(i) == "DATETIME" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							partOfsqlWhere.append("select * from "+rm.getTableName(i)+" where "+ rm.getColumnName(i) +" like ?");
-							checkfirst.add(key);
-							forPstmt.put(i, key);
-							break nextColumn;
-						}
-					}else {
-						if(rm.getColumnTypeName(i) == "INT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" = ?");
-							checkfirst.add(key);
-							forPstmt.put(i, key);
-							break nextColumn;
-						}if(rm.getColumnTypeName(i) == "BIT" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" = ?");
-							checkfirst.add(key);
-							forPstmt.put(i, key);
-							break nextColumn;
-						}else if(rm.getColumnTypeName(i) == "VARCHAR" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" like ?");
-							checkfirst.add(key);
-							forPstmt.put(i, key);
-							break nextColumn;
-						}else if(rm.getColumnTypeName(i) == "DATETIME" && rm.getColumnName(i).toLowerCase().equals(key) && !checkfirst.contains(key) && !map.get(key)[0].equals("no") && !map.get(key)[0].isEmpty()) {
-							partOfsqlWhere.append(" and "+ rm.getColumnName(i) +" like ?");
-							checkfirst.add(key);
-							forPstmt.put(i, key);
-							break nextColumn;
-						}
-					}
-				}
-			}
-			//問號放入對應的值
-			pstmt = con.prepareStatement(partOfsqlWhere.toString()+" order by mail_time desc");
-			Set<Integer> keysPstmt = forPstmt.keySet();//上一個步驟存的資料
+			session.beginTransaction();
 			
-			int index = 1;
-			for(Integer keyPstmt : keysPstmt) {
-				if(rm.getColumnTypeName(keyPstmt) == "INT") {
-					pstmt.setInt(index, Integer.valueOf(map.get(forPstmt.get(keyPstmt))[0]));
-					index++;
-				}else if(rm.getColumnTypeName(keyPstmt) == "BIT") {
-					pstmt.setInt(index, Integer.valueOf(map.get(forPstmt.get(keyPstmt))[0]));
-					index++;
-				}else if(rm.getColumnTypeName(keyPstmt) == "VARCHAR") {
-					pstmt.setString(index, "%"+map.get(forPstmt.get(keyPstmt))[0]+"%");
-					index++;
-				}else if(rm.getColumnTypeName(keyPstmt) == "DATETIME") {
-					pstmt.setString(index, map.get(forPstmt.get(keyPstmt))[0]+"%");
-					index++;
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			
+			CriteriaQuery<Service_mailVO> criteriaQuery = builder.createQuery(Service_mailVO.class);
+			
+			Root<Service_mailVO> root = criteriaQuery.from(Service_mailVO.class);
+			
+			List<Predicate> predicateList = new ArrayList<Predicate>();
+			
+			Set<String> keys = map.keySet();
+			for(String key : keys) {
+				
+				String value = map.get(key)[0];
+				
+				if(value != null && value.trim().length() != 0 && !value.equals("no")) {
+					Predicate predicate = get_aPredicate_For_AnyDB(builder, root, key, value);
+					if(predicate != null)
+						predicateList.add(predicate);
 				}
+				
 			}
 			
-			rs_p = pstmt.executeQuery();
+			criteriaQuery.where(predicateList.toArray(new Predicate[predicateList.size()]));
+			criteriaQuery.orderBy(builder.desc(root.get("mail_time")));
 			
-			while (rs_p.next()) {
-				service_mailVO = new Service_mailVO();
-				service_mailVO.setMail_no(rs_p.getInt("mail_no"));
-				service_mailVO.setEmp_no(rs_p.getInt("emp_no"));
-				service_mailVO.setMbr_no(rs_p.getInt("mbr_no"));
-				service_mailVO.setMail_cont(rs_p.getString("mail_cont"));
-				service_mailVO.setMail_stat(rs_p.getInt("mail_stat"));
-				service_mailVO.setMail_read_stat(rs_p.getInt("mail_read_stat"));
-				service_mailVO.setMail_time(rs_p.getString("mail_time"));
-				set.add(service_mailVO); // Store the row in the list
+			Query query = session.createQuery(criteriaQuery);
+			
+			list = query.getResultList();
+			
+			for(Service_mailVO service_mailVO : list) {
+				set.add(service_mailVO);
 			}
 			
+			session.getTransaction().commit();
 			
-			// Handle any driver errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (rs_p != null) {
-				try {
-					rs_p.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+		}catch(Exception e) {
+			
+			e.printStackTrace();
+			
+			session.getTransaction().rollback();
+			
 		}
+		
 		return set;
-*/		return null;
 	}
 
 	
